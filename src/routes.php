@@ -62,7 +62,7 @@ $app->group('/user', function () {
     $this->get('/me', function ($request, $response, $args) {
         $this->logger->info("Fetch user GET '/user/me'");
         // find user id from session
-        $auth = new Authentication($this);
+        $auth = $this['auth'];
         $u = $auth->currentUser();
 
         if (!is_null($u)) {
@@ -285,7 +285,7 @@ $app->group('/event', function () {
         $et = EventTypeQuery::create()->orderByName()->find();
         $est = EventSubTypeQuery::create()->orderByName()->find();
 
-        return $this->view->render($response, 'event-edit.twig', [ "event" => $e, "locations" => $l, "eventtypes" => $et, "eventsubtypes" => $est ]);
+        return $this->view->render($response, 'event-edit.twig', [ "locations" => $l, "eventtypes" => $et, "eventsubtypes" => $est ]);
     })->setName('event-new');
 
 
@@ -537,7 +537,7 @@ $app->post('/login', function ($request, $response, $args) {
             }
             return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('home'));
         }
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         $message = "Too many failed login attempts. Please try again in 15 minutes.";
     }
     return $this->view->render($response->withStatus(401), 'login.twig', ['username' => $email, 'message' => $message ]);
@@ -590,7 +590,7 @@ $app->get('/user/me/calendars', function ($request, $response, $args) {
     // Sample log message
     $this->logger->info("Fetch settings GET '/user/me/calendars'");
 
-    $auth = new Authentication($this);
+    $auth = $this['auth'];
     $u = $auth->currentUser();
 
     if (is_null($u)) {
@@ -607,7 +607,7 @@ $app->get('/user/me/calendar/{id}/revoke', function ($request, $response, $args)
     // Sample log message
     $this->logger->info("Fetch settings GET '/user/me/calendar/".$args['id']."/revoke'");
 
-    $auth = new Authentication($this);
+    $auth = $this['auth'];
     $u = $auth->currentUser();
 
     if (is_null($u)) {

@@ -3,20 +3,28 @@
 namespace TechWilk\Rota\AuthProvider\UsernamePassword;
 
 use TechWilk\Rota\AuthProvider\UsernamePasswordInterface;
+use TechWilk\Rota\EmailAddress;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Exception\ClientException;
+use SimpleXMLElement;
 
 class OneBodyAuth implements UsernamePasswordInterface
 {
     protected $guzzle;
-    protected $enabled = true;
+    protected $enabled;
+
+    protected $adminEmail;
+    protected $apiKey;
 
     protected $data;
 
-    public function __construct(Client $guzzle, $enabled)
+    public function __construct(Client $guzzle, EmailAddress $adminEmail, $apiKey, $enabled = true)
     {
         $this->guzzle = $guzzle;
         $this->enabled = (bool)$enabled;
+        $this->adminEmail = $adminEmail;
+        $this->apiKey = $apiKey;
     }
 
     public function isEnabled()
@@ -26,21 +34,32 @@ class OneBodyAuth implements UsernamePasswordInterface
 
     public function checkCredentials($username, $password)
     {
-        $request = new Request('POST', 'login', [
-            'form_params' => [
-                'username' => $username,
-                'password' => $password,
-            ]
-        ]);
-        $response = $client->send($request, ['timeout' => 2]);
+        try {
+            $response = $this->guzzle->post('authentications', [
+                'form_params' => [
+                    'authentication' => [
+                        'email' => strval($username),
+                        'password' => $password,
+                    ],
 
-        if ($response->getStatusCode() != 200) {
+                ],
+                'auth' => [
+                    $this->adminEmail, 
+                    $this->apiKey,
+                ],
+                'timeout' => 2
+            ]);
+        } catch (ClientException $e) {
+            return false;
+        }
+
+        if ($response->getStatusCode() != 201) {
             return false;
         }
         
         $this->data = new SimpleXMLElement($response->getBody()->getContents());
 
-        if ($this->data->deleted == true || $this->status != 'active') {
+        if ($this->data->status != 'active') {
             return false;
         }
 

@@ -12,11 +12,17 @@ use Exception;
 
 class UsernamePasswordAuth implements UsernamePasswordInterface
 {
-    public function isEnabled()
+    protected $enabled;
+
+    public function __construct($enabled = true)
     {
-        return true;
+        $this->enabled = (bool)$enabled;
     }
 
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
 
     public function checkCredentials($username, $password)
     {
@@ -29,9 +35,6 @@ class UsernamePasswordAuth implements UsernamePasswordInterface
         $users = UserQuery::create()->filterByEmail($email)->find();
         foreach ($users as $u) {
             if ($u->checkPassword($password)) {
-                $_SESSION['userId'] = $u->getId();
-                $u->setLastLogin(new DateTime);
-                $u->save();
                 return true;
             }
         }

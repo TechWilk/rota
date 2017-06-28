@@ -9,8 +9,9 @@ use Slim\Views\Twig;
 use DPolac\TwigLambda\LambdaExtension;
 use Twig_Extensions_Extension_Date;
 use Twig_Extensions_Extension_Text;
-use TechWilk\Rota\AuthProvider\UsernamePassword\UsernamePasswordAuth;
+use TechWilk\Rota\AuthProvider;
 use Monolog;
+use GuzzleHttp;
 
 
 // DIC configuration
@@ -60,6 +61,26 @@ $container['logger'] = function ($c) {
 };
 
 $container['auth'] = function ($c) {
-    $authProvider = new UsernamePasswordAuth();
+    $authConfig = getConfig()['auth'];
+
+    switch ($authConfig['scheme']) {
+        case 'facebook':
+            $authProvider = new AuthProvider\FacebookAuth();
+            break;
+        
+        case 'onebody':
+            $url = $authConfig['onebody']['url'] .'/';
+            $email = new EmailAddress($authConfig['onebody']['email']);
+            $apiKey = $authConfig['onebody']['apiKey'];
+            
+            $guzzle = new GuzzleHttp\Client(['base_uri' => $url]);
+            $authProvider = new AuthProvider\UsernamePassword\OneBodyAuth($guzzle, $email, $apiKey);
+            break;
+        
+        default:
+            $authProvider = new AuthProvider\UsernamePassword\UsernamePasswordAuth();
+            break;
+    }
+
     return new Authentication($c, $authProvider, ['login', 'login-post', 'user-calendar']);
 };

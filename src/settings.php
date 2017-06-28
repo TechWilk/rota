@@ -1,8 +1,8 @@
 <?php
-require(__DIR__ . '/../config/database.php');
-require(__DIR__ . '/../config/auth.php');
-require(__DIR__ . '/../config/email.php');
-require(__DIR__ . '/../config/recording.php');
+require_once(__DIR__ . '/config.php');
+
+$config = getConfig();
+
 return [
     'settings' => [
         'displayErrorDetails' => $config['displayErrorDetails'], // set to false in production

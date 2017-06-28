@@ -6,6 +6,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use TechWilk\Rota\AuthProviderInterface;
+use DateTime;
 
 class Authentication
 {
@@ -59,7 +60,21 @@ class Authentication
 
     public function loginAttempt(EmailAddress $email, $password)
     {
-        return $this->authProvider->checkCredentials($email, $password);
+        if ($this->authProvider->checkCredentials($email, $password) !== true)
+        {
+            return false;
+        }
+        $user = UserQuery::create()->filterByEmail($email)->findOne();
+
+        if (is_null($user))
+        {
+            return false;
+        }
+        
+        $_SESSION['userId'] = $user->getId();
+        $user->setLastLogin(new DateTime);
+        $user->save();
+        return true;
 
         // will not run beyond here
 
