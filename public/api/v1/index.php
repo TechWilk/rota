@@ -1,4 +1,4 @@
-<?php
+<?php namespace TechWilk\Rota; use DateInterval; use DateTime;
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Very very very basic auth
