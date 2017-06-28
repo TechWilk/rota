@@ -7,6 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use TechWilk\Rota\AuthProviderInterface;
 use DateTime;
+use DateTimeZone;
 use Exception;
 
 class Authentication
