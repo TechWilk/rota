@@ -29,4 +29,4 @@ $app->add(function (Request $request, Response $response, callable $next) {
 });
 
 
-$app->add( $app->getContainer()['auth'] );
+$app->add($app->getContainer()['auth']);

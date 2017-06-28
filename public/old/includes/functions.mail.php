@@ -1,4 +1,7 @@
-<?php namespace TechWilk\Rota; use DateInterval; use DateTime;
+<?php namespace TechWilk\Rota;
+
+use DateInterval;
+use DateTime;
 
 use Mailgun\Mailgun;
 

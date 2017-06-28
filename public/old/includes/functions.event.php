@@ -1,4 +1,7 @@
-<?php namespace TechWilk\Rota; use DateInterval; use DateTime;
+<?php namespace TechWilk\Rota;
+
+use DateInterval;
+use DateTime;
 
 // legacy code support - do not use in new code
 function addPeople($eventId, $userRoleId)

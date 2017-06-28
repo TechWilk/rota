@@ -1,4 +1,9 @@
-<?php namespace TechWilk\Rota; use DateInterval; use DateTime; include('includes/config.php');
+<?php namespace TechWilk\Rota;
+
+use DateInterval;
+use DateTime;
+
+include('includes/config.php');
 include('includes/functions.php');
 /*
     This file is part of Church Rota.

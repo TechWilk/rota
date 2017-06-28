@@ -1,6 +1,10 @@
-<?php namespace TechWilk\Rota; use DateInterval; use DateTime;
+<?php namespace TechWilk\Rota;
+
+use DateInterval;
+use DateTime;
 use Facebook;
-    ini_set('display_errors', false);    // set on for development, off for production
+
+ini_set('display_errors', false);    // set on for development, off for production
     ini_set('log_errors', true);
     error_reporting(E_ALL);
   

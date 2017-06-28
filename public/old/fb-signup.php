@@ -1,5 +1,9 @@
-<?php namespace TechWilk\Rota; use DateInterval; use DateTime;
+<?php namespace TechWilk\Rota;
+
+use DateInterval;
+use DateTime;
 use Facebook;
+
 // Include files, including the database connection
 include('includes/config.php');
 include('includes/functions.php');

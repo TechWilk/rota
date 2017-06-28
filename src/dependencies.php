@@ -13,7 +13,6 @@ use TechWilk\Rota\AuthProvider;
 use Monolog;
 use GuzzleHttp;
 
-
 // DIC configuration
 
 $container = $app->getContainer();

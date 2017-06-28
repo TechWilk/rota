@@ -3,3 +3,4 @@ vendor/*
 config/*
 !config/*.default.php
 coverage/*
+.php_cs*

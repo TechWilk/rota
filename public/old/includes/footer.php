@@ -1,4 +1,7 @@
-<?php namespace TechWilk\Rota; use DateInterval; use DateTime; /*
+<?php namespace TechWilk\Rota;
+
+use DateInterval;
+use DateTime; /*
     This file is part of Church Rota.
 
     Copyright (C) 2011 David Bunce
@@ -16,6 +19,7 @@
     You should have received a copy of the GNU General Public License
     along with Church Rota.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 ?>
 
 </section><!-- /.content -->

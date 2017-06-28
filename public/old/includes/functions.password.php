@@ -1,4 +1,8 @@
-<?php namespace TechWilk\Rota; use DateInterval; use DateTime;
+<?php namespace TechWilk\Rota;
+
+use DateInterval;
+use DateTime;
+
 // *****************************************************************************
 // File: random_password.php
 // Description: PHP random password generator
@@ -78,4 +82,3 @@ function RandomPassword($length, $upper = true, $numbers = true, $lower = true)
  
     return $ret;
 }
-?>

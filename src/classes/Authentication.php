@@ -60,14 +60,12 @@ class Authentication
 
     public function loginAttempt(EmailAddress $email, $password)
     {
-        if ($this->authProvider->checkCredentials($email, $password) !== true)
-        {
+        if ($this->authProvider->checkCredentials($email, $password) !== true) {
             return false;
         }
         $user = UserQuery::create()->filterByEmail($email)->findOne();
 
-        if (is_null($user))
-        {
+        if (is_null($user)) {
             return false;
         }
         

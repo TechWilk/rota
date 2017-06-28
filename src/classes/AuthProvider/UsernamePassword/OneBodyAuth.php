@@ -44,7 +44,7 @@ class OneBodyAuth implements UsernamePasswordInterface
 
                 ],
                 'auth' => [
-                    $this->adminEmail, 
+                    $this->adminEmail,
                     $this->apiKey,
                 ],
                 'timeout' => 2
@@ -56,7 +56,7 @@ class OneBodyAuth implements UsernamePasswordInterface
         if ($response->getStatusCode() != 201) {
             return false;
         }
-        
+
         $this->data = new SimpleXMLElement($response->getBody()->getContents());
 
         if ($this->data->status != 'active') {
