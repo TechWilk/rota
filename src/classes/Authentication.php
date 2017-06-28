@@ -59,7 +59,7 @@ class Authentication
 
     public function loginAttempt(EmailAddress $email, $password)
     {
-        return $authProvider->chechCredentials($email, $password);
+        return $this->authProvider->checkCredentials($email, $password);
 
         // will not run beyond here
 

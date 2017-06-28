@@ -3,6 +3,7 @@
 namespace TechWilk\Rota;
 
 use DateTime;
+use InvalidArgumentException;
 
 // Routes
 
@@ -526,7 +527,7 @@ $app->post('/login', function ($request, $response, $args) {
     }
 
     // login
-    $auth = new Authentication($this);
+    $auth = $this['auth'];
     try {
         if ($auth->loginAttempt($email, $password)) {
             if (isset($_SESSION['urlRedirect'])) {

@@ -3,6 +3,12 @@
 namespace TechWilk\Rota\AuthProvider\UsernamePassword;
 
 use TechWilk\Rota\AuthProvider\UsernamePasswordInterface;
+use TechWilk\Rota\UserQuery;
+use TechWilk\Rota\LoginFailureQuery;
+use TechWilk\Rota\LoginFailure;
+use TechWilk\Rota\EmailAddress;
+use DateTime;
+use Exception;
 
 class UsernamePasswordAuth implements UsernamePasswordInterface
 {
@@ -14,6 +20,8 @@ class UsernamePasswordAuth implements UsernamePasswordInterface
 
     public function checkCredentials($username, $password)
     {
+        $email = new EmailAddress($username);
+
         if (!$this->numberOfLoginAttemptsIsOk($email)) {
             throw new Exception('Too many attempts.');
             return false;

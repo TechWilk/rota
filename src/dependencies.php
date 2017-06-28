@@ -9,6 +9,7 @@ use Slim\Views\Twig;
 use DPolac\TwigLambda\LambdaExtension;
 use Twig_Extensions_Extension_Date;
 use Twig_Extensions_Extension_Text;
+use TechWilk\Rota\AuthProvider\UsernamePassword\UsernamePasswordAuth;
 use Monolog;
 
 
@@ -56,4 +57,9 @@ $container['logger'] = function ($c) {
     $logger->pushProcessor(new Monolog\Processor\UidProcessor());
     $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
     return $logger;
+};
+
+$container['auth'] = function ($c) {
+    $authProvider = new UsernamePasswordAuth();
+    return new Authentication($c, $authProvider, ['login', 'login-post', 'user-calendar']);
 };

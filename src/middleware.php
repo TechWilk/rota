@@ -29,5 +29,4 @@ $app->add(function (Request $request, Response $response, callable $next) {
 });
 
 
-$authProvider = new UsernamePasswordAuth();
-$app->add(new Authentication($app->getContainer(), $authProvider, ['login', 'login-post', 'user-calendar']));
+$app->add( $app->getContainer()['auth'] );

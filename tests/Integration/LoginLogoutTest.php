@@ -41,11 +41,6 @@ class LoginLogoutTest extends BaseTestCase
   {
       $response = $this->runApp('POST', '/login', ['username' => $username, 'password' => $password]);
 
-      $my_file = __DIR__ . '/../../error_log.txt';
-      $handle = fopen($my_file, 'a') or die('Cannot open file:  '.$my_file);
-      fwrite($handle, $response->getStatusCode());
-      fwrite($handle, (string)$response->getBody());
-
       $this->assertEquals(401, $response->getStatusCode());
       $this->assertContains('Username or password incorrect.', (string)$response->getBody());
   }
