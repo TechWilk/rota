@@ -1,0 +1,33 @@
+<li>
+  <i class="fa fa-bell bg-blue"></i>
+  <div class="timeline-item" id="event{{ event.id }}">
+    <span class="time"><i class="fa fa-calendar-o"></i> {{ event.date | date('l, nS M') }} <i class="fa fa-clock-o"></i> {{ event.date | date('g:i a') }}</span>
+    <div class="timeline-header">
+      <a href="{{ path_for('event', { 'id': event.id }) }}" class="js-no-link" data-toggle='modal' data-target="#event{{ event.id }}_modal">
+          <h4>
+            {{ event.date | date('jS: ') }}
+            {% if event.name %}
+            <strong>{{ event.name }}</strong>
+            {% else %}
+              {{ event.eventsubtype.name }}
+            {% endif %}
+          </h4>
+        </a>
+        <a href="{{ path_for('events-eventtype', {'id': event.eventtype.id}) }}" class="label label-default">{{ event.eventtype.name }}</a>
+        <a href="{{ path_for('events-eventsubtype', {'id': event.eventsubtype.id}) }}" class="label label-default">{{ event.eventsubtype.name }}</a>
+      </div><!-- /.timeline-header -->
+      <div class='timeline-body'>
+        <p><strong>Location:</strong> {{ event.location.name }}</p>
+
+        {% if event.comment %}
+        <blockquote>
+          <p>{{ event.comment }}</p>
+        </blockquote>
+        {% endif %}
+      </div>
+      <div class="timeline-footer">
+        <a href="#" class="btn btn-warning btn-xs">Swap</a>
+      </div>
+    </div>
+  </li>
+  {% include 'event-modal.twig' %}

@@ -1,0 +1,37 @@
+<div class="modal fade" id="user{{ user.id }}" role="dialogue">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <h4 class="modal-title">
+          <img src="{{ user.profileimage('small') }}" alt="User Image" width="50" height="50">
+          {{ user.name }}
+        </h4>
+      </div>
+      <div class="modal-body">
+        {% include 'user-info.twig' %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+        <div class="btn-group">
+        <a class="btn btn-success" href="{{ path_for('user', { 'id': user.id }) }}">View profile</a>
+          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            Edit <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="" href="{{ path_for('user-edit', { 'id': user.id }) }}">Edit details</a>
+            </li>
+            <li>
+              <a class="" href="{{ path_for('user-roles', { 'id': user.id }) }}">Assign roles</a>
+            </li>
+            <li class="divider"></li>
+            <li>
+              <a class="text-red" href="{{ path_for('user-password', { 'id': user.id }) }}">Reset password</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

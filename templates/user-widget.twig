@@ -1,0 +1,41 @@
+<div class="box box-widget widget-user-2">
+  <div class="widget-user-header bg-yellow">
+    <div class="widget-user-image">
+      <img class="img-circle" src="{{ user.profileimage('large') }}" alt="User Avatar">
+    </div>
+    <!-- /.widget-user-image -->
+    <h3 class="widget-user-username">{{ user.name }}</h3>
+    <h5 class="widget-user-desc">Account created {{ user.created is empty ? 'in the past' : user.created | date('M. Y') }}</h5>
+  </div>
+  <div class="box-footer no-padding">
+    <ul class="nav nav-stacked">
+      <li><a href="{{ path_for('user-edit', { 'id': user.id }) }}">{{ user.email | default('no email address') }}</a></li>
+      {% set userroles = user.userroles %}
+      <li>
+        <a href="{{ path_for('user-roles', { 'id': user.id }) }}">
+          {% if userroles.count == 0 %}
+          <li class="text-red">{{ user.firstname }} has no roles</li>
+          {% else %}
+          Roles:<span class="pull-right badge bg-aqua">{{ userroles.count }}</span>
+          <ul>
+            {% for userrole in userroles %}
+            <li>
+              {{- userrole.role.group.name }}: {{ userrole.role.name -}}
+              {{ userrole.reserve ? ' (<strong>reserve</strong>)' : '' -}}
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </a>
+      </li>
+      <li>
+        <a href="{{ path_for('user-edit', { 'id': user.id }) }}">
+          Email Reminders <span class="pull-right badge bg-green">X days before</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ path_for('user-calendars') }}">Calendar Syncing <span class="pull-right badge bg-aqua">3</span></a>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database name="default" defaultIdMethod="native">
+
+  <table name="cr_calendarTokens" idMethod="native" phpName="CalendarToken">
+    <column name="token" phpName="Token" type="VARCHAR" size="30" primaryKey="true" required="true"/>
+    <column name="userId" phpName="Userid" type="INTEGER" size="30" required="true"/>
+    <column name="format" phpName="Format" type="VARCHAR" size="5" required="true"/>
+    <column name="description" phpName="Description" type="VARCHAR" size="100"/>
+    <column name="revoked" phpName="Revoked" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <behavior name="timestampable">
+      <parameter name="create_column" value="created" />
+      <parameter name="update_column" value="updated" />
+    </behavior>
+    <foreign-key foreignTable="cr_users">
+      <reference local="userId" foreign="id" />
+    </foreign-key>
+  </table>
+
+
+  <table name="cr_discussion" idMethod="native" phpName="Discussion">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="topicParent" phpName="Topicparent" type="INTEGER" size="6" required="true" defaultValue="0"/>
+    <column name="CategoryParent" phpName="Categoryparent" type="INTEGER" size="6" required="true" defaultValue="0"/>
+    <column name="userID" phpName="Userid" type="INTEGER" size="6" required="true" defaultValue="0"/>
+    <column name="topic" phpName="Topic" type="LONGVARCHAR" required="true"/>
+    <column name="topicName" phpName="Topicname" type="LONGVARCHAR" required="true"/>
+    <column name="date" phpName="Date" type="TIMESTAMP" required="true" defaultValue="0000-00-00 00:00:00"/>
+  </table>
+
+
+  <table name="cr_discussionCategories" idMethod="native" phpName="DiscussionCategories">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="255" required="true" defaultValue=""/>
+    <column name="description" phpName="Description" type="LONGVARCHAR" required="true"/>
+    <column name="parent" phpName="Parent" type="INTEGER" size="1" required="true" defaultValue="0"/>
+  </table>
+
+
+  <table name="cr_documents" idMethod="native" phpName="Document">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="title" phpName="Title" type="VARCHAR" size="127" required="true" defaultValue=""/>
+    <column name="description" phpName="Description" type="LONGVARCHAR" required="true"/>
+    <column name="url" phpName="Url" type="VARCHAR" size="127" required="true" defaultValue=""/>
+    <column name="link" phpName="Link" type="LONGVARCHAR" required="true"/>
+  </table>
+
+
+  <table name="cr_emails" idMethod="native" phpName="Email">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="emailTo" phpName="EmailTo" type="VARCHAR" size="100" required="true" defaultValue=""/>
+    <column name="emailBcc" phpName="EmailBcc" type="VARCHAR" size="100" required="true" defaultValue=""/>
+    <column name="emailFrom" phpName="EmailFrom" type="VARCHAR" size="100" required="true"/>
+    <column name="subject" phpName="Subject" type="VARCHAR" size="150" required="true"/>
+    <column name="message" phpName="Message" type="LONGVARCHAR" required="true"/>
+    <column name="error" phpName="Error" type="LONGVARCHAR" />
+  </table>
+
+
+  <table name="cr_eventGroups" idMethod="native" phpName="EventGroup">
+    <column name="id" phpName="Id" type="INTEGER" size="30" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="128" required="true" defaultValue=""/>
+    <column name="description" phpName="Description" type="LONGVARCHAR" required="true"/>
+    <column name="archived" phpName="Archived" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+  </table>
+
+
+  <table name="cr_eventPeople" idMethod="native" phpName="EventPerson">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="eventId" phpName="EventId" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="userRoleId" phpName="UserRoleId" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="notified" phpName="Notified" type="SMALLINT" size="1" required="true" defaultValue="0"/>
+    <column name="removed" phpName="Removed" type="SMALLINT" size="1" defaultValue="0"/>
+    <foreign-key foreignTable="cr_events">
+      <reference local="eventId" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="cr_userRoles">
+      <reference local="userRoleId" foreign="id" />
+    </foreign-key>
+  </table>
+
+
+  <table name="cr_eventSubTypes" idMethod="native" phpName="EventSubType">
+    <column name="id" phpName="Id" type="INTEGER" size="30" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="128" required="true" defaultValue=""/>
+    <column name="description" phpName="Description" type="LONGVARCHAR" required="true"/>
+  </table>
+
+
+  <table name="cr_eventTypes" idMethod="native" phpName="EventType">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="30" required="true"/>
+    <column name="description" phpName="Description" type="LONGVARCHAR" required="true"/>
+    <column name="defaultDay" phpName="DefaultDay" type="INTEGER" size="1"/>
+    <column name="defaultTime" phpName="DefaultTime" type="TIME"/>
+    <column name="defaultRepitition" phpName="DefaultRepitition" type="INTEGER" size="3"/>
+    <column name="defaultLocationId" phpName="DefaultLocationId" type="INTEGER" size="30"/>
+    <column name="rehearsal" phpName="Rehearsal" type="INTEGER" size="2" required="true" defaultValue="0"/>
+    <column name="groupformat" phpName="GroupFormat" type="INTEGER" size="1" required="true" defaultValue="0"/>
+    <foreign-key foreignTable="cr_locations" onDelete="SETNULL">
+      <reference local="defaultLocationId" foreign="id" />
+    </foreign-key>
+  </table>
+
+
+  <table name="cr_events" idMethod="native" phpName="Event">
+    <column name="id" phpName="Id" type="INTEGER" size="6" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="date" phpName="Date" type="TIMESTAMP" required="true" defaultValue="0000-00-00 00:00:00"/>
+    <column name="name" phpName="Name" type="LONGVARCHAR" required="true"/>
+    <column name="createdBy" phpName="CreatedBy" type="INTEGER" size="5" required="true" defaultValue="0"/>
+    <column name="rehearsalDate" phpName="RehearsalDate" type="TIMESTAMP" required="true" defaultValue="0000-00-00 00:00:00"/>
+    <column name="type" phpName="EventTypeId" type="INTEGER" size="30" required="true" defaultValue="0"/>
+    <column name="subType" phpName="EventSubTypeId" type="INTEGER" size="30" required="true" defaultValue="0"/>
+    <column name="location" phpName="LocationId" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="notified" phpName="Notified" type="INTEGER" size="2" required="true" defaultValue="0"/>
+    <column name="rehearsal" phpName="Rehearsal" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="comment" phpName="Comment" type="LONGVARCHAR" required="true"/>
+    <column name="removed" phpName="Removed" type="SMALLINT" size="1" defaultValue="0"/>
+    <column name="eventGroup" phpName="EventGroupId" type="INTEGER" size="30" required="true"/>
+    <column name="sermonTitle" phpName="SermonTitle" type="VARCHAR" size="64" required="true" defaultValue=""/>
+    <column name="bibleVerse" phpName="BibleVerse" type="VARCHAR" size="64" required="true" defaultValue=""/>
+    <behavior name="timestampable">
+      <parameter name="create_column" value="created" />
+      <parameter name="update_column" value="updated" />
+    </behavior>
+    <foreign-key foreignTable="cr_users">
+      <reference local="createdBy" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="cr_eventTypes">
+      <reference local="type" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="cr_eventSubTypes">
+      <reference local="subType" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="cr_locations">
+      <reference local="location" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="cr_eventGroups">
+      <reference local="eventGroup" foreign="id" />
+    </foreign-key>
+  </table>
+
+
+  <table name="cr_groups" idMethod="native" phpName="Group">
+    <column name="id" phpName="Id" type="INTEGER" size="3" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="25" required="true" defaultValue=""/>
+    <column name="rehearsal" phpName="Rehearsal" type="INTEGER" size="1" required="true" defaultValue="0"/>
+    <column name="formatgroup" phpName="FormatGroup" type="INTEGER" size="2" required="true" defaultValue="0"/>
+    <column name="description" phpName="Description" type="LONGVARCHAR"/>
+    <column name="allowRoleSwaps" phpName="AllowRoleSwaps" type="BOOLEAN" size="1" required="true" defaultValue="true"/>
+  </table>
+
+
+  <table name="cr_locations" idMethod="native" phpName="Location">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="LONGVARCHAR" required="true"/>
+    <column name="address" phpName="Address" type="LONGVARCHAR"/>
+  </table>
+
+
+  <table name="cr_notificationClicks" idMethod="native" phpName="NotificationClick">
+    <column name="id" phpName="Id" type="INTEGER" size="30" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="notificationId" phpName="NotificationId" type="INTEGER" size="30" required="true"/>
+    <column name="referer" phpName="Referer" type="VARCHAR" size="50" required="true"/>
+    <behavior name="timestampable">
+      <parameter name="create_column" value="timestamp" />
+      <parameter name="disable_updated_at" value="true" />
+    </behavior>
+    <foreign-key foreignTable="cr_notifications">
+      <reference local="notificationId" foreign="id" />
+    </foreign-key>
+  </table>
+
+
+  <table name="cr_notifications" idMethod="native" phpName="Notification">
+    <column name="id" phpName="Id" type="INTEGER" size="30" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="timestamp" phpName="Timestamp" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+    <column name="userId" phpName="UserId" type="INTEGER" size="30" required="true"/>
+    <column name="summary" phpName="Summary" type="VARCHAR" size="40" required="true"/>
+    <column name="body" phpName="Body" type="LONGVARCHAR" required="true"/>
+    <column name="link" phpName="Link" type="VARCHAR" size="150"/>
+    <column name="type" phpName="Type" type="INTEGER" size="2" required="true"/>
+    <column name="seen" phpName="Seen" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <column name="dismissed" phpName="Dismissed" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <column name="archived" phpName="Archived" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <foreign-key foreignTable="cr_users">
+      <reference local="userId" foreign="id" />
+    </foreign-key>
+  </table>
+
+
+  <table name="cr_pendingUsers" idMethod="native" phpName="PendingUser">
+    <column name="id" phpName="Id" type="INTEGER" size="30" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="socialId" phpName="SocialId" type="BIGINT" size="30"/>
+    <column name="firstName" phpName="FirstName" type="VARCHAR" size="100" required="true"/>
+    <column name="lastName" phpName="LastName" type="VARCHAR" size="100" required="true"/>
+    <column name="email" phpName="Email" type="VARCHAR" size="100" required="true"/>
+    <column name="approved" phpName="Approved" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <column name="declined" phpName="Declined" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <column name="source" phpName="Source" type="VARCHAR" size="50" required="true"/>
+    <unique name="userId">
+      <unique-column name="socialId"/>
+    </unique>
+  </table>
+
+
+  <table name="cr_roles" idMethod="native" phpName="Role">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="groupId" phpName="GroupId" type="INTEGER" size="6" required="true" defaultValue="0"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="15" required="true" defaultValue=""/>
+    <column name="description" phpName="Description" type="LONGVARCHAR" required="true"/>
+    <column name="rehersalId" phpName="RehersalId" type="INTEGER" size="6" required="true" defaultValue="0"/>
+    <column name="allowRoleSwaps" phpName="AllowRoleSwaps" type="BOOLEAN" size="1"/>
+    <foreign-key foreignTable="cr_groups">
+      <reference local="groupId" foreign="id" />
+    </foreign-key>
+  </table>
+
+
+  <table name="cr_settings" idMethod="native" phpName="Settings">
+    <column name="siteurl" phpName="SiteUrl" type="LONGVARCHAR" required="true"/>
+    <column name="owner" phpName="Owner" type="LONGVARCHAR" required="true"/>
+    <column name="notificationemail" phpName="NotificationEmail" type="LONGVARCHAR" />
+    <column name="adminemailaddress" phpName="AdminEmailAddress" type="LONGVARCHAR" />
+    <column name="norehearsalemail" phpName="NoRehearsalEmail" type="LONGVARCHAR" />
+    <column name="yesrehearsal" phpName="YesRehearsal" type="LONGVARCHAR" />
+    <column name="newusermessage" phpName="NewUserMessage" type="LONGVARCHAR" />
+    <column name="version" phpName="Version" type="VARCHAR" size="20"/>
+    <column name="lang_locale" phpName="LangLocale" type="VARCHAR" size="20"/>
+    <column name="event_sorting_latest" phpName="EventSortingLatest" type="INTEGER" size="1"/>
+    <column name="snapshot_show_two_month" phpName="SnapshotShowTwoMonth" type="INTEGER" size="1"/>
+    <column name="snapshot_reduce_skills_by_group" phpName="SnapshotReduceSkillsByGroup" type="INTEGER" size="1"/>
+    <column name="logged_in_show_snapshot_button" phpName="LoggedInShowSnapshotButton" type="INTEGER" size="1"/>
+    <column name="time_format_long" phpName="TimeFormatLong" type="VARCHAR" size="50"/>
+    <column name="time_format_normal" phpName="TimeFormatNormal" type="VARCHAR" size="50"/>
+    <column name="time_format_short" phpName="TimeFormatShort" type="VARCHAR" size="50"/>
+    <column name="time_only_format" phpName="TimeOnlyFormat" type="VARCHAR" size="20" />
+    <column name="date_only_format" phpName="DateOnlyFormat" type="VARCHAR" size="20" />
+    <column name="day_only_format" phpName="DayOnlyFormat" type="VARCHAR" size="20" />
+    <column name="users_start_with_myevents" phpName="UsersStartWithMyEvents" type="INTEGER" size="1"/>
+    <column name="time_zone" phpName="TimeZone" type="VARCHAR" size="50"/>
+    <column name="google_group_calendar" phpName="GoogleGroupCalendar" type="VARCHAR" size="100"/>
+    <column name="overviewemail" phpName="OverviewEmail" type="LONGVARCHAR" />
+    <column name="group_sorting_name" phpName="GroupSortingName" type="INTEGER" size="1"/>
+    <column name="debug_mode" phpName="DebugMode" type="INTEGER" size="1" defaultValue="0"/>
+    <column name="days_to_alert" phpName="DaysToAlert" type="INTEGER" size="2" defaultValue="5"/>
+    <column name="token" phpName="Token" type="VARCHAR" size="100" defaultValue=""/>
+    <column name="skin" phpName="Skin" type="VARCHAR" size="20" defaultValue=""/>
+  </table>
+
+
+  <table name="cr_socialAuth" idMethod="native" phpName="SocialAuth">
+    <column name="userId" phpName="UserId" type="INTEGER" size="30" primaryKey="true" required="true"/>
+    <column name="platform" phpName="Platform" type="LONGVARCHAR" required="true"/>
+    <column name="socialId" phpName="SocialId" type="BIGINT" size="30" required="true"/>
+    <column name="revoked" phpName="Revoked" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <unique name="socialId">
+      <unique-column name="socialId"/>
+    </unique>
+    <foreign-key foreignTable="cr_users">
+      <reference local="userId" foreign="id" />
+    </foreign-key>
+  </table>
+
+
+  <table name="cr_statistics" idMethod="native" phpName="Statistic">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="userid" phpName="UserId" type="INTEGER" size="6" defaultValue="0"/>
+    <column name="date" phpName="Date" type="TIMESTAMP" required="true" defaultValue="0000-00-00 00:00:00"/>
+    <column name="type" phpName="Type" type="LONGVARCHAR" required="true"/>
+    <column name="detail1" phpName="Detail1" type="LONGVARCHAR" required="true"/>
+    <column name="detail2" phpName="Detail2" type="LONGVARCHAR" required="true"/>
+    <column name="detail3" phpName="Detail3" type="LONGVARCHAR" required="true"/>
+    <column name="script" phpName="Script" type="LONGVARCHAR" required="true"/>
+    <foreign-key foreignTable="cr_users">
+      <reference local="userid" foreign="id" />
+    </foreign-key>
+  </table>
+
+
+  <table name="cr_subscriptions" idMethod="native" phpName="Subscription">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="userid" phpName="Userid" type="INTEGER" size="6" required="true" defaultValue="0"/>
+    <column name="categoryid" phpName="Categoryid" type="INTEGER" size="4" required="true" defaultValue="0"/>
+    <column name="topicid" phpName="Topicid" type="INTEGER" size="4" required="true" defaultValue="0"/>
+  </table>
+
+
+  <table name="cr_swaps" idMethod="native" phpName="Swap">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="eventPersonId" phpName="EventPersonId" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="oldUserRoleId" phpName="OldUserRoleId" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="newUserRoleId" phpName="NewUserRoleId" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="accepted" phpName="Accepted" type="INTEGER" size="1" required="true" defaultValue="0"/>
+    <column name="declined" phpName="Declined" type="INTEGER" size="1" required="true" defaultValue="0"/>
+    <column name="requestedBy" phpName="RequestedBy" type="INTEGER" required="true"/>
+    <column name="verificationCode" phpName="VerificationCode" type="VARCHAR" size="18" required="true"/>
+    <behavior name="timestampable">
+      <parameter name="create_column" value="created" />
+      <parameter name="update_column" value="updated" />
+    </behavior>
+    <foreign-key foreignTable="cr_eventPeople">
+      <reference local="eventPersonId" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="cr_userRoles" phpName="OldUserRole">
+      <reference local="oldUserRoleId" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="cr_userRoles" phpName="NewUserRole">
+      <reference local="newUserRoleId" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="cr_users">
+      <reference local="requestedBy" foreign="id" />
+    </foreign-key>
+  </table>
+
+
+  <table name="cr_userRoles" idMethod="native" phpName="UserRole">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="userId" phpName="UserId" type="INTEGER" size="30" required="true" defaultValue="0"/>
+    <column name="roleId" phpName="RoleId" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="reserve" phpName="Reserve" type="BOOLEAN" required="true" defaultValue="0"/>
+    <foreign-key foreignTable="cr_users">
+      <reference local="userId" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="cr_roles">
+      <reference local="roleId" foreign="id" />
+    </foreign-key>
+  </table>
+
+
+  <table name="cr_users" idMethod="native" phpName="User" allowPkInsert="true">
+    <column name="id" phpName="Id" type="INTEGER" size="30" primaryKey="true" autoIncrement="true" required="true" />
+    <column name="firstName" phpName="FirstName" type="VARCHAR" size="30" required="true" defaultValue=""/>
+    <column name="lastName" phpName="LastName" type="VARCHAR" size="30" required="true" defaultValue=""/>
+    <column name="username" phpName="Username" type="VARCHAR" size="30" required="true" defaultValue=""/>
+    <column name="password" phpName="Password" type="VARCHAR" size="200" required="true" defaultValue=""/>
+    <column name="isAdmin" phpName="IsAdmin" type="CHAR" size="2" required="true" defaultValue="0"/>
+    <column name="email" phpName="Email" phpType="\EmailAddress" type="VARCHAR" size="255"/>
+    <column name="mobile" phpName="Mobile" type="VARCHAR" size="15" required="true" defaultValue=""/>
+    <column name="isOverviewRecipient" phpName="IsOverviewRecipient" type="CHAR" size="2" required="true" defaultValue="0"/>
+    <column name="recieveReminderEmails" phpName="RecieveReminderEmails" type="BOOLEAN" size="1" required="true" defaultValue="true"/>
+    <column name="isBandAdmin" phpName="IsBandAdmin" type="CHAR" size="2" required="true" defaultValue="0"/>
+    <column name="isEventEditor" phpName="IsEventEditor" type="CHAR" size="2" required="true" defaultValue="0"/>
+    <column name="lastLogin" phpName="LastLogin" type="TIMESTAMP"/>
+    <column name="passwordChanged" phpName="PasswordChanged" type="TIMESTAMP"/>
+    <behavior name="timestampable">
+      <parameter name="create_column" value="created" />
+      <parameter name="update_column" value="updated" />
+    </behavior>
+  </table>
+
+
+  <table name="cr_userPermissions" idMethod="native" phpName="UserPermission">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="userId" phpName="UserId" type="INTEGER" size="30" required="true" defaultValue="0"/>
+    <column name="permissionId" phpName="PermissionId" type="INTEGER" required="true" defaultValue="0"/>
+    <foreign-key foreignTable="cr_users">
+      <reference local="userId" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="cr_permissions">
+      <reference local="permissionId" foreign="id" />
+    </foreign-key>
+    <behavior name="timestampable">
+      <parameter name="create_column" value="created" />
+      <parameter name="update_column" value="updated" />
+    </behavior>
+  </table>
+
+
+  <table name="cr_permissionGroups" idMethod="native" phpName="PermissionGroup">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="255" />
+    <column name="description" phpName="Description" type="LONGVARCHAR" />
+    <behavior name="timestampable">
+      <parameter name="create_column" value="created" />
+      <parameter name="update_column" value="updated" />
+    </behavior>
+  </table>
+
+
+  <table name="cr_permissionGroupPermissions" idMethod="native" phpName="PermissionGroupPermission">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="permissionId" phpName="UserId" type="INTEGER" size="30" required="true" defaultValue="0"/>
+    <column name="permissionGroupId" phpName="PermissionId" type="INTEGER" required="true" defaultValue="0"/>
+    <foreign-key foreignTable="cr_permissions">
+      <reference local="permissionId" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="cr_permissionGroups">
+      <reference local="permissionGroupId" foreign="id" />
+    </foreign-key>
+  </table>
+
+
+  <table name="cr_permissions" idMethod="native" phpName="Permission" allowPkInsert="true">
+    <column name="id" phpName="Id" type="INTEGER" size="30" primaryKey="true" autoIncrement="true" required="true" />
+    <column name="name" phpName="Name" type="VARCHAR" size="255" />
+    <column name="description" phpName="Description" type="LONGVARCHAR" />
+    <column name="slug" phpName="Slug" type="VARCHAR" size="10" required="true" />
+  </table>
+
+
+  <table name="cr_loginFailures" idMethod="native" phpName="LoginFailure">
+    <column name="username" phpName="Username" type="VARCHAR" size="30" required="true"/>
+    <column name="ipAddress" phpName="ipAddress" type="VARCHAR" size="15" required="true"/>
+    <column name="timestamp" phpName="Timestamp" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+  </table>
+</database>

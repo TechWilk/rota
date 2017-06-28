@@ -1,0 +1,4 @@
+<p><strong>Email address:</strong> <a href="{{ user.email ? 'mailto:' ~ user.email : '' }}">{{ user.email | default('none') }}</a></p>
+<p><strong>Mobile:</strong> {{ user.mobile | default('none') }}</p>
+<p><strong>Roles:</strong></p>
+{% include 'user-roles.twig' %}

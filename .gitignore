@@ -1,0 +1,5 @@
+vendor/*
+*.log
+config/*
+!config/*.default.php
+coverage/*

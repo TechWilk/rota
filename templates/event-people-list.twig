@@ -1,0 +1,24 @@
+<div class="nav-tabs-custom">
+  <ul class="nav nav-tabs">
+    {% for group, eventpeople in event.eventpeople|sort_by(=> _.userrole.role.group.name)|group_by(=> _.userrole.role.group) %}
+    <li class="{{ loop.index == 1 ? 'active' : '' }}"><a href="#{{ event.id }}_{{ group.id }}" data-toggle="tab" aria-expanded="true">{{ group.name }}</a></li>
+    {% endfor %}
+  </ul>
+  <div class="tab-content">
+    {% for group, eventpeople in event.eventpeople|sort_by(=> _.userrole.role.group.name)|group_by(=> _.userrole.role.group) %}
+    <div class="tab-pane {{ loop.index == 1 ? 'active' : '' }}" id="{{ event.id }}_{{ group.id }}">
+      {% for role, eventpeople in eventpeople|sort_by(=> _.userrole.role.name)|group_by(=> _.userrole.role) %}
+      <p><em>{{ role.name }}</em></p>
+      <ul>
+        {% for eventperson in eventpeople %}
+        <li>{{ currentuser == eventperson.userrole.user ? '<strong>' : '' }}
+          <span data-payload="{{ path_for('user-widget-only', {'id': eventperson.userrole.user.id }) }}">{{ eventperson.userrole.user.name }}</span>
+          {{ currentuser == eventperson.userrole.user ? '</strong>' : '' }}
+        </li>
+        {% endfor %}
+      </ul>
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+</div>

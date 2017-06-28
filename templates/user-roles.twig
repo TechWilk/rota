@@ -1,0 +1,19 @@
+<ul>
+  {% if user.userroles.count == 0 %}
+  <li class="text-red">{{ user.firstname }} has no roles</li>
+  {% endif %}
+  {% for group, userroles in user.userroles|group_by(=> _.role.group, 'ASC') %}
+  <li><em>{{ group.name }}:</em>
+      <ul>
+      {% for userrole in userroles %}
+      <li>
+        {{ userrole.role.name }}
+        {% if userrole.reserve %}
+        (<strong>reserve</strong>)
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </li>
+  {% endfor %}
+</ul>

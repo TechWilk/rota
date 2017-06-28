@@ -1,0 +1,42 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-sm-6">
+    {% for calendar in calendars %}
+    <div class="box {{ calendar.revoked ? 'box-danger' : 'box-primary' }}" id="calendar{{ calendar.id }}">
+      <div class="box-header">
+        <h2 class="box-title">
+          {% if calendar.revoked %}
+          <del>{{ calendar.description }}</del>
+          {% else %}
+          {{ calendar.description }}
+          {% endif %}
+        </h2>
+      </div>
+      <div class="box-footer">
+        {% if calendar.revoked %}
+        <p>Revoked on {{ calendar.updated | date('d/M/Y') }}</p>
+        {% else %}
+        <a class="btn btn-danger" href="{{ path_for('user-calendar-revoke', {'id': calendar.id }) }}">Revoke</a>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="col-sm-6">
+    <div class="box">
+      <div class="box-footer">
+        
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-sm-6">
+    {% for initial, group in users|group_by(=> _.lastname|first|capitalize) %}
+    <div class="box box-solid">
+      <div class="box-header">
+        <h2 class="box-title">{{ initial }}</h2>
+      </div>
+      <div class="box-body no-padding">
+        <ul class="users-list clearfix">
+          {% for user in group %}
+          <li>
+            <a class="js-no-link" href="{{ path_for('user', { 'id': user.id }) }}" data-toggle='modal' data-target='#user{{ user.id }}'>
+              <img src="{{ user.profileimage('large') }}" alt="User Image">
+              <span class="users-list-name">{{ user.name }}</span>
+              <span class="users-list-date">Last login:</span>
+              <span class="users-list-date">{{ user.lastlogin is empty ? "never" : user.lastlogin | time_diff }}</span>
+            </a>
+          </li>
+          {% include 'user-modal.twig' %}
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="col-sm-6">
+    <div class="box">
+      <div class="box-footer">
+        <a class="btn btn-primary" href="{{ path_for('user-new') }}">Add user</a>
+      </div>
+    </div>
+
+    {% include 'roles-list-box.twig' %}
+  </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

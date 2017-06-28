@@ -1,0 +1,42 @@
+<div class="box">
+  <div class="box-header">
+    <h2 class="box-title">
+    {% if user == currentuser %}My Upcoming Events
+    {% else %}{{ user.firstname }}'{{ user.firstname|last == 's' ? '' : 's'}} Upcoming Events
+    {% endif %}
+    </h2>
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body table-responsive no-padding">
+    <table class="table table-hover">
+      <tbody>
+        <tr>
+          <th>Date</th>
+          <th>Roles</th>
+          <th>Type</th>
+          <th>SubType</th>
+          <th>Notes</th>
+        </tr>
+        {% if user.upcomingevents.count == 0 %}
+        <tr>
+          <td colspan="5">No upcoming events. <a href="{{ path_for('events') }}">View all events.</a></td>
+        </tr>
+        {% endif %}
+        {% for event in user.upcomingevents %}
+        <tr data-toggle='modal' data-target="#event{{ event.id }}_modal">
+          <td>{{ event.date|date('jS F') }}</td>
+          <td>
+          {% for role in user.rolesinevent(event) %}
+              {{ role.name }}{% if not loop.last %}, {% endif %}
+          {% endfor %}
+          </td>
+          <td>{{ event.eventtype.name }}</td>
+          <td>{{ event.eventsubtype.name }}</td>
+          <td>{{ event.comment }}</td>
+        </tr>
+        {% include 'event-modal.twig' %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>

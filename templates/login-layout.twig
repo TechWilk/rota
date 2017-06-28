@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Login | {{ site.settings.owner }}</title>
+    <link rel="stylesheet" href="{{ site.settings.siteurl }}/css/login.css">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  </head>
+  <body class="align">
+    <div class="site__container">
+      <div class="grid__container">
+				<img src="{{ site.settings.siteurl }}/images/logo.png" alt="{{ site.settings.owner }} logo" width="120" height="120" />
+        {% block content %}{% endblock %}
+      </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,525 @@
+/* CSS Document */
+/*
+////////////////////////////////////////////////////////////////////////
+// Globals
+////////////////////////////////////////////////////////////////////////
+*/
+body { 
+	background: url(../graphics/grey.png);
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-align: center;
+	margin: 0px;
+	padding: 0px;
+	overflow-y: scroll; 
+}
+
+* html div#container {
+height: expression( this.scrollHeight < 400 ? "400px" : "auto" );
+}
+
+#container { 
+	background: url(../graphics/lightblue_bg.png) #9EAFE1;
+	width: 960px;
+	min-height: 400px;
+	margin-left: auto;
+	text-align: left;
+	margin-right: auto;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	padding-bottom: 120px;
+	position: relative; 
+}
+
+/*
+////////////////////////////////////////////////////////////////////////
+// Header
+////////////////////////////////////////////////////////////////////////
+*/
+#header { 
+	background: #07093D;
+	-webkit-border-top-left-radius: 10px;
+	-webkit-border-top-right-radius: 10px;
+	-moz-border-radius-topleft: 10px;
+	-moz-border-radius-topright: 10px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;  
+	height: 100px; 
+}
+
+a#logo { 
+	position: absolute; 
+	top: 42px;
+	left: 10px; 
+}
+
+/*
+////////////////////////////////////////////////////////////////////////
+// Footer
+////////////////////////////////////////////////////////////////////////
+*/
+#footer { 
+	background: #07093D;
+	position: absolute; 
+	bottom: 0px;
+	-webkit-border-bottom-left-radius: 10px;
+	-webkit-border-bottom-right-radius: 10px;
+	-moz-border-radius-bottomleft: 10px;
+	-moz-border-radius-bottomright: 10px;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px; 
+	color: #FFF;
+	width: 960px;
+	font-size: 12px;  
+	height: 100px; 
+}
+
+#footercontent { margin: 10px; }
+
+#footer strong { color: #FFF; }
+
+/*
+////////////////////////////////////////////////////////////////////////
+// Typography
+////////////////////////////////////////////////////////////////////////
+*/
+h2 { 
+	font-size: 20px; 
+	margin: 0px;
+	padding: 0px;
+	color: #07093D;
+	font-weight: normal;
+	line-height: 22px; 
+}
+
+.postdate { 
+	font-size: 14px; 
+}
+
+h3 { 
+	font-size: 18px; 
+	margin: 0px;
+	padding: 0px;
+	color: #07093D;
+	font-weight: normal;
+	line-height: 22px; 
+}
+
+h2 a { 
+	text-decoration: none;
+	color: #07093D; 
+}
+
+h2 a:hover { 
+	text-decoration: underline; 
+}
+
+
+p { 
+	font-size: 13px; 
+	line-height: 22px; 
+}
+
+strong { 
+	color: #07093D; 
+}
+
+.eventTypeButton {
+	background: #ddd;
+	padding: 5px;
+	margin: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px; 
+}
+
+.activefilter {
+	background: #487D9F;
+	color: #FFF;
+}
+
+.filtersnapshot {
+	background: #9EAFE1;
+	padding: 10px;
+	text-align: left;
+	margin-bottom: 10px;
+}
+
+.me
+{
+	background-color: yellow;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////
+// Other stuff
+////////////////////////////////////////////////////////////////////////
+*/
+.elementBackground { 
+	width: 620px;
+	margin-left: 10px;
+	background: #FFF;
+	margin-top: 5px;
+	padding: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px; 
+}
+
+.elementContent a { 
+	text-decoration: underline;
+}
+
+.welcome a { 
+	text-decoration: underline;
+}
+
+.filterby {
+	width: 616px;
+	margin-left: 10px;
+	background: url('../graphics/retina_dust.png');
+	margin-top: 5px;
+	border: 2px solid #487D9F;
+	padding: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px; 
+}
+
+.filterby h2 { 
+	margin-left: 5px;
+}
+
+.highlight { 
+	background: #EEE; 
+}
+
+#right { 
+	position: absolute; 
+	top: 105px;
+	right: 0px;
+	overflow: hidden;
+	width: 300px; 
+}
+
+#right div.item { 
+	padding: 10px;
+	background: #0C0F66;
+	color: #FFF;
+	font-size: 14px;
+	-webkit-border-top-left-radius: 10px;
+	-webkit-border-bottom-left-radius: 10px;
+	-moz-border-radius-topleft: 10px;
+	-moz-border-radius-bottomleft: 10px;
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;   
+	line-height: 22px; 
+	margin-bottom: 10px;
+}
+
+#right div.item a { 
+	text-decoration: none;
+	color: #FFF; 
+}
+
+#right div.item a:hover { 
+	text-decoration: underline;
+	color: #FFF; 
+}
+
+#right label { 
+	color: #FFF; 
+}
+
+#toTop {
+	width:100px;
+    border:1px solid #ccc;
+    background:#f7f7f7;
+    text-align:center;
+    padding:5px;
+    position:fixed; /* this is the magic */
+    right:10px; /* together with this to put the div at the bottom*/
+    top:10px;
+    cursor:pointer;
+    display:none;
+    color:#333;
+    font-family:verdana;
+    font-size:11px;
+}
+/*
+////////////////////////////////////////////////////////////////////////
+// Forms
+////////////////////////////////////////////////////////////////////////
+*/
+
+.arrowwaiting { 
+	background: url('../graphics/arrowwaiting.gif') no-repeat top right; 
+}
+
+.arrowactive { 
+	background: url('../graphics/arrowactive.gif') no-repeat top right; 
+}
+
+.edit_area { 
+	font-size: 13px; 
+	line-height: 22px; 
+}
+
+.edit_area textarea { 
+	width: 600px; 
+	height: 120px; 
+} 
+
+/*
+////////////////////////////////////////////////////////////////////////
+// Tables
+////////////////////////////////////////////////////////////////////////
+*/
+
+table { margin: 0px;
+padding: 0px;
+border-spacing: 0px; }
+
+tr { vertical-align: top;}
+
+
+td { vertical-align: top;
+width: 300px;
+margin: 0px;
+background: #eee;
+padding: 5px;}
+
+th { vertical-align: top;
+width: 300px;
+margin: 0px;
+background: #eee;
+padding: 5px;
+font-weight: bold;
+}
+
+.break { height: 0px;
+background: #FFF; }
+
+.shaded { background:  #eee; 
+padding-left: 5px; 
+padding-top: 5px; }
+
+.shaded strong { font-size: 13px; }
+
+table.snapshot { border-collapse: collapse;
+font-size: 12px;
+margin: 10px;
+text-align: left;
+}
+
+table.snapshot td { border: 1px solid #000; }
+
+table.statistics {border-collapse: collapse;
+font-size: 12px;
+text-align: left;  
+width: 620px; }
+
+table.statistics td { border: 1px solid #000; 
+width: 0px; }
+
+table.statistics th { border: 1px solid #000; 
+width: 0px; }
+
+
+/* Links */
+a { color: #07093D;
+text-decoration: none; }
+
+a:hover { text-decoration: underline; }
+
+#header ul { margin: 0px;
+padding: 0px;
+position: absolute;
+top: 68px;
+font-size: 18px;
+right: 10px; }
+
+.smalllink { font-size: 12px; }
+
+#header ul li.active { background: #FFF; }
+
+#header ul li.active a { color: #0C0F66; }
+
+#header ul li.active a:hover { color: #0E4EAD; 
+text-decoration: underline; }  
+
+#footer a { color: #bfeee2;
+text-decoration: underline; }
+
+#footer a { color: #FFF;
+text-decoration: underline; }
+
+#header ul li { display: inline;
+margin-left: 5px;
+height: 55px; 
+background: url(../graphics/lightblue_bg.png) #9EAFE1;
+padding: 10px;
+color: #99c5d3; }
+
+#header ul li a { color: #000;
+text-decoration: none; }
+
+#header ul li a:hover { color: #07093D; 
+text-decoration: underline; }
+
+a img { border: none; }
+
+.button {
+ 
+	width: 250px;  
+	height: 40px;  color: white; background-color: #99CF00;
+	text-align: center;  font-size: 22px;  line-height: 40px;
+ 	display: block;
+	margin-top: 20px;
+ 
+	/*gradient styles*/
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#99CF00), to(#6DB700));
+	background: -moz-linear-gradient(19% 75% 90deg,#6DB700, #99CF00);
+ 
+	/*border styles*/
+	border-left: solid 1px #c3f83a;
+	border-top: solid 1px #c3f83a;
+	border-right: solid 1px #82a528;
+	border-bottom: solid 1px #58701b;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	font-size: 20px;
+	line-height: 35px;
+	-webkit-gradient(linear, 0% 0%, 0% 100%, from(#99CF00), to(#6DB700))
+}
+ 
+ 
+.button p {
+	font-size: 20px;
+	line-height: 40px;
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	font-weight: 300;
+	text-shadow: 0px 0px 3px #FFF;
+ 
+}
+ 
+.button p a {
+	text-decoration: none;
+	color: #07093D;
+	display: block;
+}
+ 
+.button:hover {
+	-moz-box-shadow:inset 0 0 50px #ccc;
+	-webkit-box-shadow:inset 0 0 50px #ccc;
+	box-shadow:inset 0 0 50px #ccc;
+}
+ 
+.button p:hover {
+	text-shadow: 0px 0px 3px #ccc;
+}
+
+/* Form styling */
+fieldset { border: none;
+margin: 0px;
+padding: 0px; }
+
+label { font-size: 14px; 
+line-height: 22px;
+color: #07093D;
+margin: 10px 0 5px 0;
+display: block; }
+
+legend { font-size: 16px; 
+line-height: 22px;
+font-weight: bold;
+color: #07093D;
+margin: 25px 0 15px 0;
+display: block; }
+
+input { height: 30px; 
+font-size: 15px;
+text-align: left;
+width: 440px;
+text-align: left;
+padding: 5px; }
+
+input.login { width: 200px; }
+
+.row { height: 25px; 
+overflow: hidden; }
+
+.checkboxlist { overflow-x: hidden;
+overflow-y: auto;}
+
+.odd { background: #EEE; }
+
+.checkboxitem { clear: both;
+float: none;
+height: 25px;
+position: relative;
+line-height: 30px; }
+
+fieldset { margin-bottom: 15px; }
+
+.checkboxitem input { position: absolute;
+width: auto;
+left: 10px;
+height: 20px;
+margin: 0px;
+float: left;
+top: 1px; }
+
+.checkboxitem input[type=checkbox] {
+position: absolute;
+top: 1px;
+}
+
+.right { left: 350px; 
+top: -25px;
+overflow: hidden;
+position: relative; }
+
+.checkboxitem label { display: block;
+margin-left: 30px;
+margin-top: 0px;
+font-size: 12px;
+margin-bottom: 0px;
+height: 25px; }
+
+textarea { height: 120px; 
+font-size: 15px;
+width: 440px;
+font-family: Verdana, Arial, Helvetica, sans-serif; 
+padding: 5px; }
+
+input[type=submit] { /*basic styles*/
+	width: 250px;  
+	height: 40px;  color: white; background-color: #99CF00;
+	text-align: center;  font-size: 22px;  line-height: 40px;
+ 	display: block;
+	margin-top: 20px;
+	padding-bottom: 40px;
+ 
+	/*gradient styles*/
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#99CF00), to(#6DB700));
+	background: -moz-linear-gradient(19% 75% 90deg,#6DB700, #99CF00);
+ 
+	/*border styles*/
+	border-left: solid 1px #c3f83a;
+	border-top: solid 1px #c3f83a;
+	border-right: solid 1px #82a528;
+	border-bottom: solid 1px #58701b;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	font-size: 20px;
+	line-height: 35px;
+	-webkit-gradient(linear, 0% 0%, 0% 100%, from(#99CF00), to(#6DB700))
+}
+
+#formatting { margin-top: 10px; 
+margin-right: 10px;}
+ 
+#formatting a { height: 15px; padding: 5px; border: 1px solid #07093D; color:  #07093D; }

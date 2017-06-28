@@ -1,0 +1,22 @@
+{% extends 'login-layout.twig' %}
+
+{% block content %}
+
+<form action="{{ path_for('login-post') }}" method="post" class="form form--login">
+  <div class="form__field">
+    <label class="fa fa-user" for="login__username"><span class="hidden">Email</span></label>
+    <input name="username" id="login__username" type="email" class="form__input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autosuggest="off" placeholder="Email" value="{{ username | default('') }}" required>
+  </div>
+  <div class="form__field">
+    <label class="fa fa-lock" for="login__password"><span class="hidden">Password</span></label>
+    <input name="password" id="login__password" type="password" class="form__input" placeholder="Password" required>
+  </div>
+  {% if message %}
+  <p>{{ message }}</p>
+  {% endif %}
+  <div class="form__field">
+    <input type="submit" value="Sign In">
+  </div>
+</form>
+
+{% endblock %}

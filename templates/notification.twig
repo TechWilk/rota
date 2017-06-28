@@ -1,0 +1,19 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+
+<div class="box">
+  <div class="box-header">
+    <h4 class="box-title">
+      {{ notification.summary }}
+    </h4>
+  </div>
+  <div class="box-body">
+    {{ notification.body | markdown }}
+  </div>
+  <div class="box-footer">
+    <a class="btn btn-primary" href="{{ path_for('notification', { 'id': notification.id }) }}">Dismiss</a>
+  </div>
+</div>
+
+{% endblock %}

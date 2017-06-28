@@ -1,0 +1,21 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+
+<ul class="timeline">
+  {% for month, monthEvents in events | group_by(=> _.date|date('F Y')|capitalize) %}
+  <li class="time-label">
+    <span class="bg-green">{{ month }}</span>
+  </li>
+  {% for event in monthEvents %}
+  {% include 'event-timeline-item.twig' %}
+  {% endfor %}
+  {% endfor %}
+</ul>
+
+
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

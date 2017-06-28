@@ -1,0 +1,13 @@
+{% if event.name %}
+<p><strong>Name:</strong> {{ event.name }}</p>
+{% endif %}
+<p><strong>Date:</strong> {{ event.date | date("d/m/Y") }}</p>
+<p><strong>Location:</strong> {{ event.location.name }}</p>
+<p><strong>Type:</strong> {{ event.eventtype.name }}</p>
+<p><strong>SubType:</strong> {{ event.eventsubtype.name }}</p>
+
+{% if event.comment %}
+<blockquote>
+  <p>{{ event.comment }}</p>
+</blockquote>
+{% endif %}

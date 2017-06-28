@@ -1,0 +1,62 @@
+{% set output %}
+{% set dateFormat = 'Ymd\THis' %}
+BEGIN:VCALENDAR
+METHOD:PUBLISH
+VERSION:2.0
+PRODID:-//Church Rota//Church Rota//EN
+X-WR-CALNAME:{{ site.settings.owner }} Rota
+CALSCALE:GREGORIAN
+BEGIN:VTIMEZONE
+TZID:Europe/London
+TZURL:http://tzurl.org/zoneinfo-outlook/Europe/London
+X-LIC-LOCATION:Europe/London
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0000
+TZOFFSETTO:+0100
+TZNAME:BST
+DTSTART:19700329T010000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0000
+TZNAME:GMT
+DTSTART:19701025T020000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+END:VTIMEZONE
+{% for event in events %}
+BEGIN:VEVENT
+SUMMARY:{% spaceless %}
+{% for role in user.rolesinevent(event) %}
+  {{ role.name }}
+  {% if not loop.last %}, {% endif %}
+{% endfor %}
+{{ event.name ? " | #{event.name} (#{event.eventtype.name})" : "(#{event.eventtype.name})" }}
+{% endspaceless %}
+
+DESCRIPTION:{{ event.series.name }}:
+{{ event.sermonTitle }} ({{ event.bibleVerse }})
+
+If you are unable to do {% for role in user.rolesinevent(event) %}{{ role.name }}{% if not loop.last %}, {% endif %}{% endfor %} at this event, please request a swap:\n'.siteSettings()->getSiteUrl().'/swap.php?event='.$event->id.'
+
+Once the swap is accepted, this event will be removed from your calendar.
+Please be aware that changes may take up to 24 hours or longer to be reflected. This is due to your calendar, not on the rota system.
+UID:ROTA{{ event.id }}
+ORGANIZER;CN="{{ site.settings.owner }}":MAILTO:{{ site.settings.adminemailaddress }}
+STATUS:CONFIRMED{# change later to make strikethrough upon swap #}
+DTSTART;TZID="Europe/London":{{ event.date | date(dateFormat) }}
+DTEND;TZID="Europe/London":{{ event.date | date_modify('+1 hour') | date(dateFormat) }}
+LAST-MODIFIED:{{ event.updated | date(dateFormat) }}Z
+LOCATION:{{ event.location.name }}, {{ event.location.address }}
+URL:{# add site root url here #}{{ path_for('event', {'id': event.id }) }}
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Reminder for Rota
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+{% endfor %}
+END:VCALENDAR
+{% endset %}
+{{ output | wordwrap(75, "\n ") }}

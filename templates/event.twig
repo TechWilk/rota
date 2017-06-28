@@ -1,0 +1,70 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+
+<div class="box">
+  <div class="box-header">
+    <h4 class="box-title">
+      {{ event.name }}
+    </h4>
+  </div>
+  <div class="box-body">
+    {% include 'event-info.twig' %}
+  </div>
+  <div class="box-footer">
+    <a class="btn btn-primary" href="{{ path_for('event-edit', { 'id': event.id }) }}">Edit</a>
+  </div>
+</div>
+
+<div class="box">
+  <div class="box-header">
+    <h4 class="box-title">
+      People
+    </h4>
+  </div>
+  <div class="box-body">
+    {% include 'event-people-list.twig' %}
+  </div>
+  <div class="box-footer">
+    <a class="btn btn-primary" href="{{ path_for('event-assign', { 'id': event.id }) }}">Assign</a>
+  </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block javascript %}
+
+$('*[data-payload]').hover(function() {
+    var e=$(this);
+    e.off('hover');
+    $.get(e.data('payload'),function(d) {
+        e.popover({content: d, html : true}).popover('show');
+    });
+    // prevent dissapearing when hovering on popover
+    e.on("mouseenter", function () {
+      var _this = this;
+      $(".popover").on("mouseleave", function () {
+        $(_this).popover('hide');
+      });
+    }).on("mouseleave", function () {
+      var _this = this;
+      setTimeout(function () {
+        if (!$(".popover:hover").length) {
+          $(_this).popover("hide");
+        }
+      }, 300)
+    });
+});
+
+$('body').on('click', function (e) {
+    //did not click a popover toggle or popover
+    if ($(e.target).data('toggle') !== 'popover'
+        && $(e.target).parents('.popover.in').length === 0) { 
+        $('*[data-payload]').popover('hide');
+    }
+});
+
+
+{% endblock %}

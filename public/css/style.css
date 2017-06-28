@@ -1,0 +1,399 @@
+@import 'reset.css';
+/* CSS Resets */
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/* ==================================================================================================================== */
+/* ! The 1140px Grid V2 by Andy Taylor \ http://cssgrid.net \ http://www.twitter.com/andytlr \ http://www.andytlr.com   */
+/* ==================================================================================================================== */
+.container {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.row {
+  width: 100%;
+  max-width: 1140px;
+  min-width: 755px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+img,
+object,
+embed {
+  max-width: 100%;
+}
+img {
+  height: auto;
+}
+a img {
+  border: 0px;
+}
+/* Smaller screens */
+@media only screen and (max-width: 1023px) {
+  body {
+    font-size: 0.8em;
+    line-height: 1.5em;
+  }
+}
+/* Mobile */
+@media handheld, only screen and (max-width: 767px) {
+  body {
+    font-size: 16px;
+    -webkit-text-size-adjust: none;
+  }
+  .row,
+  body,
+  .container {
+    width: 100%;
+    min-width: 0;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  .onecol,
+  .twocol,
+  .threecol,
+  .fourcol,
+  .fivecol,
+  .sixcol,
+  .sevencol,
+  .eightcol,
+  .ninecol,
+  .tencol,
+  .elevencol,
+  twelvecol {
+    width: auto;
+    float: none;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+/*---------------------------------------------------
+    LESS Elements 0.6
+  ---------------------------------------------------
+    A set of useful LESS mixins by Dmitry Fadeyev
+    Special thanks for mixin suggestions to:
+      Kris Van Herzeele,
+      Benoit Adam,
+      Portenart Emile-Victor,
+      Ryan Faerman
+
+    More info at: http://lesselements.com
+-----------------------------------------------------*/
+body {
+  background: url(images/background.jpg);
+}
+#main_container {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+#main_header {
+  background: url('images/header.jpg') no-repeat;
+  height: 260px;
+  border-left: #333333 1px solid;
+  border-right: #333333 1px solid;
+  width: 100%;
+  max-width: 1140px;
+  min-width: 755px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+#logo {
+  margin-right: 3.8%;
+  float: left;
+  min-height: 1px;
+  width: 22.05%;
+  margin-right: 0px;
+}
+#logo img {
+  position: relative;
+  left: 40px;
+  top: 40px;
+}
+a {
+  color: #ae0e29;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+#main-menu {
+  width: 100%;
+  max-width: 1140px;
+  min-width: 755px;
+  margin: 0 auto;
+  overflow: hidden;
+  background: url('images/menu-bg.jpg');
+  height: 50px;
+  border-left: #333333 1px solid;
+  border-right: #333333 1px solid;
+  font-family: 'Advent Pro', sans-serif;
+  font-weight: 200;
+  font-size: 18px;
+  line-height: 50px;
+  color: white;
+}
+#main-menu ul {
+  margin-left: 40px;
+}
+#main-menu li {
+  float: left;
+  width: 100px;
+}
+#main-menu a {
+  text-decoration: none;
+  color: white;
+}
+#main-menu a:hover {
+  text-decoration: underline;
+}
+#footer-menu {
+  width: 100%;
+  max-width: 1140px;
+  min-width: 755px;
+  margin: 0 auto;
+  overflow: hidden;
+  background: url('images/menu-bg.jpg');
+  height: 50px;
+  z-index: 40;
+  border-left: #333333 1px solid;
+  border-right: #333333 1px solid;
+}
+#footer-area {
+  position: relative;
+  width: 100%;
+  max-width: 1140px;
+  min-width: 755px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+#main_footer {
+  background: url('images/footer.jpg') no-repeat;
+  height: 202px;
+  border-left: #333333 1px solid;
+  border-right: #333333 1px solid;
+  width: 100%;
+  max-width: 1140px;
+  min-width: 755px;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  overflow: auto;
+}
+#silhouette {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  z-index: 80;
+}
+.main_content {
+  background: url(images/background.jpg);
+  width: 100%;
+  max-width: 1140px;
+  min-width: 755px;
+  margin: 0 auto;
+  overflow: hidden;
+  min-height: 400px;
+  border-left: #333333 1px solid;
+  border-right: #333333 1px solid;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+#content-holder {
+  margin-right: 3.8%;
+  float: left;
+  min-height: 1px;
+  width: 65.4%;
+  margin-right: 0px;
+}
+.button {
+  border-top: 1px solid #ffffff;
+  background: #b5b5b5;
+  background: -webkit-gradient(linear, left top, left bottom, from(#fcfcfc), to(#b5b5b5));
+  background: -webkit-linear-gradient(top, #fcfcfc, #b5b5b5);
+  background: -moz-linear-gradient(top, #fcfcfc, #b5b5b5);
+  background: -ms-linear-gradient(top, #fcfcfc, #b5b5b5);
+  background: -o-linear-gradient(top, #fcfcfc, #b5b5b5);
+  padding: 8.5px 17px;
+  -webkit-border-radius: 11px;
+  -moz-border-radius: 11px;
+  border-radius: 11px;
+  width: 100px;
+  -webkit-box-shadow: #000000 0 1px 0;
+  -moz-box-shadow: #000000 0 1px 0;
+  box-shadow: #000000 0 1px 0;
+  text-shadow: rgba(0, 0, 0, 0.4) 0 1px 0;
+  color: #4f4f4f;
+  font-size: 20px;
+  font-family: 'Advent Pro', sans-serif;
+  text-decoration: none;
+  text-align: center;
+  margin-left: 40px;
+  margin-top: -20px;
+  vertical-align: middle;
+}
+.button a {
+  display: block;
+}
+.button:hover {
+  border-top-color: #b0b0b0;
+  background: #b0b0b0;
+  color: #4d0000;
+}
+.button:active {
+  border-top-color: #ffb5b5;
+  background: #ffb5b5;
+}
+#sri-lanka-map {
+  margin-right: 3.8%;
+  float: left;
+  min-height: 1px;
+  width: 30.75%;
+}
+#sri-lanka-map img {
+  padding: 60px 40px;
+}
+#welcome_message {
+  font-family: 'Advent Pro', sans-serif;
+  font-weight: 200;
+  font-size: 62px;
+  line-height: 100px;
+  color: white;
+  padding: 120px 40px 40px 40px;
+}
+.post {
+  padding-top: 20px;
+  color: white;
+}
+p {
+  font-family: 'Advent Pro', sans-serif;
+  font-weight: 200;
+  font-size: 18px;
+  line-height: 28px;
+  color: white;
+}

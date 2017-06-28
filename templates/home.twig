@@ -1,0 +1,171 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+
+<div class="row">
+
+  <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+    <div class="info-box">
+      <span class="info-box-icon bg-aqua"><i class="ion ion-calendar"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">My Upcoming Events</span>
+        <span class="info-box-number">{{ currentuser.upcomingevents.count }} {{ currentuser.upcomingevents.count == 1 ? 'event' : 'events' }}</span>
+        <a href="{{ path_for('user-me') }}">view</a>
+      </div><!-- /.info-box-content -->
+    </div><!-- /.info-box -->
+  </div><!-- /.col -->
+
+  
+  <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+    <div class="info-box">
+      <span class="info-box-icon
+      bg-aqua        ">
+        <i class="ion ion-information"></i>
+      </span>
+      <div class="info-box-content">
+        <span class="info-box-text">Rota Ends</span>
+        <span class="info-box-number">in x months</span>
+        <a href="{{ path_for('event-new') }}">add events</a>
+      </div><!-- /.info-box-content -->
+    </div><!-- /.info-box -->
+  </div><!-- /.col -->
+
+  
+  
+  <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+    <a href="tableView.php">
+      <div class="info-box">
+        <span class="info-box-icon bg-aqua"><i class="ion ion-drag"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">View</span>
+          <span class="info-box-number">Table View</span>
+        </div><!-- /.info-box-content -->
+      </div><!-- /.info-box -->
+    </a>
+  </div><!-- /.col -->
+
+  
+</div>
+
+<div class="row">
+    <div class="col-sm-12 col-md-8 col-lg-6">
+      <div class="box">
+        <div class="box-header">
+          <h2 class="box-title">Events This Week</h2>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+          <table class="table table-hover">
+            <tbody>
+              <tr>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>SubType</th>
+                <th>Notes</th>
+              </tr>
+              {% for event in eventsthisweek %}
+              <tr data-toggle='modal' data-target="#event{{ event.id }}_modal">
+                <td>{{ event.date|date('l jS') }}</td>
+                <td>{{ event.name }}</td>
+                <td>{{ event.eventtype.name }}</td>
+                <td>{{ event.eventsubtype.name }}</td>
+                <td>{{ event.comment }}</td>
+              </tr>
+              {% include 'event-modal.twig' %}
+              {% else %}
+              <tr>
+                <td colspan="5">No events this week.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="box-footer">
+          <a class="btn btn-primary btn-xs" href="{{ path_for('events') }}">View all.</a>
+        </div>
+      </div>
+      
+
+      {% include 'events-upcoming-user-table.twig' with { 'user': currentuser } %}
+    </div>
+    <div class="col-sm-12 col-md-4 col-lg-6">
+
+      <div class="row">
+        {% if remainingeventsingroups %}
+          <div class="col-lg-6">
+            <div class="box box-solid">
+              <div class="box-header">
+                <h2 class="box-title">Last events for group</h2>
+              </div>
+              <div class="box-body">
+
+                {% for group in remainingeventsingroups %}
+
+                <p>
+                  {{ group.name }}
+                  {% set lastevent = group.lastevent %}
+                  {% if lastevent %}
+                  <span class="pull-right badge
+                    {{ lastevent.date | date('U') < ('+1 month' | date('U')) ?
+                        ( lastevent.date | date('U') < ('+2 weeks' | date('U')) ?
+                            ( lastevent.date | date('U') < ('now' | date('U')) ?
+                                '' :
+                                'bg-red' ) :
+                            'bg-orange' ) :
+                        'bg-green' }}
+                    ">
+                    {{ lastevent.date | time_diff }}
+                  </span>
+                  {% else %}
+                  <span class="pull-right badge">
+                    never
+                  </span>
+                  {% endif %}
+                </p>
+
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+        
+        <div class="col-lg-6">
+          {% include 'user-widget.twig' with { 'user': currentuser } %}
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+$('*[data-payload]').hover(function() {
+    var e=$(this);
+    e.off('hover');
+    $.get(e.data('payload'),function(d) {
+        e.popover({content: d, html : true}).popover('show');
+    });
+    // prevent dissapearing when hovering on popover
+    e.on("mouseenter", function () {
+      var _this = this;
+      $(".popover").on("mouseleave", function () {
+        $(_this).popover('hide');
+      });
+    }).on("mouseleave", function () {
+      var _this = this;
+      setTimeout(function () {
+        if (!$(".popover:hover").length) {
+          $(_this).popover("hide");
+        }
+      }, 300)
+    });
+});
+
+$('body').on('click', function (e) {
+    //did not click a popover toggle or popover
+    if ($(e.target).data('toggle') !== 'popover'
+        && $(e.target).parents('.popover.in').length === 0) { 
+        $('*[data-payload]').popover('hide');
+    }
+});
+{% endblock %}
