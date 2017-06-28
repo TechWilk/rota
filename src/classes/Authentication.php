@@ -7,6 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use TechWilk\Rota\AuthProviderInterface;
 use DateTime;
+use Exception;
 
 class Authentication
 {
@@ -60,7 +61,13 @@ class Authentication
 
     public function loginAttempt(EmailAddress $email, $password)
     {
+        if (!$this->numberOfLoginAttemptsIsOk($email)) {
+            throw new Exception('Too many attempts.');
+            return false;
+        }
+
         if ($this->authProvider->checkCredentials($email, $password) !== true) {
+            $this->logFailedLoginAttempt($email);
             return false;
         }
         $user = UserQuery::create()->filterByEmail($email)->findOne();
@@ -68,29 +75,11 @@ class Authentication
         if (is_null($user)) {
             return false;
         }
-        
+
         $_SESSION['userId'] = $user->getId();
         $user->setLastLogin(new DateTime);
         $user->save();
         return true;
-
-        // will not run beyond here
-
-        if (!$this->numberOfLoginAttemptsIsOk($email)) {
-            throw new Exception('Too many attempts.');
-            return false;
-        }
-        $users = UserQuery::create()->filterByEmail($email)->find();
-        foreach ($users as $u) {
-            if ($u->checkPassword($password)) {
-                $_SESSION['userId'] = $u->getId();
-                $u->setLastLogin(new DateTime);
-                $u->save();
-                return true;
-            }
-        }
-        $this->logFailedLoginAttempt($email);
-        return false;
     }
 
 
@@ -99,7 +88,7 @@ class Authentication
         $numberOfAllowedAttempts = 8;
         $lockOutInterval = 15; // mins
 
-    $loginFailures = LoginFailureQuery::create()->filterByUsername($username)->filterByTimestamp(['min' => new DateTime("-$lockOutInterval minutes")])->count();
+        $loginFailures = LoginFailureQuery::create()->filterByUsername($username)->filterByTimestamp(['min' => new DateTime("-$lockOutInterval minutes")])->count();
 
         if ($loginFailures < $numberOfAllowedAttempts) {
             return true;

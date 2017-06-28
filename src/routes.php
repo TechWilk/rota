@@ -4,6 +4,7 @@ namespace TechWilk\Rota;
 
 use DateTime;
 use InvalidArgumentException;
+use Exception;
 
 // Routes
 
@@ -75,7 +76,7 @@ $app->group('/user', function () {
 
     $this->get('/new', function ($request, $response, $args) {
         $this->logger->info("Fetch user GET '/user/new'");
-        
+
         return $this->view->render($response, 'user-edit.twig');
     })->setName('user-new');
 
@@ -149,7 +150,7 @@ $app->group('/user', function () {
             $message = "Existing password not correct.";
             return $this->view->render($response, 'user-password.twig', [ "user" => $u, "message" => $message ]);
         }
-        
+
         $u->setPassword($new);
         $u->save();
 
