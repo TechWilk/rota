@@ -8,6 +8,11 @@ php:
 matrix:
   allow_failures:
     - php: nightly
+before_install:
+  - cp config/database{.default,}.php
+  - cp config/auth{.default,}.php
+  - cp config/email{.default,}.php
+  - cp config/recording{.default,}.php
 install: composer install
 script:
   - composer test
