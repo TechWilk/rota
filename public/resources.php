@@ -150,8 +150,8 @@ var simplemde = new SimpleMDE({ element: document.getElementById("resourcedescri
 
 <?php
 } else {
-    if (isAdmin()) {
-        ?>
+        if (isAdmin()) {
+            ?>
 
     <!-- row of action buttons -->
     <div class="row">
@@ -171,15 +171,15 @@ var simplemde = new SimpleMDE({ element: document.getElementById("resourcedescri
     </div><!-- /.row -->
 
   <?php
-    }
+        }
 
-    $sql = "SELECT * FROM cr_documents ORDER BY title";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+        $sql = "SELECT * FROM cr_documents ORDER BY title";
+        $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     
-    $Parsedown = new Parsedown();
+        $Parsedown = new Parsedown();
 
-    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-        $resourceID = $row['id']; ?>
+        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+            $resourceID = $row['id']; ?>
 		<?php if (isAdmin()): ?>
 		<div id="deleteModal<?php echo $resourceID; ?>" class="modal modal-danger fade" role="dialogue">
 			<div class="modal-dialog">
@@ -218,6 +218,6 @@ var simplemde = new SimpleMDE({ element: document.getElementById("resourcedescri
 		</div>
 
 	<?php
-    }
-} ?>
+        }
+    } ?>
 <?php include('includes/footer.php'); ?>

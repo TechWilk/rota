@@ -1,9 +1,11 @@
 <?php
 
+namespace TechWilk\Rota;
+
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use TechWilk\Money\AuthProviderInterface;
+use TechWilk\Rota\AuthProviderInterface;
 
 class Authentication
 {
@@ -36,7 +38,7 @@ class Authentication
             return $response->withStatus(302)->withHeader('Location', $router->pathFor('login'));
         }
         return $response;
-        }
+    }
 
 
     private function uriInWhitelist(ServerRequestInterface $request)

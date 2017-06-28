@@ -2,7 +2,7 @@
 
 namespace TechWilk\Rota\AuthProvider\UsernamePassword;
 
-use TechWilk\Rota\UsernamePasswordInterface;
+use TechWilk\Rota\AuthProvider\UsernamePasswordInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 

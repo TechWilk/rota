@@ -1,7 +1,7 @@
 <?php
 /*
     This file is part of Church Rota.
-    
+
     Copyright (C) 2011 David Bunce, 2013 Benjamin Schmitt
 
     Church Rota is free software: you can redistribute it and/or modify

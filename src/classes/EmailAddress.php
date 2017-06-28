@@ -1,5 +1,9 @@
 <?php
 
+namespace TechWilk\Rota;
+
+use InvalidArgumentException;
+
 class EmailAddress
 {
     private $email;

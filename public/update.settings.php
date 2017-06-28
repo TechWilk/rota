@@ -1,7 +1,7 @@
 <?php
 /*
     This file is part of Church Rota.
-    
+
     Copyright (C) 2013 Benjamin Schmitt
 
     Church Rota is free software: you can redistribute it and/or modify
@@ -112,8 +112,8 @@ if ($updateNotification == "") {
 		</div>
 <?php
 } else {
-    echo $updateNotification;
-}?>	
+        echo $updateNotification;
+    }?>	
 </div>	
 		
 <?php include('includes/footer.php'); ?>

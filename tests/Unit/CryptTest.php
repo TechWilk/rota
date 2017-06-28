@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use \Crypt;
+use TechWilk\Rota\Crypt;
 
 class CryptTest extends BaseTestCase
 {

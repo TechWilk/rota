@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<database name="default" defaultIdMethod="native">
+<database name="default" defaultIdMethod="native" namespace="TechWilk\Rota">
 
   <table name="cr_calendarTokens" idMethod="native" phpName="CalendarToken">
     <column name="token" phpName="Token" type="VARCHAR" size="30" primaryKey="true" required="true"/>
@@ -334,7 +334,7 @@
     <column name="username" phpName="Username" type="VARCHAR" size="30" required="true" defaultValue=""/>
     <column name="password" phpName="Password" type="VARCHAR" size="200" required="true" defaultValue=""/>
     <column name="isAdmin" phpName="IsAdmin" type="CHAR" size="2" required="true" defaultValue="0"/>
-    <column name="email" phpName="Email" phpType="\EmailAddress" type="VARCHAR" size="255"/>
+    <column name="email" phpName="Email" phpType="\TechWilk\Rota\EmailAddress" type="VARCHAR" size="255"/>
     <column name="mobile" phpName="Mobile" type="VARCHAR" size="15" required="true" defaultValue=""/>
     <column name="isOverviewRecipient" phpName="IsOverviewRecipient" type="CHAR" size="2" required="true" defaultValue="0"/>
     <column name="recieveReminderEmails" phpName="RecieveReminderEmails" type="BOOLEAN" size="1" required="true" defaultValue="true"/>

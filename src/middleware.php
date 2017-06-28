@@ -4,7 +4,8 @@ use Slim\App;
 use Slim\Exception\NotFoundException;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use TechWilk\Rota\AuthProvider\UsernamePasswordAuth;
+use TechWilk\Rota\AuthProvider\UsernamePassword\UsernamePasswordAuth;
+use TechWilk\Rota\Authentication;
 
 // Application middleware
 

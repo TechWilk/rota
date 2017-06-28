@@ -1,5 +1,7 @@
 <?php
 
+namespace TechWilk\Rota;
+
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;

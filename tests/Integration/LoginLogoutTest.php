@@ -2,6 +2,8 @@
 
 namespace Tests\Integration;
 
+use TechWilk\Rota\User;
+
 class LoginLogoutTest extends BaseTestCase
 {
     /**
@@ -9,7 +11,7 @@ class LoginLogoutTest extends BaseTestCase
   */
   public static function setUpBeforeClass()
   {
-      $user = new \User;
+      $user = new User;
       $user->setEmail('test@example.com');
       $user->setFirstName('Test');
       $user->setLastName('User');

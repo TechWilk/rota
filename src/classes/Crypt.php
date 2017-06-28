@@ -1,5 +1,9 @@
 <?php
 
+namespace TechWilk\Rota;
+
+use InvalidArgumentException;
+
 class Crypt
 {
     public static function generateToken($length)

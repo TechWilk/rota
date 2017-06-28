@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use \EmailAddress;
+use TechWilk\Rota\EmailAddress;
 
 class EmailAddressTest extends BaseTestCase
 {

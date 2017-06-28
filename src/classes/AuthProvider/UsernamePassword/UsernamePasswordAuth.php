@@ -2,10 +2,16 @@
 
 namespace TechWilk\Rota\AuthProvider\UsernamePassword;
 
-use TechWilk\Rota\UsernamePasswordInterface;
+use TechWilk\Rota\AuthProvider\UsernamePasswordInterface;
 
 class UsernamePasswordAuth implements UsernamePasswordInterface
 {
+    public function isEnabled()
+    {
+        return true;
+    }
+
+
     public function checkCredentials($username, $password)
     {
         if (!$this->numberOfLoginAttemptsIsOk($email)) {

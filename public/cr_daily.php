@@ -115,7 +115,7 @@ if ((isset($_GET['token'])) && ($_GET['token']==$token)) {
 </html>
 	<?php
 } else {
-    //redirect to start page
+        //redirect to start page
     header("Location: index.php");
-}
+    }
 ?>

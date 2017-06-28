@@ -1,5 +1,7 @@
 <?php
 
+namespace TechWilk\Rota;
+
 class EmailSender
 {
     private $provider;

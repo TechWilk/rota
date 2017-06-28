@@ -311,7 +311,7 @@ $sessionUserId = $_SESSION['userid'];
                     echo "<a href=\"http://www.google.com/calendar/event?action=TEMPLATE&text=".urlencode(utf8_wrapper($row['eventType']))."&dates=".$eventDateGMT."/".$eventDateEndGMT."&details=&location=".urlencode(utf8_wrapper($row['eventLocation']))."&trp=false&sprop=&sprop=name:&ctz=".$userTZ."\" target=\"_blank\">";
                     echo "<img src=\"//www.google.com/calendar/images/ext/gc_button1.gif\" border=0></a>";
                 }
-                
+
                 echo "</td>";
                 */
 

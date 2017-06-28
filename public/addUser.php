@@ -242,14 +242,14 @@ if (isset($action) && $action != "create") {
       </div>
 			<?php
 } else {
-                ?>
+        ?>
 				<div class="alert alert-info alert-dismissable">
 	        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 	        <h4><i class="icon fa fa-info"></i> Welcome email</h4>
 	        Entering an email address will automatically send a welcome email and temporary password to the user.
 	      </div>
 			<?php
-            } ?>
+    } ?>
 
 
 <div class="col-md-6">
@@ -283,7 +283,7 @@ if (isset($action) && $action != "create") {
                     }
                     $isCompromised=false;
                 } else {
-              // if isAdmin() == true
+                    // if isAdmin() == true
                 ?>
           <div class="form-group">
       			<label for="firstname">First name:</label>
@@ -296,7 +296,7 @@ if (isset($action) && $action != "create") {
           </div>
 
           <?php
-          } ?>
+                } ?>
           <div class="form-group">
       			<label for="email" >Email:</label>
       			<input class="form-control" id="email" name="email" type="email" autocorrect="off" autocapitalize="none" value="<?php echo $email; ?>" placeholder="Enter their email address" />
@@ -362,7 +362,7 @@ if (isset($action) && $action != "create") {
         			<input class="checkbox" <?php echo isAdmin() ? '' : 'disabled="disabled"' ?> name="isOverviewRecipient" id="isOverviewRecipient" type="checkbox" value="1" <?php if ($userIsOverviewRecipient == '1' || is_null($userIsOverviewRecipient)) {
               echo 'checked="checked"';
           } elseif ($userIsOverviewRecipient == '0') {
-                    }?> />
+          }?> />
               Receive group emails?:
             </label>
           </div>
@@ -370,9 +370,9 @@ if (isset($action) && $action != "create") {
 					<div class="checkbox">
       			<label for="isReminderRecipient">
         			<input class="checkbox" disabled= "disabled" name="isReminderRecipient" id="isReminderRecipient" type="checkbox" value="1" <?php if (true/*$userIsReminderRecipient == '1' || is_null($userIsReminderRecipient)*/) {
-                        echo 'checked="checked"';
-                    } elseif (true/*$userIsReminderRecipient*/ == '0') {
-                    }?> />
+              echo 'checked="checked"';
+          } elseif (true/*$userIsReminderRecipient*/ == '0') {
+          }?> />
               Receive email reminders?: (optional in future update to system)
             </label>
           </div>
