@@ -1298,7 +1298,7 @@ abstract class Notification implements ActiveRecordInterface
             $keys[8] => $this->getDismissed(),
             $keys[9] => $this->getArchived(),
         );
-        if ($result[$keys[1]] instanceof \DateTime) {
+        if ($result[$keys[1]] instanceof \DateTimeInterface) {
             $result[$keys[1]] = $result[$keys[1]]->format('c');
         }
 
@@ -1726,7 +1726,8 @@ abstract class Notification implements ActiveRecordInterface
     public function initRelation($relationName)
     {
         if ('NotificationClick' == $relationName) {
-            return $this->initNotificationClicks();
+            $this->initNotificationClicks();
+            return;
         }
     }
 

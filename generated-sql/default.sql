@@ -344,10 +344,12 @@ CREATE TABLE [cr_socialAuth]
     [userId] INTEGER(30) NOT NULL,
     [platform] MEDIUMTEXT NOT NULL,
     [socialId] BIGINT(30) NOT NULL,
+    [meta] MEDIUMTEXT,
     [revoked] INTEGER(1) DEFAULT 0 NOT NULL,
-    PRIMARY KEY ([userId]),
+    PRIMARY KEY ([userId], [platform], [socialId]),
     UNIQUE ([socialId]),
     UNIQUE ([userId]),
+    UNIQUE ([platform]),
     FOREIGN KEY ([userId]) REFERENCES [cr_users] ([id])
 );
 

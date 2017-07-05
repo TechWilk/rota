@@ -1784,19 +1784,19 @@ abstract class Event implements ActiveRecordInterface
             $keys[15] => $this->getCreated(),
             $keys[16] => $this->getUpdated(),
         );
-        if ($result[$keys[1]] instanceof \DateTime) {
+        if ($result[$keys[1]] instanceof \DateTimeInterface) {
             $result[$keys[1]] = $result[$keys[1]]->format('c');
         }
 
-        if ($result[$keys[4]] instanceof \DateTime) {
+        if ($result[$keys[4]] instanceof \DateTimeInterface) {
             $result[$keys[4]] = $result[$keys[4]]->format('c');
         }
 
-        if ($result[$keys[15]] instanceof \DateTime) {
+        if ($result[$keys[15]] instanceof \DateTimeInterface) {
             $result[$keys[15]] = $result[$keys[15]]->format('c');
         }
 
-        if ($result[$keys[16]] instanceof \DateTime) {
+        if ($result[$keys[16]] instanceof \DateTimeInterface) {
             $result[$keys[16]] = $result[$keys[16]]->format('c');
         }
 
@@ -2554,7 +2554,8 @@ abstract class Event implements ActiveRecordInterface
     public function initRelation($relationName)
     {
         if ('EventPerson' == $relationName) {
-            return $this->initEventpeople();
+            $this->initEventpeople();
+            return;
         }
     }
 

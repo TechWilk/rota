@@ -1037,7 +1037,7 @@ abstract class Discussion implements ActiveRecordInterface
             $keys[5] => $this->getTopicname(),
             $keys[6] => $this->getDate(),
         );
-        if ($result[$keys[6]] instanceof \DateTime) {
+        if ($result[$keys[6]] instanceof \DateTimeInterface) {
             $result[$keys[6]] = $result[$keys[6]]->format('c');
         }
 

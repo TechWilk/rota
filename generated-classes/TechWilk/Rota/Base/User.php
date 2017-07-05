@@ -39,6 +39,7 @@ use TechWilk\Rota\UserRoleQuery as ChildUserRoleQuery;
 use TechWilk\Rota\Map\CalendarTokenTableMap;
 use TechWilk\Rota\Map\EventTableMap;
 use TechWilk\Rota\Map\NotificationTableMap;
+use TechWilk\Rota\Map\SocialAuthTableMap;
 use TechWilk\Rota\Map\StatisticTableMap;
 use TechWilk\Rota\Map\SwapTableMap;
 use TechWilk\Rota\Map\UserPermissionTableMap;
@@ -227,9 +228,10 @@ abstract class User implements ActiveRecordInterface
     protected $collNotificationsPartial;
 
     /**
-     * @var        ChildSocialAuth one-to-one related ChildSocialAuth object
+     * @var        ObjectCollection|ChildSocialAuth[] Collection to store aggregation of ChildSocialAuth objects.
      */
-    protected $singleSocialAuth;
+    protected $collSocialAuths;
+    protected $collSocialAuthsPartial;
 
     /**
      * @var        ObjectCollection|ChildStatistic[] Collection to store aggregation of ChildStatistic objects.
@@ -280,6 +282,12 @@ abstract class User implements ActiveRecordInterface
      * @var ObjectCollection|ChildNotification[]
      */
     protected $notificationsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildSocialAuth[]
+     */
+    protected $socialAuthsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -1294,7 +1302,7 @@ abstract class User implements ActiveRecordInterface
 
             $this->collNotifications = null;
 
-            $this->singleSocialAuth = null;
+            $this->collSocialAuths = null;
 
             $this->collStatistics = null;
 
@@ -1480,9 +1488,20 @@ abstract class User implements ActiveRecordInterface
                 }
             }
 
-            if ($this->singleSocialAuth !== null) {
-                if (!$this->singleSocialAuth->isDeleted() && ($this->singleSocialAuth->isNew() || $this->singleSocialAuth->isModified())) {
-                    $affectedRows += $this->singleSocialAuth->save($con);
+            if ($this->socialAuthsScheduledForDeletion !== null) {
+                if (!$this->socialAuthsScheduledForDeletion->isEmpty()) {
+                    \TechWilk\Rota\SocialAuthQuery::create()
+                        ->filterByPrimaryKeys($this->socialAuthsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->socialAuthsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collSocialAuths !== null) {
+                foreach ($this->collSocialAuths as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
                 }
             }
 
@@ -1842,19 +1861,19 @@ abstract class User implements ActiveRecordInterface
             $keys[14] => $this->getCreated(),
             $keys[15] => $this->getUpdated(),
         );
-        if ($result[$keys[12]] instanceof \DateTime) {
+        if ($result[$keys[12]] instanceof \DateTimeInterface) {
             $result[$keys[12]] = $result[$keys[12]]->format('c');
         }
 
-        if ($result[$keys[13]] instanceof \DateTime) {
+        if ($result[$keys[13]] instanceof \DateTimeInterface) {
             $result[$keys[13]] = $result[$keys[13]]->format('c');
         }
 
-        if ($result[$keys[14]] instanceof \DateTime) {
+        if ($result[$keys[14]] instanceof \DateTimeInterface) {
             $result[$keys[14]] = $result[$keys[14]]->format('c');
         }
 
-        if ($result[$keys[15]] instanceof \DateTime) {
+        if ($result[$keys[15]] instanceof \DateTimeInterface) {
             $result[$keys[15]] = $result[$keys[15]]->format('c');
         }
 
@@ -1906,19 +1925,19 @@ abstract class User implements ActiveRecordInterface
 
                 $result[$key] = $this->collNotifications->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->singleSocialAuth) {
+            if (null !== $this->collSocialAuths) {
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
-                        $key = 'socialAuth';
+                        $key = 'socialAuths';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_socialAuth';
+                        $key = 'cr_socialAuths';
                         break;
                     default:
-                        $key = 'SocialAuth';
+                        $key = 'SocialAuths';
                 }
 
-                $result[$key] = $this->singleSocialAuth->toArray($keyType, $includeLazyLoadColumns, $alreadyDumpedObjects, true);
+                $result[$key] = $this->collSocialAuths->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collStatistics) {
                 switch ($keyType) {
@@ -2346,9 +2365,10 @@ abstract class User implements ActiveRecordInterface
                 }
             }
 
-            $relObj = $this->getSocialAuth();
-            if ($relObj) {
-                $copyObj->setSocialAuth($relObj->copy($deepCopy));
+            foreach ($this->getSocialAuths() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addSocialAuth($relObj->copy($deepCopy));
+                }
             }
 
             foreach ($this->getStatistics() as $relObj) {
@@ -2416,25 +2436,36 @@ abstract class User implements ActiveRecordInterface
     public function initRelation($relationName)
     {
         if ('CalendarToken' == $relationName) {
-            return $this->initCalendarTokens();
+            $this->initCalendarTokens();
+            return;
         }
         if ('Event' == $relationName) {
-            return $this->initEvents();
+            $this->initEvents();
+            return;
         }
         if ('Notification' == $relationName) {
-            return $this->initNotifications();
+            $this->initNotifications();
+            return;
+        }
+        if ('SocialAuth' == $relationName) {
+            $this->initSocialAuths();
+            return;
         }
         if ('Statistic' == $relationName) {
-            return $this->initStatistics();
+            $this->initStatistics();
+            return;
         }
         if ('Swap' == $relationName) {
-            return $this->initSwaps();
+            $this->initSwaps();
+            return;
         }
         if ('UserRole' == $relationName) {
-            return $this->initUserRoles();
+            $this->initUserRoles();
+            return;
         }
         if ('UserPermission' == $relationName) {
-            return $this->initUserPermissions();
+            $this->initUserPermissions();
+            return;
         }
     }
 
@@ -3214,35 +3245,228 @@ abstract class User implements ActiveRecordInterface
     }
 
     /**
-     * Gets a single ChildSocialAuth object, which is related to this object by a one-to-one relationship.
+     * Clears out the collSocialAuths collection
      *
-     * @param  ConnectionInterface $con optional connection object
-     * @return ChildSocialAuth
-     * @throws PropelException
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addSocialAuths()
      */
-    public function getSocialAuth(ConnectionInterface $con = null)
+    public function clearSocialAuths()
     {
-        if ($this->singleSocialAuth === null && !$this->isNew()) {
-            $this->singleSocialAuth = ChildSocialAuthQuery::create()->findPk($this->getPrimaryKey(), $con);
-        }
-
-        return $this->singleSocialAuth;
+        $this->collSocialAuths = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Sets a single ChildSocialAuth object as related to this object by a one-to-one relationship.
+     * Reset is the collSocialAuths collection loaded partially.
+     */
+    public function resetPartialSocialAuths($v = true)
+    {
+        $this->collSocialAuthsPartial = $v;
+    }
+
+    /**
+     * Initializes the collSocialAuths collection.
      *
-     * @param  ChildSocialAuth $v ChildSocialAuth
-     * @return $this|\TechWilk\Rota\User The current object (for fluent API support)
+     * By default this just sets the collSocialAuths collection to an empty array (like clearcollSocialAuths());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initSocialAuths($overrideExisting = true)
+    {
+        if (null !== $this->collSocialAuths && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = SocialAuthTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collSocialAuths = new $collectionClassName;
+        $this->collSocialAuths->setModel('\TechWilk\Rota\SocialAuth');
+    }
+
+    /**
+     * Gets an array of ChildSocialAuth objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildSocialAuth[] List of ChildSocialAuth objects
      * @throws PropelException
      */
-    public function setSocialAuth(ChildSocialAuth $v = null)
+    public function getSocialAuths(Criteria $criteria = null, ConnectionInterface $con = null)
     {
-        $this->singleSocialAuth = $v;
+        $partial = $this->collSocialAuthsPartial && !$this->isNew();
+        if (null === $this->collSocialAuths || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collSocialAuths) {
+                // return empty collection
+                $this->initSocialAuths();
+            } else {
+                $collSocialAuths = ChildSocialAuthQuery::create(null, $criteria)
+                    ->filterByUser($this)
+                    ->find($con);
 
-        // Make sure that that the passed-in ChildSocialAuth isn't already associated with this object
-        if ($v !== null && $v->getUser(null, false) === null) {
-            $v->setUser($this);
+                if (null !== $criteria) {
+                    if (false !== $this->collSocialAuthsPartial && count($collSocialAuths)) {
+                        $this->initSocialAuths(false);
+
+                        foreach ($collSocialAuths as $obj) {
+                            if (false == $this->collSocialAuths->contains($obj)) {
+                                $this->collSocialAuths->append($obj);
+                            }
+                        }
+
+                        $this->collSocialAuthsPartial = true;
+                    }
+
+                    return $collSocialAuths;
+                }
+
+                if ($partial && $this->collSocialAuths) {
+                    foreach ($this->collSocialAuths as $obj) {
+                        if ($obj->isNew()) {
+                            $collSocialAuths[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collSocialAuths = $collSocialAuths;
+                $this->collSocialAuthsPartial = false;
+            }
+        }
+
+        return $this->collSocialAuths;
+    }
+
+    /**
+     * Sets a collection of ChildSocialAuth objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $socialAuths A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildUser The current object (for fluent API support)
+     */
+    public function setSocialAuths(Collection $socialAuths, ConnectionInterface $con = null)
+    {
+        /** @var ChildSocialAuth[] $socialAuthsToDelete */
+        $socialAuthsToDelete = $this->getSocialAuths(new Criteria(), $con)->diff($socialAuths);
+
+
+        //since at least one column in the foreign key is at the same time a PK
+        //we can not just set a PK to NULL in the lines below. We have to store
+        //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
+        $this->socialAuthsScheduledForDeletion = clone $socialAuthsToDelete;
+
+        foreach ($socialAuthsToDelete as $socialAuthRemoved) {
+            $socialAuthRemoved->setUser(null);
+        }
+
+        $this->collSocialAuths = null;
+        foreach ($socialAuths as $socialAuth) {
+            $this->addSocialAuth($socialAuth);
+        }
+
+        $this->collSocialAuths = $socialAuths;
+        $this->collSocialAuthsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related SocialAuth objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related SocialAuth objects.
+     * @throws PropelException
+     */
+    public function countSocialAuths(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collSocialAuthsPartial && !$this->isNew();
+        if (null === $this->collSocialAuths || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collSocialAuths) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getSocialAuths());
+            }
+
+            $query = ChildSocialAuthQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByUser($this)
+                ->count($con);
+        }
+
+        return count($this->collSocialAuths);
+    }
+
+    /**
+     * Method called to associate a ChildSocialAuth object to this object
+     * through the ChildSocialAuth foreign key attribute.
+     *
+     * @param  ChildSocialAuth $l ChildSocialAuth
+     * @return $this|\TechWilk\Rota\User The current object (for fluent API support)
+     */
+    public function addSocialAuth(ChildSocialAuth $l)
+    {
+        if ($this->collSocialAuths === null) {
+            $this->initSocialAuths();
+            $this->collSocialAuthsPartial = true;
+        }
+
+        if (!$this->collSocialAuths->contains($l)) {
+            $this->doAddSocialAuth($l);
+
+            if ($this->socialAuthsScheduledForDeletion and $this->socialAuthsScheduledForDeletion->contains($l)) {
+                $this->socialAuthsScheduledForDeletion->remove($this->socialAuthsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildSocialAuth $socialAuth The ChildSocialAuth object to add.
+     */
+    protected function doAddSocialAuth(ChildSocialAuth $socialAuth)
+    {
+        $this->collSocialAuths[]= $socialAuth;
+        $socialAuth->setUser($this);
+    }
+
+    /**
+     * @param  ChildSocialAuth $socialAuth The ChildSocialAuth object to remove.
+     * @return $this|ChildUser The current object (for fluent API support)
+     */
+    public function removeSocialAuth(ChildSocialAuth $socialAuth)
+    {
+        if ($this->getSocialAuths()->contains($socialAuth)) {
+            $pos = $this->collSocialAuths->search($socialAuth);
+            $this->collSocialAuths->remove($pos);
+            if (null === $this->socialAuthsScheduledForDeletion) {
+                $this->socialAuthsScheduledForDeletion = clone $this->collSocialAuths;
+                $this->socialAuthsScheduledForDeletion->clear();
+            }
+            $this->socialAuthsScheduledForDeletion[]= clone $socialAuth;
+            $socialAuth->setUser(null);
         }
 
         return $this;
@@ -4330,8 +4554,10 @@ abstract class User implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->singleSocialAuth) {
-                $this->singleSocialAuth->clearAllReferences($deep);
+            if ($this->collSocialAuths) {
+                foreach ($this->collSocialAuths as $o) {
+                    $o->clearAllReferences($deep);
+                }
             }
             if ($this->collStatistics) {
                 foreach ($this->collStatistics as $o) {
@@ -4358,7 +4584,7 @@ abstract class User implements ActiveRecordInterface
         $this->collCalendarTokens = null;
         $this->collEvents = null;
         $this->collNotifications = null;
-        $this->singleSocialAuth = null;
+        $this->collSocialAuths = null;
         $this->collStatistics = null;
         $this->collSwaps = null;
         $this->collUserRoles = null;

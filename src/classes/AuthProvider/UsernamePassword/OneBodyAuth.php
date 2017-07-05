@@ -76,4 +76,19 @@ class OneBodyAuth implements UsernamePasswordInterface
         }
         return $url;
     }
+
+    public function getAuthProviderSlug()
+    {
+        return 'onebody';
+    }
+
+    public function getUserId()
+    {
+        return is_int((int)$this->data->id) ? (int)$this->data->id : null;
+    }
+
+    public function getMeta()
+    {
+        return $this->data;
+    }
 }

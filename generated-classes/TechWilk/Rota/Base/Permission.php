@@ -1223,10 +1223,12 @@ abstract class Permission implements ActiveRecordInterface
     public function initRelation($relationName)
     {
         if ('UserPermission' == $relationName) {
-            return $this->initUserPermissions();
+            $this->initUserPermissions();
+            return;
         }
         if ('PermissionGroupPermission' == $relationName) {
-            return $this->initPermissionGroupPermissions();
+            $this->initPermissionGroupPermissions();
+            return;
         }
     }
 

@@ -883,7 +883,7 @@ abstract class NotificationClick implements ActiveRecordInterface
             $keys[2] => $this->getReferer(),
             $keys[3] => $this->getTimestamp(),
         );
-        if ($result[$keys[3]] instanceof \DateTime) {
+        if ($result[$keys[3]] instanceof \DateTimeInterface) {
             $result[$keys[3]] = $result[$keys[3]]->format('c');
         }
 

@@ -801,7 +801,7 @@ abstract class LoginFailure implements ActiveRecordInterface
             $keys[1] => $this->getipAddress(),
             $keys[2] => $this->getTimestamp(),
         );
-        if ($result[$keys[2]] instanceof \DateTime) {
+        if ($result[$keys[2]] instanceof \DateTimeInterface) {
             $result[$keys[2]] = $result[$keys[2]]->format('c');
         }
 

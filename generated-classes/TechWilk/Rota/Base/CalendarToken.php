@@ -1079,11 +1079,11 @@ abstract class CalendarToken implements ActiveRecordInterface
             $keys[5] => $this->getCreated(),
             $keys[6] => $this->getUpdated(),
         );
-        if ($result[$keys[5]] instanceof \DateTime) {
+        if ($result[$keys[5]] instanceof \DateTimeInterface) {
             $result[$keys[5]] = $result[$keys[5]]->format('c');
         }
 
-        if ($result[$keys[6]] instanceof \DateTime) {
+        if ($result[$keys[6]] instanceof \DateTimeInterface) {
             $result[$keys[6]] = $result[$keys[6]]->format('c');
         }
 

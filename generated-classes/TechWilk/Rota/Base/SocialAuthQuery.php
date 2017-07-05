@@ -23,11 +23,13 @@ use TechWilk\Rota\Map\SocialAuthTableMap;
  * @method     ChildSocialAuthQuery orderByUserId($order = Criteria::ASC) Order by the userId column
  * @method     ChildSocialAuthQuery orderByPlatform($order = Criteria::ASC) Order by the platform column
  * @method     ChildSocialAuthQuery orderBySocialId($order = Criteria::ASC) Order by the socialId column
+ * @method     ChildSocialAuthQuery orderByMeta($order = Criteria::ASC) Order by the meta column
  * @method     ChildSocialAuthQuery orderByRevoked($order = Criteria::ASC) Order by the revoked column
  *
  * @method     ChildSocialAuthQuery groupByUserId() Group by the userId column
  * @method     ChildSocialAuthQuery groupByPlatform() Group by the platform column
  * @method     ChildSocialAuthQuery groupBySocialId() Group by the socialId column
+ * @method     ChildSocialAuthQuery groupByMeta() Group by the meta column
  * @method     ChildSocialAuthQuery groupByRevoked() Group by the revoked column
  *
  * @method     ChildSocialAuthQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -56,6 +58,7 @@ use TechWilk\Rota\Map\SocialAuthTableMap;
  * @method     ChildSocialAuth findOneByUserId(int $userId) Return the first ChildSocialAuth filtered by the userId column
  * @method     ChildSocialAuth findOneByPlatform(string $platform) Return the first ChildSocialAuth filtered by the platform column
  * @method     ChildSocialAuth findOneBySocialId(string $socialId) Return the first ChildSocialAuth filtered by the socialId column
+ * @method     ChildSocialAuth findOneByMeta(string $meta) Return the first ChildSocialAuth filtered by the meta column
  * @method     ChildSocialAuth findOneByRevoked(boolean $revoked) Return the first ChildSocialAuth filtered by the revoked column *
 
  * @method     ChildSocialAuth requirePk($key, ConnectionInterface $con = null) Return the ChildSocialAuth by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -64,12 +67,14 @@ use TechWilk\Rota\Map\SocialAuthTableMap;
  * @method     ChildSocialAuth requireOneByUserId(int $userId) Return the first ChildSocialAuth filtered by the userId column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSocialAuth requireOneByPlatform(string $platform) Return the first ChildSocialAuth filtered by the platform column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSocialAuth requireOneBySocialId(string $socialId) Return the first ChildSocialAuth filtered by the socialId column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSocialAuth requireOneByMeta(string $meta) Return the first ChildSocialAuth filtered by the meta column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSocialAuth requireOneByRevoked(boolean $revoked) Return the first ChildSocialAuth filtered by the revoked column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildSocialAuth[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildSocialAuth objects based on current ModelCriteria
  * @method     ChildSocialAuth[]|ObjectCollection findByUserId(int $userId) Return ChildSocialAuth objects filtered by the userId column
  * @method     ChildSocialAuth[]|ObjectCollection findByPlatform(string $platform) Return ChildSocialAuth objects filtered by the platform column
  * @method     ChildSocialAuth[]|ObjectCollection findBySocialId(string $socialId) Return ChildSocialAuth objects filtered by the socialId column
+ * @method     ChildSocialAuth[]|ObjectCollection findByMeta(string $meta) Return ChildSocialAuth objects filtered by the meta column
  * @method     ChildSocialAuth[]|ObjectCollection findByRevoked(boolean $revoked) Return ChildSocialAuth objects filtered by the revoked column
  * @method     ChildSocialAuth[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
@@ -120,10 +125,10 @@ abstract class SocialAuthQuery extends ModelCriteria
      * Go fast if the query is untouched.
      *
      * <code>
-     * $obj  = $c->findPk(12, $con);
+     * $obj = $c->findPk(array(12, 34, 56), $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query
+     * @param array[$userId, $platform, $socialId] $key Primary key to use for the query
      * @param ConnectionInterface $con an optional connection object
      *
      * @return ChildSocialAuth|array|mixed the result, formatted by the current formatter
@@ -148,7 +153,7 @@ abstract class SocialAuthQuery extends ModelCriteria
             return $this->findPkComplex($key, $con);
         }
 
-        if ((null !== ($obj = SocialAuthTableMap::getInstanceFromPool(null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key)))) {
+        if ((null !== ($obj = SocialAuthTableMap::getInstanceFromPool(serialize([(null === $key[0] || is_scalar($key[0]) || is_callable([$key[0], '__toString']) ? (string) $key[0] : $key[0]), (null === $key[1] || is_scalar($key[1]) || is_callable([$key[1], '__toString']) ? (string) $key[1] : $key[1]), (null === $key[2] || is_scalar($key[2]) || is_callable([$key[2], '__toString']) ? (string) $key[2] : $key[2])]))))) {
             // the object is already in the instance pool
             return $obj;
         }
@@ -169,10 +174,12 @@ abstract class SocialAuthQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT userId, platform, socialId, revoked FROM cr_socialAuth WHERE userId = :p0';
+        $sql = 'SELECT userId, platform, socialId, meta, revoked FROM cr_socialAuth WHERE userId = :p0 AND platform = :p1 AND socialId = :p2';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
+            $stmt->bindValue(':p1', $key[1], PDO::PARAM_STR);
+            $stmt->bindValue(':p2', $key[2], PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -183,7 +190,7 @@ abstract class SocialAuthQuery extends ModelCriteria
             /** @var ChildSocialAuth $obj */
             $obj = new ChildSocialAuth();
             $obj->hydrate($row);
-            SocialAuthTableMap::addInstanceToPool($obj, null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key);
+            SocialAuthTableMap::addInstanceToPool($obj, serialize([(null === $key[0] || is_scalar($key[0]) || is_callable([$key[0], '__toString']) ? (string) $key[0] : $key[0]), (null === $key[1] || is_scalar($key[1]) || is_callable([$key[1], '__toString']) ? (string) $key[1] : $key[1]), (null === $key[2] || is_scalar($key[2]) || is_callable([$key[2], '__toString']) ? (string) $key[2] : $key[2])]));
         }
         $stmt->closeCursor();
 
@@ -212,7 +219,7 @@ abstract class SocialAuthQuery extends ModelCriteria
     /**
      * Find objects by primary key
      * <code>
-     * $objs = $c->findPks(array(12, 56, 832), $con);
+     * $objs = $c->findPks(array(array(12, 56), array(832, 123), array(123, 456)), $con);
      * </code>
      * @param     array $keys Primary keys to use for the query
      * @param     ConnectionInterface $con an optional connection object
@@ -242,7 +249,11 @@ abstract class SocialAuthQuery extends ModelCriteria
      */
     public function filterByPrimaryKey($key)
     {
-        return $this->addUsingAlias(SocialAuthTableMap::COL_USERID, $key, Criteria::EQUAL);
+        $this->addUsingAlias(SocialAuthTableMap::COL_USERID, $key[0], Criteria::EQUAL);
+        $this->addUsingAlias(SocialAuthTableMap::COL_PLATFORM, $key[1], Criteria::EQUAL);
+        $this->addUsingAlias(SocialAuthTableMap::COL_SOCIALID, $key[2], Criteria::EQUAL);
+
+        return $this;
     }
 
     /**
@@ -254,7 +265,19 @@ abstract class SocialAuthQuery extends ModelCriteria
      */
     public function filterByPrimaryKeys($keys)
     {
-        return $this->addUsingAlias(SocialAuthTableMap::COL_USERID, $keys, Criteria::IN);
+        if (empty($keys)) {
+            return $this->add(null, '1<>1', Criteria::CUSTOM);
+        }
+        foreach ($keys as $key) {
+            $cton0 = $this->getNewCriterion(SocialAuthTableMap::COL_USERID, $key[0], Criteria::EQUAL);
+            $cton1 = $this->getNewCriterion(SocialAuthTableMap::COL_PLATFORM, $key[1], Criteria::EQUAL);
+            $cton0->addAnd($cton1);
+            $cton2 = $this->getNewCriterion(SocialAuthTableMap::COL_SOCIALID, $key[2], Criteria::EQUAL);
+            $cton0->addAnd($cton2);
+            $this->addOr($cton0);
+        }
+
+        return $this;
     }
 
     /**
@@ -364,6 +387,31 @@ abstract class SocialAuthQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(SocialAuthTableMap::COL_SOCIALID, $socialId, $comparison);
+    }
+
+    /**
+     * Filter the query on the meta column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByMeta('fooValue');   // WHERE meta = 'fooValue'
+     * $query->filterByMeta('%fooValue%', Criteria::LIKE); // WHERE meta LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $meta The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSocialAuthQuery The current query, for fluid interface
+     */
+    public function filterByMeta($meta = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($meta)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(SocialAuthTableMap::COL_META, $meta, $comparison);
     }
 
     /**
@@ -480,7 +528,10 @@ abstract class SocialAuthQuery extends ModelCriteria
     public function prune($socialAuth = null)
     {
         if ($socialAuth) {
-            $this->addUsingAlias(SocialAuthTableMap::COL_USERID, $socialAuth->getUserId(), Criteria::NOT_EQUAL);
+            $this->addCond('pruneCond0', $this->getAliasedColName(SocialAuthTableMap::COL_USERID), $socialAuth->getUserId(), Criteria::NOT_EQUAL);
+            $this->addCond('pruneCond1', $this->getAliasedColName(SocialAuthTableMap::COL_PLATFORM), $socialAuth->getPlatform(), Criteria::NOT_EQUAL);
+            $this->addCond('pruneCond2', $this->getAliasedColName(SocialAuthTableMap::COL_SOCIALID), $socialAuth->getSocialId(), Criteria::NOT_EQUAL);
+            $this->combine(array('pruneCond0', 'pruneCond1', 'pruneCond2'), Criteria::LOGICAL_OR);
         }
 
         return $this;

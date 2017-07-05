@@ -83,6 +83,13 @@ abstract class SocialAuth implements ActiveRecordInterface
     protected $socialid;
 
     /**
+     * The value for the meta field.
+     *
+     * @var        string
+     */
+    protected $meta;
+
+    /**
      * The value for the revoked field.
      *
      * Note: this column has a database default value of: false
@@ -372,6 +379,16 @@ abstract class SocialAuth implements ActiveRecordInterface
     }
 
     /**
+     * Get the [meta] column value.
+     *
+     * @return string
+     */
+    public function getMeta()
+    {
+        return $this->meta;
+    }
+
+    /**
      * Get the [revoked] column value.
      *
      * @return boolean
@@ -456,6 +473,26 @@ abstract class SocialAuth implements ActiveRecordInterface
     } // setSocialId()
 
     /**
+     * Set the value of [meta] column.
+     *
+     * @param string $v new value
+     * @return $this|\TechWilk\Rota\SocialAuth The current object (for fluent API support)
+     */
+    public function setMeta($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->meta !== $v) {
+            $this->meta = $v;
+            $this->modifiedColumns[SocialAuthTableMap::COL_META] = true;
+        }
+
+        return $this;
+    } // setMeta()
+
+    /**
      * Sets the value of the [revoked] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
@@ -531,7 +568,10 @@ abstract class SocialAuth implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : SocialAuthTableMap::translateFieldName('SocialId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->socialid = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : SocialAuthTableMap::translateFieldName('Revoked', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : SocialAuthTableMap::translateFieldName('Meta', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->meta = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : SocialAuthTableMap::translateFieldName('Revoked', TableMap::TYPE_PHPNAME, $indexType)];
             $this->revoked = (null !== $col) ? (boolean) $col : null;
             $this->resetModified();
 
@@ -541,7 +581,7 @@ abstract class SocialAuth implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 4; // 4 = SocialAuthTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = SocialAuthTableMap::NUM_HYDRATE_COLUMNS.
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\TechWilk\\Rota\\SocialAuth'), 0, $e);
         }
@@ -761,6 +801,9 @@ abstract class SocialAuth implements ActiveRecordInterface
         if ($this->isColumnModified(SocialAuthTableMap::COL_SOCIALID)) {
             $modifiedColumns[':p' . $index++]  = 'socialId';
         }
+        if ($this->isColumnModified(SocialAuthTableMap::COL_META)) {
+            $modifiedColumns[':p' . $index++]  = 'meta';
+        }
         if ($this->isColumnModified(SocialAuthTableMap::COL_REVOKED)) {
             $modifiedColumns[':p' . $index++]  = 'revoked';
         }
@@ -783,6 +826,9 @@ abstract class SocialAuth implements ActiveRecordInterface
                         break;
                     case 'socialId':
                         $stmt->bindValue($identifier, $this->socialid, PDO::PARAM_INT);
+                        break;
+                    case 'meta':
+                        $stmt->bindValue($identifier, $this->meta, PDO::PARAM_STR);
                         break;
                     case 'revoked':
                         $stmt->bindValue($identifier, (int) $this->revoked, PDO::PARAM_INT);
@@ -852,6 +898,9 @@ abstract class SocialAuth implements ActiveRecordInterface
                 return $this->getSocialId();
                 break;
             case 3:
+                return $this->getMeta();
+                break;
+            case 4:
                 return $this->getRevoked();
                 break;
             default:
@@ -886,7 +935,8 @@ abstract class SocialAuth implements ActiveRecordInterface
             $keys[0] => $this->getUserId(),
             $keys[1] => $this->getPlatform(),
             $keys[2] => $this->getSocialId(),
-            $keys[3] => $this->getRevoked(),
+            $keys[3] => $this->getMeta(),
+            $keys[4] => $this->getRevoked(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -952,6 +1002,9 @@ abstract class SocialAuth implements ActiveRecordInterface
                 $this->setSocialId($value);
                 break;
             case 3:
+                $this->setMeta($value);
+                break;
+            case 4:
                 $this->setRevoked($value);
                 break;
         } // switch()
@@ -990,7 +1043,10 @@ abstract class SocialAuth implements ActiveRecordInterface
             $this->setSocialId($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setRevoked($arr[$keys[3]]);
+            $this->setMeta($arr[$keys[3]]);
+        }
+        if (array_key_exists($keys[4], $arr)) {
+            $this->setRevoked($arr[$keys[4]]);
         }
     }
 
@@ -1042,6 +1098,9 @@ abstract class SocialAuth implements ActiveRecordInterface
         if ($this->isColumnModified(SocialAuthTableMap::COL_SOCIALID)) {
             $criteria->add(SocialAuthTableMap::COL_SOCIALID, $this->socialid);
         }
+        if ($this->isColumnModified(SocialAuthTableMap::COL_META)) {
+            $criteria->add(SocialAuthTableMap::COL_META, $this->meta);
+        }
         if ($this->isColumnModified(SocialAuthTableMap::COL_REVOKED)) {
             $criteria->add(SocialAuthTableMap::COL_REVOKED, $this->revoked);
         }
@@ -1063,6 +1122,8 @@ abstract class SocialAuth implements ActiveRecordInterface
     {
         $criteria = ChildSocialAuthQuery::create();
         $criteria->add(SocialAuthTableMap::COL_USERID, $this->userid);
+        $criteria->add(SocialAuthTableMap::COL_PLATFORM, $this->platform);
+        $criteria->add(SocialAuthTableMap::COL_SOCIALID, $this->socialid);
 
         return $criteria;
     }
@@ -1075,7 +1136,9 @@ abstract class SocialAuth implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getUserId();
+        $validPk = null !== $this->getUserId() &&
+            null !== $this->getPlatform() &&
+            null !== $this->getSocialId();
 
         $validPrimaryKeyFKs = 1;
         $primaryKeyFKs = [];
@@ -1097,23 +1160,31 @@ abstract class SocialAuth implements ActiveRecordInterface
     }
 
     /**
-     * Returns the primary key for this object (row).
-     * @return int
+     * Returns the composite primary key for this object.
+     * The array elements will be in same order as specified in XML.
+     * @return array
      */
     public function getPrimaryKey()
     {
-        return $this->getUserId();
+        $pks = array();
+        $pks[0] = $this->getUserId();
+        $pks[1] = $this->getPlatform();
+        $pks[2] = $this->getSocialId();
+
+        return $pks;
     }
 
     /**
-     * Generic method to set the primary key (userid column).
+     * Set the [composite] primary key.
      *
-     * @param       int $key Primary key.
+     * @param      array $keys The elements of the composite key (order must match the order in XML file).
      * @return void
      */
-    public function setPrimaryKey($key)
+    public function setPrimaryKey($keys)
     {
-        $this->setUserId($key);
+        $this->setUserId($keys[0]);
+        $this->setPlatform($keys[1]);
+        $this->setSocialId($keys[2]);
     }
 
     /**
@@ -1122,7 +1193,7 @@ abstract class SocialAuth implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return null === $this->getUserId();
+        return (null === $this->getUserId()) && (null === $this->getPlatform()) && (null === $this->getSocialId());
     }
 
     /**
@@ -1141,6 +1212,7 @@ abstract class SocialAuth implements ActiveRecordInterface
         $copyObj->setUserId($this->getUserId());
         $copyObj->setPlatform($this->getPlatform());
         $copyObj->setSocialId($this->getSocialId());
+        $copyObj->setMeta($this->getMeta());
         $copyObj->setRevoked($this->getRevoked());
         if ($makeNew) {
             $copyObj->setNew(true);
@@ -1186,9 +1258,10 @@ abstract class SocialAuth implements ActiveRecordInterface
 
         $this->aUser = $v;
 
-        // Add binding for other direction of this 1:1 relationship.
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildUser object, it will not be re-added.
         if ($v !== null) {
-            $v->setSocialAuth($this);
+            $v->addSocialAuth($this);
         }
 
 
@@ -1207,8 +1280,13 @@ abstract class SocialAuth implements ActiveRecordInterface
     {
         if ($this->aUser === null && ($this->userid !== null)) {
             $this->aUser = ChildUserQuery::create()->findPk($this->userid, $con);
-            // Because this foreign key represents a one-to-one relationship, we will create a bi-directional association.
-            $this->aUser->setSocialAuth($this);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aUser->addSocialAuths($this);
+             */
         }
 
         return $this->aUser;
@@ -1227,6 +1305,7 @@ abstract class SocialAuth implements ActiveRecordInterface
         $this->userid = null;
         $this->platform = null;
         $this->socialid = null;
+        $this->meta = null;
         $this->revoked = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();

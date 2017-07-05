@@ -1212,7 +1212,8 @@ abstract class EventGroup implements ActiveRecordInterface
     public function initRelation($relationName)
     {
         if ('Event' == $relationName) {
-            return $this->initEvents();
+            $this->initEvents();
+            return;
         }
     }
 

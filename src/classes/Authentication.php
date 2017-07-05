@@ -71,7 +71,43 @@ class Authentication
             $this->logFailedLoginAttempt($email);
             return false;
         }
-        $user = UserQuery::create()->filterByEmail($email)->findOne();
+
+        switch ($this->authProvider->getAuthProviderSlug()) {
+            case 'usernamepassword':
+                $user = UserQuery::create()->filterByEmail($email)->findOne();
+                break;
+            case 'onebody':
+                if (is_null($this->authProvider->getUserId())) {
+                    return false;
+                }
+                $socialAuth = SocialAuthQuery::create()
+                    ->filterByPlatform($this->authProvider->getAuthProviderSlug())
+                    ->filterBySocialId($this->authProvider->getUserId())
+                    ->filterByRevoked(false)
+                    ->findOne();
+                if (!is_null($socialAuth)) {
+                    $socialAuth->setMeta($this->authProvider->getMeta());
+                    $socialAuth->save();
+                    $user = $socialAuth->getUser();
+                }
+                break;
+            case 'facebook':
+                $socialAuth = SocialAuthQuery::create()
+                    ->filterByPlatform($this->authProvider->getAuthProviderSlug())
+                    ->filterBySocialId($this->authProvider->getUserId())
+                    ->filterByRevoked(false)
+                    ->findOne();
+                if (!is_null($socialAuth)) {
+                    //$socialAuth->setMeta($this->authProvider->getMeta());
+                    //$socialAuth->save();
+                    $user = $socialAuth->getUser();
+                }
+                break;
+
+            default:
+                $user = UserQuery::create()->filterByEmail($email)->findOne();
+                break;
+        }
 
         if (is_null($user)) {
             return false;

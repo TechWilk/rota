@@ -1430,7 +1430,8 @@ abstract class Role implements ActiveRecordInterface
     public function initRelation($relationName)
     {
         if ('UserRole' == $relationName) {
-            return $this->initUserRoles();
+            $this->initUserRoles();
+            return;
         }
     }
 

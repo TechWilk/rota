@@ -1165,10 +1165,12 @@ abstract class Location implements ActiveRecordInterface
     public function initRelation($relationName)
     {
         if ('EventType' == $relationName) {
-            return $this->initEventTypes();
+            $this->initEventTypes();
+            return;
         }
         if ('Event' == $relationName) {
-            return $this->initEvents();
+            $this->initEvents();
+            return;
         }
     }
 

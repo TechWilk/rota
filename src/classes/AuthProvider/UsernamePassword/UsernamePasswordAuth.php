@@ -41,4 +41,9 @@ class UsernamePasswordAuth implements UsernamePasswordInterface
     {
         return null;
     }
+
+    public function getAuthProviderSlug()
+    {
+        return 'usernamepassword';
+    }
 }

@@ -250,8 +250,9 @@
 
   <table name="cr_socialAuth" idMethod="native" phpName="SocialAuth">
     <column name="userId" phpName="UserId" type="INTEGER" size="30" primaryKey="true" required="true"/>
-    <column name="platform" phpName="Platform" type="LONGVARCHAR" required="true"/>
-    <column name="socialId" phpName="SocialId" type="BIGINT" size="30" required="true"/>
+    <column name="platform" phpName="Platform" type="VARCHAR" size="10" required="true" primaryKey="true"/>
+    <column name="socialId" phpName="SocialId" type="BIGINT" size="30" required="true" primaryKey="true"/>
+    <column name="meta" phpName="Meta" type="LONGVARCHAR" required="false"/>
     <column name="revoked" phpName="Revoked" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
     <unique name="socialId">
       <unique-column name="socialId"/>

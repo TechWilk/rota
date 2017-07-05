@@ -1310,11 +1310,11 @@ abstract class Swap implements ActiveRecordInterface
             $keys[8] => $this->getCreated(),
             $keys[9] => $this->getUpdated(),
         );
-        if ($result[$keys[8]] instanceof \DateTime) {
+        if ($result[$keys[8]] instanceof \DateTimeInterface) {
             $result[$keys[8]] = $result[$keys[8]]->format('c');
         }
 
-        if ($result[$keys[9]] instanceof \DateTime) {
+        if ($result[$keys[9]] instanceof \DateTimeInterface) {
             $result[$keys[9]] = $result[$keys[9]]->format('c');
         }
 

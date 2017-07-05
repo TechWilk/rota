@@ -1104,7 +1104,7 @@ abstract class Statistic implements ActiveRecordInterface
             $keys[6] => $this->getDetail3(),
             $keys[7] => $this->getScript(),
         );
-        if ($result[$keys[2]] instanceof \DateTime) {
+        if ($result[$keys[2]] instanceof \DateTimeInterface) {
             $result[$keys[2]] = $result[$keys[2]]->format('c');
         }
 

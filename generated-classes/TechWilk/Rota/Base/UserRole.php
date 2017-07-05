@@ -1502,13 +1502,16 @@ abstract class UserRole implements ActiveRecordInterface
     public function initRelation($relationName)
     {
         if ('EventPerson' == $relationName) {
-            return $this->initEventpeople();
+            $this->initEventpeople();
+            return;
         }
         if ('SwapRelatedByOldUserRoleId' == $relationName) {
-            return $this->initSwapsRelatedByOldUserRoleId();
+            $this->initSwapsRelatedByOldUserRoleId();
+            return;
         }
         if ('SwapRelatedByNewUserRoleId' == $relationName) {
-            return $this->initSwapsRelatedByNewUserRoleId();
+            $this->initSwapsRelatedByNewUserRoleId();
+            return;
         }
     }
 

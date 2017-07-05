@@ -77,33 +77,54 @@ class User extends BaseUser
   */
   public function getProfileImage($size)
   {
-      $socialAuth = $this->getSocialAuth();
+      $socialAuths = $this->getSocialAuths();
 
-      if (isset($socialAuth)) {
-          switch ($size) {
+      if (isset($socialAuths)) {
+          foreach ($socialAuths as $socialAuth) {
+              if ($socialAuth->getPlatform() == 'facebook') {
+                  switch ($size) {
+                    case 'small': // 50px x 50px
+                        return '//graph.facebook.com/' . $socialAuth->getSocialId() . '/picture?type=square';
+                        break;
+                    case 'large': // 200px x 200px
+                        return '//graph.facebook.com/' . $socialAuth->getSocialId() . '/picture?type=large';
+                        break;
+                    default:
+                        return '//graph.facebook.com/' . $socialAuth->getSocialId() . '/picture';
+                        break;
+                }
+              } elseif ($socialAuth->getPlatform() == 'onebody') {
+                  $baseUrl = getConfig()['auth']['onebody']['url'];
+                  $photoFingerprint = $socialAuth->getMeta()['photo-fingerprint'];
+                  switch ($size) {
+                    case 'small': // 50px x 50px
+                        return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/tn/' . $photoFingerprint . '.jpg';
+                        break;
+                    case 'large': // 150px x 150px
+                        return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/small/' . $photoFingerprint . '.jpg';
+                        break;
+                    case 'huge': // 500px x 500px
+                        return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/medium/' . $photoFingerprint . '.jpg';
+                        break;
+                    default:
+                        return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/tn/' . $photoFingerprint . '.jpg';
+                        break;
+                }
+              }
+          }
+      }
+
+      switch ($size) {
         case 'small': // 50px x 50px
-          return '//graph.facebook.com/' . $socialAuth->getSocialId() . '/picture?type=square';
-          break;
+            return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email))) . '?s=50&d=mm';
+            break;
         case 'large': // 200px x 200px
-          return '//graph.facebook.com/' . $socialAuth->getSocialId() . '/picture?type=large';
-          break;
+            return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email)))  . '?s=200&d=mm';
+            break;
         default:
-          return '//graph.facebook.com/' . $socialAuth->getSocialId() . '/picture';
-          break;
-      }
-      } else {
-          switch ($size) {
-        case 'small': // 50px x 50px
-          return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email))) . '?s=50&d=mm';
-          break;
-        case 'large': // 200px x 200px
-          return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email)))  . '?s=200&d=mm';
-          break;
-        default:
-          return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email))) . '?s=50&d=mm';
-          break;
-      }
-      }
+            return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email))) . '?s=50&d=mm';
+        break;
+    }
   }
 
   /**

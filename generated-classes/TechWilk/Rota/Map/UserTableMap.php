@@ -244,13 +244,13 @@ class UserTableMap extends TableMap
     1 => ':id',
   ),
 ), null, null, 'Notifications', false);
-        $this->addRelation('SocialAuth', '\\TechWilk\\Rota\\SocialAuth', RelationMap::ONE_TO_ONE, array(
+        $this->addRelation('SocialAuth', '\\TechWilk\\Rota\\SocialAuth', RelationMap::ONE_TO_MANY, array(
   0 =>
   array(
     0 => ':userId',
     1 => ':id',
   ),
-), null, null, null, false);
+), null, null, 'SocialAuths', false);
         $this->addRelation('Statistic', '\\TechWilk\\Rota\\Statistic', RelationMap::ONE_TO_MANY, array(
   0 =>
   array(

@@ -1445,7 +1445,8 @@ abstract class EventPerson implements ActiveRecordInterface
     public function initRelation($relationName)
     {
         if ('Swap' == $relationName) {
-            return $this->initSwaps();
+            $this->initSwaps();
+            return;
         }
     }
 

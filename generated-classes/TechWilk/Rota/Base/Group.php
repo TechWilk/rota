@@ -1344,7 +1344,8 @@ abstract class Group implements ActiveRecordInterface
     public function initRelation($relationName)
     {
         if ('Role' == $relationName) {
-            return $this->initRoles();
+            $this->initRoles();
+            return;
         }
     }
 

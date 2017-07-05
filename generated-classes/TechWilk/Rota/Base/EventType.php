@@ -1184,7 +1184,7 @@ abstract class EventType implements ActiveRecordInterface
             $keys[7] => $this->getRehearsal(),
             $keys[8] => $this->getGroupFormat(),
         );
-        if ($result[$keys[4]] instanceof \DateTime) {
+        if ($result[$keys[4]] instanceof \DateTimeInterface) {
             $result[$keys[4]] = $result[$keys[4]]->format('c');
         }
 
@@ -1602,7 +1602,8 @@ abstract class EventType implements ActiveRecordInterface
     public function initRelation($relationName)
     {
         if ('Event' == $relationName) {
-            return $this->initEvents();
+            $this->initEvents();
+            return;
         }
     }
 
