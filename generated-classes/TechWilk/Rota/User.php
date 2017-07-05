@@ -86,6 +86,9 @@ class User extends BaseUser
                     case 'small': // 50px x 50px
                         return '//graph.facebook.com/' . $socialAuth->getSocialId() . '/picture?type=square';
                         break;
+                    case 'medium': // 200px x 200px
+                        return '//graph.facebook.com/' . $socialAuth->getSocialId() . '/picture?type=large';
+                        break;
                     case 'large': // 200px x 200px
                         return '//graph.facebook.com/' . $socialAuth->getSocialId() . '/picture?type=large';
                         break;
@@ -100,10 +103,10 @@ class User extends BaseUser
                     case 'small': // 50px x 50px
                         return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/tn/' . $photoFingerprint . '.jpg';
                         break;
-                    case 'large': // 150px x 150px
+                    case 'medium': // 150px x 150px
                         return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/small/' . $photoFingerprint . '.jpg';
                         break;
-                    case 'huge': // 500px x 500px
+                    case 'large': // 500px x 500px
                         return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/medium/' . $photoFingerprint . '.jpg';
                         break;
                     default:
@@ -118,8 +121,11 @@ class User extends BaseUser
         case 'small': // 50px x 50px
             return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email))) . '?s=50&d=mm';
             break;
-        case 'large': // 200px x 200px
+        case 'medium': // 200px x 200px
             return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email)))  . '?s=200&d=mm';
+            break;
+        case 'large': // 500px x 500px
+            return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email)))  . '?s=500&d=mm';
             break;
         default:
             return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email))) . '?s=50&d=mm';
