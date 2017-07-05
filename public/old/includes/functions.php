@@ -3,6 +3,20 @@
 use DateInterval;
 use DateTime;
 
+session_start();
+
+// AUTH
+if (isset($_SESSION['userId'])) {
+    $_SESSION['userid'] = $_SESSION['userId'];
+    $_SESSION['is_logged_in'] = true;
+    $_SESSION['db_is_logged_in'] = true;
+} else {
+    unset($_SESSION['userid']);
+    unset($_SESSION['is_logged_in']);
+    unset($_SESSION['db_is_logged_in']);
+}
+// END AUTH
+
 include(__DIR__ . '/errors.php');
 
 // setup the autoloading
