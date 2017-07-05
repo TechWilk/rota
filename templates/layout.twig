@@ -179,7 +179,7 @@
 							<ul class="dropdown-menu">
 								<!-- The user image in the menu -->
 								<li class="user-header">
-									<img src="{{ currentuser.profileimage('large') }}" class="img-circle" alt="User Image">
+									<img src="{{ currentuser.profileimage('medium') }}" class="img-circle" alt="User Image">
 									<p>
 										{{- currentuser.name -}}
 										<small>Account created {{ currentuser.created is empty ? 'in the past' : currentuser.created | date('M. Y') }}</small>
@@ -227,7 +227,7 @@
 				<!-- Sidebar user panel (optional) -->
 				<div class="user-panel">
 					<div class="pull-left image">
-						<img src="{{ currentuser.profileimage('large') }}" class="img-circle" alt="User Image">
+						<img src="{{ currentuser.profileimage('medium') }}" class="img-circle" alt="User Image">
 					</div>
 					<div class="pull-left info">
 						<p>{{ currentuser.name }}</p>
@@ -306,7 +306,7 @@
             <small>Rotas</small>
           </h1>
           <ol class="breadcrumb">
-            <li><a href="{{ site.settings.siteurl }}"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="{{ path_for('home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="active">Rotas</li>
           </ol>
         </section>
@@ -317,7 +317,7 @@
 				<div class="alert alert-info alert-dismissable">
 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 					<h4><i class="icon fa fa-info"></i> BETA Test</h4>
-					<p>You are testing the new rota system. <a href="{{ site.settings.siteurl }}/old/index.php">Return to the old rota system.</a></p>
+					<p>You are testing the new rota system. <a href="{{ path_for('home') }}old/index.php">Return to the old rota system.</a></p>
 				</div>
 
 				{% include 'error-banner.twig' %}
