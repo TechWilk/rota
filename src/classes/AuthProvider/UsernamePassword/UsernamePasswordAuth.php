@@ -36,4 +36,9 @@ class UsernamePasswordAuth implements UsernamePasswordInterface
         }
         return false;
     }
+
+    public function getResetPasswordUrl()
+    {
+        return null;
+    }
 }

@@ -116,4 +116,9 @@ class Authentication
         $userId = $_SESSION['userId'];
         return UserQuery::create()->findPK($userId);
     }
+
+    public function getResetPasswordUrl()
+    {
+        return $this->authProvider->getResetPasswordUrl();
+    }
 }

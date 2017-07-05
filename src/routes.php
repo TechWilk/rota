@@ -504,8 +504,10 @@ $app->get('/login', function ($request, $response, $args) {
     if (isset($_SESSION['userId'])) {
         return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('home'));
     }
+    $auth = $this['auth'];
+    $resetPasswordUrl = $auth->getResetPasswordUrl();
 
-    return $this->view->render($response->withStatus(401), 'login.twig');
+    return $this->view->render($response->withStatus(401), 'login.twig', [ 'reset_password_url' => $resetPasswordUrl ]);
 })->setName('login');
 
 
@@ -516,15 +518,18 @@ $app->post('/login', function ($request, $response, $args) {
 
     $data = $request->getParsedBody();
 
+    $auth = $this['auth'];
+    $resetPasswordUrl = $auth->getResetPasswordUrl();
+
     try {
         $email = new EmailAddress($data['username']);
     } catch (InvalidArgumentException $e) {
-        return $this->view->render($response->withStatus(401), 'login.twig', ['message' => $message]);
+        return $this->view->render($response->withStatus(401), 'login.twig', ['message' => $message, 'reset_password_url' => $resetPasswordUrl]);
     }
     $password = filter_var($data['password'], FILTER_SANITIZE_STRING);
 
     if ($email == "" || $password == "") {
-        return $this->view->render($response->withStatus(401), 'login.twig', ['message' => $message]);
+        return $this->view->render($response->withStatus(401), 'login.twig', ['message' => $message, 'reset_password_url' => $resetPasswordUrl]);
     }
 
     // login
@@ -541,7 +546,7 @@ $app->post('/login', function ($request, $response, $args) {
     } catch (Exception $e) {
         $message = "Too many failed login attempts. Please try again in 15 minutes.";
     }
-    return $this->view->render($response->withStatus(401), 'login.twig', ['username' => $email, 'message' => $message ]);
+    return $this->view->render($response->withStatus(401), 'login.twig', ['username' => $email, 'message' => $message, 'reset_password_url' => $resetPasswordUrl ]);
 })->setName('login-post');
 
 

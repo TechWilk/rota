@@ -65,4 +65,15 @@ class OneBodyAuth implements UsernamePasswordInterface
 
         return true;
     }
+
+    public function getResetPasswordUrl()
+    {
+        $url = null;
+        $base_uri = $this->guzzle->getConfig()['base_uri'];
+
+        if (strlen($base_uri) > 0) {
+            $url = $base_uri .'/account/new?forgot=true';
+        }
+        return $url;
+    }
 }
