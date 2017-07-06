@@ -632,7 +632,7 @@ $app->get('/user/me/calendar/{id}/revoke', function ($request, $response, $args)
 })->setName('user-calendar-revoke');
 
 
-$app->get('/calendar/{token}.ical', function ($request, $response, $args) {
+$app->get('/calendar/{token}.{format}', function ($request, $response, $args) {
     // Sample log message
     $this->logger->info("Fetch settings GET '/calendar/".$args['token'].".ical'");
 
@@ -642,9 +642,26 @@ $app->get('/calendar/{token}.ical', function ($request, $response, $args) {
         return $this->view->render($response->withStatus(404), 'calendar-error.twig');
     }
     $u = $c->getUser();
-    $e = EventQuery::create()->filterByUser($u)->find();
+    $e = EventQuery::create()
+        ->useEventPersonQuery()
+            ->useUserRoleQuery()
+                ->filterByUser($u)
+            ->endUse()
+        ->endUse()
+        ->filterByRemoved(false)
+        ->find();
 
-    return $this->view->render($response, 'calendar-ical.twig', ['user' => $u, 'events' => $e]);
+    switch ($args['format']) {
+        case 'ical':
+            return $this->view->render($response->withHeader('Content-type', 'text/calendar'), 'calendar-ical.twig', ['user' => $u, 'events' => $e]);
+            break;
+        case 'ics':
+            return $this->view->render($response->withHeader('Content-type', 'text/calendar'), 'calendar-ical.twig', ['user' => $u, 'events' => $e]);
+            break;
+        default:
+            return $this->view->render($response->withStatus(404), 'calendar-error.twig');
+            break;
+    }
 })->setName('user-calendar');
 
 
@@ -672,3 +689,37 @@ $app->get('/', function ($request, $response, $args) {
     // Render index view
     return $this->view->render($response, 'home.twig', ['eventsthisweek' => $eventsThisWeek, 'remainingeventsingroups' => $remainingEventsInGroups, ]);
 })->setName('home');
+
+
+
+
+
+// LEGACY
+
+$app->get('/calendar.php', function ($request, $response, $args) {
+    // Sample log message
+    $this->logger->info("Fetch -LEGACY- calendar GET '/calendar.php'");
+
+    $getParameters = $request->getQueryParams();
+
+    $userId = filter_var($getParameters["user"], FILTER_VALIDATE_INT);
+    $token = $getParameters["token"];
+    $format = $getParameters["format"];
+
+    $c = CalendarTokenQuery::create()->filterByToken($token)->filterByUserId($userId)->findOne();
+
+    if (!isset($c)) {
+        return $this->view->render($response->withStatus(404), 'calendar-error.twig');
+    }
+    $u = $c->getUser();
+    $e = EventQuery::create()
+        ->useEventPersonQuery()
+            ->useUserRoleQuery()
+                ->filterByUser($u)
+            ->endUse()
+        ->endUse()
+        ->filterByRemoved(false)
+        ->find();
+
+    return $this->view->render($response->withHeader('Content-type', 'text/calendar'), 'calendar-ical.twig', ['user' => $u, 'events' => $e]);
+})->setName('user-calendar');

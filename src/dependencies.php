@@ -10,6 +10,7 @@ use DPolac\TwigLambda\LambdaExtension;
 use Twig_Extensions_Extension_Date;
 use Twig_Extensions_Extension_Text;
 use TechWilk\Rota\AuthProvider;
+use TechWilk\Twig\Extension\LineWrap;
 use Monolog;
 use GuzzleHttp;
 
@@ -23,7 +24,7 @@ $container['view'] = function ($c) {
     $view = new Twig($settings['template_path'], [
         'cache' => false, // or 'path/to/cache'
     ]);
-    
+
     // Instantiate and add Slim specific extension
     $basePath = rtrim(str_ireplace('index.php', '', $c['request']->getUri()->getBasePath()), '/');
     $view->addExtension(new TwigExtension($c['router'], $basePath));
@@ -35,11 +36,13 @@ $container['view'] = function ($c) {
     $view->addExtension(new Twig_Extensions_Extension_Date());
     $view->addExtension(new Twig_Extensions_Extension_Text());
 
+    $view->addExtension(new LineWrap());
+
     $env = $view->getEnvironment();
     $env->addGlobal('site', new Site);
     $env->addGlobal('currenturl', $c->get('request')->getUri());
     $env->addGlobal('currentpath', $c->get('request')->getUri()->getBasePath().'/'.$c->get('request')->getUri()->getPath());
-    
+
     if (isset($_SESSION['userId'])) {
         $u = UserQuery::create()->findPk($_SESSION['userId']);
         if (isset($u)) {
@@ -66,16 +69,16 @@ $container['auth'] = function ($c) {
         case 'facebook':
             $authProvider = new AuthProvider\FacebookAuth();
             break;
-        
+
         case 'onebody':
             $url = $authConfig['onebody']['url'] .'/';
             $email = new EmailAddress($authConfig['onebody']['email']);
             $apiKey = $authConfig['onebody']['apiKey'];
-            
+
             $guzzle = new GuzzleHttp\Client(['base_uri' => $url]);
             $authProvider = new AuthProvider\UsernamePassword\OneBodyAuth($guzzle, $email, $apiKey);
             break;
-        
+
         default:
             $authProvider = new AuthProvider\UsernamePassword\UsernamePasswordAuth();
             break;
