@@ -2,20 +2,9 @@
 
 use DateInterval;
 use DateTime;
-
-session_start();
-
-// AUTH
-if (isset($_SESSION['userId'])) {
-    $_SESSION['userid'] = $_SESSION['userId'];
-    $_SESSION['is_logged_in'] = true;
-    $_SESSION['db_is_logged_in'] = true;
-} else {
-    unset($_SESSION['userid']);
-    unset($_SESSION['is_logged_in']);
-    unset($_SESSION['db_is_logged_in']);
-}
-// END AUTH
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Mailgun\Mailgun;
 
 include(__DIR__ . '/errors.php');
 
@@ -25,18 +14,29 @@ require_once dirname(__FILE__) . '/../../../vendor/autoload.php';
 // setup Propel
 require_once dirname(__FILE__) . '/../../../generated-conf/config.php';
 
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Mailgun\Mailgun;
-
 $defaultLogger = new Logger('defaultLogger');
 $defaultLogger->pushHandler(new StreamHandler(__DIR__ . '/../../../logs/propel.log', Logger::WARNING));
 
 $serviceContainer->setLogger('defaultLogger', $defaultLogger);
 
-
-
 // ~~~~~~ END OF ORM SETUP ~~~~~~
+
+session_start();
+
+// AUTH
+if (isset($_SESSION['userId'])) {
+    $_SESSION['userid'] = $_SESSION['userId'];
+    $_SESSION['is_logged_in'] = true;
+    $_SESSION['db_is_logged_in'] = true;
+    $user = UserQuery::create()->findPk($_SESSION['userId']);
+    $_SESSION['name'] = $user->getName();
+} else {
+    unset($_SESSION['userid']);
+    unset($_SESSION['is_logged_in']);
+    unset($_SESSION['db_is_logged_in']);
+    unset($_SESSION['name']);
+}
+// END AUTH
 
 date_default_timezone_set('UTC');
 

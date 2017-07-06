@@ -41,7 +41,7 @@ use DateTime;
 
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-		
+
     <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
           page. However, you can choose any other skin. Make sure you
           apply the skin class to the body tag so the changes take effect.
@@ -275,17 +275,17 @@ use DateTime;
 								<li class="footer"><a href="#">See All Messages</a></li>
 							</ul>
 						</li><!-- /.messages-menu -->
-						
+
 						<!-- Notifications Menu -->
 						<?php
                         if (isset($_SESSION['userid'])):
                             $userId = $_SESSION['userid'];
                             $sql = "SELECT id, timestamp, summary, body, link, seen FROM cr_notifications WHERE userId = '$userId' AND dismissed = FALSE AND archived = FALSE ORDER BY id DESC";
-                            
+
                             $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
-                            
+
                             $unseen = 0;
-                            
+
                             while ($ob = mysqli_fetch_object($result)) {
                                 $notifications[] = $ob;
                                 if ($ob->seen == false) {
@@ -319,7 +319,7 @@ use DateTime;
 						</li>
 						<?php
                         endif;
-                        
+
                         /*
                         <!-- Tasks Menu -->
                         <li class="dropdown tasks-menu">
@@ -357,7 +357,7 @@ use DateTime;
                             </ul>
                         </li>
                         */
-                        
+
                         if (isset($_SESSION['userid'])): ?>
 						<!-- User Account Menu -->
 						<li class="dropdown user user-menu">
@@ -407,7 +407,7 @@ use DateTime;
 							</ul>
 						</li>
 						<?php endif; ?>
-						
+
 						<!-- Control Sidebar Toggle Button -->
 						<li>
 							<a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
@@ -463,7 +463,7 @@ use DateTime;
 						<ul class="treeview-menu">
 							<?php /*<li><a href="events.php?view=user">My Events</a></li>*/ ?>
 							<?php
-                                $filter_sql = "SELECT id, name 
+                                $filter_sql = "SELECT id, name
 								FROM cr_eventTypes
 								WHERE id IN
 									(SELECT `cr_events`.`type`
