@@ -99,18 +99,19 @@ class User extends BaseUser
               } elseif ($socialAuth->getPlatform() == 'onebody') {
                   $baseUrl = getConfig()['auth']['onebody']['url'];
                   $photoFingerprint = $socialAuth->getMeta()['photo-fingerprint'];
+                  $extension = pathinfo($socialAuth->getMeta()['photo-file-name'], PATHINFO_EXTENSION);
                   switch ($size) {
                     case 'small': // 50px x 50px
-                        return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/tn/' . $photoFingerprint . '.jpg';
+                        return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/tn/' . $photoFingerprint . '.' . $extension;
                         break;
                     case 'medium': // 150px x 150px
-                        return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/small/' . $photoFingerprint . '.jpg';
+                        return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/small/' . $photoFingerprint . '.' . $extension;
                         break;
                     case 'large': // 500px x 500px
-                        return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/medium/' . $photoFingerprint . '.jpg';
+                        return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/medium/' . $photoFingerprint . '.' . $extension;
                         break;
                     default:
-                        return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/tn/' . $photoFingerprint . '.jpg';
+                        return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/tn/' . $photoFingerprint . '.' . $extension;
                         break;
                 }
               }
