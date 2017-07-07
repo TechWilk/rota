@@ -609,6 +609,23 @@ $app->get('/user/me/calendars', function ($request, $response, $args) {
 })->setName('user-calendars');
 
 
+$app->get('/user/me/calendar/new', function ($request, $response, $args) {
+    // Sample log message
+    $this->logger->info("Fetch settings GET '/user/me/calendars'");
+
+    $auth = $this['auth'];
+    $u = $auth->currentUser();
+
+    if (is_null($u)) {
+        return $this->view->render($response, 'error.twig');
+    }
+
+    $cals = CalendarTokenQuery::create()->filterByUser($u)->find();
+
+    return $this->view->render($response, 'user-calendars.twig', [ "user" => $u, 'calendars' => $cals ]);
+})->setName('user-calendars');
+
+
 $app->get('/user/me/calendar/{id}/revoke', function ($request, $response, $args) {
     // Sample log message
     $this->logger->info("Fetch settings GET '/user/me/calendar/".$args['id']."/revoke'");
