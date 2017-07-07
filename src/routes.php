@@ -634,7 +634,7 @@ $app->get('/user/me/calendar/{id}/revoke', function ($request, $response, $args)
 
 $app->get('/calendar/{token}.{format}', function ($request, $response, $args) {
     // Sample log message
-    $this->logger->info("Fetch settings GET '/calendar/".$args['token'].".ical'");
+    $this->logger->info("Fetch calendar GET '/calendar/".$args['token'].".".$args['format']."'");
 
     $c = CalendarTokenQuery::create()->filterByToken($args['token'])->findOne();
 
@@ -698,7 +698,10 @@ $app->get('/', function ($request, $response, $args) {
 
 $app->get('/calendar.php', function ($request, $response, $args) {
     // Sample log message
-    $this->logger->info("Fetch -LEGACY- calendar GET '/calendar.php'");
+
+    $getParameters = $request->getQueryParams();
+
+    $this->logger->info("Fetch -LEGACY- calendar GET '/calendar.php?user=".$getParameters['user']."&token=".$getParameters['token']."&format=".$getParameters['format']."'");
 
     $getParameters = $request->getQueryParams();
 
