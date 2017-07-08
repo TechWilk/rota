@@ -14,4 +14,16 @@ use TechWilk\Rota\Base\UserRole as BaseUserRole;
  */
 class UserRole extends BaseUserRole
 {
+    /**
+    * Determine if the user is marked as unavailable for an event.
+    *
+    * @return bool if user is unavailable
+    */
+    public function isUnavailableForEvent(Event $event)
+    {
+        return UnavailableQuery::create()
+            ->filterByUser($this->getUser())
+            ->filterByEvent($event)
+            ->count() > 0;
+    }
 }
