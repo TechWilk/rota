@@ -17,159 +17,159 @@ use DateTime;
 class User extends BaseUser
 {
     /**
-  * Set the value of [password] column.
-  *
-  * @param string $v new value
-  * @return $this|\User The current object (for fluent API support)
-  */
-  public function setPassword($v)
-  {
-      if ($v !== null) {
-          $v = (string) $v;
-      }
+    * Set the value of [password] column.
+    *
+    * @param string $v new value
+    * @return $this|\User The current object (for fluent API support)
+    */
+    public function setPassword($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
 
-      if (!password_verify($v, $this->password)) {
-          $bcrypt_options = [
-        'cost' => 12,
-      ];
-          $this->password = password_hash($v, PASSWORD_BCRYPT, $bcrypt_options);
-          ;
-          $this->modifiedColumns[UserTableMap::COL_PASSWORD] = true;
-      }
+        if (!password_verify($v, $this->password)) {
+            $bcrypt_options = [
+            'cost' => 12,
+        ];
+            $this->password = password_hash($v, PASSWORD_BCRYPT, $bcrypt_options);
+            ;
+            $this->modifiedColumns[UserTableMap::COL_PASSWORD] = true;
+        }
 
-      return $this;
-  } // setPassword()
-
-
-  /**
-  * Check a plain text password against the value of [password] column.
-  *
-  * @param string $v plain text password
-  * @return $this|\User The current object (for fluent API support)
-  */
-  public function checkPassword($v)
-  {
-      if ($v !== null) {
-          $v = (string) $v;
-      } else {
-          return false;
-      }
-
-      return password_verify($v, $this->password);
-  } // checkPassword()
+        return $this;
+    } // setPassword()
 
 
-  /**
-  * Get the [firstname] and [lastname] column value concatenated with a space.
-  *
-  * @return string
-  */
-  public function getName()
-  {
-      return $this->firstname . ' ' . $this->lastname;
-  }
+    /**
+    * Check a plain text password against the value of [password] column.
+    *
+    * @param string $v plain text password
+    * @return $this|\User The current object (for fluent API support)
+    */
+    public function checkPassword($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        } else {
+            return false;
+        }
 
-  /**
-  * Get the URL for the user's profile image.
-  *
-  * @param string $size either 'small' or 'large'
-  * @return string
-  */
-  public function getProfileImage($size)
-  {
-      $socialAuths = $this->getSocialAuths();
+        return password_verify($v, $this->password);
+    } // checkPassword()
 
-      if (isset($socialAuths)) {
-          foreach ($socialAuths as $socialAuth) {
-              if ($socialAuth->getPlatform() == 'facebook') {
-                  switch ($size) {
-                    case 'small': // 50px x 50px
-                        return '//graph.facebook.com/' . $socialAuth->getSocialId() . '/picture?type=square';
-                        break;
-                    case 'medium': // 200px x 200px
-                        return '//graph.facebook.com/' . $socialAuth->getSocialId() . '/picture?type=large';
-                        break;
-                    case 'large': // 200px x 200px
-                        return '//graph.facebook.com/' . $socialAuth->getSocialId() . '/picture?type=large';
-                        break;
-                    default:
-                        return '//graph.facebook.com/' . $socialAuth->getSocialId() . '/picture';
-                        break;
-                }
-              } elseif ($socialAuth->getPlatform() == 'onebody') {
-                  $baseUrl = getConfig()['auth']['onebody']['url'];
-                  $photoFingerprint = $socialAuth->getMeta()['photo-fingerprint'];
-                  $extension = pathinfo($socialAuth->getMeta()['photo-file-name'], PATHINFO_EXTENSION);
-                  switch ($size) {
-                    case 'small': // 50px x 50px
-                        return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/tn/' . $photoFingerprint . '.' . $extension;
-                        break;
-                    case 'medium': // 150px x 150px
-                        return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/small/' . $photoFingerprint . '.' . $extension;
-                        break;
-                    case 'large': // 500px x 500px
-                        return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/medium/' . $photoFingerprint . '.' . $extension;
-                        break;
-                    default:
-                        return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/tn/' . $photoFingerprint . '.' . $extension;
-                        break;
-                }
-              }
-          }
-      }
 
-      switch ($size) {
-        case 'small': // 50px x 50px
-            return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email))) . '?s=50&d=mm';
-            break;
-        case 'medium': // 200px x 200px
-            return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email)))  . '?s=200&d=mm';
-            break;
-        case 'large': // 500px x 500px
-            return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email)))  . '?s=500&d=mm';
-            break;
-        default:
-            return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email))) . '?s=50&d=mm';
-        break;
+    /**
+    * Get the [firstname] and [lastname] column value concatenated with a space.
+    *
+    * @return string
+    */
+    public function getName()
+    {
+        return $this->firstname . ' ' . $this->lastname;
     }
-  }
 
-  /**
-  * Get array of roles currently assigned to the user.
-  *
-  * @return array of Role() objects
-  */
-  public function getCurrentRoles()
-  {
-      $userRoles = $this->getUserRoles();
+    /**
+    * Get the URL for the user's profile image.
+    *
+    * @param string $size either 'small' or 'large'
+    * @return string
+    */
+    public function getProfileImage($size)
+    {
+        $socialAuths = $this->getSocialAuths();
 
-      $roles = [];
-      foreach ($userRoles as $userRole) {
-          $roles[] = $userRole->getRole();
-      }
+        if (isset($socialAuths)) {
+            foreach ($socialAuths as $socialAuth) {
+                if ($socialAuth->getPlatform() == 'facebook') {
+                    switch ($size) {
+                        case 'small': // 50px x 50px
+                            return '//graph.facebook.com/' . $socialAuth->getSocialId() . '/picture?type=square';
+                            break;
+                        case 'medium': // 200px x 200px
+                            return '//graph.facebook.com/' . $socialAuth->getSocialId() . '/picture?type=large';
+                            break;
+                        case 'large': // 200px x 200px
+                            return '//graph.facebook.com/' . $socialAuth->getSocialId() . '/picture?type=large';
+                            break;
+                        default:
+                            return '//graph.facebook.com/' . $socialAuth->getSocialId() . '/picture';
+                            break;
+                    }
+                } elseif ($socialAuth->getPlatform() == 'onebody') {
+                    $baseUrl = getConfig()['auth']['onebody']['url'];
+                    $photoFingerprint = $socialAuth->getMeta()['photo-fingerprint'];
+                    $extension = pathinfo($socialAuth->getMeta()['photo-file-name'], PATHINFO_EXTENSION);
+                    switch ($size) {
+                        case 'small': // 50px x 50px
+                            return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/tn/' . $photoFingerprint . '.' . $extension;
+                            break;
+                        case 'medium': // 150px x 150px
+                            return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/small/' . $photoFingerprint . '.' . $extension;
+                            break;
+                        case 'large': // 500px x 500px
+                            return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/medium/' . $photoFingerprint . '.' . $extension;
+                            break;
+                        default:
+                            return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/tn/' . $photoFingerprint . '.' . $extension;
+                            break;
+                    }
+                }
+            }
+        }
 
-      return $roles;
-  }
+        switch ($size) {
+            case 'small': // 50px x 50px
+                return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email))) . '?s=50&d=mm';
+                break;
+            case 'medium': // 200px x 200px
+                return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email)))  . '?s=200&d=mm';
+                break;
+            case 'large': // 500px x 500px
+                return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email)))  . '?s=500&d=mm';
+                break;
+            default:
+                return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email))) . '?s=50&d=mm';
+            break;
+        }
+    }
 
-  /**
-  * Get object of upcoming events currently assigned to the user.
-  *
-  * @return array of Event() objects
-  */
-  public function getUpcomingEvents()
-  {
-      return EventQuery::create()->filterByDate(['min' => new DateTime()])->useEventPersonQuery()->useUserRoleQuery()->filterByUser($this)->endUse()->endUse()->distinct()->find();
-  }
+    /**
+    * Get array of roles currently assigned to the user.
+    *
+    * @return array of Role() objects
+    */
+    public function getCurrentRoles()
+    {
+        $userRoles = $this->getUserRoles();
 
-  /**
-  * Get object of upcoming events currently assigned to the user.
-  *
-  * @return array of Event() objects
-  */
-  public function getRolesInEvent(Event $event)
-  {
-      return RoleQuery::create()->useUserRoleQuery()->filterByUser($this)->useEventPersonQuery()->filterByEvent($event)->endUse()->endUse()->orderByName()->find();
-  }
+        $roles = [];
+        foreach ($userRoles as $userRole) {
+            $roles[] = $userRole->getRole();
+        }
+
+        return $roles;
+    }
+
+    /**
+    * Get object of upcoming events currently assigned to the user.
+    *
+    * @return array of Event() objects
+    */
+    public function getUpcomingEvents()
+    {
+        return EventQuery::create()->filterByDate(['min' => new DateTime()])->useEventPersonQuery()->useUserRoleQuery()->filterByUser($this)->endUse()->endUse()->distinct()->find();
+    }
+
+    /**
+    * Get object of upcoming events currently assigned to the user.
+    *
+    * @return array of Event() objects
+    */
+    public function getRolesInEvent(Event $event)
+    {
+        return RoleQuery::create()->useUserRoleQuery()->filterByUser($this)->useEventPersonQuery()->filterByEvent($event)->endUse()->endUse()->orderByName()->find();
+    }
 
     public function getCurrentNotifications()
     {
@@ -179,5 +179,18 @@ class User extends BaseUser
     public function getUnreadNotifications()
     {
         return NotificationQuery::create()->filterBySeen(false)->filterByUser($this)->filterByDismissed(false)->filterByArchived(false)->orderByTimestamp('desc')->find();
+    }
+
+    /**
+    * Determine if the user is marked as unavailable for an event.
+    *
+    * @return bool if user is unavailable
+    */
+    public function isUnavailableForEvent(Event $event)
+    {
+        return UnavailableQuery::create()
+            ->filterByUser($this)
+            ->filterByEvent($event)
+            ->count() > 0;
     }
 }

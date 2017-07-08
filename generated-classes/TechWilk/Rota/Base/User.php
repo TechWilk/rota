@@ -30,6 +30,8 @@ use TechWilk\Rota\Statistic as ChildStatistic;
 use TechWilk\Rota\StatisticQuery as ChildStatisticQuery;
 use TechWilk\Rota\Swap as ChildSwap;
 use TechWilk\Rota\SwapQuery as ChildSwapQuery;
+use TechWilk\Rota\Unavailable as ChildUnavailable;
+use TechWilk\Rota\UnavailableQuery as ChildUnavailableQuery;
 use TechWilk\Rota\User as ChildUser;
 use TechWilk\Rota\UserPermission as ChildUserPermission;
 use TechWilk\Rota\UserPermissionQuery as ChildUserPermissionQuery;
@@ -42,6 +44,7 @@ use TechWilk\Rota\Map\NotificationTableMap;
 use TechWilk\Rota\Map\SocialAuthTableMap;
 use TechWilk\Rota\Map\StatisticTableMap;
 use TechWilk\Rota\Map\SwapTableMap;
+use TechWilk\Rota\Map\UnavailableTableMap;
 use TechWilk\Rota\Map\UserPermissionTableMap;
 use TechWilk\Rota\Map\UserRoleTableMap;
 use TechWilk\Rota\Map\UserTableMap;
@@ -222,6 +225,12 @@ abstract class User implements ActiveRecordInterface
     protected $collEventsPartial;
 
     /**
+     * @var        ObjectCollection|ChildUnavailable[] Collection to store aggregation of ChildUnavailable objects.
+     */
+    protected $collUnavailables;
+    protected $collUnavailablesPartial;
+
+    /**
      * @var        ObjectCollection|ChildNotification[] Collection to store aggregation of ChildNotification objects.
      */
     protected $collNotifications;
@@ -276,6 +285,12 @@ abstract class User implements ActiveRecordInterface
      * @var ObjectCollection|ChildEvent[]
      */
     protected $eventsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildUnavailable[]
+     */
+    protected $unavailablesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -1300,6 +1315,8 @@ abstract class User implements ActiveRecordInterface
 
             $this->collEvents = null;
 
+            $this->collUnavailables = null;
+
             $this->collNotifications = null;
 
             $this->collSocialAuths = null;
@@ -1465,6 +1482,23 @@ abstract class User implements ActiveRecordInterface
 
             if ($this->collEvents !== null) {
                 foreach ($this->collEvents as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->unavailablesScheduledForDeletion !== null) {
+                if (!$this->unavailablesScheduledForDeletion->isEmpty()) {
+                    \TechWilk\Rota\UnavailableQuery::create()
+                        ->filterByPrimaryKeys($this->unavailablesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->unavailablesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collUnavailables !== null) {
+                foreach ($this->collUnavailables as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1910,6 +1944,20 @@ abstract class User implements ActiveRecordInterface
                 }
 
                 $result[$key] = $this->collEvents->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collUnavailables) {
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'unavailables';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'cr_unavailables';
+                        break;
+                    default:
+                        $key = 'Unavailables';
+                }
+
+                $result[$key] = $this->collUnavailables->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collNotifications) {
                 switch ($keyType) {
@@ -2359,6 +2407,12 @@ abstract class User implements ActiveRecordInterface
                 }
             }
 
+            foreach ($this->getUnavailables() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addUnavailable($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getNotifications() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addNotification($relObj->copy($deepCopy));
@@ -2441,6 +2495,10 @@ abstract class User implements ActiveRecordInterface
         }
         if ('Event' == $relationName) {
             $this->initEvents();
+            return;
+        }
+        if ('Unavailable' == $relationName) {
+            $this->initUnavailables();
             return;
         }
         if ('Notification' == $relationName) {
@@ -3017,6 +3075,256 @@ abstract class User implements ActiveRecordInterface
         $query->joinWith('EventGroup', $joinBehavior);
 
         return $this->getEvents($query, $con);
+    }
+
+    /**
+     * Clears out the collUnavailables collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addUnavailables()
+     */
+    public function clearUnavailables()
+    {
+        $this->collUnavailables = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collUnavailables collection loaded partially.
+     */
+    public function resetPartialUnavailables($v = true)
+    {
+        $this->collUnavailablesPartial = $v;
+    }
+
+    /**
+     * Initializes the collUnavailables collection.
+     *
+     * By default this just sets the collUnavailables collection to an empty array (like clearcollUnavailables());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initUnavailables($overrideExisting = true)
+    {
+        if (null !== $this->collUnavailables && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = UnavailableTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collUnavailables = new $collectionClassName;
+        $this->collUnavailables->setModel('\TechWilk\Rota\Unavailable');
+    }
+
+    /**
+     * Gets an array of ChildUnavailable objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildUnavailable[] List of ChildUnavailable objects
+     * @throws PropelException
+     */
+    public function getUnavailables(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collUnavailablesPartial && !$this->isNew();
+        if (null === $this->collUnavailables || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collUnavailables) {
+                // return empty collection
+                $this->initUnavailables();
+            } else {
+                $collUnavailables = ChildUnavailableQuery::create(null, $criteria)
+                    ->filterByUser($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collUnavailablesPartial && count($collUnavailables)) {
+                        $this->initUnavailables(false);
+
+                        foreach ($collUnavailables as $obj) {
+                            if (false == $this->collUnavailables->contains($obj)) {
+                                $this->collUnavailables->append($obj);
+                            }
+                        }
+
+                        $this->collUnavailablesPartial = true;
+                    }
+
+                    return $collUnavailables;
+                }
+
+                if ($partial && $this->collUnavailables) {
+                    foreach ($this->collUnavailables as $obj) {
+                        if ($obj->isNew()) {
+                            $collUnavailables[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collUnavailables = $collUnavailables;
+                $this->collUnavailablesPartial = false;
+            }
+        }
+
+        return $this->collUnavailables;
+    }
+
+    /**
+     * Sets a collection of ChildUnavailable objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $unavailables A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildUser The current object (for fluent API support)
+     */
+    public function setUnavailables(Collection $unavailables, ConnectionInterface $con = null)
+    {
+        /** @var ChildUnavailable[] $unavailablesToDelete */
+        $unavailablesToDelete = $this->getUnavailables(new Criteria(), $con)->diff($unavailables);
+
+
+        $this->unavailablesScheduledForDeletion = $unavailablesToDelete;
+
+        foreach ($unavailablesToDelete as $unavailableRemoved) {
+            $unavailableRemoved->setUser(null);
+        }
+
+        $this->collUnavailables = null;
+        foreach ($unavailables as $unavailable) {
+            $this->addUnavailable($unavailable);
+        }
+
+        $this->collUnavailables = $unavailables;
+        $this->collUnavailablesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Unavailable objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Unavailable objects.
+     * @throws PropelException
+     */
+    public function countUnavailables(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collUnavailablesPartial && !$this->isNew();
+        if (null === $this->collUnavailables || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collUnavailables) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getUnavailables());
+            }
+
+            $query = ChildUnavailableQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByUser($this)
+                ->count($con);
+        }
+
+        return count($this->collUnavailables);
+    }
+
+    /**
+     * Method called to associate a ChildUnavailable object to this object
+     * through the ChildUnavailable foreign key attribute.
+     *
+     * @param  ChildUnavailable $l ChildUnavailable
+     * @return $this|\TechWilk\Rota\User The current object (for fluent API support)
+     */
+    public function addUnavailable(ChildUnavailable $l)
+    {
+        if ($this->collUnavailables === null) {
+            $this->initUnavailables();
+            $this->collUnavailablesPartial = true;
+        }
+
+        if (!$this->collUnavailables->contains($l)) {
+            $this->doAddUnavailable($l);
+
+            if ($this->unavailablesScheduledForDeletion and $this->unavailablesScheduledForDeletion->contains($l)) {
+                $this->unavailablesScheduledForDeletion->remove($this->unavailablesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildUnavailable $unavailable The ChildUnavailable object to add.
+     */
+    protected function doAddUnavailable(ChildUnavailable $unavailable)
+    {
+        $this->collUnavailables[]= $unavailable;
+        $unavailable->setUser($this);
+    }
+
+    /**
+     * @param  ChildUnavailable $unavailable The ChildUnavailable object to remove.
+     * @return $this|ChildUser The current object (for fluent API support)
+     */
+    public function removeUnavailable(ChildUnavailable $unavailable)
+    {
+        if ($this->getUnavailables()->contains($unavailable)) {
+            $pos = $this->collUnavailables->search($unavailable);
+            $this->collUnavailables->remove($pos);
+            if (null === $this->unavailablesScheduledForDeletion) {
+                $this->unavailablesScheduledForDeletion = clone $this->collUnavailables;
+                $this->unavailablesScheduledForDeletion->clear();
+            }
+            $this->unavailablesScheduledForDeletion[]= clone $unavailable;
+            $unavailable->setUser(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this User is new, it will return
+     * an empty collection; or if this User has previously
+     * been saved, it will retrieve related Unavailables from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in User.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildUnavailable[] List of ChildUnavailable objects
+     */
+    public function getUnavailablesJoinEvent(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildUnavailableQuery::create(null, $criteria);
+        $query->joinWith('Event', $joinBehavior);
+
+        return $this->getUnavailables($query, $con);
     }
 
     /**
@@ -4549,6 +4857,11 @@ abstract class User implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collUnavailables) {
+                foreach ($this->collUnavailables as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collNotifications) {
                 foreach ($this->collNotifications as $o) {
                     $o->clearAllReferences($deep);
@@ -4583,6 +4896,7 @@ abstract class User implements ActiveRecordInterface
 
         $this->collCalendarTokens = null;
         $this->collEvents = null;
+        $this->collUnavailables = null;
         $this->collNotifications = null;
         $this->collSocialAuths = null;
         $this->collStatistics = null;

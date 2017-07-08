@@ -414,6 +414,23 @@ CREATE TABLE [cr_swaps]
 );
 
 -----------------------------------------------------------------------
+-- cr_unavailable
+-----------------------------------------------------------------------
+
+DROP TABLE IF EXISTS [cr_unavailable];
+
+CREATE TABLE [cr_unavailable]
+(
+    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    [eventId] INTEGER(30) NOT NULL,
+    [userId] INTEGER NOT NULL,
+    [comment] VARCHAR(64) NOT NULL,
+    UNIQUE ([id]),
+    FOREIGN KEY ([userId]) REFERENCES [cr_users] ([id]),
+    FOREIGN KEY ([eventId]) REFERENCES [cr_events] ([id])
+);
+
+-----------------------------------------------------------------------
 -- cr_userRoles
 -----------------------------------------------------------------------
 

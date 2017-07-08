@@ -271,6 +271,13 @@ class EventTableMap extends TableMap
     1 => ':id',
   ),
 ), null, null, 'Eventpeople', false);
+        $this->addRelation('Unavailable', '\\TechWilk\\Rota\\Unavailable', RelationMap::ONE_TO_MANY, array(
+  0 =>
+  array(
+    0 => ':eventId',
+    1 => ':id',
+  ),
+), null, null, 'Unavailables', false);
     } // buildRelations()
 
     /**
