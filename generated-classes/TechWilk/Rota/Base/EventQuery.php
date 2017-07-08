@@ -124,17 +124,17 @@ use TechWilk\Rota\Map\EventTableMap;
  * @method     ChildEventQuery rightJoinWithEventPerson() Adds a RIGHT JOIN clause and with to the query using the EventPerson relation
  * @method     ChildEventQuery innerJoinWithEventPerson() Adds a INNER JOIN clause and with to the query using the EventPerson relation
  *
- * @method     ChildEventQuery leftJoinUnavailable($relationAlias = null) Adds a LEFT JOIN clause to the query using the Unavailable relation
- * @method     ChildEventQuery rightJoinUnavailable($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Unavailable relation
- * @method     ChildEventQuery innerJoinUnavailable($relationAlias = null) Adds a INNER JOIN clause to the query using the Unavailable relation
+ * @method     ChildEventQuery leftJoinAvailability($relationAlias = null) Adds a LEFT JOIN clause to the query using the Availability relation
+ * @method     ChildEventQuery rightJoinAvailability($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Availability relation
+ * @method     ChildEventQuery innerJoinAvailability($relationAlias = null) Adds a INNER JOIN clause to the query using the Availability relation
  *
- * @method     ChildEventQuery joinWithUnavailable($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Unavailable relation
+ * @method     ChildEventQuery joinWithAvailability($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Availability relation
  *
- * @method     ChildEventQuery leftJoinWithUnavailable() Adds a LEFT JOIN clause and with to the query using the Unavailable relation
- * @method     ChildEventQuery rightJoinWithUnavailable() Adds a RIGHT JOIN clause and with to the query using the Unavailable relation
- * @method     ChildEventQuery innerJoinWithUnavailable() Adds a INNER JOIN clause and with to the query using the Unavailable relation
+ * @method     ChildEventQuery leftJoinWithAvailability() Adds a LEFT JOIN clause and with to the query using the Availability relation
+ * @method     ChildEventQuery rightJoinWithAvailability() Adds a RIGHT JOIN clause and with to the query using the Availability relation
+ * @method     ChildEventQuery innerJoinWithAvailability() Adds a INNER JOIN clause and with to the query using the Availability relation
  *
- * @method     \TechWilk\Rota\UserQuery|\TechWilk\Rota\EventTypeQuery|\TechWilk\Rota\EventSubTypeQuery|\TechWilk\Rota\LocationQuery|\TechWilk\Rota\EventGroupQuery|\TechWilk\Rota\EventPersonQuery|\TechWilk\Rota\UnavailableQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \TechWilk\Rota\UserQuery|\TechWilk\Rota\EventTypeQuery|\TechWilk\Rota\EventSubTypeQuery|\TechWilk\Rota\LocationQuery|\TechWilk\Rota\EventGroupQuery|\TechWilk\Rota\EventPersonQuery|\TechWilk\Rota\AvailabilityQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildEvent findOne(ConnectionInterface $con = null) Return the first ChildEvent matching the query
  * @method     ChildEvent findOneOrCreate(ConnectionInterface $con = null) Return the first ChildEvent matching the query, or a new ChildEvent object populated from the query conditions when no match is found
@@ -1492,40 +1492,40 @@ abstract class EventQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related \TechWilk\Rota\Unavailable object
+     * Filter the query by a related \TechWilk\Rota\Availability object
      *
-     * @param \TechWilk\Rota\Unavailable|ObjectCollection $unavailable the related object to use as filter
+     * @param \TechWilk\Rota\Availability|ObjectCollection $availability the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildEventQuery The current query, for fluid interface
      */
-    public function filterByUnavailable($unavailable, $comparison = null)
+    public function filterByAvailability($availability, $comparison = null)
     {
-        if ($unavailable instanceof \TechWilk\Rota\Unavailable) {
+        if ($availability instanceof \TechWilk\Rota\Availability) {
             return $this
-                ->addUsingAlias(EventTableMap::COL_ID, $unavailable->getEventId(), $comparison);
-        } elseif ($unavailable instanceof ObjectCollection) {
+                ->addUsingAlias(EventTableMap::COL_ID, $availability->getEventId(), $comparison);
+        } elseif ($availability instanceof ObjectCollection) {
             return $this
-                ->useUnavailableQuery()
-                ->filterByPrimaryKeys($unavailable->getPrimaryKeys())
+                ->useAvailabilityQuery()
+                ->filterByPrimaryKeys($availability->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByUnavailable() only accepts arguments of type \TechWilk\Rota\Unavailable or Collection');
+            throw new PropelException('filterByAvailability() only accepts arguments of type \TechWilk\Rota\Availability or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Unavailable relation
+     * Adds a JOIN clause to the query using the Availability relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildEventQuery The current query, for fluid interface
      */
-    public function joinUnavailable($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinAvailability($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Unavailable');
+        $relationMap = $tableMap->getRelation('Availability');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -1540,14 +1540,14 @@ abstract class EventQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Unavailable');
+            $this->addJoinObject($join, 'Availability');
         }
 
         return $this;
     }
 
     /**
-     * Use the Unavailable relation Unavailable object
+     * Use the Availability relation Availability object
      *
      * @see useQuery()
      *
@@ -1555,13 +1555,13 @@ abstract class EventQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return \TechWilk\Rota\UnavailableQuery A secondary query class using the current class as primary query
+     * @return \TechWilk\Rota\AvailabilityQuery A secondary query class using the current class as primary query
      */
-    public function useUnavailableQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useAvailabilityQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinUnavailable($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Unavailable', '\TechWilk\Rota\UnavailableQuery');
+            ->joinAvailability($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Availability', '\TechWilk\Rota\AvailabilityQuery');
     }
 
     /**

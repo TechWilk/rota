@@ -18,6 +18,8 @@ use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 use Propel\Runtime\Util\PropelDateTime;
+use TechWilk\Rota\Availability as ChildAvailability;
+use TechWilk\Rota\AvailabilityQuery as ChildAvailabilityQuery;
 use TechWilk\Rota\Event as ChildEvent;
 use TechWilk\Rota\EventGroup as ChildEventGroup;
 use TechWilk\Rota\EventGroupQuery as ChildEventGroupQuery;
@@ -30,13 +32,11 @@ use TechWilk\Rota\EventType as ChildEventType;
 use TechWilk\Rota\EventTypeQuery as ChildEventTypeQuery;
 use TechWilk\Rota\Location as ChildLocation;
 use TechWilk\Rota\LocationQuery as ChildLocationQuery;
-use TechWilk\Rota\Unavailable as ChildUnavailable;
-use TechWilk\Rota\UnavailableQuery as ChildUnavailableQuery;
 use TechWilk\Rota\User as ChildUser;
 use TechWilk\Rota\UserQuery as ChildUserQuery;
+use TechWilk\Rota\Map\AvailabilityTableMap;
 use TechWilk\Rota\Map\EventPersonTableMap;
 use TechWilk\Rota\Map\EventTableMap;
-use TechWilk\Rota\Map\UnavailableTableMap;
 
 /**
  * Base class that represents a row from the 'cr_events' table.
@@ -241,10 +241,10 @@ abstract class Event implements ActiveRecordInterface
     protected $collEventpeoplePartial;
 
     /**
-     * @var        ObjectCollection|ChildUnavailable[] Collection to store aggregation of ChildUnavailable objects.
+     * @var        ObjectCollection|ChildAvailability[] Collection to store aggregation of ChildAvailability objects.
      */
-    protected $collUnavailables;
-    protected $collUnavailablesPartial;
+    protected $collAvailabilities;
+    protected $collAvailabilitiesPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -262,9 +262,9 @@ abstract class Event implements ActiveRecordInterface
 
     /**
      * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildUnavailable[]
+     * @var ObjectCollection|ChildAvailability[]
      */
-    protected $unavailablesScheduledForDeletion = null;
+    protected $availabilitiesScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -1319,7 +1319,7 @@ abstract class Event implements ActiveRecordInterface
             $this->aEventGroup = null;
             $this->collEventpeople = null;
 
-            $this->collUnavailables = null;
+            $this->collAvailabilities = null;
         } // if (deep)
     }
 
@@ -1503,17 +1503,17 @@ abstract class Event implements ActiveRecordInterface
                 }
             }
 
-            if ($this->unavailablesScheduledForDeletion !== null) {
-                if (!$this->unavailablesScheduledForDeletion->isEmpty()) {
-                    \TechWilk\Rota\UnavailableQuery::create()
-                        ->filterByPrimaryKeys($this->unavailablesScheduledForDeletion->getPrimaryKeys(false))
+            if ($this->availabilitiesScheduledForDeletion !== null) {
+                if (!$this->availabilitiesScheduledForDeletion->isEmpty()) {
+                    \TechWilk\Rota\AvailabilityQuery::create()
+                        ->filterByPrimaryKeys($this->availabilitiesScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->unavailablesScheduledForDeletion = null;
+                    $this->availabilitiesScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collUnavailables !== null) {
-                foreach ($this->collUnavailables as $referrerFK) {
+            if ($this->collAvailabilities !== null) {
+                foreach ($this->collAvailabilities as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1924,19 +1924,19 @@ abstract class Event implements ActiveRecordInterface
 
                 $result[$key] = $this->collEventpeople->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collUnavailables) {
+            if (null !== $this->collAvailabilities) {
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
-                        $key = 'unavailables';
+                        $key = 'availabilities';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_unavailables';
+                        $key = 'cr_availabilities';
                         break;
                     default:
-                        $key = 'Unavailables';
+                        $key = 'Availabilities';
                 }
 
-                $result[$key] = $this->collUnavailables->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+                $result[$key] = $this->collAvailabilities->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -2306,9 +2306,9 @@ abstract class Event implements ActiveRecordInterface
                 }
             }
 
-            foreach ($this->getUnavailables() as $relObj) {
+            foreach ($this->getAvailabilities() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addUnavailable($relObj->copy($deepCopy));
+                    $copyObj->addAvailability($relObj->copy($deepCopy));
                 }
             }
         } // if ($deepCopy)
@@ -2611,8 +2611,8 @@ abstract class Event implements ActiveRecordInterface
             $this->initEventpeople();
             return;
         }
-        if ('Unavailable' == $relationName) {
-            $this->initUnavailables();
+        if ('Availability' == $relationName) {
+            $this->initAvailabilities();
             return;
         }
     }
@@ -2868,31 +2868,31 @@ abstract class Event implements ActiveRecordInterface
     }
 
     /**
-     * Clears out the collUnavailables collection
+     * Clears out the collAvailabilities collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addUnavailables()
+     * @see        addAvailabilities()
      */
-    public function clearUnavailables()
+    public function clearAvailabilities()
     {
-        $this->collUnavailables = null; // important to set this to NULL since that means it is uninitialized
+        $this->collAvailabilities = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Reset is the collUnavailables collection loaded partially.
+     * Reset is the collAvailabilities collection loaded partially.
      */
-    public function resetPartialUnavailables($v = true)
+    public function resetPartialAvailabilities($v = true)
     {
-        $this->collUnavailablesPartial = $v;
+        $this->collAvailabilitiesPartial = $v;
     }
 
     /**
-     * Initializes the collUnavailables collection.
+     * Initializes the collAvailabilities collection.
      *
-     * By default this just sets the collUnavailables collection to an empty array (like clearcollUnavailables());
+     * By default this just sets the collAvailabilities collection to an empty array (like clearcollAvailabilities());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -2901,20 +2901,20 @@ abstract class Event implements ActiveRecordInterface
      *
      * @return void
      */
-    public function initUnavailables($overrideExisting = true)
+    public function initAvailabilities($overrideExisting = true)
     {
-        if (null !== $this->collUnavailables && !$overrideExisting) {
+        if (null !== $this->collAvailabilities && !$overrideExisting) {
             return;
         }
 
-        $collectionClassName = UnavailableTableMap::getTableMap()->getCollectionClassName();
+        $collectionClassName = AvailabilityTableMap::getTableMap()->getCollectionClassName();
 
-        $this->collUnavailables = new $collectionClassName;
-        $this->collUnavailables->setModel('\TechWilk\Rota\Unavailable');
+        $this->collAvailabilities = new $collectionClassName;
+        $this->collAvailabilities->setModel('\TechWilk\Rota\Availability');
     }
 
     /**
-     * Gets an array of ChildUnavailable objects which contain a foreign key that references this object.
+     * Gets an array of ChildAvailability objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -2924,108 +2924,108 @@ abstract class Event implements ActiveRecordInterface
      *
      * @param      Criteria $criteria optional Criteria object to narrow the query
      * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildUnavailable[] List of ChildUnavailable objects
+     * @return ObjectCollection|ChildAvailability[] List of ChildAvailability objects
      * @throws PropelException
      */
-    public function getUnavailables(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getAvailabilities(Criteria $criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collUnavailablesPartial && !$this->isNew();
-        if (null === $this->collUnavailables || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collUnavailables) {
+        $partial = $this->collAvailabilitiesPartial && !$this->isNew();
+        if (null === $this->collAvailabilities || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collAvailabilities) {
                 // return empty collection
-                $this->initUnavailables();
+                $this->initAvailabilities();
             } else {
-                $collUnavailables = ChildUnavailableQuery::create(null, $criteria)
+                $collAvailabilities = ChildAvailabilityQuery::create(null, $criteria)
                     ->filterByEvent($this)
                     ->find($con);
 
                 if (null !== $criteria) {
-                    if (false !== $this->collUnavailablesPartial && count($collUnavailables)) {
-                        $this->initUnavailables(false);
+                    if (false !== $this->collAvailabilitiesPartial && count($collAvailabilities)) {
+                        $this->initAvailabilities(false);
 
-                        foreach ($collUnavailables as $obj) {
-                            if (false == $this->collUnavailables->contains($obj)) {
-                                $this->collUnavailables->append($obj);
+                        foreach ($collAvailabilities as $obj) {
+                            if (false == $this->collAvailabilities->contains($obj)) {
+                                $this->collAvailabilities->append($obj);
                             }
                         }
 
-                        $this->collUnavailablesPartial = true;
+                        $this->collAvailabilitiesPartial = true;
                     }
 
-                    return $collUnavailables;
+                    return $collAvailabilities;
                 }
 
-                if ($partial && $this->collUnavailables) {
-                    foreach ($this->collUnavailables as $obj) {
+                if ($partial && $this->collAvailabilities) {
+                    foreach ($this->collAvailabilities as $obj) {
                         if ($obj->isNew()) {
-                            $collUnavailables[] = $obj;
+                            $collAvailabilities[] = $obj;
                         }
                     }
                 }
 
-                $this->collUnavailables = $collUnavailables;
-                $this->collUnavailablesPartial = false;
+                $this->collAvailabilities = $collAvailabilities;
+                $this->collAvailabilitiesPartial = false;
             }
         }
 
-        return $this->collUnavailables;
+        return $this->collAvailabilities;
     }
 
     /**
-     * Sets a collection of ChildUnavailable objects related by a one-to-many relationship
+     * Sets a collection of ChildAvailability objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      Collection $unavailables A Propel collection.
+     * @param      Collection $availabilities A Propel collection.
      * @param      ConnectionInterface $con Optional connection object
      * @return $this|ChildEvent The current object (for fluent API support)
      */
-    public function setUnavailables(Collection $unavailables, ConnectionInterface $con = null)
+    public function setAvailabilities(Collection $availabilities, ConnectionInterface $con = null)
     {
-        /** @var ChildUnavailable[] $unavailablesToDelete */
-        $unavailablesToDelete = $this->getUnavailables(new Criteria(), $con)->diff($unavailables);
+        /** @var ChildAvailability[] $availabilitiesToDelete */
+        $availabilitiesToDelete = $this->getAvailabilities(new Criteria(), $con)->diff($availabilities);
 
 
-        $this->unavailablesScheduledForDeletion = $unavailablesToDelete;
+        $this->availabilitiesScheduledForDeletion = $availabilitiesToDelete;
 
-        foreach ($unavailablesToDelete as $unavailableRemoved) {
-            $unavailableRemoved->setEvent(null);
+        foreach ($availabilitiesToDelete as $availabilityRemoved) {
+            $availabilityRemoved->setEvent(null);
         }
 
-        $this->collUnavailables = null;
-        foreach ($unavailables as $unavailable) {
-            $this->addUnavailable($unavailable);
+        $this->collAvailabilities = null;
+        foreach ($availabilities as $availability) {
+            $this->addAvailability($availability);
         }
 
-        $this->collUnavailables = $unavailables;
-        $this->collUnavailablesPartial = false;
+        $this->collAvailabilities = $availabilities;
+        $this->collAvailabilitiesPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related Unavailable objects.
+     * Returns the number of related Availability objects.
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct
      * @param      ConnectionInterface $con
-     * @return int             Count of related Unavailable objects.
+     * @return int             Count of related Availability objects.
      * @throws PropelException
      */
-    public function countUnavailables(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countAvailabilities(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collUnavailablesPartial && !$this->isNew();
-        if (null === $this->collUnavailables || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collUnavailables) {
+        $partial = $this->collAvailabilitiesPartial && !$this->isNew();
+        if (null === $this->collAvailabilities || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collAvailabilities) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getUnavailables());
+                return count($this->getAvailabilities());
             }
 
-            $query = ChildUnavailableQuery::create(null, $criteria);
+            $query = ChildAvailabilityQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
@@ -3035,28 +3035,28 @@ abstract class Event implements ActiveRecordInterface
                 ->count($con);
         }
 
-        return count($this->collUnavailables);
+        return count($this->collAvailabilities);
     }
 
     /**
-     * Method called to associate a ChildUnavailable object to this object
-     * through the ChildUnavailable foreign key attribute.
+     * Method called to associate a ChildAvailability object to this object
+     * through the ChildAvailability foreign key attribute.
      *
-     * @param  ChildUnavailable $l ChildUnavailable
+     * @param  ChildAvailability $l ChildAvailability
      * @return $this|\TechWilk\Rota\Event The current object (for fluent API support)
      */
-    public function addUnavailable(ChildUnavailable $l)
+    public function addAvailability(ChildAvailability $l)
     {
-        if ($this->collUnavailables === null) {
-            $this->initUnavailables();
-            $this->collUnavailablesPartial = true;
+        if ($this->collAvailabilities === null) {
+            $this->initAvailabilities();
+            $this->collAvailabilitiesPartial = true;
         }
 
-        if (!$this->collUnavailables->contains($l)) {
-            $this->doAddUnavailable($l);
+        if (!$this->collAvailabilities->contains($l)) {
+            $this->doAddAvailability($l);
 
-            if ($this->unavailablesScheduledForDeletion and $this->unavailablesScheduledForDeletion->contains($l)) {
-                $this->unavailablesScheduledForDeletion->remove($this->unavailablesScheduledForDeletion->search($l));
+            if ($this->availabilitiesScheduledForDeletion and $this->availabilitiesScheduledForDeletion->contains($l)) {
+                $this->availabilitiesScheduledForDeletion->remove($this->availabilitiesScheduledForDeletion->search($l));
             }
         }
 
@@ -3064,29 +3064,29 @@ abstract class Event implements ActiveRecordInterface
     }
 
     /**
-     * @param ChildUnavailable $unavailable The ChildUnavailable object to add.
+     * @param ChildAvailability $availability The ChildAvailability object to add.
      */
-    protected function doAddUnavailable(ChildUnavailable $unavailable)
+    protected function doAddAvailability(ChildAvailability $availability)
     {
-        $this->collUnavailables[]= $unavailable;
-        $unavailable->setEvent($this);
+        $this->collAvailabilities[]= $availability;
+        $availability->setEvent($this);
     }
 
     /**
-     * @param  ChildUnavailable $unavailable The ChildUnavailable object to remove.
+     * @param  ChildAvailability $availability The ChildAvailability object to remove.
      * @return $this|ChildEvent The current object (for fluent API support)
      */
-    public function removeUnavailable(ChildUnavailable $unavailable)
+    public function removeAvailability(ChildAvailability $availability)
     {
-        if ($this->getUnavailables()->contains($unavailable)) {
-            $pos = $this->collUnavailables->search($unavailable);
-            $this->collUnavailables->remove($pos);
-            if (null === $this->unavailablesScheduledForDeletion) {
-                $this->unavailablesScheduledForDeletion = clone $this->collUnavailables;
-                $this->unavailablesScheduledForDeletion->clear();
+        if ($this->getAvailabilities()->contains($availability)) {
+            $pos = $this->collAvailabilities->search($availability);
+            $this->collAvailabilities->remove($pos);
+            if (null === $this->availabilitiesScheduledForDeletion) {
+                $this->availabilitiesScheduledForDeletion = clone $this->collAvailabilities;
+                $this->availabilitiesScheduledForDeletion->clear();
             }
-            $this->unavailablesScheduledForDeletion[]= clone $unavailable;
-            $unavailable->setEvent(null);
+            $this->availabilitiesScheduledForDeletion[]= clone $availability;
+            $availability->setEvent(null);
         }
 
         return $this;
@@ -3098,7 +3098,7 @@ abstract class Event implements ActiveRecordInterface
      * an identical criteria, it returns the collection.
      * Otherwise if this Event is new, it will return
      * an empty collection; or if this Event has previously
-     * been saved, it will retrieve related Unavailables from storage.
+     * been saved, it will retrieve related Availabilities from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -3107,14 +3107,14 @@ abstract class Event implements ActiveRecordInterface
      * @param      Criteria $criteria optional Criteria object to narrow the query
      * @param      ConnectionInterface $con optional connection object
      * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildUnavailable[] List of ChildUnavailable objects
+     * @return ObjectCollection|ChildAvailability[] List of ChildAvailability objects
      */
-    public function getUnavailablesJoinUser(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    public function getAvailabilitiesJoinUser(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
     {
-        $query = ChildUnavailableQuery::create(null, $criteria);
+        $query = ChildAvailabilityQuery::create(null, $criteria);
         $query->joinWith('User', $joinBehavior);
 
-        return $this->getUnavailables($query, $con);
+        return $this->getAvailabilities($query, $con);
     }
 
     /**
@@ -3180,15 +3180,15 @@ abstract class Event implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collUnavailables) {
-                foreach ($this->collUnavailables as $o) {
+            if ($this->collAvailabilities) {
+                foreach ($this->collAvailabilities as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
         } // if ($deep)
 
         $this->collEventpeople = null;
-        $this->collUnavailables = null;
+        $this->collAvailabilities = null;
         $this->aUser = null;
         $this->aEventType = null;
         $this->aEventSubType = null;

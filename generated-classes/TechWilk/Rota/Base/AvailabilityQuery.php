@@ -11,109 +11,114 @@ use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
-use TechWilk\Rota\Unavailable as ChildUnavailable;
-use TechWilk\Rota\UnavailableQuery as ChildUnavailableQuery;
-use TechWilk\Rota\Map\UnavailableTableMap;
+use TechWilk\Rota\Availability as ChildAvailability;
+use TechWilk\Rota\AvailabilityQuery as ChildAvailabilityQuery;
+use TechWilk\Rota\Map\AvailabilityTableMap;
 
 /**
- * Base class that represents a query for the 'cr_unavailable' table.
+ * Base class that represents a query for the 'cr_availability' table.
  *
  *
  *
- * @method     ChildUnavailableQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     ChildUnavailableQuery orderByEventId($order = Criteria::ASC) Order by the eventId column
- * @method     ChildUnavailableQuery orderByUserId($order = Criteria::ASC) Order by the userId column
- * @method     ChildUnavailableQuery orderByComment($order = Criteria::ASC) Order by the comment column
+ * @method     ChildAvailabilityQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     ChildAvailabilityQuery orderByEventId($order = Criteria::ASC) Order by the eventId column
+ * @method     ChildAvailabilityQuery orderByUserId($order = Criteria::ASC) Order by the userId column
+ * @method     ChildAvailabilityQuery orderByAvailable($order = Criteria::ASC) Order by the available column
+ * @method     ChildAvailabilityQuery orderByComment($order = Criteria::ASC) Order by the comment column
  *
- * @method     ChildUnavailableQuery groupById() Group by the id column
- * @method     ChildUnavailableQuery groupByEventId() Group by the eventId column
- * @method     ChildUnavailableQuery groupByUserId() Group by the userId column
- * @method     ChildUnavailableQuery groupByComment() Group by the comment column
+ * @method     ChildAvailabilityQuery groupById() Group by the id column
+ * @method     ChildAvailabilityQuery groupByEventId() Group by the eventId column
+ * @method     ChildAvailabilityQuery groupByUserId() Group by the userId column
+ * @method     ChildAvailabilityQuery groupByAvailable() Group by the available column
+ * @method     ChildAvailabilityQuery groupByComment() Group by the comment column
  *
- * @method     ChildUnavailableQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     ChildUnavailableQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     ChildUnavailableQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     ChildAvailabilityQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     ChildAvailabilityQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     ChildAvailabilityQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     ChildUnavailableQuery leftJoinWith($relation) Adds a LEFT JOIN clause and with to the query
- * @method     ChildUnavailableQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
- * @method     ChildUnavailableQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
+ * @method     ChildAvailabilityQuery leftJoinWith($relation) Adds a LEFT JOIN clause and with to the query
+ * @method     ChildAvailabilityQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
+ * @method     ChildAvailabilityQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildUnavailableQuery leftJoinUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the User relation
- * @method     ChildUnavailableQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
- * @method     ChildUnavailableQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
+ * @method     ChildAvailabilityQuery leftJoinUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the User relation
+ * @method     ChildAvailabilityQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
+ * @method     ChildAvailabilityQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
  *
- * @method     ChildUnavailableQuery joinWithUser($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the User relation
+ * @method     ChildAvailabilityQuery joinWithUser($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the User relation
  *
- * @method     ChildUnavailableQuery leftJoinWithUser() Adds a LEFT JOIN clause and with to the query using the User relation
- * @method     ChildUnavailableQuery rightJoinWithUser() Adds a RIGHT JOIN clause and with to the query using the User relation
- * @method     ChildUnavailableQuery innerJoinWithUser() Adds a INNER JOIN clause and with to the query using the User relation
+ * @method     ChildAvailabilityQuery leftJoinWithUser() Adds a LEFT JOIN clause and with to the query using the User relation
+ * @method     ChildAvailabilityQuery rightJoinWithUser() Adds a RIGHT JOIN clause and with to the query using the User relation
+ * @method     ChildAvailabilityQuery innerJoinWithUser() Adds a INNER JOIN clause and with to the query using the User relation
  *
- * @method     ChildUnavailableQuery leftJoinEvent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Event relation
- * @method     ChildUnavailableQuery rightJoinEvent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Event relation
- * @method     ChildUnavailableQuery innerJoinEvent($relationAlias = null) Adds a INNER JOIN clause to the query using the Event relation
+ * @method     ChildAvailabilityQuery leftJoinEvent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Event relation
+ * @method     ChildAvailabilityQuery rightJoinEvent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Event relation
+ * @method     ChildAvailabilityQuery innerJoinEvent($relationAlias = null) Adds a INNER JOIN clause to the query using the Event relation
  *
- * @method     ChildUnavailableQuery joinWithEvent($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Event relation
+ * @method     ChildAvailabilityQuery joinWithEvent($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Event relation
  *
- * @method     ChildUnavailableQuery leftJoinWithEvent() Adds a LEFT JOIN clause and with to the query using the Event relation
- * @method     ChildUnavailableQuery rightJoinWithEvent() Adds a RIGHT JOIN clause and with to the query using the Event relation
- * @method     ChildUnavailableQuery innerJoinWithEvent() Adds a INNER JOIN clause and with to the query using the Event relation
+ * @method     ChildAvailabilityQuery leftJoinWithEvent() Adds a LEFT JOIN clause and with to the query using the Event relation
+ * @method     ChildAvailabilityQuery rightJoinWithEvent() Adds a RIGHT JOIN clause and with to the query using the Event relation
+ * @method     ChildAvailabilityQuery innerJoinWithEvent() Adds a INNER JOIN clause and with to the query using the Event relation
  *
  * @method     \TechWilk\Rota\UserQuery|\TechWilk\Rota\EventQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
- * @method     ChildUnavailable findOne(ConnectionInterface $con = null) Return the first ChildUnavailable matching the query
- * @method     ChildUnavailable findOneOrCreate(ConnectionInterface $con = null) Return the first ChildUnavailable matching the query, or a new ChildUnavailable object populated from the query conditions when no match is found
+ * @method     ChildAvailability findOne(ConnectionInterface $con = null) Return the first ChildAvailability matching the query
+ * @method     ChildAvailability findOneOrCreate(ConnectionInterface $con = null) Return the first ChildAvailability matching the query, or a new ChildAvailability object populated from the query conditions when no match is found
  *
- * @method     ChildUnavailable findOneById(int $id) Return the first ChildUnavailable filtered by the id column
- * @method     ChildUnavailable findOneByEventId(int $eventId) Return the first ChildUnavailable filtered by the eventId column
- * @method     ChildUnavailable findOneByUserId(int $userId) Return the first ChildUnavailable filtered by the userId column
- * @method     ChildUnavailable findOneByComment(string $comment) Return the first ChildUnavailable filtered by the comment column *
+ * @method     ChildAvailability findOneById(int $id) Return the first ChildAvailability filtered by the id column
+ * @method     ChildAvailability findOneByEventId(int $eventId) Return the first ChildAvailability filtered by the eventId column
+ * @method     ChildAvailability findOneByUserId(int $userId) Return the first ChildAvailability filtered by the userId column
+ * @method     ChildAvailability findOneByAvailable(boolean $available) Return the first ChildAvailability filtered by the available column
+ * @method     ChildAvailability findOneByComment(string $comment) Return the first ChildAvailability filtered by the comment column *
 
- * @method     ChildUnavailable requirePk($key, ConnectionInterface $con = null) Return the ChildUnavailable by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUnavailable requireOne(ConnectionInterface $con = null) Return the first ChildUnavailable matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAvailability requirePk($key, ConnectionInterface $con = null) Return the ChildAvailability by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAvailability requireOne(ConnectionInterface $con = null) Return the first ChildAvailability matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildUnavailable requireOneById(int $id) Return the first ChildUnavailable filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUnavailable requireOneByEventId(int $eventId) Return the first ChildUnavailable filtered by the eventId column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUnavailable requireOneByUserId(int $userId) Return the first ChildUnavailable filtered by the userId column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUnavailable requireOneByComment(string $comment) Return the first ChildUnavailable filtered by the comment column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAvailability requireOneById(int $id) Return the first ChildAvailability filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAvailability requireOneByEventId(int $eventId) Return the first ChildAvailability filtered by the eventId column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAvailability requireOneByUserId(int $userId) Return the first ChildAvailability filtered by the userId column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAvailability requireOneByAvailable(boolean $available) Return the first ChildAvailability filtered by the available column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAvailability requireOneByComment(string $comment) Return the first ChildAvailability filtered by the comment column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildUnavailable[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildUnavailable objects based on current ModelCriteria
- * @method     ChildUnavailable[]|ObjectCollection findById(int $id) Return ChildUnavailable objects filtered by the id column
- * @method     ChildUnavailable[]|ObjectCollection findByEventId(int $eventId) Return ChildUnavailable objects filtered by the eventId column
- * @method     ChildUnavailable[]|ObjectCollection findByUserId(int $userId) Return ChildUnavailable objects filtered by the userId column
- * @method     ChildUnavailable[]|ObjectCollection findByComment(string $comment) Return ChildUnavailable objects filtered by the comment column
- * @method     ChildUnavailable[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @method     ChildAvailability[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildAvailability objects based on current ModelCriteria
+ * @method     ChildAvailability[]|ObjectCollection findById(int $id) Return ChildAvailability objects filtered by the id column
+ * @method     ChildAvailability[]|ObjectCollection findByEventId(int $eventId) Return ChildAvailability objects filtered by the eventId column
+ * @method     ChildAvailability[]|ObjectCollection findByUserId(int $userId) Return ChildAvailability objects filtered by the userId column
+ * @method     ChildAvailability[]|ObjectCollection findByAvailable(boolean $available) Return ChildAvailability objects filtered by the available column
+ * @method     ChildAvailability[]|ObjectCollection findByComment(string $comment) Return ChildAvailability objects filtered by the comment column
+ * @method     ChildAvailability[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
-abstract class UnavailableQuery extends ModelCriteria
+abstract class AvailabilityQuery extends ModelCriteria
 {
     protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityNotFoundException';
 
     /**
-     * Initializes internal state of \TechWilk\Rota\Base\UnavailableQuery object.
+     * Initializes internal state of \TechWilk\Rota\Base\AvailabilityQuery object.
      *
      * @param     string $dbName The database name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
      * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
      */
-    public function __construct($dbName = 'default', $modelName = '\\TechWilk\\Rota\\Unavailable', $modelAlias = null)
+    public function __construct($dbName = 'default', $modelName = '\\TechWilk\\Rota\\Availability', $modelAlias = null)
     {
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
     /**
-     * Returns a new ChildUnavailableQuery object.
+     * Returns a new ChildAvailabilityQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
      * @param     Criteria $criteria Optional Criteria to build the query from
      *
-     * @return ChildUnavailableQuery
+     * @return ChildAvailabilityQuery
      */
     public static function create($modelAlias = null, Criteria $criteria = null)
     {
-        if ($criteria instanceof ChildUnavailableQuery) {
+        if ($criteria instanceof ChildAvailabilityQuery) {
             return $criteria;
         }
-        $query = new ChildUnavailableQuery();
+        $query = new ChildAvailabilityQuery();
         if (null !== $modelAlias) {
             $query->setModelAlias($modelAlias);
         }
@@ -136,7 +141,7 @@ abstract class UnavailableQuery extends ModelCriteria
      * @param mixed $key Primary key to use for the query
      * @param ConnectionInterface $con an optional connection object
      *
-     * @return ChildUnavailable|array|mixed the result, formatted by the current formatter
+     * @return ChildAvailability|array|mixed the result, formatted by the current formatter
      */
     public function findPk($key, ConnectionInterface $con = null)
     {
@@ -145,7 +150,7 @@ abstract class UnavailableQuery extends ModelCriteria
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(UnavailableTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(AvailabilityTableMap::DATABASE_NAME);
         }
 
         $this->basePreSelect($con);
@@ -158,7 +163,7 @@ abstract class UnavailableQuery extends ModelCriteria
             return $this->findPkComplex($key, $con);
         }
 
-        if ((null !== ($obj = UnavailableTableMap::getInstanceFromPool(null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key)))) {
+        if ((null !== ($obj = AvailabilityTableMap::getInstanceFromPool(null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key)))) {
             // the object is already in the instance pool
             return $obj;
         }
@@ -175,11 +180,11 @@ abstract class UnavailableQuery extends ModelCriteria
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
-     * @return ChildUnavailable A model object, or null if the key is not found
+     * @return ChildAvailability A model object, or null if the key is not found
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, eventId, userId, comment FROM cr_unavailable WHERE id = :p0';
+        $sql = 'SELECT id, eventId, userId, available, comment FROM cr_availability WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -190,10 +195,10 @@ abstract class UnavailableQuery extends ModelCriteria
         }
         $obj = null;
         if ($row = $stmt->fetch(\PDO::FETCH_NUM)) {
-            /** @var ChildUnavailable $obj */
-            $obj = new ChildUnavailable();
+            /** @var ChildAvailability $obj */
+            $obj = new ChildAvailability();
             $obj->hydrate($row);
-            UnavailableTableMap::addInstanceToPool($obj, null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key);
+            AvailabilityTableMap::addInstanceToPool($obj, null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key);
         }
         $stmt->closeCursor();
 
@@ -206,7 +211,7 @@ abstract class UnavailableQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     ConnectionInterface $con A connection object
      *
-     * @return ChildUnavailable|array|mixed the result, formatted by the current formatter
+     * @return ChildAvailability|array|mixed the result, formatted by the current formatter
      */
     protected function findPkComplex($key, ConnectionInterface $con)
     {
@@ -248,11 +253,11 @@ abstract class UnavailableQuery extends ModelCriteria
      *
      * @param     mixed $key Primary key to use for the query
      *
-     * @return $this|ChildUnavailableQuery The current query, for fluid interface
+     * @return $this|ChildAvailabilityQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
-        return $this->addUsingAlias(UnavailableTableMap::COL_ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(AvailabilityTableMap::COL_ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -260,11 +265,11 @@ abstract class UnavailableQuery extends ModelCriteria
      *
      * @param     array $keys The list of primary key to use for the query
      *
-     * @return $this|ChildUnavailableQuery The current query, for fluid interface
+     * @return $this|ChildAvailabilityQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
-        return $this->addUsingAlias(UnavailableTableMap::COL_ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(AvailabilityTableMap::COL_ID, $keys, Criteria::IN);
     }
 
     /**
@@ -283,18 +288,18 @@ abstract class UnavailableQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUnavailableQuery The current query, for fluid interface
+     * @return $this|ChildAvailabilityQuery The current query, for fluid interface
      */
     public function filterById($id = null, $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
             if (isset($id['min'])) {
-                $this->addUsingAlias(UnavailableTableMap::COL_ID, $id['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(AvailabilityTableMap::COL_ID, $id['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($id['max'])) {
-                $this->addUsingAlias(UnavailableTableMap::COL_ID, $id['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(AvailabilityTableMap::COL_ID, $id['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -305,7 +310,7 @@ abstract class UnavailableQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UnavailableTableMap::COL_ID, $id, $comparison);
+        return $this->addUsingAlias(AvailabilityTableMap::COL_ID, $id, $comparison);
     }
 
     /**
@@ -326,18 +331,18 @@ abstract class UnavailableQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUnavailableQuery The current query, for fluid interface
+     * @return $this|ChildAvailabilityQuery The current query, for fluid interface
      */
     public function filterByEventId($eventId = null, $comparison = null)
     {
         if (is_array($eventId)) {
             $useMinMax = false;
             if (isset($eventId['min'])) {
-                $this->addUsingAlias(UnavailableTableMap::COL_EVENTID, $eventId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(AvailabilityTableMap::COL_EVENTID, $eventId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($eventId['max'])) {
-                $this->addUsingAlias(UnavailableTableMap::COL_EVENTID, $eventId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(AvailabilityTableMap::COL_EVENTID, $eventId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -348,7 +353,7 @@ abstract class UnavailableQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UnavailableTableMap::COL_EVENTID, $eventId, $comparison);
+        return $this->addUsingAlias(AvailabilityTableMap::COL_EVENTID, $eventId, $comparison);
     }
 
     /**
@@ -369,18 +374,18 @@ abstract class UnavailableQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUnavailableQuery The current query, for fluid interface
+     * @return $this|ChildAvailabilityQuery The current query, for fluid interface
      */
     public function filterByUserId($userId = null, $comparison = null)
     {
         if (is_array($userId)) {
             $useMinMax = false;
             if (isset($userId['min'])) {
-                $this->addUsingAlias(UnavailableTableMap::COL_USERID, $userId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(AvailabilityTableMap::COL_USERID, $userId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($userId['max'])) {
-                $this->addUsingAlias(UnavailableTableMap::COL_USERID, $userId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(AvailabilityTableMap::COL_USERID, $userId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -391,7 +396,34 @@ abstract class UnavailableQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UnavailableTableMap::COL_USERID, $userId, $comparison);
+        return $this->addUsingAlias(AvailabilityTableMap::COL_USERID, $userId, $comparison);
+    }
+
+    /**
+     * Filter the query on the available column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByAvailable(true); // WHERE available = true
+     * $query->filterByAvailable('yes'); // WHERE available = true
+     * </code>
+     *
+     * @param     boolean|string $available The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildAvailabilityQuery The current query, for fluid interface
+     */
+    public function filterByAvailable($available = null, $comparison = null)
+    {
+        if (is_string($available)) {
+            $available = in_array(strtolower($available), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(AvailabilityTableMap::COL_AVAILABLE, $available, $comparison);
     }
 
     /**
@@ -406,7 +438,7 @@ abstract class UnavailableQuery extends ModelCriteria
      * @param     string $comment The value to use as filter.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUnavailableQuery The current query, for fluid interface
+     * @return $this|ChildAvailabilityQuery The current query, for fluid interface
      */
     public function filterByComment($comment = null, $comparison = null)
     {
@@ -416,7 +448,7 @@ abstract class UnavailableQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UnavailableTableMap::COL_COMMENT, $comment, $comparison);
+        return $this->addUsingAlias(AvailabilityTableMap::COL_COMMENT, $comment, $comparison);
     }
 
     /**
@@ -427,20 +459,20 @@ abstract class UnavailableQuery extends ModelCriteria
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
-     * @return ChildUnavailableQuery The current query, for fluid interface
+     * @return ChildAvailabilityQuery The current query, for fluid interface
      */
     public function filterByUser($user, $comparison = null)
     {
         if ($user instanceof \TechWilk\Rota\User) {
             return $this
-                ->addUsingAlias(UnavailableTableMap::COL_USERID, $user->getId(), $comparison);
+                ->addUsingAlias(AvailabilityTableMap::COL_USERID, $user->getId(), $comparison);
         } elseif ($user instanceof ObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(UnavailableTableMap::COL_USERID, $user->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(AvailabilityTableMap::COL_USERID, $user->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
             throw new PropelException('filterByUser() only accepts arguments of type \TechWilk\Rota\User or Collection');
         }
@@ -452,7 +484,7 @@ abstract class UnavailableQuery extends ModelCriteria
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildUnavailableQuery The current query, for fluid interface
+     * @return $this|ChildAvailabilityQuery The current query, for fluid interface
      */
     public function joinUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
@@ -504,20 +536,20 @@ abstract class UnavailableQuery extends ModelCriteria
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
-     * @return ChildUnavailableQuery The current query, for fluid interface
+     * @return ChildAvailabilityQuery The current query, for fluid interface
      */
     public function filterByEvent($event, $comparison = null)
     {
         if ($event instanceof \TechWilk\Rota\Event) {
             return $this
-                ->addUsingAlias(UnavailableTableMap::COL_EVENTID, $event->getId(), $comparison);
+                ->addUsingAlias(AvailabilityTableMap::COL_EVENTID, $event->getId(), $comparison);
         } elseif ($event instanceof ObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(UnavailableTableMap::COL_EVENTID, $event->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(AvailabilityTableMap::COL_EVENTID, $event->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
             throw new PropelException('filterByEvent() only accepts arguments of type \TechWilk\Rota\Event or Collection');
         }
@@ -529,7 +561,7 @@ abstract class UnavailableQuery extends ModelCriteria
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildUnavailableQuery The current query, for fluid interface
+     * @return $this|ChildAvailabilityQuery The current query, for fluid interface
      */
     public function joinEvent($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
@@ -576,21 +608,21 @@ abstract class UnavailableQuery extends ModelCriteria
     /**
      * Exclude object from result
      *
-     * @param   ChildUnavailable $unavailable Object to remove from the list of results
+     * @param   ChildAvailability $availability Object to remove from the list of results
      *
-     * @return $this|ChildUnavailableQuery The current query, for fluid interface
+     * @return $this|ChildAvailabilityQuery The current query, for fluid interface
      */
-    public function prune($unavailable = null)
+    public function prune($availability = null)
     {
-        if ($unavailable) {
-            $this->addUsingAlias(UnavailableTableMap::COL_ID, $unavailable->getId(), Criteria::NOT_EQUAL);
+        if ($availability) {
+            $this->addUsingAlias(AvailabilityTableMap::COL_ID, $availability->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;
     }
 
     /**
-     * Deletes all rows from the cr_unavailable table.
+     * Deletes all rows from the cr_availability table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
@@ -598,7 +630,7 @@ abstract class UnavailableQuery extends ModelCriteria
     public function doDeleteAll(ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(UnavailableTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(AvailabilityTableMap::DATABASE_NAME);
         }
 
         // use transaction because $criteria could contain info
@@ -609,8 +641,8 @@ abstract class UnavailableQuery extends ModelCriteria
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            UnavailableTableMap::clearInstancePool();
-            UnavailableTableMap::clearRelatedInstancePool();
+            AvailabilityTableMap::clearInstancePool();
+            AvailabilityTableMap::clearRelatedInstancePool();
 
             return $affectedRows;
         });
@@ -628,25 +660,25 @@ abstract class UnavailableQuery extends ModelCriteria
     public function delete(ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(UnavailableTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(AvailabilityTableMap::DATABASE_NAME);
         }
 
         $criteria = $this;
 
         // Set the correct dbName
-        $criteria->setDbName(UnavailableTableMap::DATABASE_NAME);
+        $criteria->setDbName(AvailabilityTableMap::DATABASE_NAME);
 
         // use transaction because $criteria could contain info
         // for more than one table or we could emulating ON DELETE CASCADE, etc.
         return $con->transaction(function () use ($con, $criteria) {
             $affectedRows = 0; // initialize var to track total num of affected rows
 
-            UnavailableTableMap::removeInstanceFromPool($criteria);
+            AvailabilityTableMap::removeInstanceFromPool($criteria);
 
             $affectedRows += ModelCriteria::delete($con);
-            UnavailableTableMap::clearRelatedInstancePool();
+            AvailabilityTableMap::clearRelatedInstancePool();
 
             return $affectedRows;
         });
     }
-} // UnavailableQuery
+} // AvailabilityQuery

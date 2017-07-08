@@ -15,26 +15,26 @@ use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
+use TechWilk\Rota\AvailabilityQuery as ChildAvailabilityQuery;
 use TechWilk\Rota\Event as ChildEvent;
 use TechWilk\Rota\EventQuery as ChildEventQuery;
-use TechWilk\Rota\UnavailableQuery as ChildUnavailableQuery;
 use TechWilk\Rota\User as ChildUser;
 use TechWilk\Rota\UserQuery as ChildUserQuery;
-use TechWilk\Rota\Map\UnavailableTableMap;
+use TechWilk\Rota\Map\AvailabilityTableMap;
 
 /**
- * Base class that represents a row from the 'cr_unavailable' table.
+ * Base class that represents a row from the 'cr_availability' table.
  *
  *
  *
  * @package    propel.generator.TechWilk.Rota.Base
  */
-abstract class Unavailable implements ActiveRecordInterface
+abstract class Availability implements ActiveRecordInterface
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\TechWilk\\Rota\\Map\\UnavailableTableMap';
+    const TABLE_MAP = '\\TechWilk\\Rota\\Map\\AvailabilityTableMap';
 
 
     /**
@@ -85,6 +85,14 @@ abstract class Unavailable implements ActiveRecordInterface
     protected $userid;
 
     /**
+     * The value for the available field.
+     *
+     * Note: this column has a database default value of: true
+     * @var        boolean
+     */
+    protected $available;
+
+    /**
      * The value for the comment field.
      *
      * @var        string
@@ -110,10 +118,23 @@ abstract class Unavailable implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Initializes internal state of TechWilk\Rota\Base\Unavailable object.
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->available = true;
+    }
+
+    /**
+     * Initializes internal state of TechWilk\Rota\Base\Availability object.
+     * @see applyDefaults()
      */
     public function __construct()
     {
+        $this->applyDefaultValues();
     }
 
     /**
@@ -205,9 +226,9 @@ abstract class Unavailable implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>Unavailable</code> instance.  If
-     * <code>obj</code> is an instance of <code>Unavailable</code>, delegates to
-     * <code>equals(Unavailable)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>Availability</code> instance.  If
+     * <code>obj</code> is an instance of <code>Availability</code>, delegates to
+     * <code>equals(Availability)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -273,7 +294,7 @@ abstract class Unavailable implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return $this|Unavailable The current object, for fluid interface
+     * @return $this|Availability The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -365,6 +386,26 @@ abstract class Unavailable implements ActiveRecordInterface
     }
 
     /**
+     * Get the [available] column value.
+     *
+     * @return boolean
+     */
+    public function getAvailable()
+    {
+        return $this->available;
+    }
+
+    /**
+     * Get the [available] column value.
+     *
+     * @return boolean
+     */
+    public function isAvailable()
+    {
+        return $this->getAvailable();
+    }
+
+    /**
      * Get the [comment] column value.
      *
      * @return string
@@ -378,7 +419,7 @@ abstract class Unavailable implements ActiveRecordInterface
      * Set the value of [id] column.
      *
      * @param int $v new value
-     * @return $this|\TechWilk\Rota\Unavailable The current object (for fluent API support)
+     * @return $this|\TechWilk\Rota\Availability The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -388,7 +429,7 @@ abstract class Unavailable implements ActiveRecordInterface
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[UnavailableTableMap::COL_ID] = true;
+            $this->modifiedColumns[AvailabilityTableMap::COL_ID] = true;
         }
 
         return $this;
@@ -398,7 +439,7 @@ abstract class Unavailable implements ActiveRecordInterface
      * Set the value of [eventid] column.
      *
      * @param int $v new value
-     * @return $this|\TechWilk\Rota\Unavailable The current object (for fluent API support)
+     * @return $this|\TechWilk\Rota\Availability The current object (for fluent API support)
      */
     public function setEventId($v)
     {
@@ -408,7 +449,7 @@ abstract class Unavailable implements ActiveRecordInterface
 
         if ($this->eventid !== $v) {
             $this->eventid = $v;
-            $this->modifiedColumns[UnavailableTableMap::COL_EVENTID] = true;
+            $this->modifiedColumns[AvailabilityTableMap::COL_EVENTID] = true;
         }
 
         if ($this->aEvent !== null && $this->aEvent->getId() !== $v) {
@@ -422,7 +463,7 @@ abstract class Unavailable implements ActiveRecordInterface
      * Set the value of [userid] column.
      *
      * @param int $v new value
-     * @return $this|\TechWilk\Rota\Unavailable The current object (for fluent API support)
+     * @return $this|\TechWilk\Rota\Availability The current object (for fluent API support)
      */
     public function setUserId($v)
     {
@@ -432,7 +473,7 @@ abstract class Unavailable implements ActiveRecordInterface
 
         if ($this->userid !== $v) {
             $this->userid = $v;
-            $this->modifiedColumns[UnavailableTableMap::COL_USERID] = true;
+            $this->modifiedColumns[AvailabilityTableMap::COL_USERID] = true;
         }
 
         if ($this->aUser !== null && $this->aUser->getId() !== $v) {
@@ -443,10 +484,38 @@ abstract class Unavailable implements ActiveRecordInterface
     } // setUserId()
 
     /**
+     * Sets the value of the [available] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param  boolean|integer|string $v The new value
+     * @return $this|\TechWilk\Rota\Availability The current object (for fluent API support)
+     */
+    public function setAvailable($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->available !== $v) {
+            $this->available = $v;
+            $this->modifiedColumns[AvailabilityTableMap::COL_AVAILABLE] = true;
+        }
+
+        return $this;
+    } // setAvailable()
+
+    /**
      * Set the value of [comment] column.
      *
      * @param string $v new value
-     * @return $this|\TechWilk\Rota\Unavailable The current object (for fluent API support)
+     * @return $this|\TechWilk\Rota\Availability The current object (for fluent API support)
      */
     public function setComment($v)
     {
@@ -456,7 +525,7 @@ abstract class Unavailable implements ActiveRecordInterface
 
         if ($this->comment !== $v) {
             $this->comment = $v;
-            $this->modifiedColumns[UnavailableTableMap::COL_COMMENT] = true;
+            $this->modifiedColumns[AvailabilityTableMap::COL_COMMENT] = true;
         }
 
         return $this;
@@ -472,6 +541,10 @@ abstract class Unavailable implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
+        if ($this->available !== true) {
+            return false;
+        }
+
         // otherwise, everything was equal, so return TRUE
         return true;
     } // hasOnlyDefaultValues()
@@ -497,16 +570,19 @@ abstract class Unavailable implements ActiveRecordInterface
     public function hydrate($row, $startcol = 0, $rehydrate = false, $indexType = TableMap::TYPE_NUM)
     {
         try {
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : UnavailableTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : AvailabilityTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : UnavailableTableMap::translateFieldName('EventId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : AvailabilityTableMap::translateFieldName('EventId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->eventid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : UnavailableTableMap::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : AvailabilityTableMap::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->userid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : UnavailableTableMap::translateFieldName('Comment', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : AvailabilityTableMap::translateFieldName('Available', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->available = (null !== $col) ? (boolean) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : AvailabilityTableMap::translateFieldName('Comment', TableMap::TYPE_PHPNAME, $indexType)];
             $this->comment = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
@@ -516,9 +592,9 @@ abstract class Unavailable implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 4; // 4 = UnavailableTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = AvailabilityTableMap::NUM_HYDRATE_COLUMNS.
         } catch (Exception $e) {
-            throw new PropelException(sprintf('Error populating %s object', '\\TechWilk\\Rota\\Unavailable'), 0, $e);
+            throw new PropelException(sprintf('Error populating %s object', '\\TechWilk\\Rota\\Availability'), 0, $e);
         }
     }
 
@@ -566,13 +642,13 @@ abstract class Unavailable implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(UnavailableTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(AvailabilityTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildUnavailableQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildAvailabilityQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -593,8 +669,8 @@ abstract class Unavailable implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see Unavailable::setDeleted()
-     * @see Unavailable::isDeleted()
+     * @see Availability::setDeleted()
+     * @see Availability::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -603,11 +679,11 @@ abstract class Unavailable implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(UnavailableTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(AvailabilityTableMap::DATABASE_NAME);
         }
 
         $con->transaction(function () use ($con) {
-            $deleteQuery = ChildUnavailableQuery::create()
+            $deleteQuery = ChildAvailabilityQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -642,7 +718,7 @@ abstract class Unavailable implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(UnavailableTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(AvailabilityTableMap::DATABASE_NAME);
         }
 
         return $con->transaction(function () use ($con) {
@@ -661,7 +737,7 @@ abstract class Unavailable implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                UnavailableTableMap::addInstanceToPool($this);
+                AvailabilityTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -736,27 +812,30 @@ abstract class Unavailable implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[UnavailableTableMap::COL_ID] = true;
+        $this->modifiedColumns[AvailabilityTableMap::COL_ID] = true;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . UnavailableTableMap::COL_ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . AvailabilityTableMap::COL_ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(UnavailableTableMap::COL_ID)) {
+        if ($this->isColumnModified(AvailabilityTableMap::COL_ID)) {
             $modifiedColumns[':p' . $index++]  = 'id';
         }
-        if ($this->isColumnModified(UnavailableTableMap::COL_EVENTID)) {
+        if ($this->isColumnModified(AvailabilityTableMap::COL_EVENTID)) {
             $modifiedColumns[':p' . $index++]  = 'eventId';
         }
-        if ($this->isColumnModified(UnavailableTableMap::COL_USERID)) {
+        if ($this->isColumnModified(AvailabilityTableMap::COL_USERID)) {
             $modifiedColumns[':p' . $index++]  = 'userId';
         }
-        if ($this->isColumnModified(UnavailableTableMap::COL_COMMENT)) {
+        if ($this->isColumnModified(AvailabilityTableMap::COL_AVAILABLE)) {
+            $modifiedColumns[':p' . $index++]  = 'available';
+        }
+        if ($this->isColumnModified(AvailabilityTableMap::COL_COMMENT)) {
             $modifiedColumns[':p' . $index++]  = 'comment';
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_unavailable (%s) VALUES (%s)',
+            'INSERT INTO cr_availability (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -773,6 +852,9 @@ abstract class Unavailable implements ActiveRecordInterface
                         break;
                     case 'userId':
                         $stmt->bindValue($identifier, $this->userid, PDO::PARAM_INT);
+                        break;
+                    case 'available':
+                        $stmt->bindValue($identifier, (int) $this->available, PDO::PARAM_INT);
                         break;
                     case 'comment':
                         $stmt->bindValue($identifier, $this->comment, PDO::PARAM_STR);
@@ -823,7 +905,7 @@ abstract class Unavailable implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = UnavailableTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = AvailabilityTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -849,6 +931,9 @@ abstract class Unavailable implements ActiveRecordInterface
                 return $this->getUserId();
                 break;
             case 3:
+                return $this->getAvailable();
+                break;
+            case 4:
                 return $this->getComment();
                 break;
             default:
@@ -874,16 +959,17 @@ abstract class Unavailable implements ActiveRecordInterface
      */
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['Unavailable'][$this->hashCode()])) {
+        if (isset($alreadyDumpedObjects['Availability'][$this->hashCode()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Unavailable'][$this->hashCode()] = true;
-        $keys = UnavailableTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['Availability'][$this->hashCode()] = true;
+        $keys = AvailabilityTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getEventId(),
             $keys[2] => $this->getUserId(),
-            $keys[3] => $this->getComment(),
+            $keys[3] => $this->getAvailable(),
+            $keys[4] => $this->getComment(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -933,11 +1019,11 @@ abstract class Unavailable implements ActiveRecordInterface
      *                one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *                Defaults to TableMap::TYPE_PHPNAME.
-     * @return $this|\TechWilk\Rota\Unavailable
+     * @return $this|\TechWilk\Rota\Availability
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = UnavailableTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = AvailabilityTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -948,7 +1034,7 @@ abstract class Unavailable implements ActiveRecordInterface
      *
      * @param  int $pos position in xml schema
      * @param  mixed $value field value
-     * @return $this|\TechWilk\Rota\Unavailable
+     * @return $this|\TechWilk\Rota\Availability
      */
     public function setByPosition($pos, $value)
     {
@@ -963,6 +1049,9 @@ abstract class Unavailable implements ActiveRecordInterface
                 $this->setUserId($value);
                 break;
             case 3:
+                $this->setAvailable($value);
+                break;
+            case 4:
                 $this->setComment($value);
                 break;
         } // switch()
@@ -989,7 +1078,7 @@ abstract class Unavailable implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = UnavailableTableMap::getFieldNames($keyType);
+        $keys = AvailabilityTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
             $this->setId($arr[$keys[0]]);
@@ -1001,7 +1090,10 @@ abstract class Unavailable implements ActiveRecordInterface
             $this->setUserId($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setComment($arr[$keys[3]]);
+            $this->setAvailable($arr[$keys[3]]);
+        }
+        if (array_key_exists($keys[4], $arr)) {
+            $this->setComment($arr[$keys[4]]);
         }
     }
 
@@ -1022,7 +1114,7 @@ abstract class Unavailable implements ActiveRecordInterface
      * @param string $data The source data to import from
      * @param string $keyType The type of keys the array uses.
      *
-     * @return $this|\TechWilk\Rota\Unavailable The current object, for fluid interface
+     * @return $this|\TechWilk\Rota\Availability The current object, for fluid interface
      */
     public function importFrom($parser, $data, $keyType = TableMap::TYPE_PHPNAME)
     {
@@ -1042,19 +1134,22 @@ abstract class Unavailable implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(UnavailableTableMap::DATABASE_NAME);
+        $criteria = new Criteria(AvailabilityTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(UnavailableTableMap::COL_ID)) {
-            $criteria->add(UnavailableTableMap::COL_ID, $this->id);
+        if ($this->isColumnModified(AvailabilityTableMap::COL_ID)) {
+            $criteria->add(AvailabilityTableMap::COL_ID, $this->id);
         }
-        if ($this->isColumnModified(UnavailableTableMap::COL_EVENTID)) {
-            $criteria->add(UnavailableTableMap::COL_EVENTID, $this->eventid);
+        if ($this->isColumnModified(AvailabilityTableMap::COL_EVENTID)) {
+            $criteria->add(AvailabilityTableMap::COL_EVENTID, $this->eventid);
         }
-        if ($this->isColumnModified(UnavailableTableMap::COL_USERID)) {
-            $criteria->add(UnavailableTableMap::COL_USERID, $this->userid);
+        if ($this->isColumnModified(AvailabilityTableMap::COL_USERID)) {
+            $criteria->add(AvailabilityTableMap::COL_USERID, $this->userid);
         }
-        if ($this->isColumnModified(UnavailableTableMap::COL_COMMENT)) {
-            $criteria->add(UnavailableTableMap::COL_COMMENT, $this->comment);
+        if ($this->isColumnModified(AvailabilityTableMap::COL_AVAILABLE)) {
+            $criteria->add(AvailabilityTableMap::COL_AVAILABLE, $this->available);
+        }
+        if ($this->isColumnModified(AvailabilityTableMap::COL_COMMENT)) {
+            $criteria->add(AvailabilityTableMap::COL_COMMENT, $this->comment);
         }
 
         return $criteria;
@@ -1072,8 +1167,8 @@ abstract class Unavailable implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = ChildUnavailableQuery::create();
-        $criteria->add(UnavailableTableMap::COL_ID, $this->id);
+        $criteria = ChildAvailabilityQuery::create();
+        $criteria->add(AvailabilityTableMap::COL_ID, $this->id);
 
         return $criteria;
     }
@@ -1135,7 +1230,7 @@ abstract class Unavailable implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \TechWilk\Rota\Unavailable (or compatible) type.
+     * @param      object $copyObj An object of \TechWilk\Rota\Availability (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
@@ -1144,6 +1239,7 @@ abstract class Unavailable implements ActiveRecordInterface
     {
         $copyObj->setEventId($this->getEventId());
         $copyObj->setUserId($this->getUserId());
+        $copyObj->setAvailable($this->getAvailable());
         $copyObj->setComment($this->getComment());
         if ($makeNew) {
             $copyObj->setNew(true);
@@ -1160,7 +1256,7 @@ abstract class Unavailable implements ActiveRecordInterface
      * objects.
      *
      * @param  boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return \TechWilk\Rota\Unavailable Clone of current object.
+     * @return \TechWilk\Rota\Availability Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1177,7 +1273,7 @@ abstract class Unavailable implements ActiveRecordInterface
      * Declares an association between this object and a ChildUser object.
      *
      * @param  ChildUser $v
-     * @return $this|\TechWilk\Rota\Unavailable The current object (for fluent API support)
+     * @return $this|\TechWilk\Rota\Availability The current object (for fluent API support)
      * @throws PropelException
      */
     public function setUser(ChildUser $v = null)
@@ -1193,7 +1289,7 @@ abstract class Unavailable implements ActiveRecordInterface
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildUser object, it will not be re-added.
         if ($v !== null) {
-            $v->addUnavailable($this);
+            $v->addAvailability($this);
         }
 
 
@@ -1217,7 +1313,7 @@ abstract class Unavailable implements ActiveRecordInterface
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aUser->addUnavailables($this);
+                $this->aUser->addAvailabilities($this);
              */
         }
 
@@ -1228,7 +1324,7 @@ abstract class Unavailable implements ActiveRecordInterface
      * Declares an association between this object and a ChildEvent object.
      *
      * @param  ChildEvent $v
-     * @return $this|\TechWilk\Rota\Unavailable The current object (for fluent API support)
+     * @return $this|\TechWilk\Rota\Availability The current object (for fluent API support)
      * @throws PropelException
      */
     public function setEvent(ChildEvent $v = null)
@@ -1244,7 +1340,7 @@ abstract class Unavailable implements ActiveRecordInterface
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildEvent object, it will not be re-added.
         if ($v !== null) {
-            $v->addUnavailable($this);
+            $v->addAvailability($this);
         }
 
 
@@ -1268,7 +1364,7 @@ abstract class Unavailable implements ActiveRecordInterface
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aEvent->addUnavailables($this);
+                $this->aEvent->addAvailabilities($this);
              */
         }
 
@@ -1283,17 +1379,19 @@ abstract class Unavailable implements ActiveRecordInterface
     public function clear()
     {
         if (null !== $this->aUser) {
-            $this->aUser->removeUnavailable($this);
+            $this->aUser->removeAvailability($this);
         }
         if (null !== $this->aEvent) {
-            $this->aEvent->removeUnavailable($this);
+            $this->aEvent->removeAvailability($this);
         }
         $this->id = null;
         $this->eventid = null;
         $this->userid = null;
+        $this->available = null;
         $this->comment = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
@@ -1323,7 +1421,7 @@ abstract class Unavailable implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(UnavailableTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(AvailabilityTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**

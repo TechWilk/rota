@@ -2,10 +2,10 @@
 
 namespace TechWilk\Rota;
 
-use TechWilk\Rota\Base\UnavailableQuery as BaseUnavailableQuery;
+use TechWilk\Rota\Base\AvailabilityQuery as BaseAvailabilityQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cr_unavailable' table.
+ * Skeleton subclass for performing query and update operations on the 'cr_availability' table.
  *
  *
  *
@@ -14,6 +14,6 @@ use TechWilk\Rota\Base\UnavailableQuery as BaseUnavailableQuery;
  * long as it does not already exist in the output directory.
  *
  */
-class UnavailableQuery extends BaseUnavailableQuery
+class AvailabilityQuery extends BaseAvailabilityQuery
 {
 }

@@ -182,15 +182,21 @@ class User extends BaseUser
     }
 
     /**
-    * Determine if the user is marked as unavailable for an event.
+    * Determine if the user is marked as available for an event.
     *
-    * @return bool if user is unavailable
+    * @return bool if user is available
     */
-    public function isUnavailableForEvent(Event $event)
+    public function isAvailableForEvent(Event $event)
     {
-        return UnavailableQuery::create()
+        $availability = AvailabilityQuery::create()
             ->filterByUser($this)
             ->filterByEvent($event)
-            ->count() > 0;
+            ->findOne();
+
+        if (is_null($availability)) {
+            return true; // todo: add setting for default availability
+        }
+
+        return (bool)$availability->getAvailable();
     }
 }

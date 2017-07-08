@@ -2,10 +2,10 @@
 
 namespace TechWilk\Rota;
 
-use TechWilk\Rota\Base\Unavailable as BaseUnavailable;
+use TechWilk\Rota\Base\Availability as BaseAvailability;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_unavailable' table.
+ * Skeleton subclass for representing a row from the 'cr_availability' table.
  *
  *
  *
@@ -14,6 +14,6 @@ use TechWilk\Rota\Base\Unavailable as BaseUnavailable;
  * long as it does not already exist in the output directory.
  *
  */
-class Unavailable extends BaseUnavailable
+class Availability extends BaseAvailability
 {
 }
