@@ -199,4 +199,17 @@ class User extends BaseUser
 
         return (bool)$availability->getAvailable();
     }
+
+    /**
+    * Determine if the user is marked as available for an event.
+    *
+    * @return \TechWilk\Rota\Availability
+    */
+    public function getAvailabilityForEvent(Event $event)
+    {
+        return AvailabilityQuery::create()
+            ->filterByUser($this)
+            ->filterByEvent($event)
+            ->findOne();
+    }
 }

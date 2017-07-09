@@ -23,4 +23,14 @@ class UserRole extends BaseUserRole
     {
         return $this->getUser()->isAvailableForEvent($event);
     }
+
+    /**
+    * Fetch Availability object for the event.
+    *
+    * @return \TechWilk\Rota\Availability
+    */
+    public function getAvailabilityForEvent(Event $event)
+    {
+        return $this->getUser()->getAvailabilityForEvent($event);
+    }
 }
