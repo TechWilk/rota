@@ -681,8 +681,7 @@ $app->get('/user/{id}/availability', function ($request, $response, $args) {
         ->orderByDate('asc')
         ->find();
 
-        return $this->view->render($response, 'user-availability.twig', ['user' => $u, 'events' => $e]);
-
+    return $this->view->render($response, 'user-availability.twig', ['user' => $u, 'events' => $e]);
 })->setName('user-availability');
 
 
@@ -699,7 +698,6 @@ $app->post('/user/{id}/availability', function ($request, $response, $args) {
     $data = $request->getParsedBody();
 
     foreach ($data['events'] as $eventId) {
-
         $a = AvailabilityQuery::create()
             ->filterByEventId($eventId)
             ->filterByUser($u)
@@ -727,7 +725,6 @@ $app->post('/user/{id}/availability', function ($request, $response, $args) {
     }
 
     return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('user-availability', [ 'id' => $u->getId() ]));
-
 })->setName('user-availability-post');
 
 
