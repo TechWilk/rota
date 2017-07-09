@@ -2,6 +2,8 @@
 
 {% block content %}
 
+{% include 'user-banner.twig' %}
+
 <form action="{{ path_for('user-assign-post', { 'id': user.id }) }}" method="post">
   {% for group, groupedroles in roles|sort_by(=> _.group.name, 'ASC')|group_by(=> _.group) %}
   <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
@@ -16,7 +18,7 @@
                 <input type="checkbox" name="role[]" value="{{ role.id }}" {% if role in user.currentroles %}checked="checked"{% endif %}/>
                 {{ role.name }}
               </label>
-              </div>
+            </div>
             {% endfor %}
         </div>
         <div class="box-footer">
