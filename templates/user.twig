@@ -50,9 +50,9 @@
       </div>
       <div class="box-body">
         <ul>
-          <li>x available</li>
-          <li>x unavailable</li>
-          <li>x awaiting response</li>
+          <li>{{ user.upcomingeventsavailable.count | default('0') }} available</li>
+          <li>{{ user.upcomingeventsunavailable.count | default('0') }} unavailable</li>
+          <li>{{ user.upcomingeventsawaitingresponse.count | default('0') }} awaiting response</li>
         </ul>
       </div>
       <div class="box-footer">

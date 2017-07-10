@@ -212,4 +212,36 @@ class User extends BaseUser
             ->filterByEvent($event)
             ->findOne();
     }
+
+
+
+    function upcomingEventsAvailable()
+    {
+        return EventQuery::create()
+            ->useAvailabilityQuery()
+                ->filterByUser($this)
+                ->filterByAvailable(true)
+            ->endUse()
+            ->find();
+    }
+
+    function upcomingEventsUnavailable()
+    {
+        return EventQuery::create()
+            ->useAvailabilityQuery()
+                ->filterByUser($this)
+                ->filterByAvailable(false)
+            ->endUse()
+            ->find();
+    }
+
+    function upcomingEventAwaitingResponse()
+    {
+        return EventQuery::create()
+            ->useAvailabilityQuery()
+                ->filterByUser($this)
+                ->filterByAvailable(null)
+            ->endUse()
+            ->find();
+    }
 }
