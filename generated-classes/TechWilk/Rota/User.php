@@ -215,7 +215,7 @@ class User extends BaseUser
 
 
 
-    function upcomingEventsAvailable()
+    public function upcomingEventsAvailable()
     {
         return EventQuery::create()
             ->useAvailabilityQuery()
@@ -225,7 +225,7 @@ class User extends BaseUser
             ->find();
     }
 
-    function upcomingEventsUnavailable()
+    public function upcomingEventsUnavailable()
     {
         return EventQuery::create()
             ->useAvailabilityQuery()
@@ -235,7 +235,7 @@ class User extends BaseUser
             ->find();
     }
 
-    function upcomingEventAwaitingResponse()
+    public function upcomingEventAwaitingResponse()
     {
         return EventQuery::create()
             ->useAvailabilityQuery()
