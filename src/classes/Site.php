@@ -31,7 +31,8 @@ class Site
         return $this->menu;
     }
 
-    public function getUrl() {
+    public function getUrl()
+    {
         $http = isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off' ? 'https' : 'http';
         $hostname = $_SERVER['HTTP_HOST'];
         return [
