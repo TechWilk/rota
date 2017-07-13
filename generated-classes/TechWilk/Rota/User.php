@@ -1,5 +1,6 @@
 <?php  namespace TechWilk\Rota;
 
+use Propel\Runtime\ActiveQuery\Criteria;
 use TechWilk\Rota\Base\User as BaseUser;
 use TechWilk\Rota\Map\UserTableMap;
 use DateTime;
@@ -222,6 +223,9 @@ class User extends BaseUser
                 ->filterByUser($this)
                 ->filterByAvailable(true)
             ->endUse()
+            ->filterByRemoved(false)
+            ->filterByDate(['min' => new DateTime()])
+            ->orderByDate('asc')
             ->find();
     }
 
@@ -232,16 +236,46 @@ class User extends BaseUser
                 ->filterByUser($this)
                 ->filterByAvailable(false)
             ->endUse()
+            ->filterByRemoved(false)
+            ->filterByDate(['min' => new DateTime()])
+            ->orderByDate('asc')
             ->find();
     }
 
-    public function upcomingEventAwaitingResponse()
+    public function upcomingEventsAwaitingResponse()
     {
-        return EventQuery::create()
+        $eventsWithResponse = EventQuery::create()
             ->useAvailabilityQuery()
                 ->filterByUser($this)
-                ->filterByAvailable(null)
             ->endUse()
             ->find();
+
+        $eventsWithResponseArray = [];
+
+        foreach ($eventsWithResponse as $event) {
+            $eventsWithResponseArray[] = $event->getId();
+        }
+
+        $events = EventQuery::create()
+            ->useAvailabilityQuery(null, Criteria::LEFT_JOIN)
+                ->filterByUser($this, Criteria::NOT_EQUAL)
+                ->_or()
+                ->filterById(null)
+            ->endUse()
+            ->filterByRemoved(false)
+            ->filterByDate(['min' => new DateTime()])
+            ->orderByDate('asc')
+            ->distinct()
+            ->find();
+
+        $eventsArray = [];
+
+        foreach ($events as $event) {
+            if (!in_array($event->getId(), $eventsWithResponseArray)) {
+                $eventsArray[] = $event;
+            }
+        }
+
+        return $eventsArray;
     }
 }

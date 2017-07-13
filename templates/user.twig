@@ -52,7 +52,7 @@
         <ul>
           <li>{{ user.upcomingeventsavailable.count | default('0') }} available</li>
           <li>{{ user.upcomingeventsunavailable.count | default('0') }} unavailable</li>
-          <li>{{ user.upcomingeventsawaitingresponse.count | default('0') }} awaiting response</li>
+          <li>{{ user.upcomingeventsawaitingresponse | length }} awaiting response</li>
         </ul>
       </div>
       <div class="box-footer">
