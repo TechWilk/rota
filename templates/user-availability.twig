@@ -60,7 +60,7 @@
                     </label>
                 </div>
                 <div class="col-xs-12 col-sm-9 col-md-3">
-                    <input class="form-control" name="event{{ event.id }}comment" id="eventcomment" type="text" value="{{ user.availabilityforevent(event).comment }}" placeholder="Why are you unavailable? (optional)" />
+                    <input class="form-control" name="event{{ event.id }}comment" id="eventcomment" type="text" value="{{ user.availabilityforevent(event).comment }}" placeholder="General note or why you are unavailable (optional)" />
                 </div>
                 </tr>
                 {% include 'event-modal.twig' %}

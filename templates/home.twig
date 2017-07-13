@@ -30,6 +30,21 @@
     </div><!-- /.info-box -->
   </div><!-- /.col -->
 
+
+  {% set awaiting = currentuser.upcomingeventsawaitingresponse %}
+  <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+    <div class="info-box">
+      <span class="info-box-icon {{ awaiting | length > 0 ? 'bg-orange' : 'bg-aqua' }}">
+        <i class="ion ion-podium"></i>
+      </span>
+      <div class="info-box-content">
+        <span class="info-box-text">Availability</span>
+        <span class="info-box-number">{{ awaiting | length }} awaiting response</span>
+        <a href="{{ path_for('user-availability', { 'id': currentuser.id }) }}">set my availability</a>
+      </div><!-- /.info-box-content -->
+    </div><!-- /.info-box -->
+  </div><!-- /.col -->
+
   
   
   <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">

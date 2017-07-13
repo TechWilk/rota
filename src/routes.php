@@ -724,7 +724,7 @@ $app->post('/user/{id}/availability', function ($request, $response, $args) {
         $a->save();
     }
 
-    return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('user-availability', [ 'id' => $u->getId() ]));
+    return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('user', [ 'id' => $u->getId() ]));
 })->setName('user-availability-post');
 
 
