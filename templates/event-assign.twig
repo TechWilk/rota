@@ -22,7 +22,7 @@
                 </optgroup>
                 <optgroup label="Reserve">
                 {% for userrole in groupeduserroles|sort_by(=> _.user.lastname) if userrole.reserve == true %}
-                  <option value="{{ userrole.id }}" {% if userrole in event.currentuserroles %}selected="selected"{% endif %} {% if not userrole.isavailableforevent(event) %}disabled="disabled"{% endif %}>{{ userrole.user.name }}{{ not userrole.isavailableforevent(event) ? ( userrole.availabilityforevent(event).comment ? ' (unavailable)' : " (#{userrole.availabilityforevent(event).comment})" ) : '' }}</option>
+                  <option value="{{ userrole.id }}" {% if userrole in event.currentuserroles %}selected="selected"{% endif %} {% if not userrole.isavailableforevent(event) %}disabled="disabled"{% endif %}>{{ userrole.user.name }}{{ not userrole.isavailableforevent(event) ? ( userrole.availabilityforevent(event).comment is empty ? ' (unavailable)' : " (#{userrole.availabilityforevent(event).comment})" ) : '' }}</option>
                 {% endfor %}
                 </optgroup>
               </select>
