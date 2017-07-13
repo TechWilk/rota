@@ -1,3 +1,20 @@
+-----------------------------------------------------------------------
+-- cr_availability
+-----------------------------------------------------------------------
+
+DROP TABLE IF EXISTS [cr_availability];
+
+CREATE TABLE [cr_availability]
+(
+    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    [eventId] INTEGER(30) NOT NULL,
+    [userId] INTEGER NOT NULL,
+    [available] BOOLEAN NOT NULL DEFAULT 1,
+    [comment] VARCHAR(64) NOT NULL,
+    UNIQUE ([id]),
+    FOREIGN KEY ([userId]) REFERENCES [cr_users] ([id]),
+    FOREIGN KEY ([eventId]) REFERENCES [cr_events] ([id])
+);
 
 -----------------------------------------------------------------------
 -- cr_calendarTokens
@@ -411,23 +428,6 @@ CREATE TABLE [cr_swaps]
     FOREIGN KEY ([oldUserRoleId]) REFERENCES [cr_userRoles] ([id]),
     FOREIGN KEY ([newUserRoleId]) REFERENCES [cr_userRoles] ([id]),
     FOREIGN KEY ([requestedBy]) REFERENCES [cr_users] ([id])
-);
-
------------------------------------------------------------------------
--- cr_unavailable
------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS [cr_unavailable];
-
-CREATE TABLE [cr_unavailable]
-(
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [eventId] INTEGER(30) NOT NULL,
-    [userId] INTEGER NOT NULL,
-    [comment] VARCHAR(64) NOT NULL,
-    UNIQUE ([id]),
-    FOREIGN KEY ([userId]) REFERENCES [cr_users] ([id]),
-    FOREIGN KEY ([eventId]) REFERENCES [cr_events] ([id])
 );
 
 -----------------------------------------------------------------------
