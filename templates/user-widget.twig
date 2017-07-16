@@ -34,7 +34,7 @@
         </a>
       </li>
       <li>
-        <a href="{{ path_for('user-calendars') }}">Calendar Syncing <span class="pull-right badge bg-aqua">3</span></a>
+        <a href="{{ path_for('user-calendars') }}">Calendar Syncing <span class="pull-right badge bg-aqua">{{ user.activecalendartokens.count }}</span></a>
       </li>
     </ul>
   </div>

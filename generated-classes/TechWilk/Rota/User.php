@@ -221,6 +221,15 @@ class User extends BaseUser
     }
 
 
+    public function getActiveCalendarTokens()
+    {
+        return CalendarTokenQuery::create()
+            ->filterByUser($this)
+            ->filterByRevoked(false)
+            ->find();
+    }
+
+
 
     public function upcomingEventsAvailable()
     {
