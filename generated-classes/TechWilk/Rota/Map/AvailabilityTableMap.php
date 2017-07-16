@@ -145,7 +145,7 @@ class AvailabilityTableMap extends TableMap
         $this->setPackage('TechWilk.Rota');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, 6, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('eventId', 'EventId', 'INTEGER', 'cr_events', 'id', true, null, null);
         $this->addForeignKey('userId', 'UserId', 'INTEGER', 'cr_users', 'id', true, null, null);
         $this->addColumn('available', 'Available', 'BOOLEAN', true, 1, true);
