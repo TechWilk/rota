@@ -24,6 +24,7 @@ DROP TABLE IF EXISTS [cr_calendarTokens];
 
 CREATE TABLE [cr_calendarTokens]
 (
+    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [token] VARCHAR(30) NOT NULL,
     [userId] INTEGER(30) NOT NULL,
     [format] VARCHAR(5) NOT NULL,
@@ -33,7 +34,6 @@ CREATE TABLE [cr_calendarTokens]
     [lastFetched] TIMESTAMP,
     [created] TIMESTAMP,
     [updated] TIMESTAMP,
-    PRIMARY KEY ([token]),
     UNIQUE ([token]),
     FOREIGN KEY ([userId]) REFERENCES [cr_users] ([id])
 );
