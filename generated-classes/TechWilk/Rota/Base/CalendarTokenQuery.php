@@ -20,6 +20,7 @@ use TechWilk\Rota\Map\CalendarTokenTableMap;
  *
  *
  *
+ * @method     ChildCalendarTokenQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildCalendarTokenQuery orderByToken($order = Criteria::ASC) Order by the token column
  * @method     ChildCalendarTokenQuery orderByUserid($order = Criteria::ASC) Order by the userId column
  * @method     ChildCalendarTokenQuery orderByFormat($order = Criteria::ASC) Order by the format column
@@ -30,6 +31,7 @@ use TechWilk\Rota\Map\CalendarTokenTableMap;
  * @method     ChildCalendarTokenQuery orderByCreated($order = Criteria::ASC) Order by the created column
  * @method     ChildCalendarTokenQuery orderByUpdated($order = Criteria::ASC) Order by the updated column
  *
+ * @method     ChildCalendarTokenQuery groupById() Group by the id column
  * @method     ChildCalendarTokenQuery groupByToken() Group by the token column
  * @method     ChildCalendarTokenQuery groupByUserid() Group by the userId column
  * @method     ChildCalendarTokenQuery groupByFormat() Group by the format column
@@ -63,6 +65,7 @@ use TechWilk\Rota\Map\CalendarTokenTableMap;
  * @method     ChildCalendarToken findOne(ConnectionInterface $con = null) Return the first ChildCalendarToken matching the query
  * @method     ChildCalendarToken findOneOrCreate(ConnectionInterface $con = null) Return the first ChildCalendarToken matching the query, or a new ChildCalendarToken object populated from the query conditions when no match is found
  *
+ * @method     ChildCalendarToken findOneById(int $id) Return the first ChildCalendarToken filtered by the id column
  * @method     ChildCalendarToken findOneByToken(string $token) Return the first ChildCalendarToken filtered by the token column
  * @method     ChildCalendarToken findOneByUserid(int $userId) Return the first ChildCalendarToken filtered by the userId column
  * @method     ChildCalendarToken findOneByFormat(string $format) Return the first ChildCalendarToken filtered by the format column
@@ -76,6 +79,7 @@ use TechWilk\Rota\Map\CalendarTokenTableMap;
  * @method     ChildCalendarToken requirePk($key, ConnectionInterface $con = null) Return the ChildCalendarToken by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCalendarToken requireOne(ConnectionInterface $con = null) Return the first ChildCalendarToken matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
+ * @method     ChildCalendarToken requireOneById(int $id) Return the first ChildCalendarToken filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCalendarToken requireOneByToken(string $token) Return the first ChildCalendarToken filtered by the token column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCalendarToken requireOneByUserid(int $userId) Return the first ChildCalendarToken filtered by the userId column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCalendarToken requireOneByFormat(string $format) Return the first ChildCalendarToken filtered by the format column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -87,6 +91,7 @@ use TechWilk\Rota\Map\CalendarTokenTableMap;
  * @method     ChildCalendarToken requireOneByUpdated(string $updated) Return the first ChildCalendarToken filtered by the updated column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildCalendarToken[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildCalendarToken objects based on current ModelCriteria
+ * @method     ChildCalendarToken[]|ObjectCollection findById(int $id) Return ChildCalendarToken objects filtered by the id column
  * @method     ChildCalendarToken[]|ObjectCollection findByToken(string $token) Return ChildCalendarToken objects filtered by the token column
  * @method     ChildCalendarToken[]|ObjectCollection findByUserid(int $userId) Return ChildCalendarToken objects filtered by the userId column
  * @method     ChildCalendarToken[]|ObjectCollection findByFormat(string $format) Return ChildCalendarToken objects filtered by the format column
@@ -194,7 +199,7 @@ abstract class CalendarTokenQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT token, userId, format, description, revoked, revokedDate, lastFetched, created, updated FROM cr_calendarTokens WHERE token = :p0';
+        $sql = 'SELECT id, token, userId, format, description, revoked, revokedDate, lastFetched, created, updated FROM cr_calendarTokens WHERE token = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -280,6 +285,47 @@ abstract class CalendarTokenQuery extends ModelCriteria
     public function filterByPrimaryKeys($keys)
     {
         return $this->addUsingAlias(CalendarTokenTableMap::COL_TOKEN, $keys, Criteria::IN);
+    }
+
+    /**
+     * Filter the query on the id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterById(1234); // WHERE id = 1234
+     * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+     * $query->filterById(array('min' => 12)); // WHERE id > 12
+     * </code>
+     *
+     * @param     mixed $id The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildCalendarTokenQuery The current query, for fluid interface
+     */
+    public function filterById($id = null, $comparison = null)
+    {
+        if (is_array($id)) {
+            $useMinMax = false;
+            if (isset($id['min'])) {
+                $this->addUsingAlias(CalendarTokenTableMap::COL_ID, $id['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($id['max'])) {
+                $this->addUsingAlias(CalendarTokenTableMap::COL_ID, $id['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CalendarTokenTableMap::COL_ID, $id, $comparison);
     }
 
     /**

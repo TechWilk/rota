@@ -42,7 +42,7 @@
           {% for calendar in calendars if calendar.revoked %}
           <tr>
             <td><del>{{ calendar.description }}</del></td>
-            <td>Revoked on {{ calendar.created | date('d/M/Y') }}</td>
+            <td>Revoked on {{ calendar.revokedDate is empty ? 'unknown' : calendar.revokedDate | date('d/M/Y') }}</td>
           </tr>
           {% else %}
           <tr>You have no revoked calendars</tr>

@@ -65,6 +65,13 @@ abstract class CalendarToken implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
+     * The value for the id field.
+     *
+     * @var        int
+     */
+    protected $id;
+
+    /**
      * The value for the token field.
      *
      * @var        string
@@ -380,6 +387,16 @@ abstract class CalendarToken implements ActiveRecordInterface
     }
 
     /**
+     * Get the [id] column value.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * Get the [token] column value.
      *
      * @return string
@@ -518,6 +535,26 @@ abstract class CalendarToken implements ActiveRecordInterface
             return $this->updated instanceof \DateTimeInterface ? $this->updated->format($format) : null;
         }
     }
+
+    /**
+     * Set the value of [id] column.
+     *
+     * @param int $v new value
+     * @return $this|\TechWilk\Rota\CalendarToken The current object (for fluent API support)
+     */
+    public function setId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->id !== $v) {
+            $this->id = $v;
+            $this->modifiedColumns[CalendarTokenTableMap::COL_ID] = true;
+        }
+
+        return $this;
+    } // setId()
 
     /**
      * Set the value of [token] column.
@@ -750,40 +787,43 @@ abstract class CalendarToken implements ActiveRecordInterface
     public function hydrate($row, $startcol = 0, $rehydrate = false, $indexType = TableMap::TYPE_NUM)
     {
         try {
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : CalendarTokenTableMap::translateFieldName('Token', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : CalendarTokenTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : CalendarTokenTableMap::translateFieldName('Token', TableMap::TYPE_PHPNAME, $indexType)];
             $this->token = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : CalendarTokenTableMap::translateFieldName('Userid', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : CalendarTokenTableMap::translateFieldName('Userid', TableMap::TYPE_PHPNAME, $indexType)];
             $this->userid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : CalendarTokenTableMap::translateFieldName('Format', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : CalendarTokenTableMap::translateFieldName('Format', TableMap::TYPE_PHPNAME, $indexType)];
             $this->format = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : CalendarTokenTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : CalendarTokenTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
             $this->description = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : CalendarTokenTableMap::translateFieldName('Revoked', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : CalendarTokenTableMap::translateFieldName('Revoked', TableMap::TYPE_PHPNAME, $indexType)];
             $this->revoked = (null !== $col) ? (boolean) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : CalendarTokenTableMap::translateFieldName('RevokedDate', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : CalendarTokenTableMap::translateFieldName('RevokedDate', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->revokeddate = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : CalendarTokenTableMap::translateFieldName('LastFetched', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : CalendarTokenTableMap::translateFieldName('LastFetched', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->lastfetched = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : CalendarTokenTableMap::translateFieldName('Created', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : CalendarTokenTableMap::translateFieldName('Created', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : CalendarTokenTableMap::translateFieldName('Updated', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : CalendarTokenTableMap::translateFieldName('Updated', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
@@ -796,7 +836,7 @@ abstract class CalendarToken implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 9; // 9 = CalendarTokenTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 10; // 10 = CalendarTokenTableMap::NUM_HYDRATE_COLUMNS.
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\TechWilk\\Rota\\CalendarToken'), 0, $e);
         }
@@ -1019,6 +1059,9 @@ abstract class CalendarToken implements ActiveRecordInterface
 
 
          // check the columns in natural order for more readable SQL queries
+        if ($this->isColumnModified(CalendarTokenTableMap::COL_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'id';
+        }
         if ($this->isColumnModified(CalendarTokenTableMap::COL_TOKEN)) {
             $modifiedColumns[':p' . $index++]  = 'token';
         }
@@ -1057,6 +1100,9 @@ abstract class CalendarToken implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
+                    case 'id':
+                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        break;
                     case 'token':
                         $stmt->bindValue($identifier, $this->token, PDO::PARAM_STR);
                         break;
@@ -1091,6 +1137,13 @@ abstract class CalendarToken implements ActiveRecordInterface
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), 0, $e);
         }
+
+        try {
+            $pk = $con->lastInsertId();
+        } catch (Exception $e) {
+            throw new PropelException('Unable to get autoincrement id.', 0, $e);
+        }
+        $this->setToken($pk);
 
         $this->setNew(false);
     }
@@ -1140,30 +1193,33 @@ abstract class CalendarToken implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getToken();
+                return $this->getId();
                 break;
             case 1:
-                return $this->getUserid();
+                return $this->getToken();
                 break;
             case 2:
-                return $this->getFormat();
+                return $this->getUserid();
                 break;
             case 3:
-                return $this->getDescription();
+                return $this->getFormat();
                 break;
             case 4:
-                return $this->getRevoked();
+                return $this->getDescription();
                 break;
             case 5:
-                return $this->getRevokedDate();
+                return $this->getRevoked();
                 break;
             case 6:
-                return $this->getLastFetched();
+                return $this->getRevokedDate();
                 break;
             case 7:
-                return $this->getCreated();
+                return $this->getLastFetched();
                 break;
             case 8:
+                return $this->getCreated();
+                break;
+            case 9:
                 return $this->getUpdated();
                 break;
             default:
@@ -1195,20 +1251,17 @@ abstract class CalendarToken implements ActiveRecordInterface
         $alreadyDumpedObjects['CalendarToken'][$this->hashCode()] = true;
         $keys = CalendarTokenTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getToken(),
-            $keys[1] => $this->getUserid(),
-            $keys[2] => $this->getFormat(),
-            $keys[3] => $this->getDescription(),
-            $keys[4] => $this->getRevoked(),
-            $keys[5] => $this->getRevokedDate(),
-            $keys[6] => $this->getLastFetched(),
-            $keys[7] => $this->getCreated(),
-            $keys[8] => $this->getUpdated(),
+            $keys[0] => $this->getId(),
+            $keys[1] => $this->getToken(),
+            $keys[2] => $this->getUserid(),
+            $keys[3] => $this->getFormat(),
+            $keys[4] => $this->getDescription(),
+            $keys[5] => $this->getRevoked(),
+            $keys[6] => $this->getRevokedDate(),
+            $keys[7] => $this->getLastFetched(),
+            $keys[8] => $this->getCreated(),
+            $keys[9] => $this->getUpdated(),
         );
-        if ($result[$keys[5]] instanceof \DateTimeInterface) {
-            $result[$keys[5]] = $result[$keys[5]]->format('c');
-        }
-
         if ($result[$keys[6]] instanceof \DateTimeInterface) {
             $result[$keys[6]] = $result[$keys[6]]->format('c');
         }
@@ -1219,6 +1272,10 @@ abstract class CalendarToken implements ActiveRecordInterface
 
         if ($result[$keys[8]] instanceof \DateTimeInterface) {
             $result[$keys[8]] = $result[$keys[8]]->format('c');
+        }
+
+        if ($result[$keys[9]] instanceof \DateTimeInterface) {
+            $result[$keys[9]] = $result[$keys[9]]->format('c');
         }
 
         $virtualColumns = $this->virtualColumns;
@@ -1276,30 +1333,33 @@ abstract class CalendarToken implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                $this->setToken($value);
+                $this->setId($value);
                 break;
             case 1:
-                $this->setUserid($value);
+                $this->setToken($value);
                 break;
             case 2:
-                $this->setFormat($value);
+                $this->setUserid($value);
                 break;
             case 3:
-                $this->setDescription($value);
+                $this->setFormat($value);
                 break;
             case 4:
-                $this->setRevoked($value);
+                $this->setDescription($value);
                 break;
             case 5:
-                $this->setRevokedDate($value);
+                $this->setRevoked($value);
                 break;
             case 6:
-                $this->setLastFetched($value);
+                $this->setRevokedDate($value);
                 break;
             case 7:
-                $this->setCreated($value);
+                $this->setLastFetched($value);
                 break;
             case 8:
+                $this->setCreated($value);
+                break;
+            case 9:
                 $this->setUpdated($value);
                 break;
         } // switch()
@@ -1329,31 +1389,34 @@ abstract class CalendarToken implements ActiveRecordInterface
         $keys = CalendarTokenTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setToken($arr[$keys[0]]);
+            $this->setId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setUserid($arr[$keys[1]]);
+            $this->setToken($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setFormat($arr[$keys[2]]);
+            $this->setUserid($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setDescription($arr[$keys[3]]);
+            $this->setFormat($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setRevoked($arr[$keys[4]]);
+            $this->setDescription($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setRevokedDate($arr[$keys[5]]);
+            $this->setRevoked($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setLastFetched($arr[$keys[6]]);
+            $this->setRevokedDate($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
-            $this->setCreated($arr[$keys[7]]);
+            $this->setLastFetched($arr[$keys[7]]);
         }
         if (array_key_exists($keys[8], $arr)) {
-            $this->setUpdated($arr[$keys[8]]);
+            $this->setCreated($arr[$keys[8]]);
+        }
+        if (array_key_exists($keys[9], $arr)) {
+            $this->setUpdated($arr[$keys[9]]);
         }
     }
 
@@ -1396,6 +1459,9 @@ abstract class CalendarToken implements ActiveRecordInterface
     {
         $criteria = new Criteria(CalendarTokenTableMap::DATABASE_NAME);
 
+        if ($this->isColumnModified(CalendarTokenTableMap::COL_ID)) {
+            $criteria->add(CalendarTokenTableMap::COL_ID, $this->id);
+        }
         if ($this->isColumnModified(CalendarTokenTableMap::COL_TOKEN)) {
             $criteria->add(CalendarTokenTableMap::COL_TOKEN, $this->token);
         }
@@ -1520,6 +1586,7 @@ abstract class CalendarToken implements ActiveRecordInterface
         $copyObj->setUpdated($this->getUpdated());
         if ($makeNew) {
             $copyObj->setNew(true);
+            $copyObj->setId(null); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1606,6 +1673,7 @@ abstract class CalendarToken implements ActiveRecordInterface
         if (null !== $this->aUser) {
             $this->aUser->removeCalendarToken($this);
         }
+        $this->id = null;
         $this->token = null;
         $this->userid = null;
         $this->format = null;
