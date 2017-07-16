@@ -170,8 +170,8 @@ class CalendarTokenTableMap extends TableMap
         $this->setPackage('TechWilk.Rota');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addColumn('id', 'Id', 'INTEGER', true, null, null);
-        $this->addPrimaryKey('token', 'Token', 'VARCHAR', true, 30, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('token', 'Token', 'VARCHAR', true, 30, null);
         $this->addForeignKey('userId', 'Userid', 'INTEGER', 'cr_users', 'id', true, 30, null);
         $this->addColumn('format', 'Format', 'VARCHAR', true, 5, null);
         $this->addColumn('description', 'Description', 'VARCHAR', false, 100, null);
@@ -225,11 +225,11 @@ class CalendarTokenTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('Token', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return null === $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('Token', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('Token', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('Token', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('Token', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('Token', TableMap::TYPE_PHPNAME, $indexType)];
+        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -246,10 +246,10 @@ class CalendarTokenTableMap extends TableMap
      */
     public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return (string) $row[
+        return (int) $row[
             $indexType == TableMap::TYPE_NUM
-                ? 1 + $offset
-                : self::translateFieldName('Token', TableMap::TYPE_PHPNAME, $indexType)
+                ? 0 + $offset
+                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
         ];
     }
 
@@ -422,7 +422,7 @@ class CalendarTokenTableMap extends TableMap
             $criteria = $values->buildPkeyCriteria();
          } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(CalendarTokenTableMap::DATABASE_NAME);
-             $criteria->add(CalendarTokenTableMap::COL_TOKEN, (array) $values, Criteria::IN);
+             $criteria->add(CalendarTokenTableMap::COL_ID, (array) $values, Criteria::IN);
          }
 
          $query = CalendarTokenQuery::create()->mergeWith($criteria);
@@ -468,6 +468,10 @@ class CalendarTokenTableMap extends TableMap
             $criteria = clone $criteria; // rename for clarity
         } else {
             $criteria = $criteria->buildCriteria(); // build Criteria from CalendarToken object
+        }
+
+        if ($criteria->containsKey(CalendarTokenTableMap::COL_ID) && $criteria->keyContainsValue(CalendarTokenTableMap::COL_ID)) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.CalendarTokenTableMap::COL_ID.')');
         }
 
 

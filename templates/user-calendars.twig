@@ -5,6 +5,21 @@
 {% include 'user-banner.twig' %}
 
 <div class="row">
+
+  {% if error or new %}
+  <div class="col-sm-12 col-md-12 col-lg-12">
+
+    {% if error %}
+    {% include 'user-calendar-error.twig' %}
+    {% endif %}
+
+    {% if new %}
+    {% include 'user-calendar-token.twig' %}
+    {% endif %}
+
+  </div><!-- /.col -->
+  {% endif %}
+
   <div class="col-sm-6">
     
     <div class="box box-primary">
@@ -53,9 +68,45 @@
     
   </div>
   <div class="col-sm-6">
+
     <div class="box">
-      <div class="box-footer">
-        
+          <div class="box-header">
+            <h2 class="box-title">Create URL</h2>
+          </div><!-- /.box-header -->
+          <div class="box-body">
+            <form action="{{ path_for('user-calendar-new-post') }}" method="post" id="addSkill">
+              <fieldset>
+                <div class="form-group">
+                  <label for="format">Format:</label>
+                  <select class="form-control" id="format" name="format">
+                    <option value="ical">iCal</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="description">Device or Software name:</label>
+                  <input class="form-control" id="description" name="description" type="text" placeholder="e.g. Bob's iPad, Google Calendar, etc." />
+                </div>
+              </div><!-- /.box-body -->
+              <div class="box-footer">
+                <input class="btn btn-primary" type="submit" value="Generate calendar URL" />
+              </div><!-- /.box-footer -->
+            </fieldset>
+          </form>
+        </div><!-- /.box -->
+
+    <div class="box box-solid">
+      <div class="box-header">
+        <h2 class="box-title">Instructions</h2>
+      </div><!-- /.box-header -->
+      <div class="box-body">
+        <p>Generate a unique URL and the rota system will automatically add events to your digital calendar when you are on the rota.</p>
+        <p>After generating a URL, you can add it to your favourite calendar software.  Instructions for common calendars are below.</p>
+        <ul>
+          <li><a href="https://support.google.com/calendar/answer/37100" target="_blank">Google Calendar</a> (follow instructions for adding with a link.)</li>
+          <li><a href="https://support.apple.com/kb/PH11523" target="_blank">Apple Calendar (Mac)</a></li>
+          <li><a href="https://www.imore.com/how-subscribe-calendars-your-iphone-or-ipad" target="_blank">Apple Calendar (iPhone / iPad)</a></li>
+          <li><a href="https://support.office.com/en-us/article/View-and-subscribe-to-Internet-Calendars-f6248506-e144-4508-b658-c838b6067597?ui=en-US&rs=en-US&ad=US&fromAR=1" target="_blank">Outlook</a> (follow instructions for adding internet calendar subscription.)</li>
+        </ul>
       </div>
     </div>
 

@@ -35,9 +35,9 @@ class Crypt
         }
 
         if (function_exists('random_int')) { // use secure random numbers when available
-        return random_int($min, $max);
+            return random_int($min, $max);
         } else { // fallback for < PHP 7.0
-        return mt_rand($min, $max);
+            return mt_rand($min, $max);
         }
     }
 }

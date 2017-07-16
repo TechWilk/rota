@@ -2,16 +2,16 @@
 <database name="default" defaultIdMethod="native" namespace="TechWilk\Rota">
 
   <table name="cr_calendarTokens" idMethod="native" phpName="CalendarToken">
-    <column name="id" phpName="Id" type="INTEGER" autoIncrement="true" required="true"/>
-    <column name="token" phpName="Token" type="VARCHAR" size="30" primaryKey="true" required="true"/>
+    <column name="id" phpName="Id" type="INTEGER" autoIncrement="true" primaryKey="true" required="true"/>
+    <column name="token" phpName="Token" type="VARCHAR" size="30" required="true"/>
     <column name="userId" phpName="Userid" type="INTEGER" size="30" required="true"/>
     <column name="format" phpName="Format" type="VARCHAR" size="5" required="true"/>
     <column name="description" phpName="Description" type="VARCHAR" size="100"/>
     <column name="revoked" phpName="Revoked" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
     <column name="revokedDate" phpName="RevokedDate" type="TIMESTAMP" />
     <column name="lastFetched" phpName="LastFetched" type="TIMESTAMP" />
-    <unique name="id">
-      <unique-column name="id"/>
+    <unique name="token">
+      <unique-column name="token"/>
     </unique>
     <behavior name="timestampable">
       <parameter name="create_column" value="created" />

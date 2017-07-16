@@ -626,6 +626,35 @@ $app->get('/user/me/calendar/new', function ($request, $response, $args) {
 })->setName('user-calendars');
 
 
+$app->post('/user/me/calendar/new', function ($request, $response, $args) {
+    // Sample log message
+    $this->logger->info("Create calendar POST '/user/me/calendars'");
+
+    $auth = $this['auth'];
+    $u = $auth->currentUser();
+
+    if (is_null($u)) {
+        return $this->view->render($response, 'error.twig');
+    }
+
+    $data = $request->getParsedBody();
+
+    $calendar = new CalendarToken();
+    $calendar->setFormat($data['format']);
+    $calendar->setDescription($data['description']);
+    $calendar->setUser($u);
+
+    $crypt = new Crypt();
+    $calendar->setToken($crypt->generateToken(30));
+
+    $calendar->save();
+
+    $cals = CalendarTokenQuery::create()->filterByUser($u)->find();
+
+    return $this->view->render($response, 'user-calendars.twig', [ "user" => $u, 'calendars' => $cals, 'new' => $calendar ]);
+})->setName('user-calendar-new-post');
+
+
 $app->get('/user/me/calendar/{id}/revoke', function ($request, $response, $args) {
     // Sample log message
     $this->logger->info("Fetch settings GET '/user/me/calendar/".$args['id']."/revoke'");

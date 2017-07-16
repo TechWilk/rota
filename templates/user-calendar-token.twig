@@ -1,0 +1,18 @@
+<div class="box box-success box-solid">
+    <div class="box-header">
+        <h2 class="box-title">Calendar URL for {{ new.description }}</h2>
+    </div>
+    <div class="box-body">
+            <p>Copy and paste the following URL into your calendar package:</p>
+            <code>{{ site.url.base }}{{ path_for('user-calendar', { 'token': new.token, 'format': new.format }) }}</code>
+            <p>You will not be shown this URL again, however you can generate more URL's if required.</p>
+    </div><!-- /.box-body -->
+    <div class="box-footer">
+        <button class="btn btn-primary" type="button" data-widget="remove" onclick="window.onbeforeunload = false">I have entered the URL to my calendar software</button>
+    </div>
+    <script>
+    window.onbeforeunload = function() {
+        return "Have you copied the calendar URL?\n You cannot view this URL again, however you can generate a new one.";
+    }
+    </script>
+</div><!-- /.box -->

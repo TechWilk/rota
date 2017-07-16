@@ -199,10 +199,10 @@ abstract class CalendarTokenQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, token, userId, format, description, revoked, revokedDate, lastFetched, created, updated FROM cr_calendarTokens WHERE token = :p0';
+        $sql = 'SELECT id, token, userId, format, description, revoked, revokedDate, lastFetched, created, updated FROM cr_calendarTokens WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -272,7 +272,7 @@ abstract class CalendarTokenQuery extends ModelCriteria
      */
     public function filterByPrimaryKey($key)
     {
-        return $this->addUsingAlias(CalendarTokenTableMap::COL_TOKEN, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(CalendarTokenTableMap::COL_ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -284,7 +284,7 @@ abstract class CalendarTokenQuery extends ModelCriteria
      */
     public function filterByPrimaryKeys($keys)
     {
-        return $this->addUsingAlias(CalendarTokenTableMap::COL_TOKEN, $keys, Criteria::IN);
+        return $this->addUsingAlias(CalendarTokenTableMap::COL_ID, $keys, Criteria::IN);
     }
 
     /**
@@ -732,7 +732,7 @@ abstract class CalendarTokenQuery extends ModelCriteria
     public function prune($calendarToken = null)
     {
         if ($calendarToken) {
-            $this->addUsingAlias(CalendarTokenTableMap::COL_TOKEN, $calendarToken->getToken(), Criteria::NOT_EQUAL);
+            $this->addUsingAlias(CalendarTokenTableMap::COL_ID, $calendarToken->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;

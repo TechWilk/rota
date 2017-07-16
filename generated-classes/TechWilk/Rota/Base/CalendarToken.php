@@ -1057,6 +1057,10 @@ abstract class CalendarToken implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
+        $this->modifiedColumns[CalendarTokenTableMap::COL_ID] = true;
+        if (null !== $this->id) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . CalendarTokenTableMap::COL_ID . ')');
+        }
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(CalendarTokenTableMap::COL_ID)) {
@@ -1143,7 +1147,7 @@ abstract class CalendarToken implements ActiveRecordInterface
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', 0, $e);
         }
-        $this->setToken($pk);
+        $this->setId($pk);
 
         $this->setNew(false);
     }
@@ -1506,7 +1510,7 @@ abstract class CalendarToken implements ActiveRecordInterface
     public function buildPkeyCriteria()
     {
         $criteria = ChildCalendarTokenQuery::create();
-        $criteria->add(CalendarTokenTableMap::COL_TOKEN, $this->token);
+        $criteria->add(CalendarTokenTableMap::COL_ID, $this->id);
 
         return $criteria;
     }
@@ -1519,7 +1523,7 @@ abstract class CalendarToken implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getToken();
+        $validPk = null !== $this->getId();
 
         $validPrimaryKeyFKs = 0;
         $primaryKeyFKs = [];
@@ -1535,22 +1539,22 @@ abstract class CalendarToken implements ActiveRecordInterface
 
     /**
      * Returns the primary key for this object (row).
-     * @return string
+     * @return int
      */
     public function getPrimaryKey()
     {
-        return $this->getToken();
+        return $this->getId();
     }
 
     /**
-     * Generic method to set the primary key (token column).
+     * Generic method to set the primary key (id column).
      *
-     * @param       string $key Primary key.
+     * @param       int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
     {
-        $this->setToken($key);
+        $this->setId($key);
     }
 
     /**
@@ -1559,7 +1563,7 @@ abstract class CalendarToken implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return null === $this->getToken();
+        return null === $this->getId();
     }
 
     /**
