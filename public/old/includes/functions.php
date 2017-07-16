@@ -30,6 +30,7 @@ if (isset($_SESSION['userId'])) {
     $_SESSION['db_is_logged_in'] = true;
     $user = UserQuery::create()->findPk($_SESSION['userId']);
     $_SESSION['name'] = $user->getName();
+    $_SESSION['isAdmin'] = $user->isAdmin() ? "1" : null;
 } else {
     unset($_SESSION['userid']);
     unset($_SESSION['is_logged_in']);

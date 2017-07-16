@@ -1,0 +1,87 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+
+{% include 'user-banner.twig' %}
+
+<form action="{{ path_for('user-availability-post', { 'id': user.id }) }}" method="post">
+    <div class="box box-primary">
+        <div class="box-body">
+            <div class="row margin">
+                <div class="col-xs-12 col-md-1">
+                    <p><strong>Date</strong></th>
+                </div>
+                <div class="col-xs-12 col-md-2">
+                    <p>Roles</p>
+                </div>
+                <div class="col-xs-6 col-md-1">
+                    <p>Type</p>
+                </div>
+                <div class="col-xs-6 col-md-1">
+                    <p>SubType</p>
+                </div>
+                <div class="col-sm-3">
+                    <p>Notes</p>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-1">
+                    <p>Availability</p>
+                </div>
+                <div class="col-xs-12 col-sm-9 col-md-3">
+                    <p>Comment</p>
+                </div>
+            </div>
+            <hr />
+            {% for event in events %}
+            <div class="row margin">
+                <input type="hidden" name="events[]" value="{{ event.id }}">
+                <div class="col-xs-12 col-md-1">
+                    <p><strong>{{ event.date|date('jS F') }}</strong></p>
+                </div>
+                <div class="col-md-2">
+                    <p>
+                        {% for role in user.rolesinevent(event) %}
+                        {{ role.name }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                </div>
+                <div class="col-xs-6 col-md-1">
+                    <p>{{ event.eventtype.name }}</p>
+                </div>
+                <div class="col-xs-6 col-md-1">
+                    <p>{{ event.eventsubtype.name }}</p>
+                </div>
+                <div class="col-md-3">
+                    <p>{{ event.comment }}</p>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-1 checkbox">
+                    <label>
+                        <input type="checkbox" name="eventsAvailable[]" value="{{ event.id }}" {% if user.isavailableforevent(event) or user.isavailableforevent(event) is null %}checked="checked"{% endif %}/>
+                        Available
+                    </label>
+                </div>
+                <div class="col-xs-12 col-sm-9 col-md-3">
+                    <input class="form-control" name="event{{ event.id }}comment" id="eventcomment" type="text" value="{{ user.availabilityforevent(event).comment }}" placeholder="General note or why you are unavailable (optional)" />
+                </div>
+                </tr>
+                {% include 'event-modal.twig' %}
+            </div>
+            <hr />
+            {% else %}
+            <div class="row pad">
+                <div class="col-xs-12">
+                    <p>No upcoming events. <a href="{{ path_for('events') }}">View all events.</a></p>
+                </div>
+            </div>
+            {% endfor %}
+        </tbody>
+        </table>
+
+        </div>
+        <div class="box-footer">
+        <a href="{{ path_for('user', { 'id': user.id }) }}" class="btn btn-outline text-red">Cancel</a>
+        <input class="btn btn-primary" type="submit" value="Save" />
+        </div>
+        </div>
+</form>
+
+{% endblock %}

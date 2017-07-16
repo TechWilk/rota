@@ -140,6 +140,21 @@
   </table>
 
 
+  <table name="cr_availability" idMethod="native" phpName="Availability">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true" />
+    <column name="eventId" phpName="EventId" type="INTEGER" required="true" />
+    <column name="userId" phpName="UserId" type="INTEGER" required="true" />
+    <column name="available" phpName="Available" type="BOOLEAN" size="1" required="true" defaultValue="true"/>
+    <column name="comment" phpName="Comment" type="VARCHAR" size="64" />
+    <foreign-key foreignTable="cr_users">
+      <reference local="userId" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="cr_events">
+      <reference local="eventId" foreign="id" />
+    </foreign-key>
+  </table>
+
+
   <table name="cr_groups" idMethod="native" phpName="Group">
     <column name="id" phpName="Id" type="INTEGER" size="3" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="name" phpName="Name" type="VARCHAR" size="25" required="true" defaultValue=""/>

@@ -124,7 +124,17 @@ use TechWilk\Rota\Map\EventTableMap;
  * @method     ChildEventQuery rightJoinWithEventPerson() Adds a RIGHT JOIN clause and with to the query using the EventPerson relation
  * @method     ChildEventQuery innerJoinWithEventPerson() Adds a INNER JOIN clause and with to the query using the EventPerson relation
  *
- * @method     \TechWilk\Rota\UserQuery|\TechWilk\Rota\EventTypeQuery|\TechWilk\Rota\EventSubTypeQuery|\TechWilk\Rota\LocationQuery|\TechWilk\Rota\EventGroupQuery|\TechWilk\Rota\EventPersonQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     ChildEventQuery leftJoinAvailability($relationAlias = null) Adds a LEFT JOIN clause to the query using the Availability relation
+ * @method     ChildEventQuery rightJoinAvailability($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Availability relation
+ * @method     ChildEventQuery innerJoinAvailability($relationAlias = null) Adds a INNER JOIN clause to the query using the Availability relation
+ *
+ * @method     ChildEventQuery joinWithAvailability($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Availability relation
+ *
+ * @method     ChildEventQuery leftJoinWithAvailability() Adds a LEFT JOIN clause and with to the query using the Availability relation
+ * @method     ChildEventQuery rightJoinWithAvailability() Adds a RIGHT JOIN clause and with to the query using the Availability relation
+ * @method     ChildEventQuery innerJoinWithAvailability() Adds a INNER JOIN clause and with to the query using the Availability relation
+ *
+ * @method     \TechWilk\Rota\UserQuery|\TechWilk\Rota\EventTypeQuery|\TechWilk\Rota\EventSubTypeQuery|\TechWilk\Rota\LocationQuery|\TechWilk\Rota\EventGroupQuery|\TechWilk\Rota\EventPersonQuery|\TechWilk\Rota\AvailabilityQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildEvent findOne(ConnectionInterface $con = null) Return the first ChildEvent matching the query
  * @method     ChildEvent findOneOrCreate(ConnectionInterface $con = null) Return the first ChildEvent matching the query, or a new ChildEvent object populated from the query conditions when no match is found
@@ -1479,6 +1489,79 @@ abstract class EventQuery extends ModelCriteria
         return $this
             ->joinEventPerson($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'EventPerson', '\TechWilk\Rota\EventPersonQuery');
+    }
+
+    /**
+     * Filter the query by a related \TechWilk\Rota\Availability object
+     *
+     * @param \TechWilk\Rota\Availability|ObjectCollection $availability the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildEventQuery The current query, for fluid interface
+     */
+    public function filterByAvailability($availability, $comparison = null)
+    {
+        if ($availability instanceof \TechWilk\Rota\Availability) {
+            return $this
+                ->addUsingAlias(EventTableMap::COL_ID, $availability->getEventId(), $comparison);
+        } elseif ($availability instanceof ObjectCollection) {
+            return $this
+                ->useAvailabilityQuery()
+                ->filterByPrimaryKeys($availability->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByAvailability() only accepts arguments of type \TechWilk\Rota\Availability or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Availability relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildEventQuery The current query, for fluid interface
+     */
+    public function joinAvailability($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Availability');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Availability');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Availability relation Availability object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \TechWilk\Rota\AvailabilityQuery A secondary query class using the current class as primary query
+     */
+    public function useAvailabilityQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinAvailability($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Availability', '\TechWilk\Rota\AvailabilityQuery');
     }
 
     /**

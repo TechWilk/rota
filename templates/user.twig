@@ -44,6 +44,22 @@
       </div>
     </div>
 
+    <div class="box">
+      <div class="box-header">
+        <h4 class="box-title">Availability</h4>
+      </div>
+      <div class="box-body">
+        <ul>
+          <li>{{ user.upcomingeventsavailable.count | default('0') }} available</li>
+          <li>{{ user.upcomingeventsunavailable.count | default('0') }} unavailable</li>
+          <li>{{ user.upcomingeventsawaitingresponse | length }} awaiting response</li>
+        </ul>
+      </div>
+      <div class="box-footer">
+        <a class="btn btn-primary btn-block" href="{{ path_for('user-availability', { 'id': user.id }) }}">Set availability</a>
+      </div>
+    </div>
+
   </div>
 
   <div class="col-md-9">

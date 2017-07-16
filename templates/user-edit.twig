@@ -3,6 +3,7 @@
 {% block content %}
 
 {% if user %}
+{% include 'user-banner.twig' %}
 <form action="{{ path_for('user-post', { 'id': user.id }) }}" method="post">
 {% else %}
 <form action="{{ path_for('user-post') }}" method="post">

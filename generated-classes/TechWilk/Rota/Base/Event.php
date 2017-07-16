@@ -18,6 +18,8 @@ use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 use Propel\Runtime\Util\PropelDateTime;
+use TechWilk\Rota\Availability as ChildAvailability;
+use TechWilk\Rota\AvailabilityQuery as ChildAvailabilityQuery;
 use TechWilk\Rota\Event as ChildEvent;
 use TechWilk\Rota\EventGroup as ChildEventGroup;
 use TechWilk\Rota\EventGroupQuery as ChildEventGroupQuery;
@@ -32,6 +34,7 @@ use TechWilk\Rota\Location as ChildLocation;
 use TechWilk\Rota\LocationQuery as ChildLocationQuery;
 use TechWilk\Rota\User as ChildUser;
 use TechWilk\Rota\UserQuery as ChildUserQuery;
+use TechWilk\Rota\Map\AvailabilityTableMap;
 use TechWilk\Rota\Map\EventPersonTableMap;
 use TechWilk\Rota\Map\EventTableMap;
 
@@ -238,6 +241,12 @@ abstract class Event implements ActiveRecordInterface
     protected $collEventpeoplePartial;
 
     /**
+     * @var        ObjectCollection|ChildAvailability[] Collection to store aggregation of ChildAvailability objects.
+     */
+    protected $collAvailabilities;
+    protected $collAvailabilitiesPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
@@ -250,6 +259,12 @@ abstract class Event implements ActiveRecordInterface
      * @var ObjectCollection|ChildEventPerson[]
      */
     protected $eventpeopleScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildAvailability[]
+     */
+    protected $availabilitiesScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -1303,6 +1318,8 @@ abstract class Event implements ActiveRecordInterface
             $this->aLocation = null;
             $this->aEventGroup = null;
             $this->collEventpeople = null;
+
+            $this->collAvailabilities = null;
         } // if (deep)
     }
 
@@ -1480,6 +1497,23 @@ abstract class Event implements ActiveRecordInterface
 
             if ($this->collEventpeople !== null) {
                 foreach ($this->collEventpeople as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->availabilitiesScheduledForDeletion !== null) {
+                if (!$this->availabilitiesScheduledForDeletion->isEmpty()) {
+                    \TechWilk\Rota\AvailabilityQuery::create()
+                        ->filterByPrimaryKeys($this->availabilitiesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->availabilitiesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collAvailabilities !== null) {
+                foreach ($this->collAvailabilities as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1890,6 +1924,20 @@ abstract class Event implements ActiveRecordInterface
 
                 $result[$key] = $this->collEventpeople->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
+            if (null !== $this->collAvailabilities) {
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'availabilities';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'cr_availabilities';
+                        break;
+                    default:
+                        $key = 'Availabilities';
+                }
+
+                $result[$key] = $this->collAvailabilities->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
         }
 
         return $result;
@@ -2257,6 +2305,12 @@ abstract class Event implements ActiveRecordInterface
                     $copyObj->addEventPerson($relObj->copy($deepCopy));
                 }
             }
+
+            foreach ($this->getAvailabilities() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addAvailability($relObj->copy($deepCopy));
+                }
+            }
         } // if ($deepCopy)
 
         if ($makeNew) {
@@ -2557,6 +2611,10 @@ abstract class Event implements ActiveRecordInterface
             $this->initEventpeople();
             return;
         }
+        if ('Availability' == $relationName) {
+            $this->initAvailabilities();
+            return;
+        }
     }
 
     /**
@@ -2810,6 +2868,256 @@ abstract class Event implements ActiveRecordInterface
     }
 
     /**
+     * Clears out the collAvailabilities collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addAvailabilities()
+     */
+    public function clearAvailabilities()
+    {
+        $this->collAvailabilities = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collAvailabilities collection loaded partially.
+     */
+    public function resetPartialAvailabilities($v = true)
+    {
+        $this->collAvailabilitiesPartial = $v;
+    }
+
+    /**
+     * Initializes the collAvailabilities collection.
+     *
+     * By default this just sets the collAvailabilities collection to an empty array (like clearcollAvailabilities());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initAvailabilities($overrideExisting = true)
+    {
+        if (null !== $this->collAvailabilities && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = AvailabilityTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collAvailabilities = new $collectionClassName;
+        $this->collAvailabilities->setModel('\TechWilk\Rota\Availability');
+    }
+
+    /**
+     * Gets an array of ChildAvailability objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildEvent is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildAvailability[] List of ChildAvailability objects
+     * @throws PropelException
+     */
+    public function getAvailabilities(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collAvailabilitiesPartial && !$this->isNew();
+        if (null === $this->collAvailabilities || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collAvailabilities) {
+                // return empty collection
+                $this->initAvailabilities();
+            } else {
+                $collAvailabilities = ChildAvailabilityQuery::create(null, $criteria)
+                    ->filterByEvent($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collAvailabilitiesPartial && count($collAvailabilities)) {
+                        $this->initAvailabilities(false);
+
+                        foreach ($collAvailabilities as $obj) {
+                            if (false == $this->collAvailabilities->contains($obj)) {
+                                $this->collAvailabilities->append($obj);
+                            }
+                        }
+
+                        $this->collAvailabilitiesPartial = true;
+                    }
+
+                    return $collAvailabilities;
+                }
+
+                if ($partial && $this->collAvailabilities) {
+                    foreach ($this->collAvailabilities as $obj) {
+                        if ($obj->isNew()) {
+                            $collAvailabilities[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collAvailabilities = $collAvailabilities;
+                $this->collAvailabilitiesPartial = false;
+            }
+        }
+
+        return $this->collAvailabilities;
+    }
+
+    /**
+     * Sets a collection of ChildAvailability objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $availabilities A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildEvent The current object (for fluent API support)
+     */
+    public function setAvailabilities(Collection $availabilities, ConnectionInterface $con = null)
+    {
+        /** @var ChildAvailability[] $availabilitiesToDelete */
+        $availabilitiesToDelete = $this->getAvailabilities(new Criteria(), $con)->diff($availabilities);
+
+
+        $this->availabilitiesScheduledForDeletion = $availabilitiesToDelete;
+
+        foreach ($availabilitiesToDelete as $availabilityRemoved) {
+            $availabilityRemoved->setEvent(null);
+        }
+
+        $this->collAvailabilities = null;
+        foreach ($availabilities as $availability) {
+            $this->addAvailability($availability);
+        }
+
+        $this->collAvailabilities = $availabilities;
+        $this->collAvailabilitiesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Availability objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Availability objects.
+     * @throws PropelException
+     */
+    public function countAvailabilities(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collAvailabilitiesPartial && !$this->isNew();
+        if (null === $this->collAvailabilities || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collAvailabilities) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getAvailabilities());
+            }
+
+            $query = ChildAvailabilityQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByEvent($this)
+                ->count($con);
+        }
+
+        return count($this->collAvailabilities);
+    }
+
+    /**
+     * Method called to associate a ChildAvailability object to this object
+     * through the ChildAvailability foreign key attribute.
+     *
+     * @param  ChildAvailability $l ChildAvailability
+     * @return $this|\TechWilk\Rota\Event The current object (for fluent API support)
+     */
+    public function addAvailability(ChildAvailability $l)
+    {
+        if ($this->collAvailabilities === null) {
+            $this->initAvailabilities();
+            $this->collAvailabilitiesPartial = true;
+        }
+
+        if (!$this->collAvailabilities->contains($l)) {
+            $this->doAddAvailability($l);
+
+            if ($this->availabilitiesScheduledForDeletion and $this->availabilitiesScheduledForDeletion->contains($l)) {
+                $this->availabilitiesScheduledForDeletion->remove($this->availabilitiesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildAvailability $availability The ChildAvailability object to add.
+     */
+    protected function doAddAvailability(ChildAvailability $availability)
+    {
+        $this->collAvailabilities[]= $availability;
+        $availability->setEvent($this);
+    }
+
+    /**
+     * @param  ChildAvailability $availability The ChildAvailability object to remove.
+     * @return $this|ChildEvent The current object (for fluent API support)
+     */
+    public function removeAvailability(ChildAvailability $availability)
+    {
+        if ($this->getAvailabilities()->contains($availability)) {
+            $pos = $this->collAvailabilities->search($availability);
+            $this->collAvailabilities->remove($pos);
+            if (null === $this->availabilitiesScheduledForDeletion) {
+                $this->availabilitiesScheduledForDeletion = clone $this->collAvailabilities;
+                $this->availabilitiesScheduledForDeletion->clear();
+            }
+            $this->availabilitiesScheduledForDeletion[]= clone $availability;
+            $availability->setEvent(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Event is new, it will return
+     * an empty collection; or if this Event has previously
+     * been saved, it will retrieve related Availabilities from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Event.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildAvailability[] List of ChildAvailability objects
+     */
+    public function getAvailabilitiesJoinUser(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildAvailabilityQuery::create(null, $criteria);
+        $query->joinWith('User', $joinBehavior);
+
+        return $this->getAvailabilities($query, $con);
+    }
+
+    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
@@ -2872,9 +3180,15 @@ abstract class Event implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collAvailabilities) {
+                foreach ($this->collAvailabilities as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
         $this->collEventpeople = null;
+        $this->collAvailabilities = null;
         $this->aUser = null;
         $this->aEventType = null;
         $this->aEventSubType = null;

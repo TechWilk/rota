@@ -14,4 +14,23 @@ use TechWilk\Rota\Base\UserRole as BaseUserRole;
  */
 class UserRole extends BaseUserRole
 {
+    /**
+    * Determine if the user is marked as available for an event.
+    *
+    * @return bool if user is available
+    */
+    public function isAvailableForEvent(Event $event)
+    {
+        return $this->getUser()->isAvailableForEvent($event);
+    }
+
+    /**
+    * Fetch Availability object for the event.
+    *
+    * @return \TechWilk\Rota\Availability
+    */
+    public function getAvailabilityForEvent(Event $event)
+    {
+        return $this->getUser()->getAvailabilityForEvent($event);
+    }
 }

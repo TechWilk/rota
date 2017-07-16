@@ -1,0 +1,107 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+
+{% if event and not copy %}
+<form action="{{ path_for('event-post', { 'id': event.id }) }}" method="post">
+{% else %}
+<form action="{{ path_for('event-post') }}" method="post">
+{% endif %}
+  <div class="box box-primary">
+    <div class="box-body">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input class="form-control" name="name" id="name" type="text" value="{{ event.name }}" placeholder="Event name" />
+      </div>
+
+      <div class="form-group">
+        <label for="date">Date:</label>
+        <div class="input-group">
+          <div class="input-group-addon">
+            <i class="fa fa-calendar"></i>
+          </div>
+          <input class="form-control" name="date" id="date" type="text" value="{{ event.date is empty ? "" : event.date | date('d/m/Y') }}" placeholder="dd/mm/yyyy" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="type">Type:</label>
+        <select class="form-control" name="type" id="type">
+          <option value="{{ event.eventtype.id }}" data-location="{{ event.eventtype.defaultlocationid }}" data-time="{{ event.date | date('H:i') }}">{{ event.eventtype.name }}</option>
+          {% for eventtype in eventtypes if eventtype != event.eventtype %}
+          <option value="{{ eventtype.id }}" data-location="{{ eventtype.defaultlocationid | default('') }}" data-time="{{ eventtype.defaulttime is empty ? "" : eventtype.defaulttime | date('H:i') }}">{{ eventtype.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="subtype">SubType:</label>
+        <select class="form-control" name="subtype" id="subtype">
+          <option value="{{ event.eventsubtype.id }}">{{ event.eventsubtype.name }}</option>
+          {% for eventsubtype in eventsubtypes if eventsubtype != event.eventsubtype %}
+          <option value="{{ eventsubtype.id }}">{{ eventsubtype.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="location">Location:</label>
+        <select class="form-control" name="location" id="location">
+          <option value="{{ event.location.id }}">{{ event.location.name }}</option>
+          {% for location in locations if location != event.location %}
+          <option value="{{ location.id }}">{{ location.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="time">Time:</label>
+        <div class="input-group">
+          <div class="input-group-addon">
+            <i class="fa fa-clock-o"></i>
+          </div>
+          <input class="form-control" name="time" id="time" type="text" value="{{ event.date is empty ? "" : event.date | date('H:i') }}" placeholder="hh:mm" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="comment">Notes:</label>
+        <textarea class="form-control" id="comment" name="comment" placeholder="Enter any notes">{{ event.comment }}</textarea>
+      </div>
+    </div>
+    <div class="box-footer">
+      <a href="{{ path_for('events') }}" class="btn btn-outline text-red">Cancel</a>
+      <input class="btn btn-primary" type="submit" value="Save" />
+    </div>
+  </div>
+</form>
+
+{% endblock %}
+
+{% block javascript %}
+$( document ).ready(function() {
+
+  // People multi-select
+  $('select.multi').select2();
+  
+  // Date picker
+  $("#date").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"}).datepicker({
+    autoclose: true,
+    format: 'dd/mm/yyyy',
+    weekStart: 1,
+    startDate: new Date(),
+  });
+  
+  $("#time").inputmask("hh:mm", {"placeholder": "hh:mm"});
+  
+  // Auto-fill time from event Type
+  $('#type').on('change', function() {
+    $('#time').val($(this).find(":selected").attr('data-time'));
+  });
+  
+  // Auto-fill location from event Type
+  $('#type').on('change', function() {
+    $("#location").val($(this).find(":selected").attr('data-location'));
+  });
+});
+{% endblock %}

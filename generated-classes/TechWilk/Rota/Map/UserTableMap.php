@@ -237,6 +237,13 @@ class UserTableMap extends TableMap
     1 => ':id',
   ),
 ), null, null, 'Events', false);
+        $this->addRelation('Availability', '\\TechWilk\\Rota\\Availability', RelationMap::ONE_TO_MANY, array(
+  0 =>
+  array(
+    0 => ':userId',
+    1 => ':id',
+  ),
+), null, null, 'Availabilities', false);
         $this->addRelation('Notification', '\\TechWilk\\Rota\\Notification', RelationMap::ONE_TO_MANY, array(
   0 =>
   array(
