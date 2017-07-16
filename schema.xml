@@ -7,6 +7,8 @@
     <column name="format" phpName="Format" type="VARCHAR" size="5" required="true"/>
     <column name="description" phpName="Description" type="VARCHAR" size="100"/>
     <column name="revoked" phpName="Revoked" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <column name="revokedDate" phpName="RevokedDate" type="TIMESTAMP" />
+    <column name="lastFetched" phpName="LastFetched" type="TIMESTAMP" />
     <behavior name="timestampable">
       <parameter name="create_column" value="created" />
       <parameter name="update_column" value="updated" />

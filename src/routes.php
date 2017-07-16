@@ -643,6 +643,7 @@ $app->get('/user/me/calendar/{id}/revoke', function ($request, $response, $args)
         return $this->view->render($response, 'error.twig');
     }
     $c->setRevoked(true);
+    $c->setRevokedDate(new DateTime());
     $c->save();
 
     return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('user-calendars'));
@@ -658,6 +659,9 @@ $app->get('/calendar/{token}.{format}', function ($request, $response, $args) {
     if (!isset($c)) {
         return $this->view->render($response->withStatus(404), 'calendar-error.twig');
     }
+    $c->setLastFetched(new DateTime());
+    $c->save();
+
     $u = $c->getUser();
     $e = EventQuery::create()
         ->useEventPersonQuery()
@@ -794,6 +798,9 @@ $app->get('/calendar.php', function ($request, $response, $args) {
     if (!isset($c)) {
         return $this->view->render($response->withStatus(404), 'calendar-error.twig');
     }
+    $c->setLastFetched(new DateTime());
+    $c->save();
+
     $u = $c->getUser();
     $e = EventQuery::create()
         ->useEventPersonQuery()

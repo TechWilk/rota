@@ -29,6 +29,8 @@ CREATE TABLE [cr_calendarTokens]
     [format] VARCHAR(5) NOT NULL,
     [description] VARCHAR(100),
     [revoked] INTEGER(1) DEFAULT 0 NOT NULL,
+    [revokedDate] TIMESTAMP,
+    [lastFetched] TIMESTAMP,
     [created] TIMESTAMP,
     [updated] TIMESTAMP,
     PRIMARY KEY ([token]),

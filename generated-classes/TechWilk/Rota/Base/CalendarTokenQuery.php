@@ -25,6 +25,8 @@ use TechWilk\Rota\Map\CalendarTokenTableMap;
  * @method     ChildCalendarTokenQuery orderByFormat($order = Criteria::ASC) Order by the format column
  * @method     ChildCalendarTokenQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method     ChildCalendarTokenQuery orderByRevoked($order = Criteria::ASC) Order by the revoked column
+ * @method     ChildCalendarTokenQuery orderByRevokedDate($order = Criteria::ASC) Order by the revokedDate column
+ * @method     ChildCalendarTokenQuery orderByLastFetched($order = Criteria::ASC) Order by the lastFetched column
  * @method     ChildCalendarTokenQuery orderByCreated($order = Criteria::ASC) Order by the created column
  * @method     ChildCalendarTokenQuery orderByUpdated($order = Criteria::ASC) Order by the updated column
  *
@@ -33,6 +35,8 @@ use TechWilk\Rota\Map\CalendarTokenTableMap;
  * @method     ChildCalendarTokenQuery groupByFormat() Group by the format column
  * @method     ChildCalendarTokenQuery groupByDescription() Group by the description column
  * @method     ChildCalendarTokenQuery groupByRevoked() Group by the revoked column
+ * @method     ChildCalendarTokenQuery groupByRevokedDate() Group by the revokedDate column
+ * @method     ChildCalendarTokenQuery groupByLastFetched() Group by the lastFetched column
  * @method     ChildCalendarTokenQuery groupByCreated() Group by the created column
  * @method     ChildCalendarTokenQuery groupByUpdated() Group by the updated column
  *
@@ -64,6 +68,8 @@ use TechWilk\Rota\Map\CalendarTokenTableMap;
  * @method     ChildCalendarToken findOneByFormat(string $format) Return the first ChildCalendarToken filtered by the format column
  * @method     ChildCalendarToken findOneByDescription(string $description) Return the first ChildCalendarToken filtered by the description column
  * @method     ChildCalendarToken findOneByRevoked(boolean $revoked) Return the first ChildCalendarToken filtered by the revoked column
+ * @method     ChildCalendarToken findOneByRevokedDate(string $revokedDate) Return the first ChildCalendarToken filtered by the revokedDate column
+ * @method     ChildCalendarToken findOneByLastFetched(string $lastFetched) Return the first ChildCalendarToken filtered by the lastFetched column
  * @method     ChildCalendarToken findOneByCreated(string $created) Return the first ChildCalendarToken filtered by the created column
  * @method     ChildCalendarToken findOneByUpdated(string $updated) Return the first ChildCalendarToken filtered by the updated column *
 
@@ -75,6 +81,8 @@ use TechWilk\Rota\Map\CalendarTokenTableMap;
  * @method     ChildCalendarToken requireOneByFormat(string $format) Return the first ChildCalendarToken filtered by the format column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCalendarToken requireOneByDescription(string $description) Return the first ChildCalendarToken filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCalendarToken requireOneByRevoked(boolean $revoked) Return the first ChildCalendarToken filtered by the revoked column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildCalendarToken requireOneByRevokedDate(string $revokedDate) Return the first ChildCalendarToken filtered by the revokedDate column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildCalendarToken requireOneByLastFetched(string $lastFetched) Return the first ChildCalendarToken filtered by the lastFetched column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCalendarToken requireOneByCreated(string $created) Return the first ChildCalendarToken filtered by the created column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCalendarToken requireOneByUpdated(string $updated) Return the first ChildCalendarToken filtered by the updated column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
@@ -84,6 +92,8 @@ use TechWilk\Rota\Map\CalendarTokenTableMap;
  * @method     ChildCalendarToken[]|ObjectCollection findByFormat(string $format) Return ChildCalendarToken objects filtered by the format column
  * @method     ChildCalendarToken[]|ObjectCollection findByDescription(string $description) Return ChildCalendarToken objects filtered by the description column
  * @method     ChildCalendarToken[]|ObjectCollection findByRevoked(boolean $revoked) Return ChildCalendarToken objects filtered by the revoked column
+ * @method     ChildCalendarToken[]|ObjectCollection findByRevokedDate(string $revokedDate) Return ChildCalendarToken objects filtered by the revokedDate column
+ * @method     ChildCalendarToken[]|ObjectCollection findByLastFetched(string $lastFetched) Return ChildCalendarToken objects filtered by the lastFetched column
  * @method     ChildCalendarToken[]|ObjectCollection findByCreated(string $created) Return ChildCalendarToken objects filtered by the created column
  * @method     ChildCalendarToken[]|ObjectCollection findByUpdated(string $updated) Return ChildCalendarToken objects filtered by the updated column
  * @method     ChildCalendarToken[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
@@ -184,7 +194,7 @@ abstract class CalendarTokenQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT token, userId, format, description, revoked, created, updated FROM cr_calendarTokens WHERE token = :p0';
+        $sql = 'SELECT token, userId, format, description, revoked, revokedDate, lastFetched, created, updated FROM cr_calendarTokens WHERE token = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -415,6 +425,92 @@ abstract class CalendarTokenQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CalendarTokenTableMap::COL_REVOKED, $revoked, $comparison);
+    }
+
+    /**
+     * Filter the query on the revokedDate column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByRevokedDate('2011-03-14'); // WHERE revokedDate = '2011-03-14'
+     * $query->filterByRevokedDate('now'); // WHERE revokedDate = '2011-03-14'
+     * $query->filterByRevokedDate(array('max' => 'yesterday')); // WHERE revokedDate > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $revokedDate The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildCalendarTokenQuery The current query, for fluid interface
+     */
+    public function filterByRevokedDate($revokedDate = null, $comparison = null)
+    {
+        if (is_array($revokedDate)) {
+            $useMinMax = false;
+            if (isset($revokedDate['min'])) {
+                $this->addUsingAlias(CalendarTokenTableMap::COL_REVOKEDDATE, $revokedDate['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($revokedDate['max'])) {
+                $this->addUsingAlias(CalendarTokenTableMap::COL_REVOKEDDATE, $revokedDate['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CalendarTokenTableMap::COL_REVOKEDDATE, $revokedDate, $comparison);
+    }
+
+    /**
+     * Filter the query on the lastFetched column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByLastFetched('2011-03-14'); // WHERE lastFetched = '2011-03-14'
+     * $query->filterByLastFetched('now'); // WHERE lastFetched = '2011-03-14'
+     * $query->filterByLastFetched(array('max' => 'yesterday')); // WHERE lastFetched > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $lastFetched The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildCalendarTokenQuery The current query, for fluid interface
+     */
+    public function filterByLastFetched($lastFetched = null, $comparison = null)
+    {
+        if (is_array($lastFetched)) {
+            $useMinMax = false;
+            if (isset($lastFetched['min'])) {
+                $this->addUsingAlias(CalendarTokenTableMap::COL_LASTFETCHED, $lastFetched['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($lastFetched['max'])) {
+                $this->addUsingAlias(CalendarTokenTableMap::COL_LASTFETCHED, $lastFetched['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CalendarTokenTableMap::COL_LASTFETCHED, $lastFetched, $comparison);
     }
 
     /**

@@ -58,7 +58,7 @@ class CalendarTokenTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 9;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class CalendarTokenTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /**
      * the column name for the token field
@@ -96,6 +96,16 @@ class CalendarTokenTableMap extends TableMap
     const COL_REVOKED = 'cr_calendarTokens.revoked';
 
     /**
+     * the column name for the revokedDate field
+     */
+    const COL_REVOKEDDATE = 'cr_calendarTokens.revokedDate';
+
+    /**
+     * the column name for the lastFetched field
+     */
+    const COL_LASTFETCHED = 'cr_calendarTokens.lastFetched';
+
+    /**
      * the column name for the created field
      */
     const COL_CREATED = 'cr_calendarTokens.created';
@@ -117,11 +127,11 @@ class CalendarTokenTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array(
-        self::TYPE_PHPNAME       => array('Token', 'Userid', 'Format', 'Description', 'Revoked', 'Created', 'Updated', ),
-        self::TYPE_CAMELNAME     => array('token', 'userid', 'format', 'description', 'revoked', 'created', 'updated', ),
-        self::TYPE_COLNAME       => array(CalendarTokenTableMap::COL_TOKEN, CalendarTokenTableMap::COL_USERID, CalendarTokenTableMap::COL_FORMAT, CalendarTokenTableMap::COL_DESCRIPTION, CalendarTokenTableMap::COL_REVOKED, CalendarTokenTableMap::COL_CREATED, CalendarTokenTableMap::COL_UPDATED, ),
-        self::TYPE_FIELDNAME     => array('token', 'userId', 'format', 'description', 'revoked', 'created', 'updated', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('Token', 'Userid', 'Format', 'Description', 'Revoked', 'RevokedDate', 'LastFetched', 'Created', 'Updated', ),
+        self::TYPE_CAMELNAME     => array('token', 'userid', 'format', 'description', 'revoked', 'revokedDate', 'lastFetched', 'created', 'updated', ),
+        self::TYPE_COLNAME       => array(CalendarTokenTableMap::COL_TOKEN, CalendarTokenTableMap::COL_USERID, CalendarTokenTableMap::COL_FORMAT, CalendarTokenTableMap::COL_DESCRIPTION, CalendarTokenTableMap::COL_REVOKED, CalendarTokenTableMap::COL_REVOKEDDATE, CalendarTokenTableMap::COL_LASTFETCHED, CalendarTokenTableMap::COL_CREATED, CalendarTokenTableMap::COL_UPDATED, ),
+        self::TYPE_FIELDNAME     => array('token', 'userId', 'format', 'description', 'revoked', 'revokedDate', 'lastFetched', 'created', 'updated', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -131,11 +141,11 @@ class CalendarTokenTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array(
-        self::TYPE_PHPNAME       => array('Token' => 0, 'Userid' => 1, 'Format' => 2, 'Description' => 3, 'Revoked' => 4, 'Created' => 5, 'Updated' => 6, ),
-        self::TYPE_CAMELNAME     => array('token' => 0, 'userid' => 1, 'format' => 2, 'description' => 3, 'revoked' => 4, 'created' => 5, 'updated' => 6, ),
-        self::TYPE_COLNAME       => array(CalendarTokenTableMap::COL_TOKEN => 0, CalendarTokenTableMap::COL_USERID => 1, CalendarTokenTableMap::COL_FORMAT => 2, CalendarTokenTableMap::COL_DESCRIPTION => 3, CalendarTokenTableMap::COL_REVOKED => 4, CalendarTokenTableMap::COL_CREATED => 5, CalendarTokenTableMap::COL_UPDATED => 6, ),
-        self::TYPE_FIELDNAME     => array('token' => 0, 'userId' => 1, 'format' => 2, 'description' => 3, 'revoked' => 4, 'created' => 5, 'updated' => 6, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('Token' => 0, 'Userid' => 1, 'Format' => 2, 'Description' => 3, 'Revoked' => 4, 'RevokedDate' => 5, 'LastFetched' => 6, 'Created' => 7, 'Updated' => 8, ),
+        self::TYPE_CAMELNAME     => array('token' => 0, 'userid' => 1, 'format' => 2, 'description' => 3, 'revoked' => 4, 'revokedDate' => 5, 'lastFetched' => 6, 'created' => 7, 'updated' => 8, ),
+        self::TYPE_COLNAME       => array(CalendarTokenTableMap::COL_TOKEN => 0, CalendarTokenTableMap::COL_USERID => 1, CalendarTokenTableMap::COL_FORMAT => 2, CalendarTokenTableMap::COL_DESCRIPTION => 3, CalendarTokenTableMap::COL_REVOKED => 4, CalendarTokenTableMap::COL_REVOKEDDATE => 5, CalendarTokenTableMap::COL_LASTFETCHED => 6, CalendarTokenTableMap::COL_CREATED => 7, CalendarTokenTableMap::COL_UPDATED => 8, ),
+        self::TYPE_FIELDNAME     => array('token' => 0, 'userId' => 1, 'format' => 2, 'description' => 3, 'revoked' => 4, 'revokedDate' => 5, 'lastFetched' => 6, 'created' => 7, 'updated' => 8, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -160,6 +170,8 @@ class CalendarTokenTableMap extends TableMap
         $this->addColumn('format', 'Format', 'VARCHAR', true, 5, null);
         $this->addColumn('description', 'Description', 'VARCHAR', false, 100, null);
         $this->addColumn('revoked', 'Revoked', 'BOOLEAN', true, 1, false);
+        $this->addColumn('revokedDate', 'RevokedDate', 'TIMESTAMP', false, null, null);
+        $this->addColumn('lastFetched', 'LastFetched', 'TIMESTAMP', false, null, null);
         $this->addColumn('created', 'Created', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated', 'Updated', 'TIMESTAMP', false, null, null);
     } // initialize()
@@ -337,6 +349,8 @@ class CalendarTokenTableMap extends TableMap
             $criteria->addSelectColumn(CalendarTokenTableMap::COL_FORMAT);
             $criteria->addSelectColumn(CalendarTokenTableMap::COL_DESCRIPTION);
             $criteria->addSelectColumn(CalendarTokenTableMap::COL_REVOKED);
+            $criteria->addSelectColumn(CalendarTokenTableMap::COL_REVOKEDDATE);
+            $criteria->addSelectColumn(CalendarTokenTableMap::COL_LASTFETCHED);
             $criteria->addSelectColumn(CalendarTokenTableMap::COL_CREATED);
             $criteria->addSelectColumn(CalendarTokenTableMap::COL_UPDATED);
         } else {
@@ -345,6 +359,8 @@ class CalendarTokenTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.format');
             $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.revoked');
+            $criteria->addSelectColumn($alias . '.revokedDate');
+            $criteria->addSelectColumn($alias . '.lastFetched');
             $criteria->addSelectColumn($alias . '.created');
             $criteria->addSelectColumn($alias . '.updated');
         }
