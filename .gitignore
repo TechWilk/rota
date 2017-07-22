@@ -2,5 +2,7 @@ vendor/*
 *.log
 config/*
 !config/*.default.php
+documents/*
+!documents/.gitkeep
 coverage/*
 .php_cs*

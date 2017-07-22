@@ -30,4 +30,15 @@ class Site
         }
         return $this->menu;
     }
+
+    public function getUrl()
+    {
+        $http = isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off' ? 'https' : 'http';
+        $hostname = $_SERVER['HTTP_HOST'];
+        return [
+            'base' => $http . '://' . $hostname,
+            'protocol' => $http,
+            'host' => $hostname,
+        ];
+    }
 }

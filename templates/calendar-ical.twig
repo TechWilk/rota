@@ -32,7 +32,7 @@ SUMMARY:{% spaceless %}
 {% endfor %}{{ event.name ? " | #{event.name} (#{event.eventtype.name})" : "(#{event.eventtype.name})" }}
 {% endspaceless %}
 
-DESCRIPTION:{{ event.series.name }}:\n{{ event.sermonTitle }} ({{ event.bibleVerse }})\nIf you are unable to do {% for role in user.rolesinevent(event) %}{{ role.name }}{% if not loop.last %}, {% endif %}{% endfor %} at this event, please request a swap:\n'.siteSettings()->getSiteUrl().'/swap.php?event='.$event->id.'\n\nOnce the swap is accepted, this event will be removed from your calendar.\nPlease be aware that changes may take up to 24 hours or longer to be reflected. This is due to your calendar, not on the rota system.
+DESCRIPTION:{{ event.series.name }}:\n{{ event.sermonTitle }} ({{ event.bibleVerse }})\nIf you are unable to do {% for role in user.rolesinevent(event) %}{{ role.name }}{% if not loop.last %}, {% endif %}{% endfor %} at this event, please request a swap:\n{{ site.url.base }}/old/swap.php?event={{ event.id }}\n\nOnce the swap is accepted, this event will be removed from your calendar.\nPlease be aware that changes may take up to 24 hours or longer to be reflected. This is due to your calendar, not on the rota system.
 UID:ROTA{{ event.id }}
 ORGANIZER;CN="{{ site.settings.owner }}":MAILTO:{{ site.settings.adminemailaddress }}
 STATUS:{# change later to make strikethrough upon swap #}CONFIRMED

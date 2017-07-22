@@ -21,7 +21,7 @@ class Document extends BaseDocument
         }
     //$acceptedFileExtensions = ['jpg', 'png', 'jpeg', 'gif', 'docx', 'pdf', 'xlsx', 'pptx'];
     $acceptedFileTypes = ['image/gif', 'image/png', 'image/jpeg', 'application/pdf', 'application/msword', 'application/excel'];
-        $target_dir = __DIR__ . "/../public/documents/"; // todo : move documents outside of web root
+        $target_dir = __DIR__ . "/../documents/";
     $this->setUrl($file->getClientFilename());
     //$fileExtension = pathinfo(basename($file->getName()),PATHINFO_EXTENSION);
 
@@ -36,7 +36,7 @@ class Document extends BaseDocument
     if (file_exists($target_file)) {
         throw new Exception("File already exists.");
     }
-    
+
         $file->moveTo($target_file);
     }
 }

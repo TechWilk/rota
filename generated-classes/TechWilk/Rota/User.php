@@ -18,28 +18,28 @@ use DateTime;
 class User extends BaseUser
 {
     /**
-    * Set the value of [password] column.
-    *
-    * @param string $v new value
-    * @return $this|\User The current object (for fluent API support)
-    */
-    public function setPassword($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
+  * Set the value of [password] column.
+  *
+  * @param string $v new value
+  * @return $this|\User The current object (for fluent API support)
+  */
+  public function setPassword($v)
+  {
+      if ($v !== null) {
+          $v = (string) $v;
+      }
 
-        if (!password_verify($v, $this->password)) {
-            $bcrypt_options = [
-            'cost' => 12,
-        ];
-            $this->password = password_hash($v, PASSWORD_BCRYPT, $bcrypt_options);
-            ;
-            $this->modifiedColumns[UserTableMap::COL_PASSWORD] = true;
-        }
+      if (!password_verify($v, $this->password)) {
+          $bcrypt_options = [
+        'cost' => 12,
+      ];
+          $this->password = password_hash($v, PASSWORD_BCRYPT, $bcrypt_options);
+          ;
+          $this->modifiedColumns[UserTableMap::COL_PASSWORD] = true;
+      }
 
-        return $this;
-    } // setPassword()
+      return $this;
+  } // setPassword()
 
 
     /**
@@ -58,6 +58,12 @@ class User extends BaseUser
 
         return password_verify($v, $this->password);
     } // checkPassword()
+
+
+    public function isAdmin()
+    {
+        return $this->isadmin;
+    }
 
 
     /**
@@ -113,7 +119,7 @@ class User extends BaseUser
                             break;
                         default:
                             return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/tn/' . $photoFingerprint . '.' . $extension;
-                            break;
+                        break;
                     }
                 }
             }
@@ -212,6 +218,15 @@ class User extends BaseUser
             ->filterByUser($this)
             ->filterByEvent($event)
             ->findOne();
+    }
+
+
+    public function getActiveCalendarTokens()
+    {
+        return CalendarTokenQuery::create()
+            ->filterByUser($this)
+            ->filterByRevoked(false)
+            ->find();
     }
 
 
