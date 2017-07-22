@@ -463,10 +463,10 @@ $app->get('/resource/{id}', function ($request, $response, $args) {
     $resource = DocumentQuery::create()->findPk($args['id']);
 
     if (!is_null($resource)) {
-        if (file_exists(__DIR__.'/../public/documents/'.$resource->getUrl())) {
-            $file = __DIR__.'/../public/documents/'.$resource->getUrl(); // todo : move documents outside of web root
-        } elseif (file_exists(__DIR__.'/../public/documents/'.$resource->getId())) {
-            $file = __DIR__.'/../public/documents/'.$resource->getId(); // todo : move documents outside of web root
+        if (file_exists(__DIR__.'/../documents/'.$resource->getUrl())) {
+            $file = __DIR__.'/../documents/'.$resource->getUrl();
+        } elseif (file_exists(__DIR__.'/../documents/'.$resource->getId())) {
+            $file = __DIR__.'/../documents/'.$resource->getId();
         } else {
             return $this->view->render($response, 'error.twig');
         }
@@ -603,7 +603,9 @@ $app->get('/user/me/calendars', function ($request, $response, $args) {
         return $this->view->render($response, 'error.twig');
     }
 
-    $cals = CalendarTokenQuery::create()->filterByUser($u)->find();
+    $cals = CalendarTokenQuery::create()
+        ->filterByUser($u)
+        ->find();
 
     return $this->view->render($response, 'user-calendars.twig', [ "user" => $u, 'calendars' => $cals ]);
 })->setName('user-calendars');
@@ -666,7 +668,9 @@ $app->get('/user/me/calendar/{id}/revoke', function ($request, $response, $args)
         return $this->view->render($response, 'error.twig');
     }
 
-    $c = CalendarTokenQuery::create()->filterById($args['id'])->findOne();
+    $c = CalendarTokenQuery::create()
+        ->filterById($args['id'])
+        ->findOne();
 
     if ($c->getUser() !== $u) {
         return $this->view->render($response, 'error.twig');
@@ -683,7 +687,9 @@ $app->get('/calendar/{token}.{format}', function ($request, $response, $args) {
     // Sample log message
     $this->logger->info("Fetch calendar GET '/calendar/".$args['token'].".".$args['format']."'");
 
-    $c = CalendarTokenQuery::create()->filterByToken($args['token'])->findOne();
+    $c = CalendarTokenQuery::create()
+        ->filterByToken($args['token'])
+        ->findOne();
 
     if (!isset($c)) {
         return $this->view->render($response->withStatus(404), 'calendar-error.twig');
@@ -739,7 +745,8 @@ $app->post('/user/{id}/availability', function ($request, $response, $args) {
     // Sample log message
     $this->logger->info("Update user availability POST '/user/".$args['id']."/availability'");
 
-    $u = UserQuery::create()->findPk($args['id']);
+    $u = UserQuery::create()
+        ->findPk($args['id']);
 
     if (!isset($u)) {
         return $this->view->render($response->withStatus(404), 'error.twig');
@@ -795,7 +802,11 @@ $app->get('/', function ($request, $response, $args) {
     // Sample log message
     $this->logger->info("Fetch home GET '/'");
 
-    $eventsThisWeek = EventQuery::create()->filterByDate(['min' => new DateTime(), 'max' => new DateTime('1 week')])->filterByRemoved(false)->orderByDate()->find();
+    $eventsThisWeek = EventQuery::create()
+        ->filterByDate(['min' => new DateTime(), 'max' => new DateTime('1 week')])
+        ->filterByRemoved(false)
+        ->orderByDate()
+        ->find();
 
     $remainingEventsInGroups = GroupQuery::create()->find();
 
@@ -822,7 +833,10 @@ $app->get('/calendar.php', function ($request, $response, $args) {
     $token = $getParameters["token"];
     $format = $getParameters["format"];
 
-    $c = CalendarTokenQuery::create()->filterByToken($token)->filterByUserId($userId)->findOne();
+    $c = CalendarTokenQuery::create()
+        ->filterByToken($token)
+        ->filterByUserId($userId)
+        ->findOne();
 
     if (!isset($c)) {
         return $this->view->render($response->withStatus(404), 'calendar-error.twig');

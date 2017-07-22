@@ -1,2 +1,0 @@
-This file is only because ZIP file is not allowed to have empty folders;
-it is not necessary for a running Church Rota installation.
