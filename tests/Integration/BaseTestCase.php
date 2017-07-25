@@ -104,6 +104,7 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
 
         // Set up dependencies
         require __DIR__ . '/../../src/dependencies.php';
+        require __DIR__ . '/../../src/controllers.php';
 
         // Register middleware
         if ($this->withMiddleware) {
