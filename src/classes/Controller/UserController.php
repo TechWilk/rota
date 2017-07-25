@@ -1,6 +1,6 @@
 <?php
 
-namespace TechWilk\Rota\Controllers;
+namespace TechWilk\Rota\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
