@@ -6,6 +6,7 @@ use DateTime;
 use InvalidArgumentException;
 use Exception;
 use TechWilk\Rota\Controller\UserController;
+use TechWilk\Rota\Controller\EventController;
 
 // Routes
 
@@ -38,170 +39,19 @@ $app->group('/user', function () {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 $app->group('/event', function () {
-    $this->get('s', function ($request, $response, $args) {
-        $this->logger->info("Fetch event GET '/events'");
-        $events = EventQuery::create()->filterByDate(['min' => new DateTime()])->filterByRemoved(false)->orderByDate('asc')->find();
+    $this->get('s', EventController::class . ':getAllEvents')->setName('events');
+    $this->get('s/type/{id}', EventController::class . ':getAllEventsWithType')->setName('events-eventtype');
+    $this->get('s/subtype/{id}', EventController::class . ':getAllEventsWithSubType')->setName('events-eventsubtype');
 
-        return $this->view->render($response, 'events.twig', [ "events" => $events ]);
-    })->setName('events');
+    $this->get('/new', EventController::class . ':getNewEventForm')->setName('event-new');
+    $this->get('/{id}/edit', EventController::class . ':getEventEditForm')->setName('event-edit');
+    $this->get('/{id}/copy', EventController::class . ':getEventCopyForm')->setName('event-copy');
+    $this->get('/{id}/assign', EventController::class . ':getEventAssignForm')->setName('event-assign');
 
+    $this->get('/{id}', EventController::class . ':getEvent')->setName('event');
 
-    $this->get('s/type/{id}', function ($request, $response, $args) {
-        $this->logger->info("Fetch event GET '/events/type/".$args['id']."'");
-
-        $eventType = EventTypeQuery::create()->findPk($args['id']);
-
-        $events = EventQuery::create()->filterByDate(['min' => new DateTime()])->filterByRemoved(false)->filterByEventType($eventType)->orderByDate('asc')->find();
-
-        return $this->view->render($response, 'events.twig', [ "events" => $events ]);
-    })->setName('events-eventtype');
-
-
-    $this->get('s/subtype/{id}', function ($request, $response, $args) {
-        $this->logger->info("Fetch event GET '/events/type/".$args['id']."'");
-
-        $eventType = EventSubTypeQuery::create()->findPk($args['id']);
-
-        $events = EventQuery::create()->filterByDate(['min' => new DateTime()])->filterByRemoved(false)->filterByEventSubType($eventType)->orderByDate('asc')->find();
-
-        return $this->view->render($response, 'events.twig', [ "events" => $events ]);
-    })->setName('events-eventsubtype');
-
-
-    $this->post('[/{id}]', function ($request, $response, $args) {
-        $this->logger->info("Create event POST '/event'");
-
-        $data = $request->getParsedBody();
-
-        $data['firstname'] = filter_var(trim($data['firstname']), FILTER_SANITIZE_STRING);
-        $data['lastname'] = filter_var(trim($data['lastname']), FILTER_SANITIZE_STRING);
-        $data['email'] = filter_var(trim($data['email']), FILTER_SANITIZE_EMAIL);
-        $data['mobile'] = filter_var(trim($data['mobile']), FILTER_SANITIZE_STRING);
-
-        $e = new Event();
-        if (isset($args['id'])) {
-            $e = EventQuery::create()->findPk($args['id']);
-        }
-        $e->setName($data['name']);
-        $e->setDate(DateTime::createFromFormat('d/m/Y H:i', $data['date'].' '.$data['time']));
-        $e->setEventTypeId($data['type']);
-        $e->setEventSubTypeId($data['subtype']);
-        $e->setLocationId($data['location']);
-        $e->setComment($data['comment']);
-        $e->save();
-
-        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('event', [ 'id' => $e->getId() ]));
-    })->setName('event-post');
-
-
-    $this->get('/new', function ($request, $response, $args) {
-        $this->logger->info("Fetch event GET '/event/new'");
-        $l = LocationQuery::create()->orderByName()->find();
-        $et = EventTypeQuery::create()->orderByName()->find();
-        $est = EventSubTypeQuery::create()->orderByName()->find();
-
-        return $this->view->render($response, 'event-edit.twig', [ "locations" => $l, "eventtypes" => $et, "eventsubtypes" => $est ]);
-    })->setName('event-new');
-
-
-    $this->get('/{id}', function ($request, $response, $args) {
-        $this->logger->info("Fetch event GET '/event/".$args['id']."'");
-        $e = EventQuery::create()->findPK($args['id']);
-
-        if (!is_null($e)) {
-            return $this->view->render($response, 'event.twig', [ "event" => $e ]);
-        } else {
-            return $this->view->render($response, 'error.twig');
-        }
-    })->setName('event');
-
-
-    $this->get('/{id}/edit', function ($request, $response, $args) {
-        $this->logger->info("Fetch event GET '/event/".$args['id']."/edit'");
-        $e = EventQuery::create()->findPK($args['id']);
-        $l = LocationQuery::create()->orderByName()->find();
-        $et = EventTypeQuery::create()->orderByName()->find();
-        $est = EventSubTypeQuery::create()->orderByName()->find();
-
-        if (!is_null($e)) {
-            return $this->view->render($response, 'event-edit.twig', [ "event" => $e, "locations" => $l, "eventtypes" => $et, "eventsubtypes" => $est ]);
-        } else {
-            return $this->view->render($response, 'error.twig');
-        }
-    })->setName('event-edit');
-
-    $this->get('/{id}/copy', function ($request, $response, $args) {
-        $this->logger->info("Fetch event GET '/event/".$args['id']."/copy'");
-        $e = EventQuery::create()->findPK($args['id']);
-        $l = LocationQuery::create()->orderByName()->find();
-        $et = EventTypeQuery::create()->orderByName()->find();
-        $est = EventSubTypeQuery::create()->orderByName()->find();
-
-        if (!is_null($e)) {
-            return $this->view->render($response, 'event-edit.twig', [ "copy" => true, "event" => $e, "locations" => $l, "eventtypes" => $et, "eventsubtypes" => $est ]);
-        } else {
-            return $this->view->render($response, 'error.twig');
-        }
-    })->setName('event-copy');
-
-
-    $this->get('/{id}/assign', function ($request, $response, $args) {
-        $this->logger->info("Fetch event GET '/event/".$args['id']."/assign'");
-        $e = EventQuery::create()->findPK($args['id']);
-        $ur = UserRoleQuery::create()->find();
-
-        if (!is_null($e)) {
-            return $this->view->render($response, 'event-assign.twig', [ "event" => $e, "userroles" => $ur ]);
-        } else {
-            return $this->view->render($response, 'error.twig');
-        }
-    })->setName('event-assign');
-
-
-    $this->post('/{id}/assign', function ($request, $response, $args) {
-        $this->logger->info("Create event people POST '/event".$args['id']."/assign'");
-
-        $eventId = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
-        $existingUserRoles = UserRoleQuery::create()->useEventPersonQuery()->filterByEventId($eventId)->endUse()->find();
-
-        $existing = [];
-        foreach ($existingUserRoles as $ur) {
-            $existing[] = $ur->getId();
-        }
-
-        $data = $request->getParsedBody();
-
-        if (!is_array($data['userrole'])) {
-            // delete all roles
-            $eps = EventPersonQuery::create()->filterByEventId($eventId)->find();
-            foreach ($eps as $ep) {
-                $ep->delete();
-            }
-        } else {
-            // sanitize data from user
-            foreach ($data['userrole'] as $key => $userRole) {
-                $data['userrole'][$key] = filter_var(trim($userRole), FILTER_SANITIZE_NUMBER_INT);
-            }
-
-            // add new roles
-            $addArray = array_diff($data['userrole'], $existing);
-            foreach ($addArray as $roleToAdd) {
-                $ep = new EventPerson();
-                $ep->setUserRoleId($roleToAdd);
-                $ep->setEventId($eventId);
-                $ep->save();
-            }
-
-            // remove existing roles
-            $deleteArray = array_diff($existing, $data['userrole']);
-            foreach ($deleteArray as $roleToRemove) {
-                $ep = EventPersonQuery::create()->filterByEventId($eventId)->filterByUserRoleId($roleToRemove)->findOne();
-                $ep->delete();
-            }
-        }
-
-        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('event', [ 'id' => $eventId ]));
-    })->setName('event-assign-post');
+    $this->post('[/{id}]', EventController::class . ':postEvent')->setName('event-post');
+    $this->post('/{id}/assign', EventController::class . ':postEventAssign')->setName('event-assign-post');
 });
 
 
