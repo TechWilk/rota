@@ -10,6 +10,7 @@ use TechWilk\Rota\UserQuery;
 use TechWilk\Rota\RoleQuery;
 use TechWilk\Rota\EmailAddress;
 use TechWilk\Rota\Authentication;
+use Slim\Interfaces\RouterInterface;
 use Monolog\Logger;
 
 class UserController
@@ -17,12 +18,14 @@ class UserController
     protected $view;
     protected $logger;
     protected $auth;
+    protected $router;
 
-    public function __construct(Twig $view, Logger $logger, Authentication $auth)
+    public function __construct(Twig $view, Logger $logger, Authentication $auth, RouterInterface $router)
     {
         $this->view = $view;
         $this->logger = $logger;
         $this->auth = $auth;
+        $this->router = $router;
     }
 
     public function getAllUsers(ServerRequestInterface $request, ResponseInterface $response, $args)

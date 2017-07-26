@@ -6,22 +6,34 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Views\Twig;
 use TechWilk\Rota\Authentication;
+use TechWilk\Rota\EventQuery;
+use TechWilk\Rota\EventTypeQuery;
+use TechWilk\Rota\EventSubTypeQuery;
+use TechWilk\Rota\EventPerson;
+use TechWilk\Rota\Event;
+use TechWilk\Rota\LocationQuery;
+use TechWilk\Rota\UserRoleQuery;
+use TechWilk\Rota\EventPersonQuery;
+use Slim\Interfaces\RouterInterface;
 use Monolog\Logger;
+use DateTime;
 
-class EditController
+class EventController
 {
     protected $view;
     protected $logger;
     protected $auth;
+    protected $router;
 
-    public function __construct(Twig $view, Logger $logger, Authentication $auth)
+    public function __construct(Twig $view, Logger $logger, Authentication $auth, RouterInterface $router)
     {
         $this->view = $view;
         $this->logger = $logger;
         $this->auth = $auth;
+        $this->router = $router;
     }
 
-    public function getAllEvent(ServerRequestInterface $request, ResponseInterface $response, $args)
+    public function getAllEvents(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->info("Fetch event GET '/events'");
         $events = EventQuery::create()->filterByDate(['min' => new DateTime()])->filterByRemoved(false)->orderByDate('asc')->find();
