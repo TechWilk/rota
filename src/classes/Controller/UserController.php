@@ -18,13 +18,15 @@ class UserController
     protected $logger;
     protected $auth;
 
-    public function __construct(Twig $view, Logger $logger, Authentication $auth) {
+    public function __construct(Twig $view, Logger $logger, Authentication $auth)
+    {
         $this->view = $view;
         $this->logger = $logger;
         $this->auth = $auth;
     }
 
-    public function getAllUsers(ServerRequestInterface $request, ResponseInterface $response, $args) {
+    public function getAllUsers(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
         $this->logger->info("Fetch user GET '/users'");
         $users = UserQuery::create()->orderByLastName()->orderByFirstName()->find();
         $roles = RoleQuery::create()->orderByName()->find();
@@ -32,7 +34,8 @@ class UserController
         return $this->view->render($response, 'users.twig', [ "users" => $users, "roles" => $roles ]);
     }
 
-    public function postUser(ServerRequestInterface $request, ResponseInterface $response, $args) {
+    public function postUser(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
         $this->logger->info("Create user POST '/user'");
 
         $data = $request->getParsedBody();
@@ -68,7 +71,8 @@ class UserController
         return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('user', [ 'id' => $u->getId() ]));
     }
 
-    public function getCurrentUser(ServerRequestInterface $request, ResponseInterface $response, $args) {
+    public function getCurrentUser(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
         $this->logger->info("Fetch user GET '/user/me'");
         // find user id from session
         $u = $this->auth->currentUser();
@@ -80,12 +84,14 @@ class UserController
         }
     }
 
-    public function getNewUserForm(ServerRequestInterface $request, ResponseInterface $response, $args) {
+    public function getNewUserForm(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
         $this->logger->info("Fetch user GET '/user/new'");
         return $this->view->render($response, 'user-edit.twig');
     }
 
-    public function getUserEditForm(ServerRequestInterface $request, ResponseInterface $response, $args) {
+    public function getUserEditForm(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
         $this->logger->info("Fetch user GET '/user/".$args['id']."/edit'");
         $u = UserQuery::create()->findPK($args['id']);
 
@@ -96,7 +102,8 @@ class UserController
         }
     }
 
-    public function getUser(ServerRequestInterface $request, ResponseInterface $response, $args) {
+    public function getUser(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
         $this->logger->info("Fetch user GET '/user/".$args['id']."'");
         $u = UserQuery::create()->findPK($args['id']);
 
@@ -107,7 +114,8 @@ class UserController
         }
     }
 
-    public function getUserWidgetOnly(ServerRequestInterface $request, ResponseInterface $response, $args) {
+    public function getUserWidgetOnly(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
         $this->logger->info("Fetch user GET '/user/".$args['id']."'");
         $u = UserQuery::create()->findPK($args['id']);
 
@@ -118,7 +126,8 @@ class UserController
         }
     }
 
-    public function getUserPasswordForm(ServerRequestInterface $request, ResponseInterface $response, $args) {
+    public function getUserPasswordForm(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
         $this->logger->info("Fetch user GET '/user/".$args['id']."/password'");
         $u = UserQuery::create()->findPK($args['id']);
 
@@ -129,7 +138,8 @@ class UserController
         }
     }
 
-    public function postUserPasswordChange(ServerRequestInterface $request, ResponseInterface $response, $args) {
+    public function postUserPasswordChange(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
         $this->logger->info("Create user POST '/user/".$args['id']."/password'");
 
         $data = $request->getParsedBody();
@@ -156,7 +166,8 @@ class UserController
         return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('user', [ 'id' => $u->getId() ]));
     }
 
-    public function getAssignRolesForm(ServerRequestInterface $request, ResponseInterface $response, $args) {
+    public function getAssignRolesForm(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
         $this->logger->info("Fetch user GET '/user/".$args['id']."/roles'");
         $r = RoleQuery::create()->find();
         $u = UserQuery::create()->findPK($args['id']);
@@ -168,7 +179,8 @@ class UserController
         }
     }
 
-    public function postUserAssignRoles(ServerRequestInterface $request, ResponseInterface $response, $args) {
+    public function postUserAssignRoles(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
         $this->logger->info("Create user people POST '/user/".$args['id']."/assign'");
 
         $userId = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
