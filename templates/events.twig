@@ -2,17 +2,32 @@
 
 {% block content %}
 
-<ul class="timeline">
-  {% for month, monthEvents in events | group_by(=> _.date|date('F Y')|capitalize) %}
-  <li class="time-label">
-    <span class="bg-green">{{ month }}</span>
-  </li>
-  {% for event in monthEvents %}
-  {% include 'event-timeline-item.twig' %}
-  {% endfor %}
-  {% endfor %}
-</ul>
-
+<div class="row">
+  <div class="col-md-8">
+    <ul class="timeline">
+      {% for month, monthEvents in events | group_by(=> _.date|date('F Y')|capitalize) %}
+      <li class="time-label">
+        <span class="bg-green">{{ month }}</span>
+      </li>
+      {% for event in monthEvents %}
+      {% include 'event-timeline-item.twig' %}
+      {% endfor %}
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="col-md-4">
+    <div class="box">
+      <div class="box-header">
+        <h3 class="box-title">Printable formats</h3>
+      </div>
+      <div class="box-body">
+        <ul>
+          <li><a href="{{ path_for('events-print') }}">Preachers</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}
 

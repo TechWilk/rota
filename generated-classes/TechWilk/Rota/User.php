@@ -201,7 +201,7 @@ class User extends BaseUser
             ->findOne();
 
         if (is_null($availability)) {
-            return true; // todo: add setting for default availability
+            return null;
         }
 
         return (bool)$availability->getAvailable();
@@ -292,5 +292,10 @@ class User extends BaseUser
         }
 
         return $eventsArray;
+    }
+
+    public function getInitials()
+    {
+        return substr($this->getFirstName(), 0, 1) . substr($this->getLastName(), 0, 1);
     }
 }

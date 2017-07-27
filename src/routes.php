@@ -43,6 +43,8 @@ $app->group('/event', function () {
     $this->get('s/type/{id}', EventController::class . ':getAllEventsWithType')->setName('events-eventtype');
     $this->get('s/subtype/{id}', EventController::class . ':getAllEventsWithSubType')->setName('events-eventsubtype');
 
+    $this->get('s/print/preachers', EventController::class . ':getAllEventsToPrint')->setName('events-print');
+
     $this->get('/new', EventController::class . ':getNewEventForm')->setName('event-new');
     $this->get('/{id}/edit', EventController::class . ':getEventEditForm')->setName('event-edit');
     $this->get('/{id}/copy', EventController::class . ':getEventCopyForm')->setName('event-copy');

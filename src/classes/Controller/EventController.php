@@ -13,6 +13,10 @@ use TechWilk\Rota\EventPerson;
 use TechWilk\Rota\Event;
 use TechWilk\Rota\LocationQuery;
 use TechWilk\Rota\UserRoleQuery;
+use TechWilk\Rota\UserQuery;
+use TechWilk\Rota\GroupQuery;
+use TechWilk\Rota\Role;
+use TechWilk\Rota\Group;
 use TechWilk\Rota\EventPersonQuery;
 use Slim\Interfaces\RouterInterface;
 use Monolog\Logger;
@@ -198,5 +202,31 @@ class EventController
         }
 
         return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('event', [ 'id' => $eventId ]));
+    }
+
+    public function getAllEventsToPrint(ServerRequestInterface $request, ResponseInterface $response, $args) {
+        $this->logger->info("Fetch event printable page GET '/events/print'");
+
+        $events = EventQuery::create()
+            ->filterByDate(['min' => new DateTime()])
+            ->filterByRemoved(false)
+            ->orderByDate('asc')
+            ->find();
+
+        $groups = GroupQuery::create()
+            ->filterById(136)
+            ->find();
+
+        $users = UserQuery::create()
+            ->useUserRoleQuery()
+                ->useRoleQuery()
+                    ->filterByGroup($groups)
+                ->endUse()
+            ->endUse()
+            ->distinct()
+            ->find();
+
+        return $this->view->render($response, 'events-print.twig', [ 'events' => $events, 'groups' => $groups, 'users' => $users ]);
+
     }
 }

@@ -1,0 +1,97 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+
+<div class="box box-solid">
+    <div class="box-header">
+        <h2 class="box-title">Preaching Rota</h2>
+    </div>
+    <div class="box-body">
+        <table class="table">
+            <tr>
+                <th>Date</th>
+                <th>Sunday</th>
+                <th>Service</th>
+                <th>Preacher</th>
+                <th>Leader</th>
+                <th>Pres</th>
+                <th>Subject/Notes</th>
+                <th>Availability</th>
+            </tr>
+            {% for event in events %}
+            <tr>
+                <td>{{ event.date | date('jS M') }}</td>
+                <td>{{ event.name }}</td>
+                <td>{{ event.eventsubtype.name }}</td>
+                <td>
+                    {% for eventperson in event.eventpeople | filter(=> _.userrole.role.name == "Preacher") %}
+                    <span data-payload="{{ path_for('user-widget-only', {'id': eventperson.userrole.user.id }) }}">
+                    {{ eventperson.userrole.user.initials }}
+                    </span>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for eventperson in event.eventpeople | filter(=> _.userrole.role.name == "Leader") %}
+                    <span data-payload="{{ path_for('user-widget-only', {'id': eventperson.userrole.user.id }) }}">
+                    {{ eventperson.userrole.user.initials }}
+                    </span>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for eventperson in event.eventpeople | filter(=> _.userrole.role.name == "President") %}
+                    <span data-payload="{{ path_for('user-widget-only', {'id': eventperson.userrole.user.id }) }}">
+                    {{ eventperson.userrole.user.initials }}
+                    </span>
+                    {% endfor %}
+                </td>
+                <td>
+                    {{ event.sermontitle }}
+                    {{ event.bibleVerse is empty ? '' : '(' ~ event.bibleVerse ~ ')' }}
+                    {{ event.comment is empty ? '' : '(' ~ event.comment ~ ')' }}</td>
+                <td>
+                    {% for user in users if user.isavailableforevent(event) == true or user.isavailableforevent(event) is null %}
+                    <span data-payload="{{ path_for('user-widget-only', {'id': user.id }) }}">
+                    {{ user.isavailableforevent(event) == true ? user.initials : '' }}
+                    {{( user.isavailableforevent(event) is null ? '(' ~ user.initials ~ ')?' : '' ) }}
+                    </span>
+                    {% endfor %}
+                </td>        
+            </tr>
+            {% endfor %}
+        </table>
+    <div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+$('*[data-payload]').hover(function() {
+    var e=$(this);
+    e.off('hover');
+    $.get(e.data('payload'),function(d) {
+        e.popover({content: d, html : true}).popover('show');
+    });
+    // prevent dissapearing when hovering on popover
+    e.on("mouseenter", function () {
+      var _this = this;
+      $(".popover").on("mouseleave", function () {
+        $(_this).popover('hide');
+      });
+    }).on("mouseleave", function () {
+      var _this = this;
+      setTimeout(function () {
+        if (!$(".popover:hover").length) {
+          $(_this).popover("hide");
+        }
+      }, 300)
+    });
+});
+
+$('body').on('click', function (e) {
+    //did not click a popover toggle or popover
+    if ($(e.target).data('toggle') !== 'popover'
+        && $(e.target).parents('.popover.in').length === 0) { 
+        $('*[data-payload]').popover('hide');
+    }
+});
+{% endblock %}
