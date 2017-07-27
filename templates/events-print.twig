@@ -18,9 +18,12 @@
                 <th>Subject/Notes</th>
                 <th>Availability</th>
             </tr>
-            {% for event in events %}
+            {% for date, eventsInDay in events|group_by(=> _.date|date('jS M')) %}
+            {% for event in eventsInDay %}
             <tr>
-                <td>{{ event.date | date('jS M') }}</td>
+                {% if loop.first %}
+                <td rowspan="{{ eventsInDay | length }}">{{ date }}</td>
+                {% endif %}
                 <td>{{ event.name }}</td>
                 <td>{{ event.eventsubtype.name }}</td>
                 <td>
@@ -56,8 +59,9 @@
                     {{( user.isavailableforevent(event) is null ? '(' ~ user.initials ~ ')?' : '' ) }}
                     </span>
                     {% endfor %}
-                </td>        
+                </td>
             </tr>
+            {% endfor %}
             {% endfor %}
         </table>
     <div>
