@@ -45,6 +45,7 @@
                     {% endfor %}
                 </td>
                 <td>
+                    {{ event.eventGroup.name }}:
                     {{ event.sermontitle }}
                     {{ event.bibleVerse is empty ? '' : '(' ~ event.bibleVerse ~ ')' }}
                     {{ event.comment is empty ? '' : '(' ~ event.comment ~ ')' }}</td>
