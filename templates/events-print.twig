@@ -8,16 +8,18 @@
     </div>
     <div class="box-body">
         <table class="table">
-            <tr>
-                <th>Date</th>
-                <th>Sunday</th>
-                <th>Service</th>
-                <th>Preacher</th>
-                <th>Leader</th>
-                <th>Pres</th>
-                <th>Subject/Notes</th>
-                <th>Availability</th>
-            </tr>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Sunday</th>
+                    <th>Service</th>
+                    <th>Preacher</th>
+                    <th>Leader</th>
+                    <th>Pres</th>
+                    <th>Subject/Notes</th>
+                    <th>Availability</th>
+                </tr>
+            </thead>
             {% for date, eventsInDay in events|group_by(=> _.date|date('jS M')) %}
             {% for eventName, eventsWithName in eventsInDay|group_by(=> _.name) %}
             {% set dateLoop = loop %}
