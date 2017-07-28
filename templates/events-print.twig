@@ -35,21 +35,21 @@
                 <td>{{ event.eventsubtype.name }}</td>
                 <td>
                     {% for eventperson in event.eventpeople | filter(=> _.userrole.role.name == "Preacher") %}
-                    <span data-payload="{{ path_for('user-widget-only', {'id': eventperson.userrole.user.id }) }}">
+                    <span>
                     {{ eventperson.userrole.user.initials }}
                     </span>
                     {% endfor %}
                 </td>
                 <td>
                     {% for eventperson in event.eventpeople | filter(=> _.userrole.role.name == "Leader") %}
-                    <span data-payload="{{ path_for('user-widget-only', {'id': eventperson.userrole.user.id }) }}">
+                    <span>
                     {{ eventperson.userrole.user.initials }}
                     </span>
                     {% endfor %}
                 </td>
                 <td>
                     {% for eventperson in event.eventpeople | filter(=> _.userrole.role.name == "President") %}
-                    <span data-payload="{{ path_for('user-widget-only', {'id': eventperson.userrole.user.id }) }}">
+                    <span>
                     {{ eventperson.userrole.user.initials }}
                     </span>
                     {% endfor %}
@@ -61,7 +61,7 @@
                     {{ event.comment is empty ? '' : '(' ~ event.comment ~ ')' }}</td>
                 <td>
                     {% for user in users if user.isavailableforevent(event) == true or user.isavailableforevent(event) is null %}
-                    <span data-payload="{{ path_for('user-widget-only', {'id': user.id }) }}">
+                    <span>
                     {{ user.isavailableforevent(event) == true ? user.initials : '' }}
                     {{( user.isavailableforevent(event) is null ? '(' ~ user.initials ~ ')?' : '' ) }}
                     </span>
