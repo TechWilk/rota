@@ -19,12 +19,16 @@
                 <th>Availability</th>
             </tr>
             {% for date, eventsInDay in events|group_by(=> _.date|date('jS M')) %}
-            {% for event in eventsInDay %}
+            {% for eventName, eventsWithName in eventsInDay|group_by(=> _.name) %}
+            {% set dateLoop = loop %}
+            {% for event in eventsWithName %}
             <tr>
-                {% if loop.first %}
+                {% if dateLoop.first and loop.first %}
                 <td rowspan="{{ eventsInDay | length }}">{{ date }}</td>
                 {% endif %}
-                <td>{{ event.name }}</td>
+                {% if loop.first %}
+                <td rowspan="{{ eventsWithName | length }}">{{ eventName }}</td>
+                {% endif %}
                 <td>{{ event.eventsubtype.name }}</td>
                 <td>
                     {% for eventperson in event.eventpeople | filter(=> _.userrole.role.name == "Preacher") %}
@@ -61,6 +65,7 @@
                     {% endfor %}
                 </td>
             </tr>
+            {% endfor %}
             {% endfor %}
             {% endfor %}
         </table>
