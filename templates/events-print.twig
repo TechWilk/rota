@@ -2,6 +2,14 @@
 
 {% block content %}
 
+<style>
+@media print {
+    em {
+        text-decoration: underline;
+    }
+}
+</style>
+
 <div class="box box-solid">
     <div class="box-header">
         <h2 class="box-title">Preaching Rota</h2>
@@ -55,7 +63,7 @@
                     {% endfor %}
                 </td>
                 <td>
-                    {{ event.eventGroup.name }}:
+                    <em>{{ event.eventGroup.name }}:</em>
                     {{ event.sermontitle }}
                     {{ event.bibleVerse is empty ? '' : '(' ~ event.bibleVerse ~ ')' }}
                     {{ event.comment is empty ? '' : '(' ~ event.comment ~ ')' }}</td>
