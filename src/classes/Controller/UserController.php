@@ -5,8 +5,11 @@ namespace TechWilk\Rota\Controller;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Views\Twig;
+use TechWilk\Rota\Crypt;
 use TechWilk\Rota\User;
 use TechWilk\Rota\UserQuery;
+use TechWilk\Rota\UserRole;
+use TechWilk\Rota\UserRoleQuery;
 use TechWilk\Rota\RoleQuery;
 use TechWilk\Rota\EmailAddress;
 use TechWilk\Rota\Authentication;
@@ -50,13 +53,13 @@ class UserController
 
         $u = new User();
 
-        if ($args['id']) {
+        if (isset($args['id'])) {
             $u = UserQuery::create()->findPK($args['id']);
         } else {
             $newIdFound = false;
             while (!$newIdFound) {
                 $id = Crypt::generateInt(0, 2147483648); // largest int in db column
-                if (is_null(UserQuery::create()->findPK($args['id']))) {
+                if (is_null(UserQuery::create()->findPK($id))) {
                     $newIdFound = true;
                     $u->setId($id);
                 }
@@ -184,7 +187,7 @@ class UserController
 
     public function postUserAssignRoles(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
-        $this->logger->info("Create user people POST '/user/".$args['id']."/assign'");
+        $this->logger->info("Create user people POST '/user/".$args['id']."/roles'");
 
         $userId = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
         $existingRoles = RoleQuery::create()->useUserRoleQuery()->filterByUserId($userId)->endUse()->find();
@@ -196,7 +199,7 @@ class UserController
 
         $data = $request->getParsedBody();
 
-        if (!is_array($data['role'])) {
+        if (empty($data['role']) || !is_array($data['role'])) {
             // delete all roles
             $urs = UserRoleQuery::create()->filterByUserId($userId)->find();
             foreach ($urs as $ur) {
@@ -226,6 +229,5 @@ class UserController
         }
 
         return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('user', [ 'id' => $userId ]));
-
     }
 }

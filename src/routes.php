@@ -28,7 +28,7 @@ $app->group('/user', function () {
     $this->get('/{id}', UserController::class . ':getUser')->setName('user');
 
     $this->post('[/{id}]', UserController::class . ':postUser')->setName('user-post');
-    $this->post('/{id}/assign', UserController::class . ':postUserAssignRoles')->setName('user-assign-post');
+    $this->post('/{id}/roles', UserController::class . ':postUserAssignRoles')->setName('user-assign-post');
     $this->post('/{id}/password', UserController::class . ':postUserPasswordChange')->setName('user-password-post');
 });
 
