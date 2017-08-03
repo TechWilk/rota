@@ -19,23 +19,23 @@ class Document extends BaseDocument
         if (!isset($file) || $file->getError() !== UPLOAD_ERR_OK) {
             throw new InvalidArgumentException('File upload failed.');
         }
-    //$acceptedFileExtensions = ['jpg', 'png', 'jpeg', 'gif', 'docx', 'pdf', 'xlsx', 'pptx'];
-    $acceptedFileTypes = ['image/gif', 'image/png', 'image/jpeg', 'application/pdf', 'application/msword', 'application/excel'];
+        //$acceptedFileExtensions = ['jpg', 'png', 'jpeg', 'gif', 'docx', 'pdf', 'xlsx', 'pptx'];
+        $acceptedFileTypes = ['image/gif', 'image/png', 'image/jpeg', 'application/pdf', 'application/msword', 'application/excel'];
         $target_dir = __DIR__ . "/../documents/";
-    $this->setUrl($file->getClientFilename());
-    //$fileExtension = pathinfo(basename($file->getName()),PATHINFO_EXTENSION);
+        $this->setUrl($file->getClientFilename());
+        //$fileExtension = pathinfo(basename($file->getName()),PATHINFO_EXTENSION);
 
-    // Allow certain file formats only
-    if (!in_array($file->getClientMediaType(), $acceptedFileTypes)) {
-        throw new InvalidArgumentException('Sorry, only ' . implode(', ', $acceptedFileTypes) . ' files are allowed.');
-    }
-        $this->save();
-        $target_file = $target_dir . $this->getId();
+        // Allow certain file formats only
+        if (!in_array($file->getClientMediaType(), $acceptedFileTypes)) {
+            throw new InvalidArgumentException('Sorry, only ' . implode(', ', $acceptedFileTypes) . ' files are allowed.');
+        }
+            $this->save();
+            $target_file = $target_dir . $this->getId();
 
-    // Check if file already exists
-    if (file_exists($target_file)) {
-        throw new Exception("File already exists.");
-    }
+        // Check if file already exists
+        if (file_exists($target_file)) {
+            throw new Exception("File already exists.");
+        }
 
         $file->moveTo($target_file);
     }
