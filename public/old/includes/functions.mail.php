@@ -48,11 +48,11 @@ function sendMail($to, $subject, $message, $from, $bcc = "")
                 return false;
             }
             break;
-        
+
         case 'sendmail':
             $mailSentOk = sendViaSendmail($to, $subject, $message, $from, $bcc);
             break;
-        
+
         default:
             var_dump($dbMailId);
             exit;
@@ -137,14 +137,14 @@ function sendViaSendmail($to, $subject, $message, $from, $bcc = "")
     //--------------------------------------------------------------------------------
     //send mail
     //--------------------------------------------------------------------------------
-    
+
     $mailOk = false;
-    
+
     if ($mail_dbg) {
         $mailOk = mail($from, $subject, $message, $headers);
     } else {
         $mailOk = mail($to, $subject, $message, $headers);
-        
+
         if ($mailOk) {
             //mail($from, "[ChurchRota] Mail status - OK", "address ok: " . $i, $headerSimple);
         } else {
@@ -229,7 +229,7 @@ function mailNewUser($userId, $password = "*******")
     $sql = "SELECT firstName, lastName, email, username FROM cr_users WHERE id = $userId";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $user = mysqli_fetch_object($result);
-    
+
     if (strlen($user->email) == 0) {
         return;
     }
@@ -426,7 +426,7 @@ function notifyEveryoneForEvent($eventId)
 										LEFT JOIN cr_eventGroups eg ON eg.id = e.eventGroup
 									WHERE
 										e.id = $eventId ORDER BY date";
-            
+
             $eventresult = mysqli_query(db(), $eventsql) or die(mysqli_error(db()));
             $location = $ob->location;
 
@@ -442,7 +442,7 @@ function notifyEveryoneForEvent($eventId)
                 if ($comment == '') {
                     $comment = '-';
                 }
-            
+
 
                 $eventdetails = $eventrow['eventGroup'] . ": " . $eventrow['sermonTitle'];
                 if (!empty($eventrow['bibleVerse'])) {
@@ -474,7 +474,7 @@ function notifyEveryoneForEvent($eventId)
             }
 
             $updateID = $ob->userId;
-            
+
             $rehearsal = "";/*
             if($row['rehearsal'] == "1") {
                 if(($row['eventRehearsal'] == "0") or ($row['eventRehearsalChange'] == "1")) {
@@ -493,7 +493,7 @@ function notifyEveryoneForEvent($eventId)
             $from = siteSettings()->getOwner() . ' <' . siteSettings()->getAdminEmailAddress() . '>';
 
             //$subject = "Rota reminder: " . $date;
-            $subject = 'You are down for ' . implode(', ', $roles) . " - " . $type . ": ". $date;
+            $subject = 'Reminder: ' . implode(', ', $roles) . " - " . $type . ": ". $date;
 
             $rotadetails = getEventDetails($eventId, "\r\n", 0, false, "\t");
 
@@ -511,7 +511,7 @@ function notifyEveryoneForEvent($eventId)
             ];
 
             $message = parseEmailTemplate($message, $templateFields);
-            
+
             $mailOk = sendMail($to, $subject, $message, $from);
             $facebookNotificationOk = createFacebookNotificationForUser($ob->userId, getEventUrl($eventId), $subject);
 
@@ -522,7 +522,7 @@ function notifyEveryoneForEvent($eventId)
     }
 
     if (count($countarray) > 0) {
-        $sql = "UPDATE 
+        $sql = "UPDATE
 							cr_eventPeople ep
 							INNER JOIN cr_userRoles ur ON ep.userRoleId = ur.id
 						SET
@@ -534,7 +534,7 @@ function notifyEveryoneForEvent($eventId)
         mysqli_query(db(), $sql) or die(mysqli_error(db()));
     }
 
-    
+
     $sql = "UPDATE
 						cr_events e
 					SET
@@ -591,7 +591,7 @@ function notifyUserForEvent($userId, $eventId, $subject, $message)
 						e.sermonTitle,
 						eg.name AS eventGroup
 
-					FROM 
+					FROM
 						cr_events e
 						INNER JOIN cr_eventGroups eg ON eg.id = e.eventGroup
 					WHERE
@@ -613,7 +613,7 @@ function notifyUserForEvent($userId, $eventId, $subject, $message)
 
     $sql = "SELECT
 						r.name,
-					FROM 
+					FROM
 						cr_roles r
 					WHERE
 						e.id = $eventId";
@@ -658,7 +658,7 @@ function notifyUserForEvent($userId, $eventId, $subject, $message)
     } else {
         return "Error while sending mail to ".$user->firstName.' '.$user->lastName;
     }
-    
+
     return 'Unknown error for '.$user->firstName.' '.$user->lastName;
 }
 
@@ -857,7 +857,7 @@ function sendEventMessageEmailToUser($userId, $eventId, $subject, $message)
     $eventDetails = "";
     $date;
     $ob = mysqli_fetch_object($result);
-    
+
     $date = $ob->date;
 
     $eventDetails .= strftime(siteSettings()->getTimeFormatNormal(), strtotime($ob->date));
@@ -871,10 +871,10 @@ function sendEventMessageEmailToUser($userId, $eventId, $subject, $message)
     $eventDetails .= "\r\n";
     $eventDetails .= "\r\n";
 
-    
+
     $overviewMonth = strtoupper(strftime("%B", strtotime($date)));
     $overviewYear = strftime("%Y", strtotime($date));
-    
+
     $templateValues = [
         'name' => $name,
         'event' => $eventDetails,
@@ -898,7 +898,7 @@ function sendEventMessageEmailToUser($userId, $eventId, $subject, $message)
     } else {
         return "Error while sending mail to ".$user->firstName.' '.$user->lastName;
     }
-    
+
     return 'Unknown error for '.$user->firstName.' '.$user->lastName;
 }
 
@@ -949,7 +949,7 @@ function sendUpcomingEventsToUser($userId, $subject, $message)
 						ur.userId = $userId
 						AND e.date >= CURRENT_DATE()
 						AND e.removed = 0";
-    
+
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $events;
     while ($ob = mysqli_fetch_object($result)) {
@@ -1018,7 +1018,7 @@ function sendUpcomingEventsToUser($userId, $subject, $message)
     }
     $overviewMonth = strtoupper(strftime("%B", strtotime($date)));
     $overviewYear = strftime("%Y", strtotime($date));
-    
+
     $message = str_replace("[NAME]", $name, $message);
     $message = str_replace("[EVENTS]", $eventDetails, $message);
     $message = str_replace("[MONTH]", $overviewMonth, $message);
@@ -1039,7 +1039,7 @@ function sendUpcomingEventsToUser($userId, $subject, $message)
     } else {
         return "Error while sending mail to ".$user->firstName.' '.$user->lastName;
     }
-    
+
     return 'Unknown error for '.$user->firstName.' '.$user->lastName;
 }
 
@@ -1147,7 +1147,7 @@ function mailToDb($to, $subject, $message, $from, $bcc = "")
 
     $sql = "INSERT INTO cr_emails (emailTo, emailBcc, emailFrom, subject, message) VALUES ('$to', '$bcc', '$from', '$subject', '$message')";
     mysqli_query(db(), $sql) or die(mysqli_error(db()));
-    
+
     return mysqli_insert_id(db());
 }
 
