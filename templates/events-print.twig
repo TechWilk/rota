@@ -2,61 +2,82 @@
 
 {% block content %}
 
+<style>
+@media print {
+    em {
+        text-decoration: underline;
+    }
+}
+</style>
+
 <div class="box box-solid">
     <div class="box-header">
         <h2 class="box-title">Preaching Rota</h2>
     </div>
     <div class="box-body">
-        <table class="table">
-            <tr>
-                <th>Date</th>
-                <th>Sunday</th>
-                <th>Service</th>
-                <th>Preacher</th>
-                <th>Leader</th>
-                <th>Pres</th>
-                <th>Subject/Notes</th>
-                <th>Availability</th>
-            </tr>
-            {% for event in events %}
-            <tr>
-                <td>{{ event.date | date('jS M') }}</td>
-                <td>{{ event.name }}</td>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Sunday</th>
+                    <th>Service</th>
+                    <th>Preacher</th>
+                    <th>Leader</th>
+                    <th>Pres</th>
+                    <th>Subject/Notes</th>
+                    <th>Availability</th>
+                </tr>
+            </thead>
+            {% for date, eventsInDay in events|group_by(=> _.date|date('jS M')) %}
+            {% for eventName, eventsWithName in eventsInDay|group_by(=> _.name) %}
+            {% set dateLoop = loop %}
+            {% for event in eventsWithName %}
+            {% include 'event-modal.twig' %}
+            <tr data-toggle="modal" data-target="#event{{ event.id }}_modal">
+                {% if dateLoop.first and loop.first %}
+                <td rowspan="{{ eventsInDay | length }}">{{ date }}</td>
+                {% endif %}
+                {% if loop.first %}
+                <td rowspan="{{ eventsWithName | length }}">{{ eventName }}</td>
+                {% endif %}
                 <td>{{ event.eventsubtype.name }}</td>
                 <td>
                     {% for eventperson in event.eventpeople | filter(=> _.userrole.role.name == "Preacher") %}
-                    <span data-payload="{{ path_for('user-widget-only', {'id': eventperson.userrole.user.id }) }}">
+                    <span>
                     {{ eventperson.userrole.user.initials }}
                     </span>
                     {% endfor %}
                 </td>
                 <td>
                     {% for eventperson in event.eventpeople | filter(=> _.userrole.role.name == "Leader") %}
-                    <span data-payload="{{ path_for('user-widget-only', {'id': eventperson.userrole.user.id }) }}">
+                    <span>
                     {{ eventperson.userrole.user.initials }}
                     </span>
                     {% endfor %}
                 </td>
                 <td>
                     {% for eventperson in event.eventpeople | filter(=> _.userrole.role.name == "President") %}
-                    <span data-payload="{{ path_for('user-widget-only', {'id': eventperson.userrole.user.id }) }}">
+                    <span>
                     {{ eventperson.userrole.user.initials }}
                     </span>
                     {% endfor %}
                 </td>
                 <td>
+                    <em>{{ event.eventGroup.name }}:</em>
                     {{ event.sermontitle }}
                     {{ event.bibleVerse is empty ? '' : '(' ~ event.bibleVerse ~ ')' }}
                     {{ event.comment is empty ? '' : '(' ~ event.comment ~ ')' }}</td>
                 <td>
                     {% for user in users if user.isavailableforevent(event) == true or user.isavailableforevent(event) is null %}
-                    <span data-payload="{{ path_for('user-widget-only', {'id': user.id }) }}">
+                    <span>
                     {{ user.isavailableforevent(event) == true ? user.initials : '' }}
                     {{( user.isavailableforevent(event) is null ? '(' ~ user.initials ~ ')?' : '' ) }}
                     </span>
                     {% endfor %}
-                </td>        
+                </td>
             </tr>
+            {% endfor %}
+            {% endfor %}
             {% endfor %}
         </table>
     <div>

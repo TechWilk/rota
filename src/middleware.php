@@ -6,14 +6,14 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use TechWilk\Rota\AuthProvider\UsernamePassword\UsernamePasswordAuth;
 use TechWilk\Rota\Authentication;
+use Psr7Middlewares\Middleware;
 
 // Application middleware
 
 // e.g: $app->add(new \Slim\Csrf\Guard);
 
 
-// add route information to twig
-
+// 3) add route information to twig
 $app->add(function (Request $request, Response $response, callable $next) {
     $route = $request->getAttribute('route');
 
@@ -29,4 +29,8 @@ $app->add(function (Request $request, Response $response, callable $next) {
 });
 
 
-$app->add($app->getContainer()['auth']);
+// 2) Ensure user is authenticated
+$app->add( $app->getContainer()['auth'] );
+
+// 1) remove trailing slashes
+$app->add( Middleware::TrailingSlash(false)->redirect(301) );

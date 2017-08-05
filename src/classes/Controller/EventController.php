@@ -204,7 +204,8 @@ class EventController
         return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('event', [ 'id' => $eventId ]));
     }
 
-    public function getAllEventsToPrint(ServerRequestInterface $request, ResponseInterface $response, $args) {
+    public function getAllEventsToPrint(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
         $this->logger->info("Fetch event printable page GET '/events/print'");
 
         $events = EventQuery::create()
@@ -219,6 +220,7 @@ class EventController
 
         $users = UserQuery::create()
             ->useUserRoleQuery()
+                ->filterByReserve(false)
                 ->useRoleQuery()
                     ->filterByGroup($groups)
                 ->endUse()
@@ -227,6 +229,5 @@ class EventController
             ->find();
 
         return $this->view->render($response, 'events-print.twig', [ 'events' => $events, 'groups' => $groups, 'users' => $users ]);
-
     }
 }

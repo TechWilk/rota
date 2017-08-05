@@ -128,14 +128,25 @@ class Authentication
         $date = new DateTime("-$lockOutInterval minutes");
         $date->setTimezone(new DateTimeZone('UTC'));
 
+        // check ip address
+        if (isset($_SERVER['REMOTE_ADDR'])) {
+            $loginFailures = LoginFailureQuery::create()->filterByIpAddress($_SERVER['REMOTE_ADDR'])->filterByTimestamp(['min' => $date])->count();
+
+            if ($loginFailures >= $numberOfAllowedAttempts) {
+                $this->logFailedLoginAttempt($username);
+                return false;
+            }
+        }
+
+        // check user account
         $loginFailures = LoginFailureQuery::create()->filterByUsername($username)->filterByTimestamp(['min' => $date])->count();
 
-        if ($loginFailures < $numberOfAllowedAttempts) {
-            return true;
-        } else {
+        if ($loginFailures >= $numberOfAllowedAttempts) {
             $this->logFailedLoginAttempt($username);
             return false;
         }
+
+        return true;
     }
 
     private function logFailedLoginAttempt($username)

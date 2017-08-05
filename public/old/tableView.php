@@ -178,7 +178,7 @@ $sessionUserId = $_SESSION['userid'];
 						cr_events e
 					WHERE
 						e.removed = 0";
-                    
+
 
     if ($filter == "") {
         $sql .= "
@@ -188,7 +188,7 @@ $sessionUserId = $_SESSION['userid'];
     } elseif ($filter == "all") {
         $sql .= "
 						ORDER BY
-							e.date";
+							e.date DESC";
     } elseif ($filter != "") {
         $sql .= "
 							AND e.type = '$filter'

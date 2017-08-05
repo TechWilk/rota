@@ -296,6 +296,12 @@ class User extends BaseUser
 
     public function getInitials()
     {
-        return substr($this->getFirstName(), 0, 1) . substr($this->getLastName(), 0, 1);
+        $names = str_replace('-', ' ', $this->getName());
+        $names = explode(' ', $names);
+        $initials = '';
+        foreach ($names as $name) {
+            $initials .= substr($name, 0, 1);
+        }
+        return $initials;
     }
 }
