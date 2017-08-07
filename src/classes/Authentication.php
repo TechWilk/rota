@@ -130,7 +130,10 @@ class Authentication
 
         // check ip address
         if (isset($_SERVER['REMOTE_ADDR'])) {
-            $loginFailures = LoginFailureQuery::create()->filterByIpAddress($_SERVER['REMOTE_ADDR'])->filterByTimestamp(['min' => $date])->count();
+            $loginFailures = LoginFailureQuery::create()
+                ->filterByIpAddress($_SERVER['REMOTE_ADDR'])
+                ->filterByTimestamp(['min' => $date])
+                ->count();
 
             if ($loginFailures >= $numberOfAllowedAttempts) {
                 $this->logFailedLoginAttempt($username);
@@ -139,7 +142,10 @@ class Authentication
         }
 
         // check user account
-        $loginFailures = LoginFailureQuery::create()->filterByUsername($username)->filterByTimestamp(['min' => $date])->count();
+        $loginFailures = LoginFailureQuery::create()
+            ->filterByUsername($username)
+            ->filterByTimestamp(['min' => $date])
+            ->count();
 
         if ($loginFailures >= $numberOfAllowedAttempts) {
             $this->logFailedLoginAttempt($username);
