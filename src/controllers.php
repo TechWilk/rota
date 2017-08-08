@@ -7,6 +7,7 @@ use TechWilk\Rota\Controller\UserController;
 use TechWilk\Rota\Controller\EventController;
 use TechWilk\Rota\Controller\AuthController;
 use TechWilk\Rota\Controller\NotificationController;
+use TechWilk\Rota\Controller\CalendarController;
 use Monolog;
 
 // DIC configuration
@@ -51,4 +52,12 @@ $container['TechWilk\Rota\Controller\NotificationController'] = function ($c) {
     $auth = $c->get('auth');
     $router = $c->get('router');
     return new NotificationController($view, $logger, $auth, $router);
+};
+
+$container['TechWilk\Rota\Controller\CalendarController'] = function ($c) {
+    $view = $c->get('view');
+    $logger = $c->get('logger');
+    $auth = $c->get('auth');
+    $router = $c->get('router');
+    return new CalendarController($view, $logger, $auth, $router);
 };

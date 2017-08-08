@@ -9,6 +9,7 @@ use TechWilk\Rota\Controller\UserController;
 use TechWilk\Rota\Controller\EventController;
 use TechWilk\Rota\Controller\AuthController;
 use TechWilk\Rota\Controller\NotificationController;
+use TechWilk\Rota\Controller\CalendarController;
 
 // Routes
 
@@ -89,140 +90,36 @@ $app->post('/login', AuthController::class . ':postLogin')->setName('login-post'
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// OTHER
+// NOTIFICATIONS
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 $app->get('/notification/{id}[/{referrer}]', NotificationController::class . ':getNotificationClick')->setName('notification');
 
 
-$app->get('/user/me/calendars', function ($request, $response, $args) {
-    // Sample log message
-    $this->logger->info("Fetch settings GET '/user/me/calendars'");
 
-    $auth = $this['auth'];
-    $u = $auth->currentUser();
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// CALENDAR
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    if (is_null($u)) {
-        return $this->view->render($response, 'error.twig');
-    }
+$app->group('/user/me/calendar', function () {
 
-    $cals = CalendarTokenQuery::create()
-        ->filterByUser($u)
-        ->find();
+    $this->get('s', CalendarController::class . ':getCalendarTokens')->setName('user-calendars');
 
-    return $this->view->render($response, 'user-calendars.twig', [ "user" => $u, 'calendars' => $cals ]);
-})->setName('user-calendars');
+    $this->get('/new', CalendarController::class . ':getNewCalendarForm')->setName('user-calendars');
+
+    $this->get('/{id}/revoke', CalendarController::class . ':getRevokeCalendar')->setName('user-calendar-revoke');
+
+    $this->post('/new', CalendarController::class . ':postNewCalendar')->setName('user-calendar-new-post');
+});
 
 
-$app->get('/user/me/calendar/new', function ($request, $response, $args) {
-    // Sample log message
-    $this->logger->info("Fetch settings GET '/user/me/calendars'");
-
-    $auth = $this['auth'];
-    $u = $auth->currentUser();
-
-    if (is_null($u)) {
-        return $this->view->render($response, 'error.twig');
-    }
-
-    $cals = CalendarTokenQuery::create()->filterByUser($u)->find();
-
-    return $this->view->render($response, 'user-calendars.twig', [ "user" => $u, 'calendars' => $cals ]);
-})->setName('user-calendars');
+$app->get('/calendar/{token}.{format}', CalendarController::class . ':getRenderedCalendar')->setName('user-calendar');
 
 
-$app->post('/user/me/calendar/new', function ($request, $response, $args) {
-    // Sample log message
-    $this->logger->info("Create calendar POST '/user/me/calendars'");
 
-    $auth = $this['auth'];
-    $u = $auth->currentUser();
-
-    if (is_null($u)) {
-        return $this->view->render($response, 'error.twig');
-    }
-
-    $data = $request->getParsedBody();
-
-    $calendar = new CalendarToken();
-    $calendar->setFormat($data['format']);
-    $calendar->setDescription($data['description']);
-    $calendar->setUser($u);
-
-    $crypt = new Crypt();
-    $calendar->setToken($crypt->generateToken(30));
-
-    $calendar->save();
-
-    $cals = CalendarTokenQuery::create()->filterByUser($u)->find();
-
-    return $this->view->render($response, 'user-calendars.twig', [ "user" => $u, 'calendars' => $cals, 'new' => $calendar ]);
-})->setName('user-calendar-new-post');
-
-
-$app->get('/user/me/calendar/{id}/revoke', function ($request, $response, $args) {
-    // Sample log message
-    $this->logger->info("Fetch settings GET '/user/me/calendar/".$args['id']."/revoke'");
-
-    $auth = $this['auth'];
-    $u = $auth->currentUser();
-
-    if (is_null($u)) {
-        return $this->view->render($response, 'error.twig');
-    }
-
-    $c = CalendarTokenQuery::create()
-        ->filterById($args['id'])
-        ->findOne();
-
-    if ($c->getUser() !== $u) {
-        return $this->view->render($response, 'error.twig');
-    }
-    $c->setRevoked(true);
-    $c->setRevokedDate(new DateTime());
-    $c->save();
-
-    return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('user-calendars'));
-})->setName('user-calendar-revoke');
-
-
-$app->get('/calendar/{token}.{format}', function ($request, $response, $args) {
-    // Sample log message
-    $this->logger->info("Fetch calendar GET '/calendar/".$args['token'].".".$args['format']."'");
-
-    $c = CalendarTokenQuery::create()
-        ->filterByToken($args['token'])
-        ->findOne();
-
-    if (!isset($c)) {
-        return $this->view->render($response->withStatus(404), 'calendar-error.twig');
-    }
-    $c->setLastFetched(new DateTime());
-    $c->save();
-
-    $u = $c->getUser();
-    $e = EventQuery::create()
-        ->useEventPersonQuery()
-            ->useUserRoleQuery()
-                ->filterByUser($u)
-            ->endUse()
-        ->endUse()
-        ->filterByRemoved(false)
-        ->find();
-
-    switch ($args['format']) {
-        case 'ical':
-            return $this->view->render($response->withHeader('Content-type', 'text/calendar'), 'calendar-ical.twig', ['user' => $u, 'events' => $e]);
-            break;
-        case 'ics':
-            return $this->view->render($response->withHeader('Content-type', 'text/calendar'), 'calendar-ical.twig', ['user' => $u, 'events' => $e]);
-            break;
-        default:
-            return $this->view->render($response->withStatus(404), 'calendar-error.twig');
-            break;
-    }
-})->setName('user-calendar');
-
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// OTHER
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 $app->get('/user/{id}/availability', function ($request, $response, $args) {
     // Sample log message
