@@ -4,12 +4,16 @@ namespace TechWilk\Rota\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Slim\Http\Stream;
 use TechWilk\Rota\User;
 use TechWilk\Rota\UserQuery;
 use TechWilk\Rota\RoleQuery;
+use TechWilk\Rota\DocumentQuery;
+use TechWilk\Rota\Document;
 use TechWilk\Rota\EmailAddress;
+use Exception;
 
-class UserController extends BaseController
+class ResourceController extends BaseController
 {
 
     public function getAllResources(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -43,7 +47,7 @@ class UserController extends BaseController
             try {
                 $files = $request->getUploadedFiles();
                 $d->saveFile($files['file']);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return $this->view->render($response, 'resource-edit.twig', ['resource' => $d, 'error' => $e]);
             }
         }
@@ -88,7 +92,7 @@ class UserController extends BaseController
 
             $fh = fopen($file, 'rb');
 
-            $stream = new \Slim\Http\Stream($fh); // create a stream instance for the response body
+            $stream = new Stream($fh); // create a stream instance for the response body
 
             return $response->withHeader('Content-Type', 'application/force-download')
                             ->withHeader('Content-Type', 'application/octet-stream')

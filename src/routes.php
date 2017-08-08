@@ -11,6 +11,7 @@ use TechWilk\Rota\Controller\AuthController;
 use TechWilk\Rota\Controller\AvailabilityController;
 use TechWilk\Rota\Controller\NotificationController;
 use TechWilk\Rota\Controller\CalendarController;
+use TechWilk\Rota\Controller\ResourceController;
 
 // Routes
 
@@ -67,7 +68,7 @@ $app->group('/event', function () {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 $app->group('/resource', function () {
-    $this->get('/s', ResourceController::class . ':getAllResources')->setName('resources');
+    $this->get('s', ResourceController::class . ':getAllResources')->setName('resources');
 
     $this->get('[/new]', ResourceController::class . ':getNewResourceForm')->setName('resource-new');
     $this->get('/{id}/edit', ResourceController::class . ':getResourceEditForm')->setName('resource-edit');
