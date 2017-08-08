@@ -220,39 +220,4 @@ $app->get('/', function ($request, $response, $args) {
 
 // LEGACY
 
-$app->get('/calendar.php', function ($request, $response, $args) {
-    // Sample log message
-
-    $getParameters = $request->getQueryParams();
-
-    $this->logger->info("Fetch -LEGACY- calendar GET '/calendar.php?user=".$getParameters['user']."&token=".$getParameters['token']."&format=".$getParameters['format']."'");
-
-    $getParameters = $request->getQueryParams();
-
-    $userId = filter_var($getParameters["user"], FILTER_VALIDATE_INT);
-    $token = $getParameters["token"];
-    $format = $getParameters["format"];
-
-    $c = CalendarTokenQuery::create()
-        ->filterByToken($token)
-        ->filterByUserId($userId)
-        ->findOne();
-
-    if (!isset($c)) {
-        return $this->view->render($response->withStatus(404), 'calendar-error.twig');
-    }
-    $c->setLastFetched(new DateTime());
-    $c->save();
-
-    $u = $c->getUser();
-    $e = EventQuery::create()
-        ->useEventPersonQuery()
-            ->useUserRoleQuery()
-                ->filterByUser($u)
-            ->endUse()
-        ->endUse()
-        ->filterByRemoved(false)
-        ->find();
-
-    return $this->view->render($response->withHeader('Content-type', 'text/calendar'), 'calendar-ical.twig', ['user' => $u, 'events' => $e]);
-})->setName('user-calendar');
+$app->get('/calendar.php', CalendarController::class . ':getLegacyRenderedCalendar')->setName('user-calendar');

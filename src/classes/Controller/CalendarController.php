@@ -130,10 +130,38 @@ class CalendarController
         if (!isset($c)) {
             return $this->view->render($response->withStatus(404), 'calendar-error.twig');
         }
-        $c->setLastFetched(new DateTime());
-        $c->save();
 
-        $u = $c->getUser();
+        return $this->renderCalendar($c, $args['format']);
+    }
+
+    public function getLegacyRenderedCalendar(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+        $getParameters = $request->getQueryParams();
+
+        $this->logger->info("Fetch -LEGACY- calendar GET '/calendar.php?user=".$getParameters['user']."&token=".$getParameters['token']."&format=".$getParameters['format']."'");
+
+        $userId = filter_var($getParameters["user"], FILTER_VALIDATE_INT);
+        $token = $getParameters["token"];
+        $format = $getParameters["format"];
+
+        $c = CalendarTokenQuery::create()
+            ->filterByToken($token)
+            ->filterByUserId($userId)
+            ->findOne();
+
+        if (!isset($c)) {
+            return $this->view->render($response->withStatus(404), 'calendar-error.twig');
+        }
+
+        return $this->renderCalendar($c, $format);
+    }
+
+    private function renderCalendar(CalendarToken $token, $format)
+    {
+        $token->setLastFetched(new DateTime());
+        $token->save();
+
+        $u = $token->getUser();
         $e = EventQuery::create()
             ->useEventPersonQuery()
                 ->useUserRoleQuery()
@@ -143,10 +171,8 @@ class CalendarController
             ->filterByRemoved(false)
             ->find();
 
-        switch ($args['format']) {
+        switch ($format) {
             case 'ical':
-                return $this->view->render($response->withHeader('Content-type', 'text/calendar'), 'calendar-ical.twig', ['user' => $u, 'events' => $e]);
-                break;
             case 'ics':
                 return $this->view->render($response->withHeader('Content-type', 'text/calendar'), 'calendar-ical.twig', ['user' => $u, 'events' => $e]);
                 break;
