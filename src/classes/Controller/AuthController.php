@@ -4,29 +4,12 @@ namespace TechWilk\Rota\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Slim\Views\Twig;
-use Slim\Interfaces\RouterInterface;
 use TechWilk\Rota\EmailAddress;
-use TechWilk\Rota\Authentication;
 use Exception;
 use InvalidArgumentException;
-use Monolog\Logger;
 
-class AuthController
+class AuthController extends BaseController
 {
-    protected $view;
-    protected $logger;
-    protected $auth;
-    protected $router;
-
-    public function __construct(Twig $view, Logger $logger, Authentication $auth, RouterInterface $router)
-    {
-        $this->view = $view;
-        $this->logger = $logger;
-        $this->auth = $auth;
-        $this->router = $router;
-    }
-
     public function getLogout(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->info("Fetch logout GET '/logout'");

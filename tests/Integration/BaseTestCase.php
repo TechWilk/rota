@@ -9,7 +9,7 @@ use Slim\Http\Environment;
 use Propel\Runtime\Propel;
 use Propel\Runtime\Connection\ConnectionManagerSingle;
 use Propel\Generator\Manager\SqlManager;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
 error_reporting(-1);
 ini_set('display_errors', 1);
@@ -67,7 +67,7 @@ $sqlManager->insertSql();
  * tuned to the specifics of this skeleton app, so if your needs are
  * different, you'll need to change it.
  */
-class BaseTestCase extends PHPUnit_Framework_TestCase
+class BaseTestCase extends TestCase
 {
     /**
      * Use middleware when running application?
@@ -114,7 +114,6 @@ class BaseTestCase extends PHPUnit_Framework_TestCase
 
         // Set up dependencies
         require __DIR__ . '/../../src/dependencies.php';
-        require __DIR__ . '/../../src/controllers.php';
 
         // Register middleware
         if ($this->withMiddleware) {

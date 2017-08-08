@@ -4,9 +4,6 @@ namespace TechWilk\Rota\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Slim\Views\Twig;
-use Slim\Interfaces\RouterInterface;
-use TechWilk\Rota\Authentication;
 use TechWilk\Rota\CalendarTokenQuery;
 use TechWilk\Rota\CalendarToken;
 use TechWilk\Rota\Crypt;
@@ -14,23 +11,9 @@ use TechWilk\Rota\EventQuery;
 use DateTime;
 use Exception;
 use InvalidArgumentException;
-use Monolog\Logger;
 
-class CalendarController
+class CalendarController extends BaseController
 {
-    protected $view;
-    protected $logger;
-    protected $auth;
-    protected $router;
-
-    public function __construct(Twig $view, Logger $logger, Authentication $auth, RouterInterface $router)
-    {
-        $this->view = $view;
-        $this->logger = $logger;
-        $this->auth = $auth;
-        $this->router = $router;
-    }
-
     public function getCalendarTokens(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->info("Fetch settings GET '/user/me/calendars'");

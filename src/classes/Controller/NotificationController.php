@@ -4,28 +4,11 @@ namespace TechWilk\Rota\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Slim\Views\Twig;
-use Slim\Interfaces\RouterInterface;
-use TechWilk\Rota\Authentication;
 use TechWilk\Rota\NotificationQuery;
 use TechWilk\Rota\NotificationClick;
-use Monolog\Logger;
 
-class NotificationController
+class NotificationController extends BaseController
 {
-    protected $view;
-    protected $logger;
-    protected $auth;
-    protected $router;
-
-    public function __construct(Twig $view, Logger $logger, Authentication $auth, RouterInterface $router)
-    {
-        $this->view = $view;
-        $this->logger = $logger;
-        $this->auth = $auth;
-        $this->router = $router;
-    }
-
     public function getNotificationClick(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->info("Fetch settings GET '/notification/".$args['id']."'");

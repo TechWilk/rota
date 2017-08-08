@@ -4,8 +4,6 @@ namespace TechWilk\Rota\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Slim\Views\Twig;
-use TechWilk\Rota\Authentication;
 use TechWilk\Rota\EventQuery;
 use TechWilk\Rota\EventTypeQuery;
 use TechWilk\Rota\EventSubTypeQuery;
@@ -18,25 +16,10 @@ use TechWilk\Rota\GroupQuery;
 use TechWilk\Rota\Role;
 use TechWilk\Rota\Group;
 use TechWilk\Rota\EventPersonQuery;
-use Slim\Interfaces\RouterInterface;
-use Monolog\Logger;
 use DateTime;
 
-class EventController
+class EventController extends BaseController
 {
-    protected $view;
-    protected $logger;
-    protected $auth;
-    protected $router;
-
-    public function __construct(Twig $view, Logger $logger, Authentication $auth, RouterInterface $router)
-    {
-        $this->view = $view;
-        $this->logger = $logger;
-        $this->auth = $auth;
-        $this->router = $router;
-    }
-
     public function getAllEvents(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->info("Fetch event GET '/events'");

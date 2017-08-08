@@ -4,32 +4,15 @@ namespace TechWilk\Rota\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Slim\Views\Twig;
-use Slim\Interfaces\RouterInterface;
-use TechWilk\Rota\Authentication;
 use TechWilk\Rota\Availability;
 use TechWilk\Rota\AvailabilityQuery;
 use TechWilk\Rota\UserQuery;
 use TechWilk\Rota\EventQuery;
 use TechWilk\Rota\EmailAddress;
-use Monolog\Logger;
 use DateTime;
 
-class AvailabilityController
+class AvailabilityController extends BaseController
 {
-    protected $view;
-    protected $logger;
-    protected $auth;
-    protected $router;
-
-    public function __construct(Twig $view, Logger $logger, Authentication $auth, RouterInterface $router)
-    {
-        $this->view = $view;
-        $this->logger = $logger;
-        $this->auth = $auth;
-        $this->router = $router;
-    }
-
     public function getAvailabilityForm(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->info("Fetch user availability GET '/user/".$args['id']."/availability'");
