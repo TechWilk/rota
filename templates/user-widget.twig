@@ -14,7 +14,7 @@
       <li>
         <a href="{{ path_for('user-roles', { 'id': user.id }) }}">
           {% if userroles.count == 0 %}
-          <li class="text-red">{{ user.firstname }} has no roles</li>
+          <span class="text-red">{{ user.firstname }} has no roles</span>
           {% else %}
           Roles:<span class="pull-right badge bg-aqua">{{ userroles.count }}</span>
           <ul>
