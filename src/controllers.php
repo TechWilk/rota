@@ -6,6 +6,7 @@ use Slim\Views\Twig;
 use TechWilk\Rota\Controller\UserController;
 use TechWilk\Rota\Controller\EventController;
 use TechWilk\Rota\Controller\AuthController;
+use TechWilk\Rota\Controller\AvailabilityController;
 use TechWilk\Rota\Controller\NotificationController;
 use TechWilk\Rota\Controller\CalendarController;
 use Monolog;
@@ -60,4 +61,12 @@ $container['TechWilk\Rota\Controller\CalendarController'] = function ($c) {
     $auth = $c->get('auth');
     $router = $c->get('router');
     return new CalendarController($view, $logger, $auth, $router);
+};
+
+$container['TechWilk\Rota\Controller\AvailabilityController'] = function ($c) {
+    $view = $c->get('view');
+    $logger = $c->get('logger');
+    $auth = $c->get('auth');
+    $router = $c->get('router');
+    return new AvailabilityController($view, $logger, $auth, $router);
 };
