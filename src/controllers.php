@@ -5,6 +5,7 @@ namespace TechWilk\Rota;
 use Slim\Views\Twig;
 use TechWilk\Rota\Controller\UserController;
 use TechWilk\Rota\Controller\EventController;
+use TechWilk\Rota\Controller\AuthController;
 use Monolog;
 
 // DIC configuration
@@ -33,4 +34,12 @@ $container['TechWilk\Rota\Controller\ResourceController'] = function ($c) {
     $auth = $c->get('auth');
     $router = $c->get('router');
     return new EventController($view, $logger, $auth, $router);
+};
+
+$container['TechWilk\Rota\Controller\AuthController'] = function ($c) {
+    $view = $c->get('view');
+    $logger = $c->get('logger');
+    $auth = $c->get('auth');
+    $router = $c->get('router');
+    return new AuthController($view, $logger, $auth, $router);
 };

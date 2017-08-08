@@ -7,6 +7,7 @@ use InvalidArgumentException;
 use Exception;
 use TechWilk\Rota\Controller\UserController;
 use TechWilk\Rota\Controller\EventController;
+use TechWilk\Rota\Controller\AuthController;
 
 // Routes
 
@@ -79,66 +80,10 @@ $app->group('/resource', function () {
 // AUTH
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+$app->get('/login', AuthController::class . ':getLoginForm')->setName('login');
+$app->get('/logout', AuthController::class . ':getLogout')->setName('logout');
 
-$app->get('/login', function ($request, $response, $args) {
-    $this->logger->info("Fetch login GET '/login'");
-
-    if (isset($_SESSION['userId'])) {
-        return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('home'));
-    }
-    $auth = $this['auth'];
-    $resetPasswordUrl = $auth->getResetPasswordUrl();
-
-    return $this->view->render($response->withStatus(401), 'login.twig', [ 'reset_password_url' => $resetPasswordUrl ]);
-})->setName('login');
-
-
-$app->post('/login', function ($request, $response, $args) {
-    $this->logger->info("Login POST '/login'");
-
-    $message = "Username or password incorrect.";
-
-    $data = $request->getParsedBody();
-
-    $auth = $this['auth'];
-    $resetPasswordUrl = $auth->getResetPasswordUrl();
-
-    try {
-        $email = new EmailAddress($data['username']);
-    } catch (InvalidArgumentException $e) {
-        return $this->view->render($response->withStatus(401), 'login.twig', ['message' => $message, 'reset_password_url' => $resetPasswordUrl]);
-    }
-    $password = filter_var($data['password'], FILTER_SANITIZE_STRING);
-
-    if ($email == "" || $password == "") {
-        return $this->view->render($response->withStatus(401), 'login.twig', ['message' => $message, 'reset_password_url' => $resetPasswordUrl]);
-    }
-
-    // login
-    $auth = $this['auth'];
-    try {
-        if ($auth->loginAttempt($email, $password)) {
-            if (isset($_SESSION['urlRedirect'])) {
-                $url = $_SESSION['urlRedirect'];
-                unset($_SESSION['urlRedirect']);
-                return $response->withStatus(303)->withHeader('Location', $url);
-            }
-            return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('home'));
-        }
-    } catch (Exception $e) {
-        $message = "Too many failed login attempts. Please try again in 15 minutes.";
-    }
-    return $this->view->render($response->withStatus(401), 'login.twig', ['username' => $email, 'message' => $message, 'reset_password_url' => $resetPasswordUrl ]);
-})->setName('login-post');
-
-
-$app->get('/logout', function ($request, $response, $args) {
-    $this->logger->info("Fetch logout GET '/logout'");
-
-    unset($_SESSION['userId']);
-
-    return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('login'));
-})->setName('logout');
+$app->post('/login', AuthController::class . ':postLogin')->setName('login-post');
 
 
 
