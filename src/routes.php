@@ -8,6 +8,7 @@ use Exception;
 use TechWilk\Rota\Controller\UserController;
 use TechWilk\Rota\Controller\EventController;
 use TechWilk\Rota\Controller\AuthController;
+use TechWilk\Rota\Controller\NotificationController;
 
 // Routes
 
@@ -91,32 +92,7 @@ $app->post('/login', AuthController::class . ':postLogin')->setName('login-post'
 // OTHER
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-$app->get('/notification/{id}[/{referrer}]', function ($request, $response, $args) {
-    // Sample log message
-    $this->logger->info("Fetch settings GET '/notification/".$args['id']."'");
-
-    $n = NotificationQuery::create()->findPk($args['id']);
-    $click = new NotificationClick();
-    $click->setNotification($n);
-    if (isset($args['referrer'])) {
-        $click->setReferer($args['referrer']);
-    } elseif (isset($_SERVER['HTTP_REFERER'])) {
-        $click->setReferer($_SERVER['HTTP_REFERER']);
-    } else {
-        $click->setReferer('unknown');
-    }
-    $click->save();
-
-    if ($n->getLink()) {
-        if (json_decode($n->getLink())) {
-            $link = json_decode($n->getLink());
-            return $response->withStatus(302)->withHeader('Location', $this->router->pathFor($link['route'], $link['attributes']));
-        } else {
-            return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('home').$n->getLink());
-        }
-    }
-    return $this->view->render($response, 'notification.twig', ["notification" => $n ]);
-})->setName('notification');
+$app->get('/notification/{id}[/{referrer}]', NotificationController::class . ':getNotificationClick')->setName('notification');
 
 
 $app->get('/user/me/calendars', function ($request, $response, $args) {
