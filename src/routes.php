@@ -12,6 +12,7 @@ use TechWilk\Rota\Controller\AvailabilityController;
 use TechWilk\Rota\Controller\NotificationController;
 use TechWilk\Rota\Controller\CalendarController;
 use TechWilk\Rota\Controller\ResourceController;
+use TechWilk\Rota\Controller\RoleController;
 
 // Routes
 
@@ -26,15 +27,29 @@ $app->group('/user', function () {
 
     $this->get('/new', UserController::class . ':getNewUserForm')->setName('user-new');
     $this->get('/{id}/edit', UserController::class . ':getUserEditForm')->setName('user-edit');
-    $this->get('/{id}/roles', UserController::class . ':getAssignRolesForm')->setName('user-roles');
     $this->get('/{id}/password', UserController::class . ':getUserPasswordForm')->setName('user-password');
 
     $this->get('/me', UserController::class . ':getCurrentUser')->setName('user-me');
     $this->get('/{id}', UserController::class . ':getUser')->setName('user');
 
     $this->post('[/{id}]', UserController::class . ':postUser')->setName('user-post');
-    $this->post('/{id}/roles', UserController::class . ':postUserAssignRoles')->setName('user-assign-post');
     $this->post('/{id}/password', UserController::class . ':postUserPasswordChange')->setName('user-password-post');
+
+    // roles
+    $this->get('/{id}/roles', RoleController::class . ':getAssignRolesForm')->setName('user-roles');
+    $this->post('/{id}/roles', RoleController::class . ':postUserAssignRoles')->setName('user-assign-post');
+
+    // availability
+    $this->get('/{id}/availability', AvailabilityController::class . ':getAvailabilityForm')->setName('user-availability');
+    $this->post('/{id}/availability', AvailabilityController::class . ':postAvailability')->setName('user-availability-post');
+
+    // calendar
+    $this->group('/me/calendar', function () {
+        $this->get('s', CalendarController::class . ':getCalendarTokens')->setName('user-calendars');
+        $this->get('/new', CalendarController::class . ':getNewCalendarForm')->setName('user-calendars');
+        $this->get('/{id}/revoke', CalendarController::class . ':getRevokeCalendar')->setName('user-calendar-revoke');
+        $this->post('/new', CalendarController::class . ':postNewCalendar')->setName('user-calendar-new-post');
+    });
 });
 
 
@@ -103,29 +118,15 @@ $app->get('/notification/{id}[/{referrer}]', NotificationController::class . ':g
 // CALENDAR
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-$app->group('/user/me/calendar', function () {
-
-    $this->get('s', CalendarController::class . ':getCalendarTokens')->setName('user-calendars');
-
-    $this->get('/new', CalendarController::class . ':getNewCalendarForm')->setName('user-calendars');
-
-    $this->get('/{id}/revoke', CalendarController::class . ':getRevokeCalendar')->setName('user-calendar-revoke');
-
-    $this->post('/new', CalendarController::class . ':postNewCalendar')->setName('user-calendar-new-post');
-});
-
-
 $app->get('/calendar/{token}.{format}', CalendarController::class . ':getRenderedCalendar')->setName('user-calendar');
 
+// legacy
+$app->get('/calendar.php', CalendarController::class . ':getLegacyRenderedCalendar')->setName('user-calendar');
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // OTHER
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-$app->get('/user/{id}/availability', AvailabilityController::class . ':getAvailabilityForm')->setName('user-availability');
-$app->post('/user/{id}/availability', AvailabilityController::class . ':postAvailability')->setName('user-availability-post');
-
 
 $app->get('/settings', function ($request, $response, $args) {
     // Sample log message
@@ -155,11 +156,3 @@ $app->get('/', function ($request, $response, $args) {
     // Render index view
     return $this->view->render($response, 'home.twig', ['eventsthisweek' => $eventsThisWeek, 'remainingeventsingroups' => $remainingEventsInGroups, ]);
 })->setName('home');
-
-
-
-
-
-// LEGACY
-
-$app->get('/calendar.php', CalendarController::class . ':getLegacyRenderedCalendar')->setName('user-calendar');
