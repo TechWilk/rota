@@ -2,32 +2,36 @@
 
 {% block content %}
 
-{% include 'user-banner.twig' %}
+<div class="row">
+  {% include 'user-banner.twig' %}
+</div>
 
-<form action="{{ path_for('user-assign-post', { 'id': user.id }) }}" method="post">
-  {% for group, groupedroles in roles|sort_by(=> _.group.name, 'ASC')|group_by(=> _.group) %}
-  <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
-    <div class="box box-solid">
-      <div class="box-header with-border">
-        <h3 class="box-title">{{ group.name }}</h3>
+<div class="row">
+  <form action="{{ path_for('user-assign-post', { 'id': user.id }) }}" method="post">
+    {% for group, groupedroles in roles|sort_by(=> _.group.name, 'ASC')|group_by(=> _.group) %}
+    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+      <div class="box box-solid">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ group.name }}</h3>
+        </div>
+          <div class="box-body">
+            {% for role in groupedroles|sort_by(=> _.name, 'ASC') %}
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" name="role[]" value="{{ role.id }}" {% if role in user.currentroles %}checked="checked"{% endif %}/>
+                  {{ role.name }}
+                </label>
+              </div>
+              {% endfor %}
+          </div>
+          <div class="box-footer">
+            <input class="btn btn-primary" type="submit" value="Save" />
+          </div>
       </div>
-        <div class="box-body">
-          {% for role in groupedroles|sort_by(=> _.name, 'ASC') %}
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="role[]" value="{{ role.id }}" {% if role in user.currentroles %}checked="checked"{% endif %}/>
-                {{ role.name }}
-              </label>
-            </div>
-            {% endfor %}
-        </div>
-        <div class="box-footer">
-          <input class="btn btn-primary" type="submit" value="Save" />
-        </div>
     </div>
-  </div>
-  {% endfor %}
-</form>
+    {% endfor %}
+  </form>
+</div>
 
 {% endblock %}
 
