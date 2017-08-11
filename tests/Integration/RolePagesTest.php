@@ -57,6 +57,15 @@ class RolePagesTest extends BaseTestCase
         unset($_SESSION['userId']);
     }
 
+    public function testGetUserAssignForm()
+    {
+        $response = $this->runApp('GET', '/user/'.$_SESSION['userId'].'/roles');
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertContains('Sound', (string)$response->getBody());
+        $this->assertContains('Save', (string)$response->getBody());
+    }
+
     public function testPostUserRemoveAllAssignedRoles()
     {
         $response = $this->runApp('POST', '/user/'.$_SESSION['userId'].'/roles', [ ]);

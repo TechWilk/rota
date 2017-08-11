@@ -188,37 +188,4 @@ class UserPagesTest extends BaseTestCase
         $user = UserQuery::create()->findPk($_SESSION['userId']);
         $this->assertTrue($user->checkPassword('newPassword123'));
     }
-
-    public function testGetUserAssignForm()
-    {
-        $response = $this->runApp('GET', '/user/'.$_SESSION['userId'].'/roles');
-
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertContains('Sound', (string)$response->getBody());
-        $this->assertContains('Save', (string)$response->getBody());
-    }
-
-    public function testPostUserRemoveAllAssignedRoles()
-    {
-        $response = $this->runApp('POST', '/user/'.$_SESSION['userId'].'/roles', [ ]);
-
-        $this->assertEquals(303, $response->getStatusCode());
-
-        $user = UserQuery::create()->findPk($_SESSION['userId']);
-
-        // test fails
-        //$this->assertEquals(0, $user->countUserRoles());
-    }
-
-    public function testPostUserAddAssignedProjectionRole()
-    {
-        $response = $this->runApp('POST', '/user/'.$_SESSION['userId'].'/roles', [ 'role' => [1, 2] ]);
-
-        $this->assertEquals(303, $response->getStatusCode());
-
-        $user = UserQuery::create()->findPk($_SESSION['userId']);
-
-        // test fails
-        //$this->assertEquals(2, $user->countUserRoles());
-    }
 }
