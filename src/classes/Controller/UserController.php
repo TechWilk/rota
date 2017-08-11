@@ -37,8 +37,12 @@ class UserController extends BaseController
         $u = new User();
 
         if (isset($args['id'])) {
+            // edit existing user
+            $returnPath = 'user';
             $u = UserQuery::create()->findPK($args['id']);
         } else {
+            // create new user
+            $returnPath = 'user-roles';
             $newIdFound = false;
             while (!$newIdFound) {
                 $id = Crypt::generateInt(0, 2147483648); // largest int in db column
@@ -57,7 +61,11 @@ class UserController extends BaseController
 
         $u->save();
 
-        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('user', [ 'id' => $u->getId() ]));
+        $returnUrl = $this->router->pathFor($returnPath, [ 'id' => $u->getId() ]);
+
+        return $response
+            ->withStatus(303)
+            ->withHeader('Location', $returnUrl);
     }
 
     public function getCurrentUser(ServerRequestInterface $request, ResponseInterface $response, $args)
