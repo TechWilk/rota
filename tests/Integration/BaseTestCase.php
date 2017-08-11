@@ -6,6 +6,10 @@ use Slim\App;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\Environment;
+use Propel\Runtime\Propel;
+use Propel\Runtime\Connection\ConnectionManagerSingle;
+use Propel\Generator\Manager\SqlManager;
+use PHPUnit\Framework\TestCase;
 
 error_reporting(-1);
 ini_set('display_errors', 1);
@@ -18,10 +22,10 @@ session_start();
 /**
 * Propel ORM config
 */
-$serviceContainer = \Propel\Runtime\Propel::getServiceContainer();
+$serviceContainer = Propel::getServiceContainer();
 $serviceContainer->checkVersion('2.0.0-dev');
 $serviceContainer->setAdapterClass('default', 'sqlite');
-$manager = new \Propel\Runtime\Connection\ConnectionManagerSingle();
+$manager = new ConnectionManagerSingle();
 $manager->setConfiguration(array(
   'classname' => 'Propel\\Runtime\\Connection\\ConnectionWrapper',
   'dsn' => 'sqlite:/var/tmp/test.db',
@@ -40,7 +44,12 @@ $manager->setName('default');
 $serviceContainer->setConnectionManager('default', $manager);
 $serviceContainer->setDefaultDatasource('default');
 
-$sqlManager = new \Propel\Generator\Manager\SqlManager;
+// delete test db (if exists) and create a new one
+if (file_exists('/var/tmp/test.db')) {
+    unlink('/var/tmp/test.db');
+}
+
+$sqlManager = new SqlManager;
 $sqlManager->setConnections(
     [ 'default' =>
         [
@@ -58,7 +67,7 @@ $sqlManager->insertSql();
  * tuned to the specifics of this skeleton app, so if your needs are
  * different, you'll need to change it.
  */
-class BaseTestCase extends \PHPUnit_Framework_TestCase
+class BaseTestCase extends TestCase
 {
     /**
      * Use middleware when running application?
@@ -98,13 +107,13 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
 
         // Use the application settings
         $settings = require __DIR__ . '/../../src/settings.php';
+        $settings['settings']['logger']['path'] = __DIR__ . '/../../logs/test.log';
 
         // Instantiate the application
         $app = new App($settings);
 
         // Set up dependencies
         require __DIR__ . '/../../src/dependencies.php';
-        require __DIR__ . '/../../src/controllers.php';
 
         // Register middleware
         if ($this->withMiddleware) {

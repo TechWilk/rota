@@ -4,30 +4,16 @@ namespace TechWilk\Rota\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Slim\Views\Twig;
+use TechWilk\Rota\Crypt;
 use TechWilk\Rota\User;
 use TechWilk\Rota\UserQuery;
+use TechWilk\Rota\UserRole;
+use TechWilk\Rota\UserRoleQuery;
 use TechWilk\Rota\RoleQuery;
 use TechWilk\Rota\EmailAddress;
-use TechWilk\Rota\Authentication;
-use Slim\Interfaces\RouterInterface;
-use Monolog\Logger;
 
-class UserController
+class UserController extends BaseController
 {
-    protected $view;
-    protected $logger;
-    protected $auth;
-    protected $router;
-
-    public function __construct(Twig $view, Logger $logger, Authentication $auth, RouterInterface $router)
-    {
-        $this->view = $view;
-        $this->logger = $logger;
-        $this->auth = $auth;
-        $this->router = $router;
-    }
-
     public function getAllUsers(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->info("Fetch user GET '/users'");
@@ -50,13 +36,13 @@ class UserController
 
         $u = new User();
 
-        if ($args['id']) {
+        if (isset($args['id'])) {
             $u = UserQuery::create()->findPK($args['id']);
         } else {
             $newIdFound = false;
             while (!$newIdFound) {
                 $id = Crypt::generateInt(0, 2147483648); // largest int in db column
-                if (is_null(UserQuery::create()->findPK($args['id']))) {
+                if (is_null(UserQuery::create()->findPK($id))) {
                     $newIdFound = true;
                     $u->setId($id);
                 }
@@ -167,65 +153,5 @@ class UserController
         $u->save();
 
         return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('user', [ 'id' => $u->getId() ]));
-    }
-
-    public function getAssignRolesForm(ServerRequestInterface $request, ResponseInterface $response, $args)
-    {
-        $this->logger->info("Fetch user GET '/user/".$args['id']."/roles'");
-        $r = RoleQuery::create()->find();
-        $u = UserQuery::create()->findPK($args['id']);
-
-        if (!is_null($u)) {
-            return $this->view->render($response, 'user-roles-assign.twig', [ "user" => $u, "roles" => $r ]);
-        } else {
-            return $this->view->render($response, 'error.twig');
-        }
-    }
-
-    public function postUserAssignRoles(ServerRequestInterface $request, ResponseInterface $response, $args)
-    {
-        $this->logger->info("Create user people POST '/user/".$args['id']."/assign'");
-
-        $userId = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
-        $existingRoles = RoleQuery::create()->useUserRoleQuery()->filterByUserId($userId)->endUse()->find();
-
-        $existingRoleIds = [];
-        foreach ($existingRoles as $r) {
-            $existingRoleIds[] = $r->getId();
-        }
-
-        $data = $request->getParsedBody();
-
-        if (!is_array($data['role'])) {
-            // delete all roles
-            $urs = UserRoleQuery::create()->filterByUserId($userId)->find();
-            foreach ($urs as $ur) {
-                $ur->delete();
-            }
-        } else {
-            // sanitize data from user
-            foreach ($data['role'] as $key => $role) {
-                $data['role'][$key] = filter_var(trim($role), FILTER_SANITIZE_NUMBER_INT);
-            }
-
-            // add new roles
-            $addArray = array_diff($data['role'], $existingRoleIds);
-            foreach ($addArray as $roleToAdd) {
-                $ur = new UserRole();
-                $ur->setRoleId($roleToAdd);
-                $ur->setUserId($userId);
-                $ur->save();
-            }
-
-            // remove existing roles
-            $deleteArray = array_diff($existingRoleIds, $data['role']);
-            foreach ($deleteArray as $roleToRemove) {
-                $ur = UserRoleQuery::create()->filterByUserId($userId)->filterByRoleId($roleToRemove)->findOne();
-                $ur->delete();
-            }
-        }
-
-        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('user', [ 'id' => $userId ]));
-
     }
 }
