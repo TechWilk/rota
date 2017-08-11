@@ -1,11 +1,8 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -43,43 +40,41 @@ if ($method == 'regular' && $userrole) {
     header('Location: users.php');
     exit;
 }
-$formatting = "light";
+$formatting = 'light';
 $hidefirst = true;
-include('includes/header.php');
+include 'includes/header.php';
 
-
-$sql = "SELECT COUNT(*) AS noOfUsers, (SELECT COUNT(*) FROM cr_users WHERE isAdmin = true) AS noOfAdmin FROM cr_users";
+$sql = 'SELECT COUNT(*) AS noOfUsers, (SELECT COUNT(*) FROM cr_users WHERE isAdmin = true) AS noOfAdmin FROM cr_users';
 $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 $noOfUsers = 0;
 $noOfAdmin = 0;
 
 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-    $noOfUsers = $row["noOfUsers"];
-    $noOfAdmin = $row["noOfAdmin"];
+    $noOfUsers = $row['noOfUsers'];
+    $noOfAdmin = $row['noOfAdmin'];
 }
 
-
-$sql = "SELECT g.name AS groupName, r.name AS roleName FROM cr_groups g INNER JOIN cr_roles r ON r.groupId = g.id ORDER BY g.name, r.name";
+$sql = 'SELECT g.name AS groupName, r.name AS roleName FROM cr_groups g INNER JOIN cr_roles r ON r.groupId = g.id ORDER BY g.name, r.name';
 $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
-$groupName = "";
+$groupName = '';
 $first = true;
-$roles = "";
+$roles = '';
 
 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-    if ($groupName != $row["groupName"]) {
-        $groupName = $row["groupName"];
+    if ($groupName != $row['groupName']) {
+        $groupName = $row['groupName'];
         if ($first) {
             $first = false;
         } else {
-            $roles .= "</ul>";
+            $roles .= '</ul>';
         }
-        $roles .= "<p><strong>".$groupName."</strong></p>";
-        $roles .= "<ul>";
+        $roles .= '<p><strong>'.$groupName.'</strong></p>';
+        $roles .= '<ul>';
     }
-    $roles .= "<li>".$row["roleName"]."</li>";
+    $roles .= '<li>'.$row['roleName'].'</li>';
 }
-$roles .= "</ul>";
+$roles .= '</ul>';
 
 $users = UserQuery::create()->orderByLastName()->orderByFirstName()->find();
 $organisedUsers = [];
@@ -124,7 +119,7 @@ foreach ($users as $user) {
 					<li>
 						<a class="js-no-link" href="addUser.php?action=edit&user=<?php echo $user->getId() ?>" data-toggle='modal' data-target='#user<?php echo $user->getId() ?>'>
 							<img src="<?php echo getProfileImageUrl($user->getId(), 'large') ?>" alt="User Image">
-							<span class="users-list-name"><?php echo $user->getFirstName() . ' '. $user->getLastName() ?></span>
+							<span class="users-list-name"><?php echo $user->getFirstName().' '.$user->getLastName() ?></span>
 						</a>
 						<?php if (isAdmin($user->getId())): ?>
 						<span class="label label-warning">Admin</span>
@@ -145,7 +140,7 @@ foreach ($users as $user) {
 								<div class="modal-header">
 									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 									<h4 class="modal-title">
-										<?php echo $user->getFirstName() . ' '. $user->getLastName() ?>
+										<?php echo $user->getFirstName().' '.$user->getLastName() ?>
 										<?php if (isAdmin($user->getId())): ?>
 										<span class="label label-warning">Admin</span>
 										<?php endif ?>
@@ -158,7 +153,7 @@ foreach ($users as $user) {
 									</h4>
 								</div>
 								<div class="modal-body">
-									<p><strong>Email address:</strong> <a href="<?php echo $user->getEmail() ? 'mailto:' . $user->getEmail() : '' ?>"><?php echo $user->getEmail() ? $user->getEmail() : 'none' ?></a></p>
+									<p><strong>Email address:</strong> <a href="<?php echo $user->getEmail() ? 'mailto:'.$user->getEmail() : '' ?>"><?php echo $user->getEmail() ? $user->getEmail() : 'none' ?></a></p>
 									<p><strong>Mobile:</strong> <?php echo $user->getMobile() ? $user->getMobile() : 'none' ?></p>
 									<p><strong>Roles:</strong></p>
 									<?php $userRoles = $user->getUserRoles() ?>
@@ -228,4 +223,4 @@ foreach ($users as $user) {
 </div><!-- /.row -->
 
 
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

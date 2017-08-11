@@ -2,15 +2,13 @@
 
 namespace TechWilk\Rota\Controller;
 
-use Psr\Http\Message\ServerRequestInterface;
+use DateTime;
 use Psr\Http\Message\ResponseInterface;
-use TechWilk\Rota\CalendarTokenQuery;
+use Psr\Http\Message\ServerRequestInterface;
 use TechWilk\Rota\CalendarToken;
+use TechWilk\Rota\CalendarTokenQuery;
 use TechWilk\Rota\Crypt;
 use TechWilk\Rota\EventQuery;
-use DateTime;
-use Exception;
-use InvalidArgumentException;
 
 class CalendarController extends BaseController
 {
@@ -29,7 +27,7 @@ class CalendarController extends BaseController
             ->filterByUser($u)
             ->find();
 
-        return $this->view->render($response, 'user-calendars.twig', [ "user" => $u, 'calendars' => $cals ]);
+        return $this->view->render($response, 'user-calendars.twig', ['user' => $u, 'calendars' => $cals]);
     }
 
     public function getNewCalendarForm(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -45,7 +43,7 @@ class CalendarController extends BaseController
 
         $cals = CalendarTokenQuery::create()->filterByUser($u)->find();
 
-        return $this->view->render($response, 'user-calendars.twig', [ "user" => $u, 'calendars' => $cals ]);
+        return $this->view->render($response, 'user-calendars.twig', ['user' => $u, 'calendars' => $cals]);
     }
 
     public function postNewCalendar(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -73,7 +71,7 @@ class CalendarController extends BaseController
 
         $cals = CalendarTokenQuery::create()->filterByUser($u)->find();
 
-        return $this->view->render($response, 'user-calendars.twig', [ "user" => $u, 'calendars' => $cals, 'new' => $calendar ]);
+        return $this->view->render($response, 'user-calendars.twig', ['user' => $u, 'calendars' => $cals, 'new' => $calendar]);
     }
 
     public function getRevokeCalendar(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -99,12 +97,11 @@ class CalendarController extends BaseController
         $c->save();
 
         return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('user-calendars'));
-
     }
 
     public function getRenderedCalendar(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
-        $this->logger->info("Fetch calendar GET '/calendar/".$args['token'].".".$args['format']."'");
+        $this->logger->info("Fetch calendar GET '/calendar/".$args['token'].'.'.$args['format']."'");
 
         $c = CalendarTokenQuery::create()
             ->filterByToken($args['token'])
@@ -121,11 +118,11 @@ class CalendarController extends BaseController
     {
         $getParameters = $request->getQueryParams();
 
-        $this->logger->info("Fetch -LEGACY- calendar GET '/calendar.php?user=".$getParameters['user']."&token=".$getParameters['token']."&format=".$getParameters['format']."'");
+        $this->logger->info("Fetch -LEGACY- calendar GET '/calendar.php?user=".$getParameters['user'].'&token='.$getParameters['token'].'&format='.$getParameters['format']."'");
 
-        $userId = filter_var($getParameters["user"], FILTER_VALIDATE_INT);
-        $token = $getParameters["token"];
-        $format = $getParameters["format"];
+        $userId = filter_var($getParameters['user'], FILTER_VALIDATE_INT);
+        $token = $getParameters['token'];
+        $format = $getParameters['format'];
 
         $c = CalendarTokenQuery::create()
             ->filterByToken($token)

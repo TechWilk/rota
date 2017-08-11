@@ -1,8 +1,5 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 /*
     This file is part of Church Rota.
 
@@ -23,8 +20,8 @@ use DateTime;
 */
 
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 $filter = getQueryStringForKey('filter');
 
@@ -37,16 +34,9 @@ if (isset($_SESSION['is_logged_in']) || $_SESSION['db_is_logged_in'] == true) {
     header('Location: login.php');
 }
 
-
 $sessionUserId = $_SESSION['userid'];
 
-
-
-
-
-
 // ~~~~~~~~~~ PRESENTATION ~~~~~~~~~~
-
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -64,50 +54,44 @@ $sessionUserId = $_SESSION['userid'];
 
 <?php
 
-    $sqlSettings = "SELECT * FROM cr_settings";
+    $sqlSettings = 'SELECT * FROM cr_settings';
 
     $resultSettings = mysqli_query(db(), $sqlSettings) or die(mysqli_error(db()));
     $rowSettings = mysqli_fetch_array($resultSettings, MYSQLI_ASSOC);
     $lang_locale = $rowSettings['lang_locale'];
     $time_format_short = $rowSettings['time_format_short'];
-    $userTZ=$rowSettings['time_zone'];
-    $google_group_calendar=$rowSettings['google_group_calendar'];
+    $userTZ = $rowSettings['time_zone'];
+    $google_group_calendar = $rowSettings['google_group_calendar'];
 
-
-    if ($rowSettings['snapshot_show_two_month']=='1') {
-        $whereTwoMonth = "Year(date) = Year(Now()) AND ((Month(date) = Month(Now())) OR ((Month(date) = Month(Now())+1) AND (Day(Now())>20)))";
-        $whereTwoMonth .= " AND e.date >= DATE(NOW())";
+    if ($rowSettings['snapshot_show_two_month'] == '1') {
+        $whereTwoMonth = 'Year(date) = Year(Now()) AND ((Month(date) = Month(Now())) OR ((Month(date) = Month(Now())+1) AND (Day(Now())>20)))';
+        $whereTwoMonth .= ' AND e.date >= DATE(NOW())';
     } else {
-        if ($filter=='all') {
-            $whereTwoMonth = "1=1";
+        if ($filter == 'all') {
+            $whereTwoMonth = '1=1';
         } else {
-            $whereTwoMonth = "e.date >= DATE(NOW())";
+            $whereTwoMonth = 'e.date >= DATE(NOW())';
         }
     }
 
-    if ($rowSettings['group_sorting_name']=='1') {
-        $group_sorting_name = "g.id, g.name";
+    if ($rowSettings['group_sorting_name'] == '1') {
+        $group_sorting_name = 'g.id, g.name';
     } else {
-        $group_sorting_name = "g.id";
+        $group_sorting_name = 'g.id';
     }
 
-    $sql = "SELECT count(*) AS colcount FROM cr_groups g";
+    $sql = 'SELECT count(*) AS colcount FROM cr_groups g';
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-    $colCnt = $row['colcount']+2;
+    $colCnt = $row['colcount'] + 2;
 
     if (isset($_GET['column_width'])) {
-        $colWidth=$_GET['column_width'];
+        $colWidth = $_GET['column_width'];
     } else {
-        $colWidth=0; //full-size table, backward compatibility
+        $colWidth = 0; //full-size table, backward compatibility
     }
 
-
-
-
-
-# --------- Presentation ---------
-
+// --------- Presentation ---------
 
 ?>
 
@@ -118,18 +102,18 @@ $sessionUserId = $_SESSION['userid'];
 		<p>
 			<a class="eventTypeButton" href="tableView.php">All</a>
 			<?php
-            if ((isAdmin()) && ($rowSettings['snapshot_show_two_month']=='0')) {
+            if ((isAdmin()) && ($rowSettings['snapshot_show_two_month'] == '0')) {
                 ?>
 				<a class="eventTypeButton" href="tableView.php?filter=all">All (incl. past)</a>
 		<?php
             }
-        $filter_sql = "SELECT *
+        $filter_sql = 'SELECT *
 									 FROM cr_eventTypes et
 									 WHERE id IN (SELECT e.type
 										 						FROM cr_events e
-																WHERE " . $whereTwoMonth . "
+																WHERE '.$whereTwoMonth.'
 																AND e.removed = 0)
-									 ORDER BY name";
+									 ORDER BY name';
         $result = mysqli_query(db(), $filter_sql) or die(mysqli_error(db()));
 
         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
@@ -137,29 +121,27 @@ $sessionUserId = $_SESSION['userid'];
 			<a class="eventTypeButton
 				<?php
                     if ($filter == $row['id']) {
-                        echo "activefilter";
+                        echo 'activefilter';
                     } ?>" href="tableView.php?filter=<?php echo $row['id']; ?>"><?php echo $row['name']; ?></a>
 			<?php
         }
         ?>
 	</p>
 </div>
-<table class="snapshot" width='<?php echo(($colCnt)*$colWidth); ?>'>
+<table class="snapshot" width='<?php echo($colCnt) * $colWidth; ?>'>
 <tr>
 	<td ><strong>Event</strong></td>
 	<?php
-    $sql = "SELECT * FROM cr_groups g ORDER BY " . $group_sorting_name;
+    $sql = 'SELECT * FROM cr_groups g ORDER BY '.$group_sorting_name;
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-        echo "<td><strong>";
+        echo '<td><strong>';
         echo $row['name'];
         $categoryID[] = $row['id'];
-        echo "</strong></td>";
+        echo '</strong></td>';
     }
     //echo "<td class='no-print'><strong>Export</strong></td>";
-
-
 
     $sql = "SELECT
 						*,
@@ -179,33 +161,32 @@ $sessionUserId = $_SESSION['userid'];
 					WHERE
 						e.removed = 0";
 
-
-    if ($filter == "") {
-        $sql .= "
-							AND " . $whereTwoMonth . "
+    if ($filter == '') {
+        $sql .= '
+							AND '.$whereTwoMonth.'
 						ORDER BY
-							e.date";
-    } elseif ($filter == "all") {
-        $sql .= "
+							e.date';
+    } elseif ($filter == 'all') {
+        $sql .= '
 						ORDER BY
-							e.date DESC";
-    } elseif ($filter != "") {
+							e.date DESC';
+    } elseif ($filter != '') {
         $sql .= "
 							AND e.type = '$filter'
-							AND " . $whereTwoMonth . "
+							AND ".$whereTwoMonth.'
 						ORDER BY
-							e.date";
+							e.date';
     }
 
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $eventID = $row['id'];
         $comment = $row['comment'];
-        $preacher="";
-        $leader="";
-        $band="";
-        echo "<tr>";
-        echo "<td >";
+        $preacher = '';
+        $leader = '';
+        $band = '';
+        echo '<tr>';
+        echo '<td >';
         setlocale(LC_TIME, $lang_locale); //de_DE
         echo '<a href="event.php?id='.$row['id'].'">';
         echo strftime($time_format_short, strtotime($row['sundayDate'])); // %a, <strong>%e. %b</strong>, KW%V
@@ -213,31 +194,30 @@ $sessionUserId = $_SESSION['userid'];
 
         //$row['sundayDate']
         if (!empty($row['eventType'])) {
-            echo "<br /><em>&nbsp;&nbsp;&nbsp;" . $row['eventType'] . "</em>";
+            echo '<br /><em>&nbsp;&nbsp;&nbsp;'.$row['eventType'].'</em>';
         }
         if (!empty($row['eventSubType'])) {
-            echo " - <em>" . $row['eventSubType'] . "</em>";
+            echo ' - <em>'.$row['eventSubType'].'</em>';
         }
         if (!empty($row['eventLocation'])) {
-            echo "<br /><em>&nbsp;&nbsp;&nbsp;" . $row['eventLocation'] . "</em>";
+            echo '<br /><em>&nbsp;&nbsp;&nbsp;'.$row['eventLocation'].'</em>';
         }
         if (!empty($row['name'])) {
-            echo "<br /><em>&nbsp;&nbsp;&nbsp;" . $row['name'] . "</em>";
+            echo '<br /><em>&nbsp;&nbsp;&nbsp;'.$row['name'].'</em>';
         }
         if (!empty($row['eventGroup'])) {
-            echo "<br /><strong>&nbsp;&nbsp;&nbsp;" . $row['eventGroup'] . "</strong>";
+            echo '<br /><strong>&nbsp;&nbsp;&nbsp;'.$row['eventGroup'].'</strong>';
         }
         if (!empty($row['sermonTitle'])) {
-            echo ": " . $row['sermonTitle'];
+            echo ': '.$row['sermonTitle'];
         }
         if (!empty($row['bibleVerse'])) {
-            echo " <em>(" . $row['bibleVerse'] . ")</em>";
+            echo ' <em>('.$row['bibleVerse'].')</em>';
         }
         if (!empty($row['comment'])) {
-            echo "<br /><em>&nbsp;&nbsp;&nbsp;(" . $row['comment'] . ")</em>";
+            echo '<br /><em>&nbsp;&nbsp;&nbsp;('.$row['comment'].')</em>';
         }
-        echo "</td>";
-
+        echo '</td>';
 
         // GROUPS columns
                 $sqlPeople = "SELECT *,
@@ -254,29 +234,29 @@ $sessionUserId = $_SESSION['userid'];
 											GROUP BY u.id
 											ORDER BY r.name";
 
-        for ($i=0;$i<count($categoryID);$i++) {
+        for ($i = 0; $i < count($categoryID); $i++) {
             $peopleInEvent = false;
-            echo "<td>";
+            echo '<td>';
             $resultPeople = mysqli_query(db(), $sqlPeople) or die(mysqli_error(db()));
-            $previousName = "";
+            $previousName = '';
             while ($viewPeople = mysqli_fetch_array($resultPeople, MYSQLI_ASSOC)) {
                 $groupID = $viewPeople['groupId'];
-                if ($groupID==$categoryID[$i]) {
+                if ($groupID == $categoryID[$i]) {
                     $name = $viewPeople['name'];
                             //writing name/s into table cell
-                            if ($previousName == "") {
+                            if ($previousName == '') {
                                 // new name
                                 echo ($viewPeople['userId'] == $sessionUserId) ? '<strong class="me">' : '';
-                                echo $name . " <em>(" . $viewPeople['role'];
+                                echo $name.' <em>('.$viewPeople['role'];
                             } elseif ($previousName != $name) {
-                                echo ")</em>";
+                                echo ')</em>';
                                 echo ($viewPeople['userId'] != $sessionUserId) ? '</strong>' : '';
-                                echo "<br />"; // line break from previous name
+                                echo '<br />'; // line break from previous name
                                 // new name
                                 echo ($viewPeople['userId'] == $sessionUserId) ? '<strong class="me">' : '';
-                                echo $name . " <em>(" . $viewPeople['role'];
+                                echo $name.' <em>('.$viewPeople['role'];
                             } else {
-                                echo ", " . $viewPeople['role'];
+                                echo ', '.$viewPeople['role'];
                             }
 
                     $peopleInEvent = true;
@@ -286,10 +266,10 @@ $sessionUserId = $_SESSION['userid'];
                 }
             } // end of while
                     if ($peopleInEvent) {
-                        echo ")</em>";
+                        echo ')</em>';
                         echo ($viewPeople['userId'] == $sessionUserId) ? '</strong>' : '';
                     }
-            echo "</td>";
+            echo '</td>';
         }
                 /*
                 // EXPORT column

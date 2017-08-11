@@ -1,12 +1,8 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
-
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -17,7 +13,7 @@ if (!(isset($_SESSION['is_logged_in']) || $_SESSION['db_is_logged_in'] == true))
     header('Location: login.php');
 }
 
-$sql = "SELECT
+$sql = 'SELECT
           e.id AS id,
           e.name AS eventName,
           e.sermonTitle,
@@ -31,7 +27,7 @@ $sql = "SELECT
           LEFT JOIN cr_locations l ON e.location = l.id
         WHERE e.date >= DATE(NOW())
           AND e.removed = 0
-        ORDER BY eventDate";
+        ORDER BY eventDate';
 
 $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
@@ -46,8 +42,8 @@ echo '</tr>';
 
 while ($ob = mysqli_fetch_object($result)) {
     echo '<tr>';
-    echo '<td>'.date("j F", strtotime($ob->eventDate)).'</td>';
-    echo '<td>'.date("g:i a", strtotime($ob->eventDate)).'</td>';
+    echo '<td>'.date('j F', strtotime($ob->eventDate)).'</td>';
+    echo '<td>'.date('g:i a', strtotime($ob->eventDate)).'</td>';
     echo '<td>'.$ob->eventName.'</td>';
     echo '<td>'.$ob->eventSubType.'</td>';
     echo '<td>'.$ob->sermonTitle;

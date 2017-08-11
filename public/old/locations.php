@@ -1,11 +1,8 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -25,24 +22,24 @@ if (!isAdmin()) {
 $locationID = getQueryStringForKey('locationID');
 $locationremove = getQueryStringForKey('locationremove');
 
-if ($locationremove == "true") {
+if ($locationremove == 'true') {
     removelocation($locationID);
 }
 
 // If the form has been submitted, then we need to handle the data.
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if ($editableaction == "edit") {
+    if ($editableaction == 'edit') {
         $editid = $_POST['id'];
         $type = $_POST['type'];
         $name = $_POST['value'];
         $editableaction = $_POST['editableaction'];
-        
-        $editid = str_replace("title", "", $editid);
-        if ($type == "title") {
+
+        $editid = str_replace('title', '', $editid);
+        if ($type == 'title') {
             $sql = "UPDATE cr_locations SET name = '$name' WHERE id = '$editid'";
         }
         if (!mysqli_query(db(), $sql)) {
-            die('Error: ' . mysqli_error(db()));
+            die('Error: '.mysqli_error(db()));
         }
     } else {
         $newlocation = $_POST['newlocation'];
@@ -53,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $sql = ("INSERT INTO cr_locations (name) VALUES ('$newlocation')");
         if (!mysqli_query(db(), $sql)) {
-            die('Error: ' . mysqli_error(db()));
+            die('Error: '.mysqli_error(db()));
         }
 
     // After we have inserted the data, we want to head back to the main users page
@@ -62,17 +59,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-
-
-
 // ~~~~~~~~~~~~ Presentation ~~~~~~~~~~~~
 
-
-
-
-$formatting = "true";
-$sendurl = "locations.php";
-include('includes/header.php');
+$formatting = 'true';
+$sendurl = 'locations.php';
+include 'includes/header.php';
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -99,13 +90,13 @@ include('includes/header.php');
   </div>
   <div class="box-body">
 		<p>
-		<?php $sql = "SELECT * FROM cr_locations ORDER BY name";
+		<?php $sql = 'SELECT * FROM cr_locations ORDER BY name';
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $locationID = $row['id'];
-        echo "<span id='" . $locationID . "' class='edit'>" . $row['name'] . "</span> ";
-        echo " <a href='locations.php?locationremove=true&locationID=" . $locationID . "'><i class='fa fa-close'></i></a><br />";
+        echo "<span id='".$locationID."' class='edit'>".$row['name'].'</span> ';
+        echo " <a href='locations.php?locationremove=true&locationID=".$locationID."'><i class='fa fa-close'></i></a><br />";
     } ?>
  </div><!-- /.box-body -->
 </div><!-- /.box -->
@@ -136,4 +127,4 @@ include('includes/header.php');
   		<div class="item"><a href="settings.php">Back to settings</a></div>
 <?php
   } ?>
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

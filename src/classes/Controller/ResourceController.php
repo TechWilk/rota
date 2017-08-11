@@ -2,26 +2,21 @@
 
 namespace TechWilk\Rota\Controller;
 
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Slim\Http\Stream;
-use TechWilk\Rota\User;
-use TechWilk\Rota\UserQuery;
-use TechWilk\Rota\RoleQuery;
-use TechWilk\Rota\DocumentQuery;
-use TechWilk\Rota\Document;
-use TechWilk\Rota\EmailAddress;
 use Exception;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Slim\Http\Stream;
+use TechWilk\Rota\Document;
+use TechWilk\Rota\DocumentQuery;
 
 class ResourceController extends BaseController
 {
-
     public function getAllResources(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->info("Fetch resource GET '/resources'");
         $resources = DocumentQuery::create()->orderByTitle()->find();
 
-        return $this->view->render($response, 'resources.twig', [ "resources" => $resources ]);
+        return $this->view->render($response, 'resources.twig', ['resources' => $resources]);
     }
 
     public function postResource(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -70,7 +65,7 @@ class ResourceController extends BaseController
         $d = DocumentQuery::create()->findPK($args['id']);
 
         if (!is_null($d)) {
-            return $this->view->render($response, 'resource-edit.twig', [ "resource" => $d ]);
+            return $this->view->render($response, 'resource-edit.twig', ['resource' => $d]);
         } else {
             return $this->view->render($response, 'error.twig');
         }
@@ -99,7 +94,7 @@ class ResourceController extends BaseController
                             ->withHeader('Content-Type', 'application/download')
                             ->withHeader('Content-Description', 'File Transfer')
                             ->withHeader('Content-Transfer-Encoding', 'binary')
-                            ->withHeader('Content-Disposition', 'attachment; filename="' . $resource->getUrl() . '"')
+                            ->withHeader('Content-Disposition', 'attachment; filename="'.$resource->getUrl().'"')
                             ->withHeader('Expires', '0')
                             ->withHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0')
                             ->withHeader('Pragma', 'public')

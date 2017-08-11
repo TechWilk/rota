@@ -1,17 +1,14 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
 
-if (! (isset($_SESSION['is_logged_in']) || $_SESSION['db_is_logged_in'] == true)) {
-    $_SESSION['redirectUrl'] = siteSettings()->getSiteUrl().'/addUser.php?'.$_SERVER["QUERY_STRING"];
+if (!(isset($_SESSION['is_logged_in']) || $_SESSION['db_is_logged_in'] == true)) {
+    $_SESSION['redirectUrl'] = siteSettings()->getSiteUrl().'/addUser.php?'.$_SERVER['QUERY_STRING'];
     header('Location: login.php');
     exit;
 }
@@ -19,7 +16,7 @@ if (! (isset($_SESSION['is_logged_in']) || $_SESSION['db_is_logged_in'] == true)
 $action = getQueryStringForKey('action');
 $sessionUserID = $_SESSION['userid'];
 
-if (isset($action) && $action != "create") {
+if (isset($action) && $action != 'create') {
     if (isAdmin() && !is_null(getQueryStringForKey('user'))) {
         $userId = getQueryStringForKey('user');
     } else {
@@ -34,14 +31,13 @@ if (isset($action) && $action != "create") {
 // sanitise inputs
 $sessionUserID = filter_var($sessionUserID, FILTER_SANITIZE_NUMBER_INT);
 
-
 switch ($action) {
     case 'edit':
         // fetch details to populate form
         $sql = "SELECT * FROM cr_users WHERE id = '$userId'";
         $result = mysqli_query(db(), $sql) or die(mysqli_error);
 
-        while ($row =  mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
             $id = $row['id'];
             $firstname = $row['firstName'];
             $lastname = $row['lastName'];
@@ -60,7 +56,7 @@ switch ($action) {
         $userRole = UserRoleQuery::create()->filterByUser($user)->filterByRoleId($roleId)->findOne();
         $userRole->setReserve(false);
         $userRole->save();
-        header("Location: addUser.php?action=edit&user=".$user->getId());
+        header('Location: addUser.php?action=edit&user='.$user->getId());
         exit;
 
         break;
@@ -71,7 +67,7 @@ switch ($action) {
         $userRole = UserRoleQuery::create()->filterByUser($user)->filterByRoleId($roleId)->findOne();
         $userRole->setReserve(true);
         $userRole->save();
-        header("Location: addUser.php?action=edit&user=".$user->getId());
+        header('Location: addUser.php?action=edit&user='.$user->getId());
         exit;
         break;
 
@@ -82,10 +78,8 @@ switch ($action) {
         break;
 
     default:
-        # code...
+        // code...
 }
-
-
 
 // If the form has been submitted, then we need to handle the data.
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -114,8 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $userisBandAdmin = isset($_POST['isBandAdmin']) ? '1' : '0';
     $userIsEventEditor = isset($_POST['isEventEditor']) ? '1' : '0';
 
-
-    if ($action == "edit") {
+    if ($action == 'edit') {
         if (isAdmin()) {
             updateUser($userId, $firstname, $lastname, $email, $mobile);
             updatePermissions($userId, $isAdminLocal, $userisBandAdmin, $userIsEventEditor, $userIsOverviewRecipient);
@@ -134,11 +127,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         mailNewUser($userId, $password);
     }
 
-
     if (isAdmin()) {
         if (isset($band) or isset($roles)) {
             if (isset($roles)) {
-                if ($action == "edit") {
+                if ($action == 'edit') {
                     //$sql2 = "SELECT *
                 //	FROM cr_groups WHERE groupID != 2 AND groupID IN (SELECT groupID FROM cr_skills WHERE cr_skills.groupID = cr_groups.groupID AND cr_skills.userId = '$userId') ORDER BY groupID";
 
@@ -154,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     while ($ob = mysqli_fetch_object($result2)) {
                         $existingRoles[] = $ob->roleId;
                     }
-                
+
                     if (empty($existingRoles)) {
                         foreach ($roles as $role) {
                             addUserRole($userId, $role);
@@ -169,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $deletearray = array_diff($existingRoles, $roles);
 
                         foreach ($deletearray as $role) {
-                            if (! (EventQuery::create()->useEventPersonQuery()->useUserRoleQuery()->filterByRoleId($role)->endUse()->endUse()->count() > 0)) { // don't remove if role is used in event
+                            if (!(EventQuery::create()->useEventPersonQuery()->useUserRoleQuery()->filterByRoleId($role)->endUse()->endUse()->count() > 0)) { // don't remove if role is used in event
                             removeUserRole($userId, $role);
                             }
                         }
@@ -184,26 +176,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
     if (isAdmin()) {
-        header("Location: users.php#section" . $userId);
+        header('Location: users.php#section'.$userId);
         exit;
     }
 }
 
-
-
-
-
-
-
 // ~~~~~~~~~~ PRESENTATION ~~~~~~~~~~
 
-
-
-include('includes/header.php');
-
+include 'includes/header.php';
 
 // temp fix for issue with userId
-if (isset($action) && $action != "create") {
+if (isset($action) && $action != 'create') {
     if (isAdmin() && !is_null(getQueryStringForKey('user'))) {
         $userId = getQueryStringForKey('user');
     } else {
@@ -217,7 +200,6 @@ if (isset($action) && $action != "create") {
     unset($userId);
 }
 
-
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -225,7 +207,7 @@ if (isset($action) && $action != "create") {
 		<!-- Content Header (Page header) -->
 		<section class="content-header">
 			<h1>
-				<?php echo empty($action) ? "New" : ucfirst($action) ?>
+				<?php echo empty($action) ? 'New' : ucfirst($action) ?>
 				<small>User</small>
 			</h1>
 			<ol class="breadcrumb">
@@ -263,7 +245,7 @@ if (isset($action) && $action != "create") {
     </div>
     <?php
         // Work out what action we need to give the form
-        if ($action == "edit") {
+        if ($action == 'edit') {
             $formstring = "user=$userId&action=$action";
         } else {
             $formstring = "user=$userId";
@@ -279,13 +261,13 @@ if (isset($action) && $action != "create") {
           // ordered in this way to build the page with contact details before permissions
                 if (!isAdmin()) {
                     if ($userId == $sessionUserID) {
-                        echo $firstname . " " . $lastname;
-                        $isCompromised=false;
+                        echo $firstname.' '.$lastname;
+                        $isCompromised = false;
                     } else {
-                        notifyAttack(__FILE__, "Impersonating Attack", $sessionUserID);
-                        $isCompromised=true;
+                        notifyAttack(__FILE__, 'Impersonating Attack', $sessionUserID);
+                        $isCompromised = true;
                     }
-                    $isCompromised=false;
+                    $isCompromised = false;
                 } else {
                     // if isAdmin() == true
                 ?>
@@ -460,7 +442,7 @@ if (isset($action) && $action != "create") {
           </fieldset>
 					<div class="box-footer">
   		<?php 
-                if ($action == "edit") {
+                if ($action == 'edit') {
                     echo '<input class="btn btn-primary" type="submit" value="Save changes" />';
                 } else {
                     echo '<input class="btn btn-primary" type="submit" value="Add user" />';
@@ -477,8 +459,8 @@ if (isset($action) && $action != "create") {
 		<div class="item"><a class="btn" href="users.php">View all users</a></div>
 		<?php
          }
-        
-            if ($action == "edit") {
+
+            if ($action == 'edit') {
                 ?>
 				<div class="item">
 					<a class="btn btn-danger" href="editPassword.php?id=<?php echo $userId; ?>">Change password</a>
@@ -488,4 +470,4 @@ if (isset($action) && $action != "create") {
             }
         ?>
 </div>
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

@@ -1,8 +1,5 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 /*
     This file is part of Church Rota.
 
@@ -23,8 +20,8 @@ use DateTime;
 */
 
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -44,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $eventId = filter_var($eventId, FILTER_SANITIZE_NUMBER_INT);
 
     if (!isset($_POST['group'])) {
-        echo "You must select at least one group. Please try again.";
+        echo 'You must select at least one group. Please try again.';
         exit;
     }
 
@@ -56,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $statusMessage = '';
     $sent = sendEventEmailToGroups($eventId, $subject, $message, $groups);
     if ($sent === true) {
-        $statusMessage = "Sent successfully";
+        $statusMessage = 'Sent successfully';
     } else {
         foreach ($sent as $errorMessage) {
             $statusMessage .= '<p>'.$errorMessage.'</p>';
@@ -68,15 +65,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     exit;
 }
 
-
-
 $eventId = getQueryStringForKey('event');
 
 if (is_null($eventId)) {
     $_SESSION['notification'] = 'An error occurred. Please try again.';
     header('Location: index.php');
 }
-
 
 $sql = "SELECT
           g.id,
@@ -99,15 +93,9 @@ while ($ob = mysqli_fetch_object($result)) {
 $subject = getEventEmailSubject($eventId);
 $message = getEventEmailMessage($eventId);
 
-
-
-
-
 // ~~~~~~~~~~ PRESENTATION ~~~~~~~~~~
 
-
-
-include('includes/header.php');
+include 'includes/header.php';
 ?>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -155,7 +143,7 @@ include('includes/header.php');
 
               <div class="form-group">
                 <label class="form-content" for="message">Message:</label>
-                <textarea class="mceNoEditor form-control" rows="14" id="message" type="text" name="message"><?php echo $message;?></textarea>
+                <textarea class="mceNoEditor form-control" rows="14" id="message" type="text" name="message"><?php echo $message; ?></textarea>
               </div>
             </div>
             <div class="box-footer">
@@ -164,4 +152,4 @@ include('includes/header.php');
           </fieldset>
         </div>
       </form>
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

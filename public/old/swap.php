@@ -1,8 +1,5 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 /*
     This file is part of Church Rota.
 
@@ -23,9 +20,8 @@ use DateTime;
 */
 
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
-
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -41,7 +37,6 @@ else {
     header ("Location: login.php");
 }*/
 
-
 // Handle details from the header
 $action = getQueryStringForKey('action');
 $eventId = getQueryStringForKey('event');
@@ -51,68 +46,66 @@ $swapId = getQueryStringForKey('swap');
 $eventId = filter_var($eventId, FILTER_SANITIZE_NUMBER_INT);
 $swapId = filter_var($swapId, FILTER_SANITIZE_NUMBER_INT);
 
-
 switch ($action) {
   case 'swap':
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $eventPersonId = $_POST["eventPerson"];
-        $newUserRoleId = $_POST["newUserRole"];
+        $eventPersonId = $_POST['eventPerson'];
+        $newUserRoleId = $_POST['newUserRole'];
         $eventPersonId = filter_var($eventPersonId, FILTER_SANITIZE_NUMBER_INT);
         $newUserRoleId = filter_var($newUserRoleId, FILTER_SANITIZE_NUMBER_INT);
-      
+
         $swapId = createSwapEntry($eventPersonId, $newUserRoleId);
-      
-        header("Location: index.php");
+
+        header('Location: index.php');
     } else {
-        $err = "Swap details incorrect, please try again.";
+        $err = 'Swap details incorrect, please try again.';
     }
     break;
   case 'accept':
     if (canAcceptSwap($swapId) || $verify == verificationCodeForSwap($swapId)) {
         switch (acceptSwap($swapId)) {
         case '1':
-          $message = "Swap Successful";
+          $message = 'Swap Successful';
           break;
         case '2':
-          $message = "Swap already accepted.";
+          $message = 'Swap already accepted.';
           break;
         case '3':
-          $message = "Swap already declined.";
+          $message = 'Swap already declined.';
           break;
         case '4':
-          $message = "Swap already reverted.";
+          $message = 'Swap already reverted.';
           break;
         default:
-          $err = "Technical issue - please inform system administrator";
+          $err = 'Technical issue - please inform system administrator';
           break;
       }
     } else {
-        $err = "Swap Already Actioned or Verification Code Invalid";
+        $err = 'Swap Already Actioned or Verification Code Invalid';
     }
     break;
   case 'decline':
     if (canDeclineSwap($swapId) || $verify == verificationCodeForSwap($swapId)) {
         switch (declineSwap($swapId)) {
         case '1':
-          $message = "Swap declined";
+          $message = 'Swap declined';
           break;
         case '2':
-          $message = "Swap already declined.";
+          $message = 'Swap already declined.';
           break;
         default:
-          $err = "Technical issue - please inform system administrator";
+          $err = 'Technical issue - please inform system administrator';
           break;
         }
     } else {
-        $err = "Swap Already Actioned or Verification Code Invalid";
+        $err = 'Swap Already Actioned or Verification Code Invalid';
     }
     break;
 
   default:
-    # code...
+    // code...
     break;
 }
-
 
 if (!empty($eventId)) {
     // ensure user is logged in before allowing creation of swap
@@ -121,7 +114,7 @@ if (!empty($eventId)) {
       header('Location: login.php');
   }
     $createSwap = true;
-  
+
     $numberOfRoles = numberOfRolesOfUserAtEvent($sessionUserID, $eventId);
 
     if ($numberOfRoles > 0) {
@@ -132,29 +125,22 @@ if (!empty($eventId)) {
 } elseif (!empty($swapId)) {
     $viewSwap = true;
     $swap = SwapQuery::create()->findPK($swapId);
-  
-    $statusText = "Requested";
-    $statusColour = "primary";
+
+    $statusText = 'Requested';
+    $statusColour = 'primary';
     if ($swap->getAccepted()) {
-        $statusText = "Accepted";
-        $statusColour = "success";
+        $statusText = 'Accepted';
+        $statusColour = 'success';
     } elseif ($swap->getDeclined()) {
-        $statusText = "Declined";
-        $statusColour = "danger";
+        $statusText = 'Declined';
+        $statusColour = 'danger';
     }
 }
 
+    // ------ Presentation --------
 
-
-
-
-    # ------ Presentation --------
-
-
-
-
-$formatting = "light";
-include('includes/header.php');
+$formatting = 'light';
+include 'includes/header.php';
 ?>
 
 
@@ -200,15 +186,15 @@ include('includes/header.php');
             <p>
               <strong>
                 <s class="text-red">
-                  <?php echo $swap->getOldUserRole()->getUser()->getFirstName() . ' ' . $swap->getOldUserRole()->getUser()->getLastName() ?> (<?php echo $swap->getOldUserRole()->getRole()->getName() ?>)
+                  <?php echo $swap->getOldUserRole()->getUser()->getFirstName().' '.$swap->getOldUserRole()->getUser()->getLastName() ?> (<?php echo $swap->getOldUserRole()->getRole()->getName() ?>)
                 </s>
                 &#8594;
                 <span class="text-green">
-                  <?php echo $swap->getNewUserRole()->getUser()->getFirstName() . ' ' . $swap->getNewUserRole()->getUser()->getLastName() ?> (<?php echo $swap->getNewUserRole()->getRole()->getName() ?>)
+                  <?php echo $swap->getNewUserRole()->getUser()->getFirstName().' '.$swap->getNewUserRole()->getUser()->getLastName() ?> (<?php echo $swap->getNewUserRole()->getRole()->getName() ?>)
                 </span>
               </strong>
             </p>
-            <?php echo $statusText == "Requested" ? "<p>This swap is awaiting approval</p>" : "" ?>
+            <?php echo $statusText == 'Requested' ? '<p>This swap is awaiting approval</p>' : '' ?>
           </div>
           <?php if ($canAcceptSwap || $canDeclineSwap): ?>
           <div class="box-footer">
@@ -239,16 +225,16 @@ include('includes/header.php');
                 <select name="newUserRole" class="form-control">
                   <?php
                   if (roleCanSwapToOtherRoleInGroup($role->roleId)) {
-                      $whereAnd = "r.groupId = " . groupIdWithRole($role->roleId) . " AND r.allowRoleSwaps IS NOT FALSE";
+                      $whereAnd = 'r.groupId = '.groupIdWithRole($role->roleId).' AND r.allowRoleSwaps IS NOT FALSE';
                   } else {
-                      $whereAnd =  "r.id = " . $role->roleId;
+                      $whereAnd = 'r.id = '.$role->roleId;
                   }
-                  $sql = "SELECT ur.id, u.firstName, u.lastName, r.name FROM cr_users u INNER JOIN cr_userRoles ur ON ur.userId = u.id INNER JOIN cr_roles r ON r.id = ur.roleId WHERE u.id <> " . $role->userId . " AND " . $whereAnd ." ORDER BY lastName, firstName, r.name";
+                  $sql = 'SELECT ur.id, u.firstName, u.lastName, r.name FROM cr_users u INNER JOIN cr_userRoles ur ON ur.userId = u.id INNER JOIN cr_roles r ON r.id = ur.roleId WHERE u.id <> '.$role->userId.' AND '.$whereAnd.' ORDER BY lastName, firstName, r.name';
                   $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
                   while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                       ?>
-                    <option value='<?php echo $row['id']; ?>'><?php echo $row['firstName'] . " " . $row["lastName"] . " (" . $row['name'] . ")"; ?></option>
+                    <option value='<?php echo $row['id']; ?>'><?php echo $row['firstName'].' '.$row['lastName'].' ('.$row['name'].')'; ?></option>
                   <?php
                   } ?>
                 </select>
@@ -295,4 +281,4 @@ include('includes/header.php');
       <?php endif; ?>
 
 
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

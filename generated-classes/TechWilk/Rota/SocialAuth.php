@@ -1,4 +1,5 @@
 <?php
+
 namespace TechWilk\Rota;
 
 use TechWilk\Rota\Base\SocialAuth as BaseSocialAuth;
@@ -12,7 +13,6 @@ use TechWilk\Rota\Map\SocialAuthTableMap;
  * You should add additional methods to this class to meet the
  * application requirements.  This class will only be generated as
  * long as it does not already exist in the output directory.
- *
  */
 class SocialAuth extends BaseSocialAuth
 {
@@ -20,6 +20,7 @@ class SocialAuth extends BaseSocialAuth
      * Set the value of [meta] column.
      *
      * @param string $v new value
+     *
      * @return $this|\TechWilk\Rota\SocialAuth The current object (for fluent API support)
      */
     public function setMeta($v)
@@ -38,7 +39,9 @@ class SocialAuth extends BaseSocialAuth
         }
 
         return $this;
-    } // setMeta()
+    }
+
+ // setMeta()
 
     /**
      * Get the [meta] column value.

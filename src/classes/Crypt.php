@@ -9,8 +9,8 @@ class Crypt
     public static function generateToken($length)
     {
         $token = '';
-        for ($i=0; $i < $length; $i++) {
-            $l = Crypt::generateInt(0, 63);
+        for ($i = 0; $i < $length; $i++) {
+            $l = self::generateInt(0, 63);
             if ($l < 10) { // number
         $token .= $l;
             } elseif ($l < 10 + 26) { // lowercase
@@ -25,6 +25,7 @@ class Crypt
         $token .= '-';
             }
         }
+
         return $token;
     }
 

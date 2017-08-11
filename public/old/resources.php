@@ -1,11 +1,8 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -24,7 +21,7 @@ $removeresource = $_GET['removeresource'];
 $editableaction = $_POST['editableaction'];
 
 // Method to remove  someone from the band
-if ($removeresource != "") {
+if ($removeresource != '') {
     removeResource($id);
 }
 
@@ -34,37 +31,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $resourcelink = $_POST['resourcelink'];
     $resourcedescription = $_POST['resourcedescription'];
 
-    if ($action == "editsent") {
+    if ($action == 'editsent') {
         $editid = $_POST['id'];
         $type = $_POST['type'];
-        $editid = str_replace("title", "", $editid);
+        $editid = str_replace('title', '', $editid);
 
         $sql = "UPDATE cr_documents SET title = '$resourcename', description = '$resourcedescription', link = '$resourcelink' WHERE id = '$id'";
 
         if (!mysqli_query(db(), $sql)) {
-            die('Error: ' . mysqli_error(db()));
+            die('Error: '.mysqli_error(db()));
         }
     } else {
-        if ($_FILES['resourcefile']['tmp_name'] == "none") {
+        if ($_FILES['resourcefile']['tmp_name'] == 'none') {
         } else {
             $filename = $_FILES['resourcefile']['name'];
-            copy($_FILES['resourcefile']['tmp_name'], "./documents/".$_FILES['resourcefile']['name']);
+            copy($_FILES['resourcefile']['tmp_name'], './documents/'.$_FILES['resourcefile']['name']);
         }
-
-
 
         $sql = ("INSERT INTO cr_documents (title, description, url, link) VALUES ('$resourcename', '$resourcedescription', '$filename', '$resourcelink')");
         if (!mysqli_query(db(), $sql)) {
-            die('Error: ' . mysqli_error(db()));
+            die('Error: '.mysqli_error(db()));
         }
         // After we have inserted the data, we want to head back to the main page
     }
     header('Location: resources.php');
     exit;
 }
-$formatting = "true";
-$sendurl = "resources.php";
-include('includes/header.php');?>
+$formatting = 'true';
+$sendurl = 'resources.php';
+include 'includes/header.php'; ?>
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -84,11 +79,11 @@ include('includes/header.php');?>
   <section class="content">
 
 <?php
-if (($action == "new" || $action == "edit") && isAdmin()) {
-    if ($action == "new") {
-        $actionlink = "resources.php?action=newsent";
+if (($action == 'new' || $action == 'edit') && isAdmin()) {
+    if ($action == 'new') {
+        $actionlink = 'resources.php?action=newsent';
     } else {
-        $actionlink = "resources.php?action=editsent&id=" . $id;
+        $actionlink = 'resources.php?action=editsent&id='.$id;
         $sql = "SELECT * FROM cr_documents WHERE id = '$id'";
         $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
@@ -113,13 +108,13 @@ if (($action == "new" || $action == "edit") && isAdmin()) {
         </div>
 
 
-  			<?php if ($action == "edit" && $resourcelink != "") {
+  			<?php if ($action == 'edit' && $resourcelink != '') {
         ?>
   			<label for="resourcelink">Resource link:</label>
   			<input id="resourcelink" type="text" name="resourcelink" value="<?php echo $resourcelink; ?>" placeholder="Enter resource link:" />
 
   			<?php
-    } elseif ($action == "edit" && $resourcelink == "") {
+    } elseif ($action == 'edit' && $resourcelink == '') {
         ?>
         <p>Resource was a file upload. There is currently no way of editing this. Please delete and create anew.</p>
   			<?php
@@ -176,9 +171,9 @@ var simplemde = new SimpleMDE({ element: document.getElementById("resourcedescri
   <?php
         }
 
-        $sql = "SELECT * FROM cr_documents ORDER BY title";
+        $sql = 'SELECT * FROM cr_documents ORDER BY title';
         $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
-    
+
         $Parsedown = new Parsedown();
 
         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
@@ -211,7 +206,7 @@ var simplemde = new SimpleMDE({ element: document.getElementById("resourcedescri
 				<?php echo $Parsedown->text(htmlspecialchars($row['description'])); ?>
 			</div>
 			<div class="box-footer">
-				<a class="btn btn-primary" href="<?php echo ($row['url'] != "") ? "documents/".$row['url'] : '#' ?>">Download</a>
+				<a class="btn btn-primary" href="<?php echo ($row['url'] != '') ? 'documents/'.$row['url'] : '#' ?>">Download</a>
 				<?php if (isAdmin()): ?>
 				<a class="btn btn-warning" href='resources.php?action=edit&id=<?php echo $resourceID; ?>'><i class='fa fa-pencil'></i> Edit</a>
 				<button type="button" class='btn btn-danger' data-toggle='modal' data-target='#deleteModal<?php echo $resourceID; ?>'><i class='fa fa-times'></i> Remove</a>
@@ -223,4 +218,4 @@ var simplemde = new SimpleMDE({ element: document.getElementById("resourcedescri
 	<?php
         }
     } ?>
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

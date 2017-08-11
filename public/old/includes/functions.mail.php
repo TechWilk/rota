@@ -1,7 +1,6 @@
-<?php namespace TechWilk\Rota;
+<?php
 
-use DateInterval;
-use DateTime;
+namespace TechWilk\Rota;
 
 use Mailgun\Mailgun;
 
@@ -24,17 +23,16 @@ use Mailgun\Mailgun;
     along with Church Rota.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-function sendMail($to, $subject, $message, $from, $bcc = "")
+function sendMail($to, $subject, $message, $from, $bcc = '')
 {
     $dbMailId = mailToDb($to, $subject, $message, $from, $bcc);
 
-    $subject = "[rota] " . $subject;
+    $subject = '[rota] '.$subject;
 
     $message .= "\n\n";
-    $message .= siteSettings()->getOwner() . "\n";
-    $message .= "Mail generated with ChurchRota V." . siteSettings()->getVersion() . "\n";
-    $message .= siteSettings()->getSiteUrl() . "\n";
+    $message .= siteSettings()->getOwner()."\n";
+    $message .= 'Mail generated with ChurchRota V.'.siteSettings()->getVersion()."\n";
+    $message .= siteSettings()->getSiteUrl()."\n";
 
     $mailSentOk = false;
 
@@ -45,6 +43,7 @@ function sendMail($to, $subject, $message, $from, $bcc = "")
             } catch (\Exception $e) {
                 logFailedMailWithId($dbMailId, $e->getMessage());
                 insertStatistics('system', __FILE__, $e->getMessage(), 'mailgun-error', $to);
+
                 return false;
             }
             break;
@@ -60,16 +59,13 @@ function sendMail($to, $subject, $message, $from, $bcc = "")
     }
 
     if ($mailSentOk != true) {
-        logFailedMailWithId($dbMailId, "Unknown send error");
+        logFailedMailWithId($dbMailId, 'Unknown send error');
     }
+
     return $mailSentOk;
 }
 
-
-
-
-
-function sendViaSendmail($to, $subject, $message, $from, $bcc = "")
+function sendViaSendmail($to, $subject, $message, $from, $bcc = '')
 {
     //mail debugging: send all mails to admin (overwrite TO-field)
     //and move all BCCs from header to the end of the message
@@ -79,50 +75,50 @@ function sendViaSendmail($to, $subject, $message, $from, $bcc = "")
     //line seperator for mails
     //rfc sais \r\n, but this makes trouble in outlook. several spaces plus \n works fine in outlook and thunderbird.
     //spaces to suppress automatic removal of "unnecessary linefeeds" in outlook 2003
-    $crlf="      \n";
+    $crlf = "      \n";
     $message = str_replace("\r\n", $crlf, $message);  //replace crlf's
 
     //--------------------------------------------------------------------------------
-    $headers = 'From: ' . $from . $crlf .
-    'Reply-To: ' .$from . $crlf .
-    'Mime-Version: 1.0' . $crlf .
-    'Content-Type: text/plain; charset=ISO-8859-1' . $crlf;
-    'Content-Transfer-Encoding: quoted-printable' . $crlf;
+    $headers = 'From: '.$from.$crlf.
+    'Reply-To: '.$from.$crlf.
+    'Mime-Version: 1.0'.$crlf.
+    'Content-Type: text/plain; charset=ISO-8859-1'.$crlf;
+    'Content-Transfer-Encoding: quoted-printable'.$crlf;
     $headerSimple = $headers;
 
     //--------------------------------------------------------------------------------
     //replace all possible seperating semikolons with commas (for later explode)
-    $bcc = str_replace(";", ",", $bcc);
-    $to = str_replace(";", ",", $to);
+    $bcc = str_replace(';', ',', $bcc);
+    $to = str_replace(';', ',', $to);
 
     if ($mail_dbg) {
-        $subject = " - Mail Debug: " . $subject;   //debug output
-        $message .= $crlf . 'To: ' . $to . $crlf;   //debug move to to end of message
+        $subject = ' - Mail Debug: '.$subject;   //debug output
+        $message .= $crlf.'To: '.$to.$crlf;   //debug move to to end of message
     }
 
     //--------------------------------------------------------------------------------
     //break bcc string into single BCC header lines, ignoring all invalid email addresses
-    $teile = explode(",", $bcc);
-    $i=0;
-    $err=0;
-    $bcc_err="<br>";
+    $teile = explode(',', $bcc);
+    $i = 0;
+    $err = 0;
+    $bcc_err = '<br>';
     foreach ($teile as $adr) {
-        if (preg_replace("/([a-zA-Z0-9._%+-]+)(@)([a-zA-Z0-9.-]+)(\.)([a-zA-Z]+)/i", "# # #", trim($adr))=="# # #") {
+        if (preg_replace("/([a-zA-Z0-9._%+-]+)(@)([a-zA-Z0-9.-]+)(\.)([a-zA-Z]+)/i", '# # #', trim($adr)) == '# # #') {
             if ($mail_dbg) {
-                $message .= 'Bcc: ' . trim($adr) . $crlf;
+                $message .= 'Bcc: '.trim($adr).$crlf;
             } else {
-                $headers .= 'Bcc: ' . trim($adr) . $crlf;
+                $headers .= 'Bcc: '.trim($adr).$crlf;
             }
-            $i=$i+1;
+            $i = $i + 1;
         } else {
-            $bcc_err .= $adr . $crlf;
-            $err .= + 1;
+            $bcc_err .= $adr.$crlf;
+            $err .= +1;
         }
     }
     //echo str_replace($crlf,"<br>\r\n",$headers)."<br>\r\n";  //debug output
     //--------------------------------------------------------------------------------
     //general mail footer
-    $sqlSettings = "SELECT * FROM cr_settings";
+    $sqlSettings = 'SELECT * FROM cr_settings';
     $resultSettings = mysqli_query(db(), $sqlSettings) or die(mysqli_error(db()));
     $rowSettings = mysqli_fetch_array($resultSettings, MYSQLI_ASSOC);
     $cr_version = $rowSettings['version'];
@@ -148,42 +144,38 @@ function sendViaSendmail($to, $subject, $message, $from, $bcc = "")
         if ($mailOk) {
             //mail($from, "[ChurchRota] Mail status - OK", "address ok: " . $i, $headerSimple);
         } else {
-            mail($from, "[Rota] Mail status - ERROR", "to: " . $to . $crlf . "address ok: " . $i . $crlf . "address errors: " . $err . $crlf . $bcc_err, $headerSimple);
+            mail($from, '[Rota] Mail status - ERROR', 'to: '.$to.$crlf.'address ok: '.$i.$crlf.'address errors: '.$err.$crlf.$bcc_err, $headerSimple);
+
             return false;
-            logFailedMailWithId($dbMailId, "address ok: " . $i . $crlf . "address errors: " . $err . $crlf . $bcc_err, $headerSimple);
+            logFailedMailWithId($dbMailId, 'address ok: '.$i.$crlf.'address errors: '.$err.$crlf.$bcc_err, $headerSimple);
         }
     }
+
     return $mailOk;
 }
 
-
-
-
 // returns either true or false
-function sendViaMailgun($to, $subject, $message, $from, $bcc = "")
+function sendViaMailgun($to, $subject, $message, $from, $bcc = '')
 {
-    # First, instantiate the SDK with your API credentials and define your domain.
+    // First, instantiate the SDK with your API credentials and define your domain.
     $mg = new Mailgun(siteConfig()['email']['mailgun']['apiKey']);
     $domain = siteConfig()['email']['mailgun']['domain'];
 
-    $status = $mg->sendMessage($domain, array('from'    => $from,
+    $status = $mg->sendMessage($domain, ['from'                               => $from,
                                                                     'to'      => $to,
                                                                     'subject' => $subject,
-                                                                    'text'    => $message));
+                                                                    'text'    => $message, ]);
 
     if ($status->http_response_code = 200) {
         return true;
     }
+
     return false;
 }
 
-
-
-
-
 function notifySubscribers($id, $type, $userid)
 {
-    if ($type == "category") {
+    if ($type == 'category') {
         $sql = "SELECT *,
 		(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM cr_users WHERE `cr_users`.id = `cr_subscriptions`.`userID`) AS `name`,
 		(SELECT email FROM cr_users WHERE `cr_users`.id = `cr_subscriptions`.`userID`) AS `email`,
@@ -191,39 +183,37 @@ function notifySubscribers($id, $type, $userid)
 		(SELECT topicName FROM cr_discussion WHERE `cr_discussion`.id = `cr_subscriptions`.`topicid` GROUP BY topicname) AS topicname,
 		(SELECT `adminemailaddress` FROM cr_settings) AS `siteadmin`
 		FROM cr_subscriptions WHERE categoryid = '$id' AND userid != '$userid'";
-        $message = "There has been a new post in the following category: ";
-    } elseif ($type == "post") {
+        $message = 'There has been a new post in the following category: ';
+    } elseif ($type == 'post') {
         $sql = "SELECT *, (SELECT CONCAT(`firstname`, ' ', `lastname`) FROM cr_users WHERE `cr_users`.id = `cr_subscriptions`.`userID`)
 		AS `name`, (SELECT email FROM cr_users WHERE `cr_users`.id = `cr_subscriptions`.`userID`) AS `email`,
 		(SELECT `adminemailaddress` FROM cr_settings) AS `siteadmin`,
 		(SELECT name FROM cr_discussionCategories WHERE `cr_discussionCategories`.id = `cr_subscriptions`.`categoryid`)
 		AS `categoryname`, (SELECT topicName FROM cr_discussion WHERE `cr_discussion`.id = `cr_subscriptions`.`topicid` GROUP BY topicname)
 		AS topicname FROM cr_subscriptions WHERE topicid = '$id' AND userid != '$userid'";
-        $message = "There has been a new post in the following discussion: ";
+        $message = 'There has been a new post in the following discussion: ';
     }
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $postname = $row['name'];
-        if ($type == "category") {
+        if ($type == 'category') {
             $objectname = $row['categoryname'];
-        } elseif ($type == "post") {
+        } elseif ($type == 'post') {
             $objectname = $row['topicname'];
         }
         $categoryname = $row['categoryname'];
         $to = $row['email'];
-        $subject = "New post: " . $objectname;
+        $subject = 'New post: '.$objectname;
 
-        $finalmessage = "Dear " . $postname . "\n \n" . $message . $objectname . "\n \n" .
-        "To see the post, please login using your username and password";
+        $finalmessage = 'Dear '.$postname."\n \n".$message.$objectname."\n \n".
+        'To see the post, please login using your username and password';
 
         sendMail($to, $subject, $finalmessage, $row['siteadmin']);
     }
 }
 
-
-
-function mailNewUser($userId, $password = "*******")
+function mailNewUser($userId, $password = '*******')
 {
     $userId = filter_var($userId, FILTER_SANITIZE_NUMBER_INT);
     $sql = "SELECT firstName, lastName, email, username FROM cr_users WHERE id = $userId";
@@ -236,23 +226,20 @@ function mailNewUser($userId, $password = "*******")
 
     $message = siteSettings()->getNewUserMessage();
 
-    $name = $user->firstName . " " . $user->lastName;
-    $message = str_replace("[name]", $name, $message);
-    $message = str_replace("[username]", $user->username, $message);
-    $message = str_replace("[password]", $password, $message);
-    $message = str_replace("[siteurl]", siteSettings()->getSiteUrl(), $message);
+    $name = $user->firstName.' '.$user->lastName;
+    $message = str_replace('[name]', $name, $message);
+    $message = str_replace('[username]', $user->username, $message);
+    $message = str_replace('[password]', $password, $message);
+    $message = str_replace('[siteurl]', siteSettings()->getSiteUrl(), $message);
 
-    $subject = "Account created for " . $name;
+    $subject = 'Account created for '.$name;
 
-    $to = $name . ' <' . $user->email . '>';
-    $from = siteSettings()->getOwner() . ' <' . siteSettings()->getAdminEmailAddress() . '>';
+    $to = $name.' <'.$user->email.'>';
+    $from = siteSettings()->getOwner().' <'.siteSettings()->getAdminEmailAddress().'>';
 
     sendMail($to, $subject, $message, $from);
-    sendMail($from, "ADMIN COPY: " . $subject, $message, $from);
+    sendMail($from, 'ADMIN COPY: '.$subject, $message, $from);
 }
-
-
-
 
 function parseEmailTemplate($message, $values)
 {
@@ -269,39 +256,34 @@ function parseEmailTemplate($message, $values)
     return $message;
 }
 
-
-
-
-function emailTemplate($message, $name, $date, $location, $rehearsal, $rotaoutput, $username, $siteurl, $type="", $rotadetails="", $eventdetails="", $comment="")
+function emailTemplate($message, $name, $date, $location, $rehearsal, $rotaoutput, $username, $siteurl, $type = '', $rotadetails = '', $eventdetails = '', $comment = '')
 {
     $skillfinal = '';
-    $message = trim(str_replace("[name]", $name, $message));
-    $message = str_replace("[date]", $date, $message);
-    $message = str_replace("[location]", $location, $message);
-    $message = str_replace("[rehearsal]", $rehearsal, $message);
+    $message = trim(str_replace('[name]', $name, $message));
+    $message = str_replace('[date]', $date, $message);
+    $message = str_replace('[location]', $location, $message);
+    $message = str_replace('[rehearsal]', $rehearsal, $message);
     if (is_array($rotaoutput)):
         foreach ($rotaoutput as $key => $skill):
-            $skillfinal = $skillfinal . $skill . ' ';
+            $skillfinal = $skillfinal.$skill.' ';
     endforeach; else:
         $skillfinal = $rotaoutput;
     endif;
-    $message = str_replace("[rotaoutput]", $skillfinal, $message);
-    $message = str_replace("[siteurl]", $siteurl, $message);
-    $message = str_replace("[username]", $username, $message);
-    $message = str_replace("[type]", $type, $message);
-    $message = str_replace("[rotadetails]", $rotadetails, $message);
-    $message = str_replace("[eventdetails]", $eventdetails, $message);
-    $message = str_replace("[comment]", $comment, $message);
+    $message = str_replace('[rotaoutput]', $skillfinal, $message);
+    $message = str_replace('[siteurl]', $siteurl, $message);
+    $message = str_replace('[username]', $username, $message);
+    $message = str_replace('[type]', $type, $message);
+    $message = str_replace('[rotadetails]', $rotadetails, $message);
+    $message = str_replace('[eventdetails]', $eventdetails, $message);
+    $message = str_replace('[comment]', $comment, $message);
     // echo '<p>' . $message . '</p>';
     return $message;
 }
 
-
-
 function notifyIndividual($userID, $eventID, $skillID)
 {
     notifyEveryoneForEvent($eventID, $skillID, $userID);
-    $eventID=0;  //disables following code through empty sql result
+    $eventID = 0;  //disables following code through empty sql result
 
     $sql = "SELECT *,
 	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM cr_users WHERE `cr_users`.id = `cr_skills`.`userID` ORDER BY `cr_users`.firstname) AS `name`,
@@ -338,17 +320,17 @@ function notifyIndividual($userID, $eventID, $skillID)
         }
 
         $identifier = $row['groupID'];
-        if ($row['rehearsal'] == "1") {
-            if (($row['eventRehearsal'] == "0")  or ($row['eventRehearsalChange'] == "1")) {
+        if ($row['rehearsal'] == '1') {
+            if (($row['eventRehearsal'] == '0') or ($row['eventRehearsalChange'] == '1')) {
                 $rehearsal = $row['norehearsalemail'];
             } else {
-                $rehearsal = $row['yesrehearsal'] . " on " . $rehearsaldate . " at " . $location;
+                $rehearsal = $row['yesrehearsal'].' on '.$rehearsaldate.' at '.$location;
             }
         }
 
         $skill = $row['category'];
-        if ($row['joinedskill'] != "") {
-            $skill = $skill . " - " . $row['joinedskill'];
+        if ($row['joinedskill'] != '') {
+            $skill = $skill.' - '.$row['joinedskill'];
         } else {
             // If there is no skill, then we don't need to mention this fact.
         }
@@ -357,7 +339,6 @@ function notifyIndividual($userID, $eventID, $skillID)
         $sql = "UPDATE cr_eventPeople SET notified = '1' WHERE skillID = '$skillID' AND eventID = '$eventID'";
         mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
-
         $message = $row['notificationmessage'];
         $siteurl = $row['siteurl'];
         $username = $row['username'];
@@ -365,16 +346,13 @@ function notifyIndividual($userID, $eventID, $skillID)
         $location = $row['eventLocationFormatted'];
         $rotaoutput = $skill;
         $to = $row['email'];
-        $subject = "Rota reminder: " . $date;
-
+        $subject = 'Rota reminder: '.$date;
 
         $message = emailTemplate($message, $name, $date, $location, $rehearsal, $rotaoutput, $username, $siteurl);
 
         sendMail($to, $subject, $message, $row['siteadmin']);
     }
 }
-
-
 
 function notifyEveryoneForEvent($eventId)
 {
@@ -409,7 +387,7 @@ function notifyEveryoneForEvent($eventId)
 						g.id";
 
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
-    $countarray = array();
+    $countarray = [];
 
     while ($ob = mysqli_fetch_object($result)) {
         $role = '';
@@ -443,10 +421,9 @@ function notifyEveryoneForEvent($eventId)
                     $comment = '-';
                 }
 
-
-                $eventdetails = $eventrow['eventGroup'] . ": " . $eventrow['sermonTitle'];
+                $eventdetails = $eventrow['eventGroup'].': '.$eventrow['sermonTitle'];
                 if (!empty($eventrow['bibleVerse'])) {
-                    $eventdetails .= " (" . $eventrow['bibleVerse'] . ")";
+                    $eventdetails .= ' ('.$eventrow['bibleVerse'].')';
                 }
             }
 
@@ -465,17 +442,17 @@ function notifyEveryoneForEvent($eventId)
 											AND ep.eventId = '$eventId'";
 
             $roleResult = mysqli_query(db(), $roleSql) or die(mysqli_error(db()));
-            $roles = array();
+            $roles = [];
             while ($roleRow = mysqli_fetch_array($roleResult, MYSQLI_ASSOC)) {
                 if (($roleRow['name'] == '') || ($roleRow['name'] == $roleRow['description'])):
                     $roles[] = $roleRow['description']; else:
-                    $roles[] = $roleRow['description'] . ' - ' . $roleRow['name'];
+                    $roles[] = $roleRow['description'].' - '.$roleRow['name'];
                 endif;
             }
 
             $updateID = $ob->userId;
 
-            $rehearsal = "";/*
+            $rehearsal = ''; /*
             if($row['rehearsal'] == "1") {
                 if(($row['eventRehearsal'] == "0") or ($row['eventRehearsalChange'] == "1")) {
                     $rehearsal = $rowSettings['norehearsalemail'];
@@ -489,25 +466,25 @@ function notifyEveryoneForEvent($eventId)
             $message = siteSettings()->getNotificationEmail();
             $rotaoutput = implode(', ', $roles);
 
-            $to = $ob->name . ' <' . $ob->email . '>';
-            $from = siteSettings()->getOwner() . ' <' . siteSettings()->getAdminEmailAddress() . '>';
+            $to = $ob->name.' <'.$ob->email.'>';
+            $from = siteSettings()->getOwner().' <'.siteSettings()->getAdminEmailAddress().'>';
 
             //$subject = "Rota reminder: " . $date;
-            $subject = 'Reminder: ' . implode(', ', $roles) . " - " . $type . ": ". $date;
+            $subject = 'Reminder: '.implode(', ', $roles).' - '.$type.': '.$date;
 
             $rotadetails = getEventDetails($eventId, "\r\n", 0, false, "\t");
 
             $templateFields = [
-                'name' => $ob->firstname,
-                'date' => $date,
-                'location' => $ob->location,
-                'rehersal' => $rehearsal,
-                'rotaoutput' => $rotaoutput,
-                'username' => $ob->username,
-                'type' => $type,
-                'rotadetails' => $rotadetails,
+                'name'         => $ob->firstname,
+                'date'         => $date,
+                'location'     => $ob->location,
+                'rehersal'     => $rehearsal,
+                'rotaoutput'   => $rotaoutput,
+                'username'     => $ob->username,
+                'type'         => $type,
+                'rotadetails'  => $rotadetails,
                 'eventdetails' => $eventdetails,
-                'comment' => $comment,
+                'comment'      => $comment,
             ];
 
             $message = parseEmailTemplate($message, $templateFields);
@@ -529,11 +506,10 @@ function notifyEveryoneForEvent($eventId)
 							ep.notified = 1
 						WHERE
 							ep.eventId = '$eventId'
-							AND ur.userId IN (".implode(', ', $countarray).")";
+							AND ur.userId IN (".implode(', ', $countarray).')';
 
         mysqli_query(db(), $sql) or die(mysqli_error(db()));
     }
-
 
     $sql = "UPDATE
 						cr_events e
@@ -548,10 +524,6 @@ function notifyEveryoneForEvent($eventId)
     return $countarray;
 }
 
-
-
-
-
 // returns either true, or error message string
 function notifyUserForEvent($userId, $eventId, $subject, $message)
 {
@@ -562,7 +534,6 @@ function notifyUserForEvent($userId, $eventId, $subject, $message)
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $user = mysqli_fetch_object($result);
 
-
     if (!$user->email) {
         return 'No email address present for '.$user->firstName.' '.$user->lastName;
     }
@@ -571,12 +542,12 @@ function notifyUserForEvent($userId, $eventId, $subject, $message)
         return $user->firstName.' '.$user->lastName.' opted not to recieve reminder emails';
     }
 
-    $name = $user->firstName . ' ' . $user->lastName;
+    $name = $user->firstName.' '.$user->lastName;
 
     //line seperator for mails
     //rfc sais \r\n, but this makes trouble in outlook. several spaces plus \n works fine in outlook and thunderbird.
     //spaces to suppress automatic removal of "unnecessary linefeeds" in outlook 2003
-    $crlf="      \n";
+    $crlf = "      \n";
 
     setlocale(LC_TIME, siteSettings()->getLangLocale());
 
@@ -602,10 +573,10 @@ function notifyUserForEvent($userId, $eventId, $subject, $message)
     $event = mysqli_fetch_object($result);
 
     $eventDetails = strftime(siteSettings()->getTimeFormatNormal(), strtotime($event->date));
-    $eventDetails .= " - ";
+    $eventDetails .= ' - ';
     $eventDetails .= "\r\n";
     $eventDetails .= $event->type;
-    $eventDetails .= $event->eventGroup . ': ' . $event->sermonTitle . ' (' . $event->bibleVerse . ')';
+    $eventDetails .= $event->eventGroup.': '.$event->sermonTitle.' ('.$event->bibleVerse.')';
     $eventDetails .= "\r\n";
     $eventDetails .= 'Notes: '.$event->comment;
     $eventDetails .= "\r\n";
@@ -618,37 +589,36 @@ function notifyUserForEvent($userId, $eventId, $subject, $message)
 					WHERE
 						e.id = $eventId";
 
-
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $roles = mysqli_fetch_object($result);
 
     $templateValues = [
-        'name' => $name,
+        'name'       => $name,
         'name.first' => $user->firstName,
-        'name.last' => $user->lastName,
+        'name.last'  => $user->lastName,
 
-        'event' => $eventDetails,
-        'event.name' => $event->name,
-        'event.type' => $event->type,
+        'event'          => $eventDetails,
+        'event.name'     => $event->name,
+        'event.type'     => $event->type,
         'event.location' => $event->location,
-        'event.comment' => $event->comment,
+        'event.comment'  => $event->comment,
 
-        'event.sermon' => $event->eventGroup . ': ' . $event->sermonTitle . ' (' . $event->bibleVerse . ')',
-        'event.sermon.name' => $event->sermonTitle,
+        'event.sermon'        => $event->eventGroup.': '.$event->sermonTitle.' ('.$event->bibleVerse.')',
+        'event.sermon.name'   => $event->sermonTitle,
         'event.sermon.series' => $event->eventGroup,
-        'event.sermon.verse' => $event->bibleVerse,
+        'event.sermon.verse'  => $event->bibleVerse,
 
         'roles' => $roles, // legacy
         'month' => $overviewMonth,
-        'year' => $overviewYear,
+        'year'  => $overviewYear,
     ];
 
     $message = parseEmailTemplate($message, $templateValues);
 
     //$message = str_replace("\r\n",$crlf,$message);
 
-    $to = $name . ' <' . $user->email . '>';
-    $from = siteSettings()->getOwner() . ' <' . $siteSettings()->getAdminEmailAddress() . '>';
+    $to = $name.' <'.$user->email.'>';
+    $from = siteSettings()->getOwner().' <'.$siteSettings()->getAdminEmailAddress().'>';
 
     $sent = false;
     $sent = sendMail($to, $subject, $message, $from);
@@ -656,32 +626,21 @@ function notifyUserForEvent($userId, $eventId, $subject, $message)
     if ($sent == true) {
         return true;
     } else {
-        return "Error while sending mail to ".$user->firstName.' '.$user->lastName;
+        return 'Error while sending mail to '.$user->firstName.' '.$user->lastName;
     }
 
     return 'Unknown error for '.$user->firstName.' '.$user->lastName;
 }
 
-
-
-
-
 function getEventEmailSubject($eventId)
 {
-    return "";
+    return '';
 }
-
-
-
 
 function getEventEmailMessage($eventId)
 {
-    return "";
+    return '';
 }
-
-
-
-
 
 // returns true - or array of error message strings
 function sendEventEmailToGroups($eventId, $subject, $message, $groups)
@@ -722,35 +681,28 @@ function sendEventEmailToGroups($eventId, $subject, $message, $groups)
 
     if (isset($errors)) {
         createNotificationForUser($_SESSION['userid'], 'Email sent with warnings', 'Email sent to '.$groupNames.' groups with errors: '.implode(', ', $errors), 'email');
+
         return $errors;
     }
 
     createNotificationForUser($_SESSION['userid'], 'Group email sent', 'Email sent successfully to '.$groupNames, 'email');
+
     return $true;
 }
 
-
-
-
-
 function getGroupEmailSubject()
 {
-    return "Upcoming Rota";
+    return 'Upcoming Rota';
 }
-
-
-
 
 function getGroupEmailMessage()
 {
-    $sql = "SELECT overviewemail FROM cr_settings";
+    $sql = 'SELECT overviewemail FROM cr_settings';
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $ob = mysqli_fetch_object($result);
+
     return $ob->overviewemail;
 }
-
-
-
 
 // returns true - or array of error message strings
 function sendGroupEmail($subject, $message, $groups)
@@ -772,7 +724,6 @@ function sendGroupEmail($subject, $message, $groups)
 						g.id IN ($groupsString)
 						";
 
-
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $errors = [];
     while ($ob = mysqli_fetch_object($result)) {
@@ -791,15 +742,14 @@ function sendGroupEmail($subject, $message, $groups)
 
     if (isset($errors)) {
         createNotificationForUser($_SESSION['userid'], 'Email sent with warnings', 'Email sent to '.$groupNames." groups with errors: \n- ".implode("\n- ", $errors), 'email');
+
         return $errors;
     }
 
     createNotificationForUser($_SESSION['userid'], 'Group email sent', 'Email sent successfully to '.$groupNames, 'email');
+
     return $true;
 }
-
-
-
 
 // returns either true, or error message string
 function sendEventMessageEmailToUser($userId, $eventId, $subject, $message)
@@ -811,7 +761,6 @@ function sendEventMessageEmailToUser($userId, $eventId, $subject, $message)
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $user = mysqli_fetch_object($result);
 
-
     if (!$user->email) {
         return 'No email address present for '.$user->firstName.' '.$user->lastName;
     }
@@ -820,12 +769,12 @@ function sendEventMessageEmailToUser($userId, $eventId, $subject, $message)
         return $user->firstName.' '.$user->lastName.' opted not to recieve group emails';
     }
 
-    $name = $user->firstName . ' ' . $user->lastName;
+    $name = $user->firstName.' '.$user->lastName;
 
     //line seperator for mails
     //rfc sais \r\n, but this makes trouble in outlook. several spaces plus \n works fine in outlook and thunderbird.
     //spaces to suppress automatic removal of "unnecessary linefeeds" in outlook 2003
-    $crlf="      \n";
+    $crlf = "      \n";
 
     $siteadmin = siteSettings()->getAdminEmailAddress();
 
@@ -854,14 +803,14 @@ function sendEventMessageEmailToUser($userId, $eventId, $subject, $message)
 
     setlocale(LC_TIME, siteSettings()->getLangLocale()); //de_DE
 
-    $eventDetails = "";
+    $eventDetails = '';
     $date;
     $ob = mysqli_fetch_object($result);
 
     $date = $ob->date;
 
     $eventDetails .= strftime(siteSettings()->getTimeFormatNormal(), strtotime($ob->date));
-    $eventDetails .= " - ";
+    $eventDetails .= ' - ';
     $eventDetails .= $ob->type;
     $eventDetails .= "\r\n";
 
@@ -871,24 +820,23 @@ function sendEventMessageEmailToUser($userId, $eventId, $subject, $message)
     $eventDetails .= "\r\n";
     $eventDetails .= "\r\n";
 
-
-    $overviewMonth = strtoupper(strftime("%B", strtotime($date)));
-    $overviewYear = strftime("%Y", strtotime($date));
+    $overviewMonth = strtoupper(strftime('%B', strtotime($date)));
+    $overviewYear = strftime('%Y', strtotime($date));
 
     $templateValues = [
-        'name' => $name,
+        'name'  => $name,
         'event' => $eventDetails,
         'roles' => $roles,
         'month' => $overviewMonth,
-        'year' => $overviewYear,
+        'year'  => $overviewYear,
     ];
 
     $message = parseEmailTemplate($message, $templateValues);
 
     //$message = str_replace("\r\n",$crlf,$message);
 
-    $to = $name . ' <' . $user->email . '>';
-    $from = siteSettings()->getOwner() . ' <' . $siteadmin . '>';
+    $to = $name.' <'.$user->email.'>';
+    $from = siteSettings()->getOwner().' <'.$siteadmin.'>';
 
     $sent = false;
     $sent = sendMail($to, $subject, $message, $from);
@@ -896,15 +844,11 @@ function sendEventMessageEmailToUser($userId, $eventId, $subject, $message)
     if ($sent == true) {
         return true;
     } else {
-        return "Error while sending mail to ".$user->firstName.' '.$user->lastName;
+        return 'Error while sending mail to '.$user->firstName.' '.$user->lastName;
     }
 
     return 'Unknown error for '.$user->firstName.' '.$user->lastName;
 }
-
-
-
-
 
 // returns either true, or error message string
 function sendUpcomingEventsToUser($userId, $subject, $message)
@@ -915,7 +859,6 @@ function sendUpcomingEventsToUser($userId, $subject, $message)
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $user = mysqli_fetch_object($result);
 
-
     if (!$user->email) {
         return 'No email address present for '.$user->firstName.' '.$user->lastName;
     }
@@ -924,14 +867,14 @@ function sendUpcomingEventsToUser($userId, $subject, $message)
         return $user->firstName.' '.$user->lastName.' opted not to recieve group emails';
     }
 
-    $name = $user->firstName . ' ' . $user->lastName;
+    $name = $user->firstName.' '.$user->lastName;
 
     //line seperator for mails
     //rfc sais \r\n, but this makes trouble in outlook. several spaces plus \n works fine in outlook and thunderbird.
     //spaces to suppress automatic removal of "unnecessary linefeeds" in outlook 2003
-    $crlf="      \n";
+    $crlf = "      \n";
 
-    $sql = "SELECT lang_locale, time_format_normal, adminemailaddress, owner FROM cr_settings";
+    $sql = 'SELECT lang_locale, time_format_normal, adminemailaddress, owner FROM cr_settings';
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     //siteSettings() = mysqli_fetch_object($result);
     // todo: fix settings in this function
@@ -957,7 +900,7 @@ function sendUpcomingEventsToUser($userId, $subject, $message)
     }
 
     if (!isset($events)) {
-        return $name . ' has no events in the upcoming rota';
+        return $name.' has no events in the upcoming rota';
     }
 
     $events = implode(', ', $events);
@@ -1000,13 +943,13 @@ function sendUpcomingEventsToUser($userId, $subject, $message)
 
     setlocale(LC_TIME, $lang_locale); //de_DE
 
-    $eventDetails = "";
+    $eventDetails = '';
     $date;
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $date = $row['date'];
 
         $eventDetails .= strftime(siteSettings()->getTimeFormatNormal(), strtotime($row['date']));
-        $eventDetails .= " - ";
+        $eventDetails .= ' - ';
         $eventDetails .= $row['type'];
         $eventDetails .= "\r\n";
 
@@ -1016,20 +959,20 @@ function sendUpcomingEventsToUser($userId, $subject, $message)
         $eventDetails .= "\r\n";
         $eventDetails .= "\r\n";
     }
-    $overviewMonth = strtoupper(strftime("%B", strtotime($date)));
-    $overviewYear = strftime("%Y", strtotime($date));
+    $overviewMonth = strtoupper(strftime('%B', strtotime($date)));
+    $overviewYear = strftime('%Y', strtotime($date));
 
-    $message = str_replace("[NAME]", $name, $message);
-    $message = str_replace("[EVENTS]", $eventDetails, $message);
-    $message = str_replace("[MONTH]", $overviewMonth, $message);
-    $message = str_replace("[YEAR]", $overviewYear, $message);
+    $message = str_replace('[NAME]', $name, $message);
+    $message = str_replace('[EVENTS]', $eventDetails, $message);
+    $message = str_replace('[MONTH]', $overviewMonth, $message);
+    $message = str_replace('[YEAR]', $overviewYear, $message);
 
     //$message = emailTemplate($message, $name, $date, $location, $rehearsal, $rotaoutput, $username, $siteurl);
 
     //$message = str_replace("\r\n",$crlf,$message);
 
-    $to = $name . ' <' . $user->email . '>';
-    $from = siteSettings()->getOwner() . ' <' . $siteadmin . '>';
+    $to = $name.' <'.$user->email.'>';
+    $from = siteSettings()->getOwner().' <'.$siteadmin.'>';
 
     $sent = false;
     $sent = sendMail($to, $subject, $message, $from);
@@ -1037,15 +980,11 @@ function sendUpcomingEventsToUser($userId, $subject, $message)
     if ($sent == true) {
         return true;
     } else {
-        return "Error while sending mail to ".$user->firstName.' '.$user->lastName;
+        return 'Error while sending mail to '.$user->firstName.' '.$user->lastName;
     }
 
     return 'Unknown error for '.$user->firstName.' '.$user->lastName;
 }
-
-
-
-
 
 function notifyAttack($fileName, $attackType, $attackerID)
 {
@@ -1058,11 +997,11 @@ function notifyAttack($fileName, $attackType, $attackerID)
     $userresult = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($userresult, MYSQLI_ASSOC)) {
-        $subject = "SECURITY-ALERT - Attack blocked successfully";
-        $message =  "Type:\t\t " . $attackType . "<br>\r\n" .
-                    "Attacker:\t " . $row[name] . "<br>\r\n" .
-                    "Date:\t\t " . date("Y-m-d H:i:s") . "<br>\r\n" .
-                    "Script:\t\t " . $fileName . "\r\n " . "<br>\r\n" ;
+        $subject = 'SECURITY-ALERT - Attack blocked successfully';
+        $message = "Type:\t\t ".$attackType."<br>\r\n".
+                    "Attacker:\t ".$row[name]."<br>\r\n".
+                    "Date:\t\t ".date('Y-m-d H:i:s')."<br>\r\n".
+                    "Script:\t\t ".$fileName."\r\n "."<br>\r\n";
 
         //$headers = 'From: ' . $row['siteadmin'] . "\r\n" .
         //'Reply-To: ' . $row['siteadmin'] . "\r\n";
@@ -1072,15 +1011,11 @@ function notifyAttack($fileName, $attackType, $attackerID)
         //mail($to, $subject, strip_tags($message), $headers);
         sendMail($to, $subject, strip_tags($message), $to);
 
-        echo $subject . "<br><br>";
-        echo $message . "<br>";
-        echo "An email about this incident was sent to administrator!";
+        echo $subject.'<br><br>';
+        echo $message.'<br>';
+        echo 'An email about this incident was sent to administrator!';
     }
 }
-
-
-
-
 
 function notifyInfo($fileName, $infoMsg, $userID)
 {
@@ -1092,11 +1027,11 @@ function notifyInfo($fileName, $infoMsg, $userID)
     $userresult = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($userresult, MYSQLI_ASSOC)) {
-        $subject = "Info - " . $infoMsg . " - " . $row[name] ;
-        $message =  "Type:\t\t " . $infoMsg . "<br>\r\n" .
-                    "User:\t\t " . $row[name] . "<br>\r\n" .
-                    "Date:\t\t " . date("Y-m-d H:i:s") . "<br>\r\n" .
-                    "Script:\t\t " . $fileName . "\r\n " . "<br>\r\n" ;
+        $subject = 'Info - '.$infoMsg.' - '.$row[name];
+        $message = "Type:\t\t ".$infoMsg."<br>\r\n".
+                    "User:\t\t ".$row[name]."<br>\r\n".
+                    "Date:\t\t ".date('Y-m-d H:i:s')."<br>\r\n".
+                    "Script:\t\t ".$fileName."\r\n "."<br>\r\n";
 
         //$headers = 'From: ' . $row['siteadmin'] . "\r\n" .
         //'Reply-To: ' . $row['siteadmin'] . "\r\n";
@@ -1108,15 +1043,12 @@ function notifyInfo($fileName, $infoMsg, $userID)
     }
 }
 
-
-
-
 function splitSubjectMessage($defaultSubject, $message)
 {
-    if (preg_match("/(\{\{)((.)+){1}(\}\})/", $message, $matches)==1) {
+    if (preg_match("/(\{\{)((.)+){1}(\}\})/", $message, $matches) == 1) {
         $defaultSubject = $matches[2];
             //$subject = str_replace(array("{{","}}"),"",$matches[0]);
-            $message = str_replace($matches[1].$matches[2].$matches[4], "", $message);
+            $message = str_replace($matches[1].$matches[2].$matches[4], '', $message);
             //$message = $matches[4];
 
         //$message = $message . "\r\n\r\n";
@@ -1132,12 +1064,11 @@ function splitSubjectMessage($defaultSubject, $message)
         //$message = $message . "m9 ". $matches[9] . "\r\n";
         //$message = $message . "m10 ". $matches[10] . "\r\n";
     }
-    return array($defaultSubject,$message);
+
+    return [$defaultSubject, $message];
 }
 
-
-
-function mailToDb($to, $subject, $message, $from, $bcc = "")
+function mailToDb($to, $subject, $message, $from, $bcc = '')
 {
     $to = mysqli_real_escape_string(db(), $to);
     $subject = mysqli_real_escape_string(db(), $subject);
@@ -1150,8 +1081,6 @@ function mailToDb($to, $subject, $message, $from, $bcc = "")
 
     return mysqli_insert_id(db());
 }
-
-
 
 function logFailedMailWithId($id, $error)
 {

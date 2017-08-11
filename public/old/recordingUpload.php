@@ -1,12 +1,11 @@
-<?php namespace TechWilk\Rota;
+<?php
 
-use DateInterval;
-use DateTime;
+namespace TechWilk\Rota;
 
 session_start();
 
-include_once "includes/config.php";
-include_once "includes/functions.php";
+include_once 'includes/config.php';
+include_once 'includes/functions.php';
 
 if (!isset($_SESSION['userid'])) {
     header('Location: login.php');
@@ -19,8 +18,8 @@ $user = UserQuery::create()->findPK($userId);
 
 // only load page if functionality enabled
 if (siteConfig()['recording']['type'] != 'locomotivecms') {
-    echo "<p>This feature is not enabled</p>";
-    echo "<p><a href=".siteSettings()->getSiteUrl().">&lt; back to homepage</a></p>";
+    echo '<p>This feature is not enabled</p>';
+    echo '<p><a href='.siteSettings()->getSiteUrl().'>&lt; back to homepage</a></p>';
     exit;
 }
 
@@ -33,18 +32,16 @@ $client = new Client([
     'timeout'  => 2.0,
 ]);
 
-
 // get token
 $response = $client->request(
   'POST',
   'v3/tokens.json',
   ['form_params' => ['api_key' => siteConfig()['recording']['locomotivecms']['apiKey'],
-                       'email' => siteConfig()['recording']['locomotivecms']['email']]]
+                       'email' => siteConfig()['recording']['locomotivecms']['email'], ]]
   );
 if ($response->getStatusCode() == 201) {
     $token = json_decode($response->getBody())->token;
-};
-
+}
 
 // test token
 if (isset($token)) {
@@ -54,7 +51,7 @@ if (isset($token)) {
   ['query' => ['auth_token' => $token]]);
     var_dump($response);
 } else {
-    echo "<p>Unable to connect to main site</p>";
-    echo "<p><a href=".siteSettings()->getSiteUrl().">&lt; back to homepage</a></p>";
+    echo '<p>Unable to connect to main site</p>';
+    echo '<p><a href='.siteSettings()->getSiteUrl().'>&lt; back to homepage</a></p>';
     exit;
 }

@@ -1,10 +1,7 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 /*
     This file is part of Church Rota.
 
@@ -23,7 +20,7 @@ include('includes/functions.php');
     You should have received a copy of the GNU General Public License
     along with Church Rota.  If not, see <http://www.gnu.org/licenses/>.
 */
-include('includes/header.php'); ?>
+include 'includes/header.php'; ?>
 <div class="elementBackground">
 <h2>License</h2>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GNU GENERAL PUBLIC LICENSE<br>
@@ -703,4 +700,4 @@ Public License instead of this License.&nbsp;&nbsp;But first, please read<br>
 </div>
 
 
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

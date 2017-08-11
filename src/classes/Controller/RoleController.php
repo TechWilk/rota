@@ -2,12 +2,12 @@
 
 namespace TechWilk\Rota\Controller;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use TechWilk\Rota\UserRole;
-use TechWilk\Rota\UserQuery;
-use TechWilk\Rota\UserRoleQuery;
+use Psr\Http\Message\ServerRequestInterface;
 use TechWilk\Rota\RoleQuery;
+use TechWilk\Rota\UserQuery;
+use TechWilk\Rota\UserRole;
+use TechWilk\Rota\UserRoleQuery;
 
 class RoleController extends BaseController
 {
@@ -18,7 +18,7 @@ class RoleController extends BaseController
         $u = UserQuery::create()->findPK($args['id']);
 
         if (!is_null($u)) {
-            return $this->view->render($response, 'user-roles-assign.twig', [ "user" => $u, "roles" => $r ]);
+            return $this->view->render($response, 'user-roles-assign.twig', ['user' => $u, 'roles' => $r]);
         } else {
             return $this->view->render($response, 'error.twig');
         }
@@ -67,6 +67,6 @@ class RoleController extends BaseController
             }
         }
 
-        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('user', [ 'id' => $userId ]));
+        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('user', ['id' => $userId]));
     }
 }

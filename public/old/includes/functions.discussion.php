@@ -1,7 +1,6 @@
-<?php namespace TechWilk\Rota;
+<?php
 
-use DateInterval;
-use DateTime;
+namespace TechWilk\Rota;
 
 /*
     This file is part of Church Rota.
@@ -27,15 +26,17 @@ function cleanUpTextarea($discussion)
     $discussion = mysqli_real_escape_string(db(), $discussion);
     $discussion = str_replace("\r", '<br />', $discussion); // Keep new lines as . . . well, new lines
     $discussion = youtubeReplace($discussion);
+
     return $discussion;
 }
 
 function formatInput($string)
 {
-    $string = str_replace('[i]', "<em>", $string);
-    $string = str_replace('[/i]', "</em>", $string);
-    $string = str_replace('[b]', "<strong>", $string);
-    $string = str_replace('[/b]', "</strong>", $string);
+    $string = str_replace('[i]', '<em>', $string);
+    $string = str_replace('[/i]', '</em>', $string);
+    $string = str_replace('[b]', '<strong>', $string);
+    $string = str_replace('[/b]', '</strong>', $string);
+
     return $string;
 }
 
@@ -46,5 +47,6 @@ function youtubeReplace($string)
         '<iframe title="YouTube Video" width="560" height="340" src="http://www.youtube.com/embed/$4" frameborder="0" allowfullscreen></iframe>',
     $string
   );
+
     return $string;
 }

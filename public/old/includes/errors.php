@@ -1,7 +1,6 @@
-<?php namespace TechWilk\Rota;
+<?php
 
-use DateInterval;
-use DateTime;
+namespace TechWilk\Rota;
 
 ini_set('display_errors', false);    // set on for development, off for production
 ini_set('log_errors', true);

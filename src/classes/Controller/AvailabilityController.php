@@ -2,14 +2,13 @@
 
 namespace TechWilk\Rota\Controller;
 
-use Psr\Http\Message\ServerRequestInterface;
+use DateTime;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TechWilk\Rota\Availability;
 use TechWilk\Rota\AvailabilityQuery;
-use TechWilk\Rota\UserQuery;
 use TechWilk\Rota\EventQuery;
-use TechWilk\Rota\EmailAddress;
-use DateTime;
+use TechWilk\Rota\UserQuery;
 
 class AvailabilityController extends BaseController
 {
@@ -72,6 +71,6 @@ class AvailabilityController extends BaseController
             $a->save();
         }
 
-        return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('user', [ 'id' => $u->getId() ]));
+        return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('user', ['id' => $u->getId()]));
     }
 }

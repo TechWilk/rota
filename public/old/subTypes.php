@@ -1,11 +1,8 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -25,7 +22,7 @@ if (!isAdmin()) {
 $subTypeId = getQueryStringForKey('subType');
 $method = getQueryStringForKey('method');
 
-if ($method == "remove" && !empty($subTypeId)) {
+if ($method == 'remove' && !empty($subTypeId)) {
     removeEventSubType($subTypeId);
 }
 
@@ -40,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $sql = ("INSERT INTO cr_eventSubTypes (name, description) VALUES ('$name', '$description')");
         if (!mysqli_query(db(), $sql)) {
-            die('Error: ' . mysqli_error(db()));
+            die('Error: '.mysqli_error(db()));
         }
     } else {
         // Otherwise we are dealing with edits, not new stuff
@@ -49,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $description = $_POST['description'];
 
         $formArray = array_combine($formindex, $description);
-
 
         while (list($key, $valadd) = each($formArray)) {
             updateEventSubType($key, $valadd);
@@ -60,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      header('Location: subTypes.php'); // Move to the home page of the admin section
       exit;
 }
-include('includes/header.php');
+include 'includes/header.php';
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -88,14 +84,14 @@ include('includes/header.php');
         <form action="editeventtype.php" method="post">
         <fieldset>
 
-		<?php $sql = "SELECT * FROM cr_eventSubTypes ORDER BY name";
+		<?php $sql = 'SELECT * FROM cr_eventSubTypes ORDER BY name';
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-        echo '<input type="hidden" name="formindex[]" value="' . $row['id'] . '" />';
-        echo "<input name='name[]' value='" . $row['name'] . "' />";
+        echo '<input type="hidden" name="formindex[]" value="'.$row['id'].'" />';
+        echo "<input name='name[]' value='".$row['name']."' />";
 
-        echo " <a href='subTypes.php?method=remove&subType=" . $row['id'] . "'><i class='fa fa-times'></i></a><br />";
+        echo " <a href='subTypes.php?method=remove&subType=".$row['id']."'><i class='fa fa-times'></i></a><br />";
     } ?>
    </div><!-- /.box-body -->
    <div class="box-footer">
@@ -136,4 +132,4 @@ if (isAdmin()) {
 </div>
 <?php
     } ?>
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

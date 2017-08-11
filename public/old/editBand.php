@@ -1,8 +1,5 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 /*
     This file is part of Church Rota.
 
@@ -23,8 +20,8 @@ use DateTime;
 */
 
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -45,19 +42,17 @@ $bandID = $_GET['id'];
 
     $sql = "SELECT * FROM cr_bands WHERE bandID = '$bandID'";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
-    
-    while ($row =  mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+
+    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $bandLeader = $row['bandLeader'];
     }
-
-
 
 // If the form has been submitted, then we need to handle the data.
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $bandLeader = $_POST['bandleader'];
     $rehearsaldate = $_POST['rehearsaldate'];
-    
-    if ($id == "") {
+
+    if ($id == '') {
         $sql = "INSERT INTO cr_bands (bandLeader) VALUES ('$bandLeader')";
         mysqli_query(db(), $sql) or die(mysqli_error(db()));
         $bandID = mysqli_insert_id(db());
@@ -65,23 +60,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sql = "UPDATE cr_bands SET bandLeader = '$bandLeader' WHERE bandID = '$bandID'";
         mysqli_query(db(), $sql) or die(mysqli_error(db()));
     }
-    
-    
+
         // Now we need to deal with the band changes
-    
+
         // First of all, we need to delete all the people already exisiting on this week so we can repopulate with the correct data.
         $sql = "DELETE FROM cr_bandMembers WHERE bandID = '$bandID'";
     mysqli_query(db(), $sql) or die(mysqli_error(db()));
-        
+
     foreach ($rehearsaldate as $key => $rehearsaldatevalue) {
         addPeopleBand($bandID, $rehearsaldatevalue);
     }
-        
-    header("Location: viewBands.php");
-}
-$formatting = "true";
 
-include('includes/header.php');
+    header('Location: viewBands.php');
+}
+$formatting = 'true';
+
+include 'includes/header.php';
 ?>
 
 
@@ -104,62 +98,62 @@ include('includes/header.php');
 				(SELECT skillID FROM cr_bandMembers WHERE `cr_bandMembers`.`skillID` = `cr_skills`.`skillID` AND `cr_bandMembers`.`bandID` = '$bandID'
 				LIMIT 1) AS `inBand` 
 				FROM cr_skills WHERE groupID = 2 ORDER BY groupID, name";
-                
+
                 $resultPeople = mysqli_query(db(), $sqlPeople) or die(mysqli_error(db()));
                 $i = 1;
                 $position = 1;
             ?><div>
 			<?php while ($viewPeople = mysqli_fetch_array($resultPeople, MYSQLI_ASSOC)) {
                 $identifier = $viewPeople['groupID'];
-                    
+
                 if (isAdmin()) {
                     $usefulBits = " <a href='index.php?notifyIndividual=$viewPeople[userID]&eventID=$eventID&skillID=$viewPeople[skillID]'><img src='graphics/email.png' /></a> <a href='index.php?skillremove=true&eventID=$eventID&skillID=$viewPeople[skillID]'><img src='graphics/close.png' /></a> <br />";
                 } else {
-                    $usefulBits = "<br />";
+                    $usefulBits = '<br />';
                 }
-                                        
+
                 if ($viewPeople['inBand'] != '') {
-                    $checked =  'checked="checked"';
+                    $checked = 'checked="checked"';
                 } else {
-                    $checked = "";
+                    $checked = '';
                 }
-                    
-                if ($viewPeople['skill'] != "") {
-                    $skill = " - <em>" . $viewPeople['skill'] . "</em>";
+
+                if ($viewPeople['skill'] != '') {
+                    $skill = ' - <em>'.$viewPeople['skill'].'</em>';
                 } else {
-                    $skill = "";
+                    $skill = '';
                 }
                 if ($position == 2) {
-                    echo "<div class='checkboxitem right'><label class='styled' for='rehearsaldate[" .  $viewPeople['skillID'] . "]'>" .
-                        $viewPeople['name'] .  $skill . "</em></label><input class='styled' " . $checked . "type='checkbox' id='rehearsaldate[" .
-                        $viewPeople['skillID'] . "]'	name='rehearsaldate[]' value='" .
-                        $viewPeople['skillID'] . "' /></div></div>";
-                        
+                    echo "<div class='checkboxitem right'><label class='styled' for='rehearsaldate[".$viewPeople['skillID']."]'>".
+                        $viewPeople['name'].$skill."</em></label><input class='styled' ".$checked."type='checkbox' id='rehearsaldate[".
+                        $viewPeople['skillID']."]'	name='rehearsaldate[]' value='".
+                        $viewPeople['skillID']."' /></div></div>";
+
                     $position = 1;
                 } else {
-                    if ($i == "1") {
-                        $class = "";
-                        $i = "0";
+                    if ($i == '1') {
+                        $class = '';
+                        $i = '0';
                     } else {
-                        $class = "";
-                        $i = "1";
+                        $class = '';
+                        $i = '1';
                     }
-                        
-                    echo "<div class='row" . $class . "'>
-						<div class='checkboxitem'><label class='styled' for='rehearsaldate[" .  $viewPeople['skillID'] . "]'>" .
-                        $viewPeople['name'] .  $skill . "</em></label><input class='styled' " . $checked . "type='checkbox' id='rehearsaldate[" .
-                        $viewPeople['skillID'] . "]'	name='rehearsaldate[]' value='" .
-                        $viewPeople['skillID'] . "' /></div>";
-                        
+
+                    echo "<div class='row".$class."'>
+						<div class='checkboxitem'><label class='styled' for='rehearsaldate[".$viewPeople['skillID']."]'>".
+                        $viewPeople['name'].$skill."</em></label><input class='styled' ".$checked."type='checkbox' id='rehearsaldate[".
+                        $viewPeople['skillID']."]'	name='rehearsaldate[]' value='".
+                        $viewPeople['skillID']."' /></div>";
+
                     $position = 2;
                 }
             }
             if ($position == 2) {
-                echo "</div>";
+                echo '</div>';
                 $position = 1;
             }
-            echo "</div>";
-            
+            echo '</div>';
+
                     ?>
 					<input type="submit" value="Edit band" />
 				</fieldset>	
@@ -168,4 +162,4 @@ include('includes/header.php');
 </div>
 
 
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

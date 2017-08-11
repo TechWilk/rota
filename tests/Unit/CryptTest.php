@@ -9,23 +9,23 @@ class CryptTest extends BaseTestCase
     public function providerTestGenerateToken()
     {
         return [
-      [ 1 ],
-      [ 2 ],
-      [ 5 ],
-      [ 7 ],
-      [ 9 ],
-      [ 22 ],
-      [ 60 ],
-      [ 120 ],
-      [ 246 ],
+      [1],
+      [2],
+      [5],
+      [7],
+      [9],
+      [22],
+      [60],
+      [120],
+      [246],
     ];
     }
 
   /**
-  * @param string $length
-  *
-  * @dataProvider providerTestGenerateToken
-  */
+   * @param string $length
+   *
+   * @dataProvider providerTestGenerateToken
+   */
   public function testGenerateToken($length)
   {
       $crypt = new Crypt();
@@ -38,21 +38,21 @@ class CryptTest extends BaseTestCase
     public function providerTestGenerateIntBetween()
     {
         return [
-      [ 1, 2 ],
-      [ 1, 100 ],
-      [ 2, 43 ],
-      [ 5, 555 ],
-      [ 7, 9233 ],
-      [ 5500, 6703 ],
+      [1, 2],
+      [1, 100],
+      [2, 43],
+      [5, 555],
+      [7, 9233],
+      [5500, 6703],
     ];
     }
 
   /**
-  * @param string $min
-  * @param string $max
-  *
-  * @dataProvider providerTestGenerateIntBetween
-  */
+   * @param string $min
+   * @param string $max
+   *
+   * @dataProvider providerTestGenerateIntBetween
+   */
   public function testGenerateIntBetween($min, $max)
   {
       $crypt = new Crypt();
@@ -63,22 +63,21 @@ class CryptTest extends BaseTestCase
       $this->assertLessThanOrEqual($max, $int);
   }
 
-
     public function providerTestGenerateIntInvalidConstraints()
     {
         return [
-      [ 100, 1 ],
-      [ 2, 2 ],
+      [100, 1],
+      [2, 2],
     ];
     }
 
   /**
-  * @param string $min
-  * @param string $max
-  * @expectedException        InvalidArgumentException
-  *
-  * @dataProvider providerTestGenerateIntInvalidConstraints
-  */
+   * @param string $min
+   * @param string $max
+   * @expectedException        InvalidArgumentException
+   *
+   * @dataProvider providerTestGenerateIntInvalidConstraints
+   */
   public function testGenerateIntInvalidConstraints($min, $max)
   {
       $crypt = new Crypt();

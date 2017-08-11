@@ -1,29 +1,28 @@
-<?php namespace TechWilk\Rota;
+<?php
 
-use DateInterval;
-use DateTime;
+namespace TechWilk\Rota;
 
 function createCalendarToken($userId, $format, $description)
 {
     $userId = filter_var($userId, FILTER_SANITIZE_NUMBER_INT);
     $format = mysqli_real_escape_string(db(), $format);
     $description = mysqli_real_escape_string(db(), $description);
-  
+
     $token = mysqli_real_escape_string(db(), RandomPassword(30, true, true, true));
-  
+
     $sql = "INSERT INTO cr_calendarTokens (userId, format, token, description) VALUES ($userId, '$format', '$token', '$description')";
     if (mysqli_query(db(), $sql)) {
         return $token;
     } else {
         die(mysqli_error(db()));
-        return null;
+
+        return;
     }
 }
 
-
 function checkCalendarToken($userId, $format, $token)
 {
-    $userId = filter_var($_GET["user"], FILTER_VALIDATE_INT);
+    $userId = filter_var($_GET['user'], FILTER_VALIDATE_INT);
     $format = mysqli_real_escape_string(db(), $format);
     $token = mysqli_real_escape_string(db(), $token);
 
@@ -41,7 +40,7 @@ function checkCalendarToken($userId, $format, $token)
 function revokeCalendarToken($id)
 {
     $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-  
+
     $sql = "UPDATE cr_calendarTokens SET revoked = true WHERE id = $id";
     if (mysqli_query(db(), $sql)) {
         return true;
@@ -53,11 +52,12 @@ function revokeCalendarToken($id)
 function calendarTokensForUser($userId)
 {
     $userId = filter_var($userId, FILTER_SANITIZE_NUMBER_INT);
-  
+
     $sql = "SELECT id, format, description, created, revoked FROM cr_calendarTokens WHERE userId = $userId";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     while ($ob = mysqli_fetch_object($result)) {
         $calendars[] = $ob;
     }
+
     return $calendars;
 }

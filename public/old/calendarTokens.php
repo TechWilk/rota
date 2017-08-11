@@ -1,11 +1,8 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -17,59 +14,53 @@ if (isset($_SESSION['is_logged_in']) || $_SESSION['db_is_logged_in'] == true) {
     exit;
 }
 
-$sessionUserId = $_SESSION["userid"];
+$sessionUserId = $_SESSION['userid'];
 
 // If the form has been submitted, then we need to handle the data.
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $method = $_POST["method"];
-  
+    $method = $_POST['method'];
+
     switch ($method) {
     case 'revoke':
-      $id = $_POST["id"];
+      $id = $_POST['id'];
       $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-      
+
       revokeCalendarToken($id);
-      header("Location: calendarTokens.php");
+      header('Location: calendarTokens.php');
       break;
-    
+
     default:
       // generate new URL
-      $format = $_POST["format"];
-      $description = $_POST["description"];
-      
+      $format = $_POST['format'];
+      $description = $_POST['description'];
+
       if (empty($format)) {
-          $error = "Format must be set";
+          $error = 'Format must be set';
           break;
       }
       if (empty($description)) {
-          $error = "Device or software name cannot be empty";
+          $error = 'Device or software name cannot be empty';
           break;
       }
       $count = CalendarTokenQuery::create()->filterByUserId($sessionUserId)->filterByDescription($description)->filterByRevoked(false)->count();
       if ($count > 0) {
-          $error = "You already have a calendar for the same device or software name. Please revoke the existing token or use a different name.";
+          $error = 'You already have a calendar for the same device or software name. Please revoke the existing token or use a different name.';
           break;
       }
-      
+
       $token = createCalendarToken($sessionUserId, $format, $description);
       $url = siteSettings()->getSiteUrl()."/calendar.php?user=$sessionUserId&format=$format&token=$token";
       break;
   }
 }
 
-
 // fetch existing calendar URLs
 $calendars = calendarTokensForUser($sessionUserId);
 
-
-
-
 // ~~~~~~~~~~ Presentation ~~~~~~~~~~~~
 
-
-
-$formatting = "true";
-include('includes/header.php');
+$formatting = 'true';
+include 'includes/header.php';
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -134,10 +125,10 @@ include('includes/header.php');
             <h2 class="box-title">My Calendars</h2>
           </div>
           <div class="box-body">
-            <?php echo empty($calendars) ? "<p>none</p>" : "" ?>
+            <?php echo empty($calendars) ? '<p>none</p>' : '' ?>
             <?php foreach ($calendars as $calendar): ?>
-                <?php echo $calendar->revoked ? "<s>" : "" ?>
-                <p><?php echo $calendar->description." (".$calendar->format.")"; ?></p>
+                <?php echo $calendar->revoked ? '<s>' : '' ?>
+                <p><?php echo $calendar->description.' ('.$calendar->format.')'; ?></p>
                 <?php if (!$calendar->revoked): ?>
                 <form action="#" method="post">
                   <input type="hidden" name="method" value="revoke" />
@@ -145,7 +136,7 @@ include('includes/header.php');
                   <button class="btn btn-danger">Revoke</button>
                 </form>
                 <?php endif ?>
-                <?php echo $calendar->revoked ? "</s>" : "" ?>
+                <?php echo $calendar->revoked ? '</s>' : '' ?>
             <?php endforeach; ?>
           </div><!-- /.box-body -->
         </div><!-- /.box -->
@@ -197,4 +188,4 @@ include('includes/header.php');
       </div><!-- /.col -->
 
 
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

@@ -2,14 +2,14 @@
 
 namespace Tests\Integration;
 
+use PHPUnit\Framework\TestCase;
+use Propel\Generator\Manager\SqlManager;
+use Propel\Runtime\Connection\ConnectionManagerSingle;
+use Propel\Runtime\Propel;
 use Slim\App;
+use Slim\Http\Environment;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Slim\Http\Environment;
-use Propel\Runtime\Propel;
-use Propel\Runtime\Connection\ConnectionManagerSingle;
-use Propel\Generator\Manager\SqlManager;
-use PHPUnit\Framework\TestCase;
 
 error_reporting(-1);
 ini_set('display_errors', 1);
@@ -18,28 +18,25 @@ date_default_timezone_set('Europe/London');
 
 session_start();
 
-
 /**
-* Propel ORM config
-*/
+ * Propel ORM config.
+ */
 $serviceContainer = Propel::getServiceContainer();
 $serviceContainer->checkVersion('2.0.0-dev');
 $serviceContainer->setAdapterClass('default', 'sqlite');
 $manager = new ConnectionManagerSingle();
-$manager->setConfiguration(array(
-  'classname' => 'Propel\\Runtime\\Connection\\ConnectionWrapper',
-  'dsn' => 'sqlite:/var/tmp/test.db',
-  'attributes' =>
-  array(
+$manager->setConfiguration([
+  'classname'  => 'Propel\\Runtime\\Connection\\ConnectionWrapper',
+  'dsn'        => 'sqlite:/var/tmp/test.db',
+  'attributes' => [
     'ATTR_EMULATE_PREPARES' => false,
-    'ATTR_TIMEOUT' => 30,
-  ),
-  'model_paths' =>
-  array(
+    'ATTR_TIMEOUT'          => 30,
+  ],
+  'model_paths' => [
     0 => 'src',
     1 => 'vendor',
-  ),
-));
+  ],
+]);
 $manager->setName('default');
 $serviceContainer->setConnectionManager('default', $manager);
 $serviceContainer->setDefaultDatasource('default');
@@ -49,16 +46,15 @@ if (file_exists('/var/tmp/test.db')) {
     unlink('/var/tmp/test.db');
 }
 
-$sqlManager = new SqlManager;
+$sqlManager = new SqlManager();
 $sqlManager->setConnections(
-    [ 'default' =>
-        [
-            'dsn' => 'sqlite:/var/tmp/test.db',
+    ['default' => [
+            'dsn'     => 'sqlite:/var/tmp/test.db',
             'adapter' => 'sqlite',
-        ]
+        ],
     ]
 );
-$sqlManager->setWorkingDirectory(__DIR__ . '/../../generated-sql');
+$sqlManager->setWorkingDirectory(__DIR__.'/../../generated-sql');
 $sqlManager->insertSql();
 
 /**
@@ -77,11 +73,12 @@ class BaseTestCase extends TestCase
     protected $withMiddleware = true;
 
     /**
-     * Process the application given a request method and URI
+     * Process the application given a request method and URI.
      *
-     * @param string $requestMethod the request method (e.g. GET, POST, etc.)
-     * @param string $requestUri the request URI
-     * @param array|object|null $requestData the request data
+     * @param string            $requestMethod the request method (e.g. GET, POST, etc.)
+     * @param string            $requestUri    the request URI
+     * @param array|object|null $requestData   the request data
+     *
      * @return \Slim\Http\Response
      */
     public function runApp($requestMethod, $requestUri, $requestData = null)
@@ -90,7 +87,7 @@ class BaseTestCase extends TestCase
         $environment = Environment::mock(
             [
                 'REQUEST_METHOD' => $requestMethod,
-                'REQUEST_URI' => $requestUri
+                'REQUEST_URI'    => $requestUri,
             ]
         );
 
@@ -106,22 +103,22 @@ class BaseTestCase extends TestCase
         $response = new Response();
 
         // Use the application settings
-        $settings = require __DIR__ . '/../../src/settings.php';
-        $settings['settings']['logger']['path'] = __DIR__ . '/../../logs/test.log';
+        $settings = require __DIR__.'/../../src/settings.php';
+        $settings['settings']['logger']['path'] = __DIR__.'/../../logs/test.log';
 
         // Instantiate the application
         $app = new App($settings);
 
         // Set up dependencies
-        require __DIR__ . '/../../src/dependencies.php';
+        require __DIR__.'/../../src/dependencies.php';
 
         // Register middleware
         if ($this->withMiddleware) {
-            require __DIR__ . '/../../src/middleware.php';
+            require __DIR__.'/../../src/middleware.php';
         }
 
         // Register routes
-        require __DIR__ . '/../../src/routes.php';
+        require __DIR__.'/../../src/routes.php';
 
         // Process the application
         $response = $app->process($request, $response);

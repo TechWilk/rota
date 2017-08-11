@@ -1,7 +1,7 @@
-<?php namespace TechWilk\Rota;
+<?php
 
-use DateInterval;
-use DateTime;
+namespace TechWilk\Rota;
+
 use Facebook;
 
 function facebookIsEnabled()
@@ -16,10 +16,11 @@ function facebookIsEnabled()
 function facebook()
 {
     $fb = new Facebook\Facebook([
-      'app_id' => siteConfig()['auth']['facebook']['appId'],
-      'app_secret' => siteConfig()['auth']['facebook']['appSecret'],
+      'app_id'                => siteConfig()['auth']['facebook']['appId'],
+      'app_secret'            => siteConfig()['auth']['facebook']['appSecret'],
       'default_graph_version' => 'v2.2',
       ]);
+
     return $fb;
 }
 
@@ -37,21 +38,21 @@ function getFacebookUserAccessToken($fb)
         echo var_dump($accessToken);
     } catch (Facebook\Exceptions\FacebookResponseException $e) {
         // When Graph returns an error
-    echo 'Graph returned an error: ' . $e->getMessage();
+    echo 'Graph returned an error: '.$e->getMessage();
         exit;
     } catch (Facebook\Exceptions\FacebookSDKException $e) {
         // When validation fails or other local issues
-    echo 'Facebook SDK returned an error: ' . $e->getMessage();
+    echo 'Facebook SDK returned an error: '.$e->getMessage();
         exit;
     }
 
-    if (! isset($accessToken)) {
+    if (!isset($accessToken)) {
         if ($helper->getError()) {
             header('HTTP/1.0 401 Unauthorized');
-            echo "Error: " . $helper->getError() . "\n";
-            echo "Error Code: " . $helper->getErrorCode() . "\n";
-            echo "Error Reason: " . $helper->getErrorReason() . "\n";
-            echo "Error Description: " . $helper->getErrorDescription() . "\n";
+            echo 'Error: '.$helper->getError()."\n";
+            echo 'Error Code: '.$helper->getErrorCode()."\n";
+            echo 'Error Reason: '.$helper->getErrorReason()."\n";
+            echo 'Error Description: '.$helper->getErrorDescription()."\n";
         } else {
             header('HTTP/1.0 400 Bad Request');
             echo 'Bad request';
@@ -70,17 +71,18 @@ function getFacebookUserAccessToken($fb)
   //$tokenMetadata->validateUserId('123');
   $tokenMetadata->validateExpiration();
 
-    if (! $accessToken->isLongLived()) {
+    if (!$accessToken->isLongLived()) {
         // Exchanges a short-lived access token for a long-lived one
     try {
         $accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
     } catch (Facebook\Exceptions\FacebookSDKException $e) {
-        echo "<p>Error getting long-lived access token: " . $helper->getMessage() . "</p>\n\n";
+        echo '<p>Error getting long-lived access token: '.$helper->getMessage()."</p>\n\n";
         exit;
     }
     }
 
     $_SESSION['fb_access_token'] = (string) $accessToken;
+
     return $accessToken;
 }
 
@@ -98,7 +100,6 @@ function createFacebookNotificationForUser($userId, $url, $message)
     createFacebookNotificationForFacebookUser($facebookUserId, $url, $message);
 }
 
-
 function createFacebookNotificationForFacebookUser($facebookUserId, $url, $message)
 {
     if (!facebookIsEnabled()) {
@@ -115,10 +116,11 @@ function createFacebookNotificationForFacebookUser($facebookUserId, $url, $messa
         $fb->setDefaultAccessToken($appAccessToken);
     } catch (\Facebook\Exceptions\FacebookAuthenticationException $e) {
         insertStatistics('system', __FILE__, 'fb-auth-error', $e->getMessage());
+
         return false;
     }
-    $sendNotif = $fb->post('/' . $facebookUserId . '/notifications', array('href' => $url, 'template' => $message), $appAccessToken);
-  
+    $sendNotif = $fb->post('/'.$facebookUserId.'/notifications', ['href' => $url, 'template' => $message], $appAccessToken);
+
     if ($sendNotif->getHttpStatusCode() == 200) {
         return true;
     } else {
