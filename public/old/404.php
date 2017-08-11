@@ -1,11 +1,8 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -17,12 +14,9 @@ if (isset($_SESSION['is_logged_in']) || $_SESSION['db_is_logged_in'] == true) {
     exit;
 }
 
-
 // ~~~~~~~~~~ PRESENTATION ~~~~~~~~~~
 
-
-
-include('includes/header.php');
+include 'includes/header.php';
 ?>
 
 
@@ -50,4 +44,4 @@ include('includes/header.php');
       </div>
     </div>
       
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

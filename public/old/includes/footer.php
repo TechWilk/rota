@@ -1,7 +1,6 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime; /*
+/*
     This file is part of Church Rota.
 
     Copyright (C) 2011 David Bunce

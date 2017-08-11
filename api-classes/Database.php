@@ -2,45 +2,42 @@
 
 class Database
 {
-    private $db_host = "localhost";
-    private $db_user = "root";
-    private $db_pass = "local";
-    private $db_name = "database_name";
+    private $db_host = 'localhost';
+    private $db_user = 'root';
+    private $db_pass = 'local';
+    private $db_name = 'database_name';
 
-    private $db_prefix = "";
+    private $db_prefix = '';
 
     private static $con = false;
-    private $result = array();
+    private $result = [];
     private static $db_connection;
-
 
     public function __construct($config)
     {
         if (isset($config)) {
-            $this->db_host = $config["host"];
-            $this->db_user = $config["user"];
-            $this->db_pass = $config["pass"];
-            $this->db_name = $config["dbname"];
+            $this->db_host = $config['host'];
+            $this->db_user = $config['user'];
+            $this->db_pass = $config['pass'];
+            $this->db_name = $config['dbname'];
 
-            $this->db_prefix = $config["prefix"];
+            $this->db_prefix = $config['prefix'];
         }
         $this->connect();
     }
-
 
     public function __destruct()
     {
         $this->disconnect();
     }
 
-
   /**
-  * Initiate connection to database if not already connected
-  * returns bool
-  */
+   * Initiate connection to database if not already connected
+   * returns bool.
+   */
   public function connect()
   {
-      if (!Database::$con) {
+      if (!self::$con) {
           $this->db_connection = new PDO("mysql:host=$this->db_host;dbname=$this->db_name", $this->db_user, $this->db_pass);
       // set the PDO error mode to exception
       $this->db_connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -50,13 +47,14 @@ class Database
   }
 
   /**
-  * Initiate connection to database if not already connected
-  */
+   * Initiate connection to database if not already connected.
+   */
   public function disconnect()
   {
-      if (Database::$con) {
+      if (self::$con) {
           $this->db_connection = null;
-          Database::$con = false;
+          self::$con = false;
+
           return true;
       } else {
           return false;
@@ -91,7 +89,7 @@ class Database
           return false;
       }
 
-      $sql = "SELECT ";
+      $sql = 'SELECT ';
 
       $first = true;
       foreach ($columns as $column) {
@@ -99,16 +97,16 @@ class Database
               $first = false;
               $sql .= $column;
           } else {
-              $sql .= ", ";
+              $sql .= ', ';
               $sql .= $column;
           }
       }
 
-      $sql .= " FROM ";
+      $sql .= ' FROM ';
       $sql .= $table;
 
       if ($where) {
-          $sql .= " WHERE ";
+          $sql .= ' WHERE ';
 
           $first = true;
           foreach ($where as $condition) {
@@ -116,14 +114,14 @@ class Database
                   $first = false;
                   $sql .= $condition;
               } else {
-                  $sql .= " AND ";
+                  $sql .= ' AND ';
                   $sql .= $condition;
               }
           }
       }
 
       if ($order) {
-          $sql .= " ORDER BY ";
+          $sql .= ' ORDER BY ';
 
           $first = true;
           foreach ($order as $condition) {
@@ -131,7 +129,7 @@ class Database
                   $first = false;
                   $sql .= $condition;
               } else {
-                  $sql .= ", ";
+                  $sql .= ', ';
                   $sql .= $condition;
               }
           }
@@ -139,25 +137,23 @@ class Database
 
       $statement = $this->db_connection->prepare($sql);
       $statement->execute();
+
       return $statement;
   }
-  
-  
+
     public function select($returnClass, $table, $columns, $where = null, $order = null)
     {
         $statement = $this->selectStatement($table, $columns, $where, $order);
-    
+
         return $statement->fetchAll(PDO::FETCH_CLASS, $returnClass);
     }
-  
 
     public function selectSingle($returnClass, $table, $columns, $where = null)
     {
         $statement = $this->selectStatement($table, $columns, $where);
-    
+
         return $statement->fetchObject($returnClass);
     }
-
 
   /* SAMPLE EXPECTED DATA
   $data = [
@@ -183,31 +179,31 @@ class Database
       foreach ($data as $item) {
           if ($first) {
               $first = false;
-              $fields .= $item["field"];
-              $valuesPlaceholder .= ":" . $item["field"];
+              $fields .= $item['field'];
+              $valuesPlaceholder .= ':'.$item['field'];
           } else {
-              $fields .= ", " . $item["field"];
-              $valuesPlaceholder .= ", :" . $item["field"];
+              $fields .= ', '.$item['field'];
+              $valuesPlaceholder .= ', :'.$item['field'];
           }
 
-          if ($item["type"] == "s" || $item["type"] == "string") {
-              $types .= "s";
-          } elseif ($item["type"] == "i" || $item["type"] == "int" || $item["type"] == "integer") {
-              $types .= "i";
-          } elseif ($item["type"] == "bit" || $item["type"] == "bool" || $item["type"] == "boolean") {
-              $types .= "i";
-          } elseif ($item["type"] == "d" || $item["type"] == "double") {
-              $types .= "d";
-          } elseif ($item["type"] == "b" || $item["type"] == "blob") {
-              $types .= "b";
+          if ($item['type'] == 's' || $item['type'] == 'string') {
+              $types .= 's';
+          } elseif ($item['type'] == 'i' || $item['type'] == 'int' || $item['type'] == 'integer') {
+              $types .= 'i';
+          } elseif ($item['type'] == 'bit' || $item['type'] == 'bool' || $item['type'] == 'boolean') {
+              $types .= 'i';
+          } elseif ($item['type'] == 'd' || $item['type'] == 'double') {
+              $types .= 'd';
+          } elseif ($item['type'] == 'b' || $item['type'] == 'blob') {
+              $types .= 'b';
           } else {
               return false;
           }
       }
 
-      $statement = $this->db_connection->prepare("INSERT INTO ".$table." (" . $fields . ") VALUES (" . $valuesPlaceholder . ")");
+      $statement = $this->db_connection->prepare('INSERT INTO '.$table.' ('.$fields.') VALUES ('.$valuesPlaceholder.')');
       foreach ($data as $item) {
-          $statement->bindParam(':'.$item["field"], $item["value"]);
+          $statement->bindParam(':'.$item['field'], $item['value']);
       }
 
       if ($statement->execute()) {
@@ -217,12 +213,9 @@ class Database
       }
   }
 
-
   /**
-  *
-  * Use with caution: it is often better to archive items to prevent creating null references.
-  *
-  */
+   * Use with caution: it is often better to archive items to prevent creating null references.
+   */
   public function delete($table, $where)
   {
       $table = $this->addPrefix($table);
@@ -231,9 +224,9 @@ class Database
           return false;
       }
 
-      $sql = "DELETE FROM ";
+      $sql = 'DELETE FROM ';
       $sql .= $table;
-      $sql .= " WHERE ";
+      $sql .= ' WHERE ';
       foreach ($where as $condition) {
           $sql .= $condition;
       }
@@ -249,18 +242,16 @@ class Database
     }
   }
 
-
     public function update()
     {
     }
 
-
     private function addPrefix($table)
     {
-        $table = $this->db_prefix . $table;
+        $table = $this->db_prefix.$table;
+
         return $table;
     }
-
 
     private function tableExists($table)
     {
@@ -272,20 +263,19 @@ class Database
     {
         return $this->db_connection->quote($string);
     }
-  
 
     public function lastInsertId()
     {
         return $this->db_connection->lastInsertId();
     }
 
-
     public function count($table, $column, $where = null)
     {
         $columns = [
-      "COUNT(".$column.") AS count",
+      'COUNT('.$column.') AS count',
      ];
         $statement = $this->selectStatement($table, $columns, $where);
+
         return $statement->fetchObject()->count;
     }
 }

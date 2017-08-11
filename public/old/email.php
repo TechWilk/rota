@@ -1,7 +1,6 @@
-<?php namespace TechWilk\Rota;
+<?php
 
-use DateInterval;
-use DateTime;
+namespace TechWilk\Rota;
 
 /*
     This file is part of Church Rota.
@@ -23,8 +22,8 @@ use DateTime;
 */
 
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -36,7 +35,6 @@ if (isset($_SESSION['is_logged_in']) || $_SESSION['db_is_logged_in'] == true) {
     exit;
 }
 
-
 $action = $_GET['action'];
 $userRoleId = $_GET['userrole'];
 $eventId = $_GET['event'];
@@ -44,18 +42,17 @@ $eventId = $_GET['event'];
 $userId = filter_var($userId, FILTER_SANITIZE_NUMBER_INT);
 $eventId = filter_var($eventId, FILTER_SANITIZE_NUMBER_INT);
 
-
 switch ($action) {
-    case "individual":
+    case 'individual':
     if ($userRoleId && $eventId) {
-        echo "<p>Function not complete, please wait while we finish writing it.</p><p>Apologies for any inconvinence.</p>";
+        echo '<p>Function not complete, please wait while we finish writing it.</p><p>Apologies for any inconvinence.</p>';
     }
         break;
-    case "everyone":
-      echo "<p>Function not complete, please wait while we finish writing it.</p><p>Apologies for any inconvinence.</p>";
+    case 'everyone':
+      echo '<p>Function not complete, please wait while we finish writing it.</p><p>Apologies for any inconvinence.</p>';
         break;
   default:
-    echo "<p>Error: Insufficient parameters.</p>";
-    echo "<p>Please inform the system administrator</p>";
+    echo '<p>Error: Insufficient parameters.</p>';
+    echo '<p>Please inform the system administrator</p>';
     break;
 }

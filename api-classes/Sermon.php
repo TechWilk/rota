@@ -7,7 +7,7 @@ class Sermon
     public $notes; //comment
   public $bible_verse;
     protected $series; //eventGroup
- 
+
  public function __construct($name, $notes, $bible_verse, Series $series)
  {
      $this->name = $name;
@@ -15,7 +15,7 @@ class Sermon
      $this->bible_verse = $bible_verse;
      $this->series = $series;
  }
-  
+
     public function getSeries()
     {
         return $this->series;

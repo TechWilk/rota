@@ -1,8 +1,5 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 /*
     This file is part of Church Rota.
 
@@ -23,8 +20,8 @@ use DateTime;
 */
 
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -40,7 +37,6 @@ if (!isAdmin()) {
     header('Location: error.php?no=100&page='.basename($_SERVER['SCRIPT_FILENAME']));
     exit;
 }
-
 
 // If the form has been submitted, then we need to handle the data.
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -94,15 +90,12 @@ FROM cr_roles
 WHERE id = '$roleId'";
 $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
-while ($row =  mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
     $id = $row['id'];
     $roleName = $row['name'];
 }
 
-
-$formatting = "true";
-
-
+$formatting = 'true';
 
 $sqlPeople = "SELECT *,
 							CONCAT(u.firstName, ' ', u.lastName) AS name,
@@ -116,16 +109,9 @@ while ($viewPeople = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
     $users[] = $viewPeople;
 }
 
+// -------- Presentation ---------
 
-
-
-
-# -------- Presentation ---------
-
-
-
-
-include('includes/header.php');
+include 'includes/header.php';
 ?>
 
 
@@ -182,4 +168,4 @@ include('includes/header.php');
 	</div>
 
 
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

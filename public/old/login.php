@@ -1,10 +1,7 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // we must never forget to start the session
 session_start();
@@ -12,7 +9,7 @@ session_start();
 // check if user is logged in - if so, redirect to homepage
 
 if (isset($_SESSION['is_logged_in']) || $_SESSION['db_is_logged_in'] == true) {
-    header("Location: index.php");
+    header('Location: index.php');
 }
 
 function isPasswordCorrectUsingMD5WithUsername($username, $plainTextPassword)
@@ -20,9 +17,9 @@ function isPasswordCorrectUsingMD5WithUsername($username, $plainTextPassword)
     $username = mysqli_real_escape_string(db(), $username);
     $sql = "SELECT password FROM cr_users WHERE username = '$username'";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
-    
+
     $ob = mysqli_fetch_object($result);
-    
+
     $passwordHash = $ob->password;
 
     if (md5($plainTextPassword) == $passwordHash) {
@@ -31,7 +28,6 @@ function isPasswordCorrectUsingMD5WithUsername($username, $plainTextPassword)
         return false;
     }
 }
-
 
 // check login credentials
 
@@ -43,7 +39,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     // check number of attempts
 
     if (!numberOfLoginAttemptsIsOk($username, $_SERVER['REMOTE_ADDR'])) {
-        $message = "Too many failed attempts for your account. Please wait 15 minutes.";
+        $message = 'Too many failed attempts for your account. Please wait 15 minutes.';
         logFailedLoginAttempt($username, $_SERVER['REMOTE_ADDR']);
     }
 
@@ -51,33 +47,30 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 
     elseif (isPasswordCorrectWithUsername($username, $password)) {
         setSessionAndRedirect($username);
-        $message = "correct";
+        $message = 'correct';
     } elseif (isPasswordCorrectUsingMD5WithUsername($username, $password)) {
         updateDatabase(); // check for db updates
         $userId = getIdWithUsername($username);
         $_SESSION['userid'] = $userId; // allow to insert statistic
         forceChangePassword($userId, $password);
-        insertStatistics("user", __FILE__, "password updated to bcrypt on login", null, $_SERVER['HTTP_USER_AGENT']);
+        insertStatistics('user', __FILE__, 'password updated to bcrypt on login', null, $_SERVER['HTTP_USER_AGENT']);
         setSessionAndRedirect($username);
-        $message = "correct and updated";
+        $message = 'correct and updated';
     } else {
-        $message = "Username or password incorrect";
+        $message = 'Username or password incorrect';
         logFailedLoginAttempt($username, $_SERVER['REMOTE_ADDR']);
     }
 }
 
-
 if (isset($_GET['username'])) {
-    $username=$_GET['username'];
+    $username = $_GET['username'];
 } elseif (isset($_GET['loginname'])) {
-    $username=$_GET['loginname'];
+    $username = $_GET['loginname'];
 } elseif (!empty($username)) {
     $username = $username;
 } else {
-    $username="";
+    $username = '';
 }
-
-
 
 /* ---- Login page ---- */
 ?>
@@ -112,7 +105,7 @@ if (isset($_GET['username'])) {
             <label class="fa fa-lock" for="login__password"><span class="hidden">Password</span></label>
             <input name="password" id="login__password" type="password" class="form__input" placeholder="Password" required>
           </div>
-					<?php if (!empty($message)): echo "<p>".$message."</p>"; endif; ?>
+					<?php if (!empty($message)): echo '<p>'.$message.'</p>'; endif; ?>
           <div class="form__field">
             <input type="submit" value="Sign In">
           </div>

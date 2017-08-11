@@ -13,7 +13,7 @@ class EmailAddress
         if (filter_var(trim($email), FILTER_VALIDATE_EMAIL)) {
             $this->email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
         } else {
-            throw new InvalidArgumentException('Invalid email address: ' . $email);
+            throw new InvalidArgumentException('Invalid email address: '.$email);
         }
     }
 

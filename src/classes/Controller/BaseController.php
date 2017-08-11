@@ -2,11 +2,11 @@
 
 namespace TechWilk\Rota\Controller;
 
-use Psr\Container\ContainerInterface;
-use Slim\Views\Twig;
-use Slim\Interfaces\RouterInterface;
-use TechWilk\Rota\Authentication;
 use Monolog\Logger;
+use Psr\Container\ContainerInterface;
+use Slim\Interfaces\RouterInterface;
+use Slim\Views\Twig;
+use TechWilk\Rota\Authentication;
 
 class BaseController
 {

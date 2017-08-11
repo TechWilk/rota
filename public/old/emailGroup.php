@@ -1,8 +1,5 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 /*
     This file is part of Church Rota.
 
@@ -23,8 +20,8 @@ use DateTime;
 */
 
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -41,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $message = $_POST['message'];
 
     if (!isset($_POST['group'])) {
-        echo "You must select at least one group. Please try again.";
+        echo 'You must select at least one group. Please try again.';
         exit;
     }
 
@@ -53,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $statusMessage = '';
     $sent = sendGroupEmail($subject, $message, $groups);
     if ($sent === true) {
-        $statusMessage = "Sent successfully";
+        $statusMessage = 'Sent successfully';
     } else {
         foreach ($sent as $errorMessage) {
             $statusMessage .= '<p>'.$errorMessage.'</p>';
@@ -65,9 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     exit;
 }
 
-
-
-$sql = "SELECT
+$sql = 'SELECT
           g.id,
           g.name,
           COUNT(DISTINCT ur.userId) AS users
@@ -76,7 +71,7 @@ $sql = "SELECT
           INNER JOIN cr_roles r ON r.groupId = g.id
           INNER JOIN cr_userRoles ur ON ur.roleId = r.id
         GROUP BY
-          g.id";
+          g.id';
 $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 while ($ob = mysqli_fetch_object($result)) {
     $groups[] = $ob;
@@ -87,15 +82,9 @@ while ($ob = mysqli_fetch_object($result)) {
 $subject = getGroupEmailSubject();
 $message = getGroupEmailMessage();
 
-
-
-
-
 // ~~~~~~~~~~ PRESENTATION ~~~~~~~~~~
 
-
-
-include('includes/header.php');
+include 'includes/header.php';
 ?>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -142,7 +131,7 @@ include('includes/header.php');
 
               <div class="form-group">
                 <label class="form-content" for="message">Message to group members</label>
-                <textarea class="mceNoEditor form-control" rows="14" id="message" type="text" name="message"><?php echo $message;?></textarea>
+                <textarea class="mceNoEditor form-control" rows="14" id="message" type="text" name="message"><?php echo $message; ?></textarea>
               </div>
             </div>
             <div class="box-footer">
@@ -151,4 +140,4 @@ include('includes/header.php');
           </fieldset>
         </div>
       </form>
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

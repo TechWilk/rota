@@ -1,8 +1,5 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 /*
     This file is part of Church Rota.
 
@@ -23,8 +20,8 @@ use DateTime;
 */
 
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -34,19 +31,16 @@ $sessionUserId = $_SESSION['userid'];
 if (isset($_SESSION['is_logged_in']) || $_SESSION['db_is_logged_in'] == true) {
     // continue code
 } else {
-    header("Location: login.php");
+    header('Location: login.php');
 }
 
-
 $queryStringUser = getQueryStringForKey('user');
-
 
 // ensure user is allowed to see page
 
 if (!isAdmin() && $queryStringUser != $sessionUserId) {
-    header("Location: swaps.php?user=".$sessionUserId);
+    header('Location: swaps.php?user='.$sessionUserId);
 }
-
 
 // fetch swaps
 
@@ -56,17 +50,10 @@ if (isAdmin()) {
     $swaps = SwapQuery::create()->filterByAccepted(false)->filterByDeclined(false)->find(); // todo: where userId either in newUserRole / oldUserRole
 }
 
+    // ------ Presentation --------
 
-
-
-
-    # ------ Presentation --------
-
-
-
-
-$formatting = "light";
-include('includes/header.php');
+$formatting = 'light';
+include 'includes/header.php';
 ?>
 
 
@@ -95,7 +82,7 @@ include('includes/header.php');
           <div class="box box-primary">
             <div class="box-header with-border">
               <h2 class="box-title">
-                <a name="swap<?php echo $swap->getId() ?>" href="swap.php?swap=<?php echo $swap->getId() ?>"><?php echo $event->getName() != "" ? $event->getName() : "Requested swap" ?></a>
+                <a name="swap<?php echo $swap->getId() ?>" href="swap.php?swap=<?php echo $swap->getId() ?>"><?php echo $event->getName() != '' ? $event->getName() : 'Requested swap' ?></a>
               </h2>
             </div>
             <div class="box-body">
@@ -103,11 +90,11 @@ include('includes/header.php');
               <p>
                 <strong>
                   <s class="text-red">
-                    <?php echo $swap->getOldUserRole()->getUser()->getFirstName() . ' ' . $swap->getOldUserRole()->getUser()->getLastName() ?> (<?php echo $swap->getOldUserRole()->getRole()->getName() ?>)
+                    <?php echo $swap->getOldUserRole()->getUser()->getFirstName().' '.$swap->getOldUserRole()->getUser()->getLastName() ?> (<?php echo $swap->getOldUserRole()->getRole()->getName() ?>)
                   </s>
                   &#8594;
                   <span class="text-green">
-                    <?php echo $swap->getNewUserRole()->getUser()->getFirstName() . ' ' . $swap->getNewUserRole()->getUser()->getLastName() ?> (<?php echo $swap->getNewUserRole()->getRole()->getName() ?>)
+                    <?php echo $swap->getNewUserRole()->getUser()->getFirstName().' '.$swap->getNewUserRole()->getUser()->getLastName() ?> (<?php echo $swap->getNewUserRole()->getRole()->getName() ?>)
                   </span>
                 </strong>
               </p>
@@ -134,4 +121,4 @@ include('includes/header.php');
       </div>
 
 
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

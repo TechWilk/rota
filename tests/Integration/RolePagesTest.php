@@ -2,20 +2,20 @@
 
 namespace Tests\Integration;
 
+use TechWilk\Rota\Group;
+use TechWilk\Rota\Role;
 use TechWilk\Rota\User;
 use TechWilk\Rota\UserQuery;
-use TechWilk\Rota\Role;
-use TechWilk\Rota\Group;
 use TechWilk\Rota\UserRole;
 
 class RolePagesTest extends BaseTestCase
 {
     /**
-    * Ensure user is logged in before tests run
-    */
+     * Ensure user is logged in before tests run.
+     */
     public static function setUpBeforeClass()
     {
-        $user = new User;
+        $user = new User();
         $user->setEmail('test@example.com');
         $user->setFirstName('Test');
         $user->setLastName('User');
@@ -28,19 +28,19 @@ class RolePagesTest extends BaseTestCase
         $group->setDescription('Technical Team');
         $group->save();
 
-        $role = new Role;
+        $role = new Role();
         $role->setName('Sound');
         $role->setDescription('Live sound operator');
         $role->setGroup($group);
         $role->save();
 
-        $role = new Role;
+        $role = new Role();
         $role->setName('Projection');
         $role->setDescription('Live visuals operator');
         $role->setGroup($group);
         $role->save();
 
-        $userRole = new UserRole;
+        $userRole = new UserRole();
         $userRole->setUser($user);
         $userRole->setRole($role);
         $userRole->save();
@@ -50,8 +50,8 @@ class RolePagesTest extends BaseTestCase
     }
 
     /**
-    * Logout user is after tests run
-    */
+     * Logout user is after tests run.
+     */
     public static function tearDownAfterClass()
     {
         unset($_SESSION['userId']);
@@ -62,13 +62,13 @@ class RolePagesTest extends BaseTestCase
         $response = $this->runApp('GET', '/user/'.$_SESSION['userId'].'/roles');
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertContains('Sound', (string)$response->getBody());
-        $this->assertContains('Save', (string)$response->getBody());
+        $this->assertContains('Sound', (string) $response->getBody());
+        $this->assertContains('Save', (string) $response->getBody());
     }
 
     public function testPostUserRemoveAllAssignedRoles()
     {
-        $response = $this->runApp('POST', '/user/'.$_SESSION['userId'].'/roles', [ ]);
+        $response = $this->runApp('POST', '/user/'.$_SESSION['userId'].'/roles', []);
 
         $this->assertEquals(303, $response->getStatusCode());
 
@@ -80,7 +80,7 @@ class RolePagesTest extends BaseTestCase
 
     public function testPostUserAddAssignedProjectionRole()
     {
-        $response = $this->runApp('POST', '/user/'.$_SESSION['userId'].'/roles', [ 'role' => [1, 2] ]);
+        $response = $this->runApp('POST', '/user/'.$_SESSION['userId'].'/roles', ['role' => [1, 2]]);
 
         $this->assertEquals(303, $response->getStatusCode());
 

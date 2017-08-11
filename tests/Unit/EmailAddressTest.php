@@ -9,38 +9,38 @@ class EmailAddressTest extends BaseTestCase
     public function providerTestValidEmails()
     {
         return [
-      [ 'test@example.com' ],
-      [ 'no-password@email.com' ],
+      ['test@example.com'],
+      ['no-password@email.com'],
     ];
     }
 
   /**
-  * @param string $email
-  *
-  * @dataProvider providerTestValidEmails
-  */
+   * @param string $email
+   *
+   * @dataProvider providerTestValidEmails
+   */
   public function testValidEmails($email)
   {
       $emailObject = new EmailAddress($email);
 
-      $this->assertEquals((string)$emailObject, $email);
+      $this->assertEquals((string) $emailObject, $email);
   }
 
     public function providerTestInvalidEmails()
     {
         return [
-      [ 'not-an-email' ],
-      [ 'another-not-an-email' ],
-      [ '' ],
+      ['not-an-email'],
+      ['another-not-an-email'],
+      [''],
     ];
     }
 
   /**
-  * @param string $email
-  * @expectedException        InvalidArgumentException
-  *
-  * @dataProvider providerTestInvalidEmails
-  */
+   * @param string $email
+   * @expectedException        InvalidArgumentException
+   *
+   * @dataProvider providerTestInvalidEmails
+   */
   public function testInvalidEmails($email)
   {
       $emailObject = new EmailAddress($email);

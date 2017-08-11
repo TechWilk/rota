@@ -2,15 +2,13 @@
 
 namespace TechWilk\Rota\Controller;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TechWilk\Rota\Crypt;
+use TechWilk\Rota\EmailAddress;
+use TechWilk\Rota\RoleQuery;
 use TechWilk\Rota\User;
 use TechWilk\Rota\UserQuery;
-use TechWilk\Rota\UserRole;
-use TechWilk\Rota\UserRoleQuery;
-use TechWilk\Rota\RoleQuery;
-use TechWilk\Rota\EmailAddress;
 
 class UserController extends BaseController
 {
@@ -20,7 +18,7 @@ class UserController extends BaseController
         $users = UserQuery::create()->orderByLastName()->orderByFirstName()->find();
         $roles = RoleQuery::create()->orderByName()->find();
 
-        return $this->view->render($response, 'users.twig', [ "users" => $users, "roles" => $roles ]);
+        return $this->view->render($response, 'users.twig', ['users' => $users, 'roles' => $roles]);
     }
 
     public function postUser(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -61,7 +59,7 @@ class UserController extends BaseController
 
         $u->save();
 
-        $returnUrl = $this->router->pathFor($returnPath, [ 'id' => $u->getId() ]);
+        $returnUrl = $this->router->pathFor($returnPath, ['id' => $u->getId()]);
 
         return $response
             ->withStatus(303)
@@ -75,7 +73,7 @@ class UserController extends BaseController
         $u = $this->auth->currentUser();
 
         if (!is_null($u)) {
-            return $this->view->render($response, 'user.twig', [ "user" => $u ]);
+            return $this->view->render($response, 'user.twig', ['user' => $u]);
         } else {
             return $this->view->render($response, 'error.twig');
         }
@@ -84,6 +82,7 @@ class UserController extends BaseController
     public function getNewUserForm(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->info("Fetch user GET '/user/new'");
+
         return $this->view->render($response, 'user-edit.twig');
     }
 
@@ -93,7 +92,7 @@ class UserController extends BaseController
         $u = UserQuery::create()->findPK($args['id']);
 
         if (!is_null($u)) {
-            return $this->view->render($response, 'user-edit.twig', [ "user" => $u ]);
+            return $this->view->render($response, 'user-edit.twig', ['user' => $u]);
         } else {
             return $this->view->render($response, 'error.twig');
         }
@@ -105,7 +104,7 @@ class UserController extends BaseController
         $u = UserQuery::create()->findPK($args['id']);
 
         if (!is_null($u)) {
-            return $this->view->render($response, 'user.twig', [ "user" => $u ]);
+            return $this->view->render($response, 'user.twig', ['user' => $u]);
         } else {
             return $this->view->render($response, 'error.twig');
         }
@@ -117,7 +116,7 @@ class UserController extends BaseController
         $u = UserQuery::create()->findPK($args['id']);
 
         if (!is_null($u)) {
-            return $this->view->render($response, 'user-widget.twig', [ "user" => $u ]);
+            return $this->view->render($response, 'user-widget.twig', ['user' => $u]);
         } else {
             return $this->view->render($response, 'error.twig');
         }
@@ -129,7 +128,7 @@ class UserController extends BaseController
         $u = UserQuery::create()->findPK($args['id']);
 
         if (!is_null($u)) {
-            return $this->view->render($response, 'user-password.twig', [ "user" => $u ]);
+            return $this->view->render($response, 'user-password.twig', ['user' => $u]);
         } else {
             return $this->view->render($response, 'error.twig');
         }
@@ -147,19 +146,21 @@ class UserController extends BaseController
 
         $u = UserQuery::create()->findPK($args['id']);
 
-        if ($new == "" || $new != $confirm) {
-            $message = "New passwords did not match.";
-            return $this->view->render($response, 'user-password.twig', [ "user" => $u, "message" => $message ]);
+        if ($new == '' || $new != $confirm) {
+            $message = 'New passwords did not match.';
+
+            return $this->view->render($response, 'user-password.twig', ['user' => $u, 'message' => $message]);
         }
 
         if (!$u->checkPassword($existing)) {
-            $message = "Existing password not correct.";
-            return $this->view->render($response, 'user-password.twig', [ "user" => $u, "message" => $message ]);
+            $message = 'Existing password not correct.';
+
+            return $this->view->render($response, 'user-password.twig', ['user' => $u, 'message' => $message]);
         }
 
         $u->setPassword($new);
         $u->save();
 
-        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('user', [ 'id' => $u->getId() ]));
+        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('user', ['id' => $u->getId()]));
     }
 }

@@ -1,11 +1,8 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -20,7 +17,7 @@ if (isset($_SESSION['is_logged_in']) || $_SESSION['db_is_logged_in'] == true) {
 $action = $_GET['action'];
 
 // ensure user is accessing correct data
-if (isAdmin() && isset($_GET["id"])) {
+if (isAdmin() && isset($_GET['id'])) {
     $id = $_GET['id'];
     $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
 } else {
@@ -30,15 +27,15 @@ if (isAdmin() && isset($_GET["id"])) {
 // link or unlink
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // ensure user is accessing correct data
-  if (isAdmin() && isset($_POST["id"])) {
+  if (isAdmin() && isset($_POST['id'])) {
       $id = $_POST['id'];
       $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
   } else {
       $id = $_SESSION['userid'];
   }
-  
+
     $platform = strtolower($_POST['platform']);
-  
+
     switch ($_POST['action']) {
     case 'link':
       switch ($platform) {
@@ -50,34 +47,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       break;
     case 'unlink':
       removeSocialAuthFromUserWithId($id, $platform);
-      createNotificationForUser($id, ucfirst($platform) . " account unlinked", "You have successfully unlinked your Facebook account.  Login via Facebook is now disabled for your account.  Feel free to relink your account at any time.", "account", "linkSocialAuth.php");
+      createNotificationForUser($id, ucfirst($platform).' account unlinked', 'You have successfully unlinked your Facebook account.  Login via Facebook is now disabled for your account.  Feel free to relink your account at any time.', 'account', 'linkSocialAuth.php');
       break;
 
     default:
-      # code...
+      // code...
       break;
   }
 }
 
-
-
 // list of possible social account links (names used as platform names in database)
 $possibleAccounts = null;
 if ($config['auth']['facebook']['enabled'] == true) {
-    $possibleAccounts[] = "Facebook";
+    $possibleAccounts[] = 'Facebook';
 }
 
+// ----------- Presentation ------------
 
-
-
-
-# ----------- Presentation ------------
-
-
-
-
-
-include('includes/header.php');
+include 'includes/header.php';
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -132,4 +119,4 @@ include('includes/header.php');
 <?php endforeach; ?>
     
 
-<?php include('includes/footer.php');
+<?php include 'includes/footer.php';

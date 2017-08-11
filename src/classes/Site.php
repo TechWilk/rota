@@ -14,6 +14,7 @@ class Site
         if (!isset($this->settings)) {
             $this->settings = SettingsQuery::create()->findOne();
         }
+
         return $this->settings;
     }
 
@@ -28,6 +29,7 @@ class Site
                                         ->distinct()
                                         ->find();
         }
+
         return $this->menu;
     }
 
@@ -35,10 +37,11 @@ class Site
     {
         $http = isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off' ? 'https' : 'http';
         $hostname = $_SERVER['HTTP_HOST'];
+
         return [
-            'base' => $http . '://' . $hostname,
+            'base'     => $http.'://'.$hostname,
             'protocol' => $http,
-            'host' => $hostname,
+            'host'     => $hostname,
         ];
     }
 }

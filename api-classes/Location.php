@@ -6,13 +6,12 @@ class Location
     public $name;
     public $address;
 
-    protected $db_table = "locations";
+    protected $db_table = 'locations';
 
     public function getId()
     {
         return $this->id;
     }
-
 
     public function createInDb(Database $db)
     {
@@ -21,8 +20,8 @@ class Location
         }
 
         $data = [
-      [ "field" => "name", "type" => "string", "value" => $this->name ],
-      [ "field" => "address", "type" => "string", "value" => $this->address ],
+      ['field' => 'name', 'type' => 'string', 'value' => $this->name],
+      ['field' => 'address', 'type' => 'string', 'value' => $this->address],
     ];
 
         $db->insert($this->db_table, $data);
@@ -31,18 +30,17 @@ class Location
 
         return true;
     }
- 
-  
+
     public function DeleteFromDbWithId(Database $db, $id = null)
     {
         if ($id == null) {
             $id = $this->id;
         }
 
-        $whereCondition = "id = " . $id;
-        $where = array(
+        $whereCondition = 'id = '.$id;
+        $where = [
       $whereCondition,
-    );
+    ];
 
         if ($db->delete($this->db_table, $where)) {
             return true;
@@ -51,28 +49,27 @@ class Location
         }
     }
 
-
     public function getFromDbWithId(Database $db, $id = null)
     {
         if ($id == null) {
             $id = $this->id;
         }
         if ($id == null) {
-            throw new Exception("Location id cannot be null");
+            throw new Exception('Location id cannot be null');
         }
 
         $columns = [
-      "id",
-      "name",
-      "address",
+      'id',
+      'name',
+      'address',
     ];
 
-        $whereCondition = "id = " . $id;
-        $where = array(
+        $whereCondition = 'id = '.$id;
+        $where = [
       $whereCondition,
-    );
+    ];
 
-        $result = $db->selectSingle("Location", $this->db_table, $columns, $where);
+        $result = $db->selectSingle('Location', $this->db_table, $columns, $where);
 
         $this->id = $result->id;
         $this->name = $result->name;

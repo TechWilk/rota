@@ -2,21 +2,19 @@
 
 namespace TechWilk\Rota\Controller;
 
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use TechWilk\Rota\EventQuery;
-use TechWilk\Rota\EventTypeQuery;
-use TechWilk\Rota\EventSubTypeQuery;
-use TechWilk\Rota\EventPerson;
-use TechWilk\Rota\Event;
-use TechWilk\Rota\LocationQuery;
-use TechWilk\Rota\UserRoleQuery;
-use TechWilk\Rota\UserQuery;
-use TechWilk\Rota\GroupQuery;
-use TechWilk\Rota\Role;
-use TechWilk\Rota\Group;
-use TechWilk\Rota\EventPersonQuery;
 use DateTime;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TechWilk\Rota\Event;
+use TechWilk\Rota\EventPerson;
+use TechWilk\Rota\EventPersonQuery;
+use TechWilk\Rota\EventQuery;
+use TechWilk\Rota\EventSubTypeQuery;
+use TechWilk\Rota\EventTypeQuery;
+use TechWilk\Rota\GroupQuery;
+use TechWilk\Rota\LocationQuery;
+use TechWilk\Rota\UserQuery;
+use TechWilk\Rota\UserRoleQuery;
 
 class EventController extends BaseController
 {
@@ -25,7 +23,7 @@ class EventController extends BaseController
         $this->logger->info("Fetch event GET '/events'");
         $events = EventQuery::create()->filterByDate(['min' => new DateTime()])->filterByRemoved(false)->orderByDate('asc')->find();
 
-        return $this->view->render($response, 'events.twig', [ "events" => $events ]);
+        return $this->view->render($response, 'events.twig', ['events' => $events]);
     }
 
     public function getAllEventsWithType(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -36,7 +34,7 @@ class EventController extends BaseController
 
         $events = EventQuery::create()->filterByDate(['min' => new DateTime()])->filterByRemoved(false)->filterByEventType($eventType)->orderByDate('asc')->find();
 
-        return $this->view->render($response, 'events.twig', [ "events" => $events ]);
+        return $this->view->render($response, 'events.twig', ['events' => $events]);
     }
 
     public function getAllEventsWithSubType(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -47,7 +45,7 @@ class EventController extends BaseController
 
         $events = EventQuery::create()->filterByDate(['min' => new DateTime()])->filterByRemoved(false)->filterByEventSubType($eventType)->orderByDate('asc')->find();
 
-        return $this->view->render($response, 'events.twig', [ "events" => $events ]);
+        return $this->view->render($response, 'events.twig', ['events' => $events]);
     }
 
     public function postEvent(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -73,7 +71,7 @@ class EventController extends BaseController
         $e->setComment($data['comment']);
         $e->save();
 
-        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('event', [ 'id' => $e->getId() ]));
+        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('event', ['id' => $e->getId()]));
     }
 
     public function getNewEventForm(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -83,7 +81,7 @@ class EventController extends BaseController
         $et = EventTypeQuery::create()->orderByName()->find();
         $est = EventSubTypeQuery::create()->orderByName()->find();
 
-        return $this->view->render($response, 'event-edit.twig', [ "locations" => $l, "eventtypes" => $et, "eventsubtypes" => $est ]);
+        return $this->view->render($response, 'event-edit.twig', ['locations' => $l, 'eventtypes' => $et, 'eventsubtypes' => $est]);
     }
 
     public function getEvent(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -92,7 +90,7 @@ class EventController extends BaseController
         $e = EventQuery::create()->findPK($args['id']);
 
         if (!is_null($e)) {
-            return $this->view->render($response, 'event.twig', [ "event" => $e ]);
+            return $this->view->render($response, 'event.twig', ['event' => $e]);
         } else {
             return $this->view->render($response, 'error.twig');
         }
@@ -107,7 +105,7 @@ class EventController extends BaseController
         $est = EventSubTypeQuery::create()->orderByName()->find();
 
         if (!is_null($e)) {
-            return $this->view->render($response, 'event-edit.twig', [ "event" => $e, "locations" => $l, "eventtypes" => $et, "eventsubtypes" => $est ]);
+            return $this->view->render($response, 'event-edit.twig', ['event' => $e, 'locations' => $l, 'eventtypes' => $et, 'eventsubtypes' => $est]);
         } else {
             return $this->view->render($response, 'error.twig');
         }
@@ -122,7 +120,7 @@ class EventController extends BaseController
         $est = EventSubTypeQuery::create()->orderByName()->find();
 
         if (!is_null($e)) {
-            return $this->view->render($response, 'event-edit.twig', [ "copy" => true, "event" => $e, "locations" => $l, "eventtypes" => $et, "eventsubtypes" => $est ]);
+            return $this->view->render($response, 'event-edit.twig', ['copy' => true, 'event' => $e, 'locations' => $l, 'eventtypes' => $et, 'eventsubtypes' => $est]);
         } else {
             return $this->view->render($response, 'error.twig');
         }
@@ -135,7 +133,7 @@ class EventController extends BaseController
         $ur = UserRoleQuery::create()->find();
 
         if (!is_null($e)) {
-            return $this->view->render($response, 'event-assign.twig', [ "event" => $e, "userroles" => $ur ]);
+            return $this->view->render($response, 'event-assign.twig', ['event' => $e, 'userroles' => $ur]);
         } else {
             return $this->view->render($response, 'error.twig');
         }
@@ -184,7 +182,7 @@ class EventController extends BaseController
             }
         }
 
-        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('event', [ 'id' => $eventId ]));
+        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('event', ['id' => $eventId]));
     }
 
     public function getAllEventsToPrint(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -211,6 +209,6 @@ class EventController extends BaseController
             ->distinct()
             ->find();
 
-        return $this->view->render($response, 'events-print.twig', [ 'events' => $events, 'groups' => $groups, 'users' => $users ]);
+        return $this->view->render($response, 'events-print.twig', ['events' => $events, 'groups' => $groups, 'users' => $users]);
     }
 }

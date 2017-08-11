@@ -1,8 +1,5 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 /*
     This file is part of Church Rota.
 
@@ -23,12 +20,12 @@ use DateTime;
 */
 
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
- 
+
 if (isset($_SESSION['is_logged_in']) || $_SESSION['db_is_logged_in'] == true) {
     // Just continue the code
 } else {
@@ -45,20 +42,21 @@ $eventID = $_GET['id'];
 
 function detectBrowserLanguage()
 {
-    $langcode = explode(";", $_SERVER['HTTP_ACCEPT_LANGUAGE']);
-    $langcode = explode(",", $langcode['0']);
+    $langcode = explode(';', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+    $langcode = explode(',', $langcode['0']);
+
     return $langcode['0'];
 }
 
 $language = detectBrowserLanguage();
 
-$sqlSettings = "select * from cr_settings";
+$sqlSettings = 'select * from cr_settings';
 $resultSettings = mysqli_query(db(), $sqlSettings) or die(mysqli_error(db()));
 $rowSettings = mysqli_fetch_array($resultSettings, MYSQLI_ASSOC);
 
-if ($action == "update") {
+if ($action == 'update') {
     //if ($language='de-de')
-        if ($rowSettings['lang_locale']=="en_GB") {
+        if ($rowSettings['lang_locale'] == 'en_GB') {
             executeDbSql("update cr_settings set lang_locale = 'de_DE'");                     // de_DE
             executeDbSql("update cr_settings set time_format_long = '%A, %e. %B %Y, %R Uhr, KW%V'"); // de_DE: %A, %e. %B %Y, %R Uhr, KW%V
             executeDbSql("update cr_settings set time_format_normal = '%d.%m.%Y %H:%M '"); // de_DE: %d.%m.%Y %H:%M
@@ -68,7 +66,7 @@ if ($action == "update") {
             executeDbSql("update cr_settings set overviewemail = '{{Gottesdienst-Planung [MONTH] [YEAR]}}\r\nHallo zusammen,\r\n\r\nanbei die Gottesdienst-Planung fuer [MONTH] [YEAR]\r\n\r\n[OVERVIEW]\r\n\r\nBitte fruehzeitig Bescheid geben, wenn etwas NICHT passt, ansonsten gehe ich davon aus, dass ihr wie geplant koennt.\r\n\r\nAlles Gute und Gottes Segen f�r Euch und Euren Dienst.\r\nEuer Gottesdienst Orga-Team'");
         }
         //else
-        if ($rowSettings['lang_locale']=="de_DE") {
+        if ($rowSettings['lang_locale'] == 'de_DE') {
             executeDbSql("update cr_settings set lang_locale = 'en_GB'");                     // de_DE
             executeDbSql("update cr_settings set time_format_long = '%A, %B %e @ %I:%M %p'"); // de_DE: %A, %e. %B %Y, %R Uhr, KW%V
             executeDbSql("update cr_settings set time_format_normal = '%m/%d/%y %I:%M %p'"); // de_DE: %d.%m.%Y %H:%M
@@ -79,31 +77,28 @@ if ($action == "update") {
         }
 
         //notifyInfo(__FILE__,"settings updated",$_SESSION['userid']);
-        
-        $sqlSettings = "select * from cr_settings";
+
+        $sqlSettings = 'select * from cr_settings';
     $resultSettings = mysqli_query(db(), $sqlSettings) or die(mysqli_error(db()));
     $rowSettings = mysqli_fetch_array($resultSettings, MYSQLI_ASSOC);
-        
-    $updateNotification = "Settings updated successfully to: " . $rowSettings['lang_locale'] ." <br>&nbsp;<br>";
+
+    $updateNotification = 'Settings updated successfully to: '.$rowSettings['lang_locale'].' <br>&nbsp;<br>';
 }
 
+$formatting = 'true';
 
-
-
-$formatting = "true";
-
-include('includes/header.php');
+include 'includes/header.php';
 ?>
 <div class="elementBackground">
 <h2>Optional Database Updates</h2>	
 	<hr>
 	This page has only beta status. <br>Please do only use it in testing environments!
 	<hr>
-	<?php echo "Your web browser identifies your language as: " . $language;?><br>
-	<?php echo "Church Rota is set to use: " . $rowSettings['lang_locale'];?><br>&nbsp;<br>
+	<?php echo 'Your web browser identifies your language as: '.$language; ?><br>
+	<?php echo 'Church Rota is set to use: '.$rowSettings['lang_locale']; ?><br>&nbsp;<br>
 	
 <?php
-if ($updateNotification == "") {
+if ($updateNotification == '') {
     ?>
 	
 	Do you want to update your mail templates and date settings accordingly?
@@ -120,4 +115,4 @@ if ($updateNotification == "") {
     }?>	
 </div>	
 		
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

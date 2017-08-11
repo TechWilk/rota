@@ -1,8 +1,5 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 /*
     This file is part of Church Rota.
 
@@ -23,8 +20,8 @@ use DateTime;
 */
 
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -53,20 +50,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $sentSuccess = notifyOverview($subject, $message);
 }
 
-
-$overviewArr = notifyOverview("", "");
-$queryRcpt="SELECT COUNT(email) AS count FROM cr_users WHERE isOverviewRecipient = 1";
+$overviewArr = notifyOverview('', '');
+$queryRcpt = 'SELECT COUNT(email) AS count FROM cr_users WHERE isOverviewRecipient = 1';
 $resultRcpt = mysqli_query(db(), $queryRcpt) or die(mysqli_error(db()));
 $rowRcpt = mysqli_fetch_array($resultRcpt, MYSQLI_ASSOC);
-$rowRcptCnt = $rowRcpt["count"];
-$hint = "This message will be sent to ALL users flagged as \"Overview Recipient\".";
-$title = "Rota Overview";
+$rowRcptCnt = $rowRcpt['count'];
+$hint = 'This message will be sent to ALL users flagged as "Overview Recipient".';
+$title = 'Rota Overview';
 
-$formatting = "true";
+$formatting = 'true';
 
-
-
-include('includes/header.php');
+include 'includes/header.php';
 ?>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -93,7 +87,7 @@ include('includes/header.php');
 			<div class="box-header with-border">
 				<h2 class="box-title"><?php echo $title; ?></h2>
 			</div>
-		  <?php if ($sentSuccess == ""): ?>
+		  <?php if ($sentSuccess == ''): ?>
 			<form action="#" method="post" id="settings">
 				<fieldset>
 					<div class="box-body">
@@ -101,16 +95,16 @@ include('includes/header.php');
 
 						<div class="form-group">
 							<label class="form-content" for="subject">Subject:</label>
-							<input class="form-control" name="subject" id="subject" type="text" value="<?php echo $overviewArr[0];?>"  />
+							<input class="form-control" name="subject" id="subject" type="text" value="<?php echo $overviewArr[0]; ?>"  />
 						</div>
 
 						<div class="form-group">
 							<label class="form-content" for="message">Message to <?php echo $rowRcptCnt; ?> user/s:</label>
-							<textarea class="mceNoEditor form-control" rows="14" id="message" type="text" name="message"><?php echo $overviewArr[1];?></textarea>
+							<textarea class="mceNoEditor form-control" rows="14" id="message" type="text" name="message"><?php echo $overviewArr[1]; ?></textarea>
 						</div>
 					</div>
 					<div class="box-footer">
-						<?php if ($action == "") {
+						<?php if ($action == '') {
     ?>
 						<input class="btn btn-primary" type="submit" value="Send email" class="settings" />
 						<?php
@@ -121,10 +115,10 @@ include('includes/header.php');
 
 		  <?php
             else:
-                echo '<div class="box-body">' . $sentSuccess . '</div>';
+                echo '<div class="box-body">'.$sentSuccess.'</div>';
             endif;
             ?>
 				</div>
 			</div>
 
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

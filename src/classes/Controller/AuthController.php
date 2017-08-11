@@ -2,11 +2,11 @@
 
 namespace TechWilk\Rota\Controller;
 
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use TechWilk\Rota\EmailAddress;
 use Exception;
 use InvalidArgumentException;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TechWilk\Rota\EmailAddress;
 
 class AuthController extends BaseController
 {
@@ -29,14 +29,14 @@ class AuthController extends BaseController
         $auth = $this->auth;
         $resetPasswordUrl = $auth->getResetPasswordUrl();
 
-        return $this->view->render($response->withStatus(401), 'login.twig', [ 'reset_password_url' => $resetPasswordUrl ]);
+        return $this->view->render($response->withStatus(401), 'login.twig', ['reset_password_url' => $resetPasswordUrl]);
     }
 
     public function postLogin(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->info("Login POST '/login'");
 
-        $message = "Username or password incorrect.";
+        $message = 'Username or password incorrect.';
         $data = $request->getParsedBody();
         $auth = $this->auth;
         $resetPasswordUrl = $auth->getResetPasswordUrl();
@@ -48,7 +48,7 @@ class AuthController extends BaseController
         }
         $password = $data['password'];
 
-        if ($email == "" || $password == "") {
+        if ($email == '' || $password == '') {
             return $this->view->render($response->withStatus(401), 'login.twig', ['message' => $message, 'reset_password_url' => $resetPasswordUrl]);
         }
 
@@ -58,14 +58,16 @@ class AuthController extends BaseController
                 if (isset($_SESSION['urlRedirect'])) {
                     $url = $_SESSION['urlRedirect'];
                     unset($_SESSION['urlRedirect']);
+
                     return $response->withStatus(303)->withHeader('Location', $url);
                 }
+
                 return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('home'));
             }
         } catch (Exception $e) {
-            $message = "Too many failed login attempts. Please try again in 15 minutes.";
+            $message = 'Too many failed login attempts. Please try again in 15 minutes.';
         }
-        return $this->view->render($response->withStatus(401), 'login.twig', ['username' => $email, 'message' => $message, 'reset_password_url' => $resetPasswordUrl ]);
-    }
 
+        return $this->view->render($response->withStatus(401), 'login.twig', ['username' => $email, 'message' => $message, 'reset_password_url' => $resetPasswordUrl]);
+    }
 }
