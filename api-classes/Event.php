@@ -5,7 +5,7 @@ class Event
     protected $id;
     public $name;
     public $notes; //comment
-  public $datetime;
+    public $datetime;
 
     protected $sermon;
 
@@ -24,7 +24,7 @@ class Event
 
     protected $rehersals; // array of Rehersal
 
-  protected $deleted = false;
+    protected $deleted = false;
 
     protected $db_table = 'events';
 
@@ -124,6 +124,7 @@ class Event
             $message .= ' or sub_type ('.$this->subType.')';
             $message .= ' or location ('.$this->location.')';
             $message .= ' cannot be empty.';
+
             throw new Exception($message);
         }
 

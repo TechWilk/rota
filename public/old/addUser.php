@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $roles = $_POST['roles'];
 
-  // sanitise checkbox
+    // sanitise checkbox
     $isAdminLocal = isset($_POST['isAdmin']) ? '1' : '0';
     $userIsOverviewRecipient = isset($_POST['isOverviewRecipient']) ? '1' : '0';
     $userisBandAdmin = isset($_POST['isBandAdmin']) ? '1' : '0';
@@ -132,9 +132,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (isset($roles)) {
                 if ($action == 'edit') {
                     //$sql2 = "SELECT *
-                //	FROM cr_groups WHERE groupID != 2 AND groupID IN (SELECT groupID FROM cr_skills WHERE cr_skills.groupID = cr_groups.groupID AND cr_skills.userId = '$userId') ORDER BY groupID";
+                    //	FROM cr_groups WHERE groupID != 2 AND groupID IN (SELECT groupID FROM cr_skills WHERE cr_skills.groupID = cr_groups.groupID AND cr_skills.userId = '$userId') ORDER BY groupID";
 
-                $sql2 = "SELECT *,
+                    $sql2 = "SELECT *,
 								r.id AS roleId,
 								r.name AS name,
 								r.description AS description
@@ -162,11 +162,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                         foreach ($deletearray as $role) {
                             if (!(EventQuery::create()->useEventPersonQuery()->useUserRoleQuery()->filterByRoleId($role)->endUse()->endUse()->count() > 0)) { // don't remove if role is used in event
-                            removeUserRole($userId, $role);
+                                removeUserRole($userId, $role);
                             }
                         }
                     }
-                // Otherwise inserting from scratch
+                    // Otherwise inserting from scratch
                 } else {
                     foreach ($roles as $role) {
                         addUserRole($userId, $role);
@@ -269,8 +269,7 @@ if (isset($action) && $action != 'create') {
                     }
                     $isCompromised = false;
                 } else {
-                    // if isAdmin() == true
-                ?>
+                    // if isAdmin() == true ?>
           <div class="form-group">
       			<label for="firstname">First name:</label>
       			<input class="form-control" name="firstname" id="firstname" type="text" value="<?php echo $firstname; ?>" placeholder="Enter first name" />
@@ -380,6 +379,7 @@ if (isset($action) && $action != 'create') {
           	<?php 
 
                     $usersRoles = [];
+
                     try {
                         foreach ($userRoles as $ur) {
                             $usersRoleIds[] = $ur->getRoleId();

@@ -109,10 +109,10 @@ switch ($action) {
 
 if (!empty($eventId)) {
     // ensure user is logged in before allowing creation of swap
-  if (!(isset($_SESSION['is_logged_in']) || $_SESSION['db_is_logged_in'] == true)) {
-      $_SESSION['redirectUrl'] = siteSettings()->getSiteUrl().'/swap.php?event='.$eventId;
-      header('Location: login.php');
-  }
+    if (!(isset($_SESSION['is_logged_in']) || $_SESSION['db_is_logged_in'] == true)) {
+        $_SESSION['redirectUrl'] = siteSettings()->getSiteUrl().'/swap.php?event='.$eventId;
+        header('Location: login.php');
+    }
     $createSwap = true;
 
     $numberOfRoles = numberOfRolesOfUserAtEvent($sessionUserID, $eventId);

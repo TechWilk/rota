@@ -234,6 +234,7 @@ function hashPassword($plainTextPassword)
 function isPasswordCorrectWithId($userId, $plainTextPassword)
 {
     $userId = filter_var($userId, FILTER_SANITIZE_NUMBER_INT);
+
     try {
         $user = UserQuery::create()->findPK($userId);
         if (is_a($user, 'User')) {

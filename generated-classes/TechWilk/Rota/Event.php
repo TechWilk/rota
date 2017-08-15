@@ -16,19 +16,19 @@ use TechWilk\Rota\Base\Event as BaseEvent;
 class Event extends BaseEvent
 {
     /**
-   * Get array of userroles currently assigned to the event.
-   *
-   * @return array of UserRole() objects
-   */
-  public function getCurrentUserRoles()
-  {
-      $eventPeople = $this->getEventPeople();
+     * Get array of userroles currently assigned to the event.
+     *
+     * @return array of UserRole() objects
+     */
+    public function getCurrentUserRoles()
+    {
+        $eventPeople = $this->getEventPeople();
 
-      $userRoles = [];
-      foreach ($eventPeople as $eventPerson) {
-          $userRoles[] = $eventPerson->getUserRole();
-      }
+        $userRoles = [];
+        foreach ($eventPeople as $eventPerson) {
+            $userRoles[] = $eventPerson->getUserRole();
+        }
 
-      return $userRoles;
-  }
+        return $userRoles;
+    }
 }

@@ -1047,9 +1047,9 @@ function splitSubjectMessage($defaultSubject, $message)
 {
     if (preg_match("/(\{\{)((.)+){1}(\}\})/", $message, $matches) == 1) {
         $defaultSubject = $matches[2];
-            //$subject = str_replace(array("{{","}}"),"",$matches[0]);
-            $message = str_replace($matches[1].$matches[2].$matches[4], '', $message);
-            //$message = $matches[4];
+        //$subject = str_replace(array("{{","}}"),"",$matches[0]);
+        $message = str_replace($matches[1].$matches[2].$matches[4], '', $message);
+        //$message = $matches[4];
 
         //$message = $message . "\r\n\r\n";
         //$message = $message . "m0 ". $matches[0] . "\r\n";

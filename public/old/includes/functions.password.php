@@ -43,12 +43,12 @@ function RandomPassword($length, $upper = true, $numbers = true, $lower = true)
     $ret = '';
 
     $chars = 26 * 2 + 10;   //26 (a-z) + 26 (A-Z) + 10 (0-9)
-        //a-z = 97-122
-        //A-Z = 65-90
-        //0-9 = 48-57
+    //a-z = 97-122
+    //A-Z = 65-90
+    //0-9 = 48-57
 
     srand(make_seed());     //Seed with microseconds
-                            //if you don't need this, you can just use srand(time());
+    //if you don't need this, you can just use srand(time());
 
     for ($i = 1; $i <= $length; $i++) {
         $repeat = false;
