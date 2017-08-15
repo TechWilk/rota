@@ -19,31 +19,31 @@ use TechWilk\Rota\Map\UserTableMap;
 class User extends BaseUser
 {
     /**
-   * Set the value of [password] column.
-   *
-   * @param string $v new value
-   *
-   * @return $this|\User The current object (for fluent API support)
-   */
-  public function setPassword($v)
-  {
-      if ($v !== null) {
-          $v = (string) $v;
-      }
+     * Set the value of [password] column.
+     *
+     * @param string $v new value
+     *
+     * @return $this|\User The current object (for fluent API support)
+     */
+    public function setPassword($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
 
-      if (!password_verify($v, $this->password)) {
-          $bcrypt_options = [
+        if (!password_verify($v, $this->password)) {
+            $bcrypt_options = [
         'cost' => 12,
       ];
-          $this->password = password_hash($v, PASSWORD_BCRYPT, $bcrypt_options);
+            $this->password = password_hash($v, PASSWORD_BCRYPT, $bcrypt_options);
 
-          $this->modifiedColumns[UserTableMap::COL_PASSWORD] = true;
-      }
+            $this->modifiedColumns[UserTableMap::COL_PASSWORD] = true;
+        }
 
-      return $this;
-  }
+        return $this;
+    }
 
- // setPassword()
+    // setPassword()
 
     /**
      * Check a plain text password against the value of [password] column.
@@ -63,7 +63,7 @@ class User extends BaseUser
         return password_verify($v, $this->password);
     }
 
- // checkPassword()
+    // checkPassword()
 
     public function isAdmin()
     {

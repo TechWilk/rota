@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
     // After we have inserted the data, we want to head back to the main page
-     header('Location: viewBands.php');
+    header('Location: viewBands.php');
     exit;
 }
 
@@ -106,8 +106,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				<?php
                 $bandID = $row['bandID'];
 
-                // Selects band members from database and concatanates a username onto them.
-                $sqlbandMembers = "SELECT * FROM cr_bandMembers WHERE bandID = $bandID";
+            // Selects band members from database and concatanates a username onto them.
+            $sqlbandMembers = "SELECT * FROM cr_bandMembers WHERE bandID = $bandID";
             $resultbandMembers = mysqli_query(db(), $sqlbandMembers) or die(mysqli_error(db()));
             echo '<p>';
             while ($bandMember = mysqli_fetch_array($resultbandMembers, MYSQLI_ASSOC)) {

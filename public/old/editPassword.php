@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 } else {
     //no POST -> we are in edit mode
-        $sql = "SELECT * FROM cr_users WHERE id = '$id'";
+    $sql = "SELECT * FROM cr_users WHERE id = '$id'";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
     $firstname = $row['firstName'];

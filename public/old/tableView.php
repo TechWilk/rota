@@ -220,7 +220,7 @@ $sessionUserId = $_SESSION['userid'];
         echo '</td>';
 
         // GROUPS columns
-                $sqlPeople = "SELECT *,
+        $sqlPeople = "SELECT *,
 											CONCAT(LEFT(u.firstname,1),'. ',u.lastname) AS name,
 											u.id AS userId,
 											g.name category,
@@ -243,61 +243,61 @@ $sessionUserId = $_SESSION['userid'];
                 $groupID = $viewPeople['groupId'];
                 if ($groupID == $categoryID[$i]) {
                     $name = $viewPeople['name'];
-                            //writing name/s into table cell
-                            if ($previousName == '') {
-                                // new name
-                                echo ($viewPeople['userId'] == $sessionUserId) ? '<strong class="me">' : '';
-                                echo $name.' <em>('.$viewPeople['role'];
-                            } elseif ($previousName != $name) {
-                                echo ')</em>';
-                                echo ($viewPeople['userId'] != $sessionUserId) ? '</strong>' : '';
-                                echo '<br />'; // line break from previous name
-                                // new name
-                                echo ($viewPeople['userId'] == $sessionUserId) ? '<strong class="me">' : '';
-                                echo $name.' <em>('.$viewPeople['role'];
-                            } else {
-                                echo ', '.$viewPeople['role'];
-                            }
+                    //writing name/s into table cell
+                    if ($previousName == '') {
+                        // new name
+                        echo ($viewPeople['userId'] == $sessionUserId) ? '<strong class="me">' : '';
+                        echo $name.' <em>('.$viewPeople['role'];
+                    } elseif ($previousName != $name) {
+                        echo ')</em>';
+                        echo ($viewPeople['userId'] != $sessionUserId) ? '</strong>' : '';
+                        echo '<br />'; // line break from previous name
+                        // new name
+                        echo ($viewPeople['userId'] == $sessionUserId) ? '<strong class="me">' : '';
+                        echo $name.' <em>('.$viewPeople['role'];
+                    } else {
+                        echo ', '.$viewPeople['role'];
+                    }
 
                     $peopleInEvent = true;
                     $previousName = $viewPeople['name'];
 
-                            //no break or continue, because there could be other viewPeople with same categoryID
+                    //no break or continue, because there could be other viewPeople with same categoryID
                 }
             } // end of while
-                    if ($peopleInEvent) {
-                        echo ')</em>';
-                        echo ($viewPeople['userId'] == $sessionUserId) ? '</strong>' : '';
-                    }
+            if ($peopleInEvent) {
+                echo ')</em>';
+                echo ($viewPeople['userId'] == $sessionUserId) ? '</strong>' : '';
+            }
             echo '</td>';
         }
-                /*
-                // EXPORT column
-                echo "<td class='no-print'>";
+        /*
+        // EXPORT column
+        echo "<td class='no-print'>";
 
-                //generate google calendar urls
-                putenv("TZ=".$userTZ);
-                $eventDate = $row['sundayDate'];
-                $eventDateGMT = gmdate("Ymd\THis\Z",strtotime($eventDate." ".date("T",strtotime($eventDate))));
-                //echo $eventDateGMT."<br>";
-                $eventDate = $row['sundayEndDate'];
-                $eventDateEndGMT = gmdate("Ymd\THis\Z",strtotime($eventDate." ".date("T",strtotime($eventDate))));
-                //echo $eventDateEndGMT;
+        //generate google calendar urls
+        putenv("TZ=".$userTZ);
+        $eventDate = $row['sundayDate'];
+        $eventDateGMT = gmdate("Ymd\THis\Z",strtotime($eventDate." ".date("T",strtotime($eventDate))));
+        //echo $eventDateGMT."<br>";
+        $eventDate = $row['sundayEndDate'];
+        $eventDateEndGMT = gmdate("Ymd\THis\Z",strtotime($eventDate." ".date("T",strtotime($eventDate))));
+        //echo $eventDateEndGMT;
 
-                if (isAdmin()) {
-                    if ($comment<>"")
-                        $comment = "; " . $comment;
-                    $comment = str_replace("\r\n","; ",$comment);
-                    echo "<a href=\"http://www.google.com/calendar/event?action=TEMPLATE&text=".urlencode(utf8_wrapper(getEventDetails($eventID, " / ",1)." (".$row['eventType'].")"))."&dates=".$eventDateGMT."/".$eventDateEndGMT."&details=".urlencode(utf8_wrapper(ltrim(getEventDetails($eventID, "; ",0,false) . $comment,"; ")))."&location=".urlencode(utf8_wrapper($row['eventLocation']))."&trp=false&sprop=&sprop=name:&src=".$google_group_calendar."&ctz=".$userTZ."\" target=\"_blank\">";
-                    echo "<img src=\"//www.google.com/calendar/images/ext/gc_button1.gif\" border=0></a><BR>";
-                    //echo "iCal";
-                }else{
-                    echo "<a href=\"http://www.google.com/calendar/event?action=TEMPLATE&text=".urlencode(utf8_wrapper($row['eventType']))."&dates=".$eventDateGMT."/".$eventDateEndGMT."&details=&location=".urlencode(utf8_wrapper($row['eventLocation']))."&trp=false&sprop=&sprop=name:&ctz=".$userTZ."\" target=\"_blank\">";
-                    echo "<img src=\"//www.google.com/calendar/images/ext/gc_button1.gif\" border=0></a>";
-                }
+        if (isAdmin()) {
+            if ($comment<>"")
+                $comment = "; " . $comment;
+            $comment = str_replace("\r\n","; ",$comment);
+            echo "<a href=\"http://www.google.com/calendar/event?action=TEMPLATE&text=".urlencode(utf8_wrapper(getEventDetails($eventID, " / ",1)." (".$row['eventType'].")"))."&dates=".$eventDateGMT."/".$eventDateEndGMT."&details=".urlencode(utf8_wrapper(ltrim(getEventDetails($eventID, "; ",0,false) . $comment,"; ")))."&location=".urlencode(utf8_wrapper($row['eventLocation']))."&trp=false&sprop=&sprop=name:&src=".$google_group_calendar."&ctz=".$userTZ."\" target=\"_blank\">";
+            echo "<img src=\"//www.google.com/calendar/images/ext/gc_button1.gif\" border=0></a><BR>";
+            //echo "iCal";
+        }else{
+            echo "<a href=\"http://www.google.com/calendar/event?action=TEMPLATE&text=".urlencode(utf8_wrapper($row['eventType']))."&dates=".$eventDateGMT."/".$eventDateEndGMT."&details=&location=".urlencode(utf8_wrapper($row['eventLocation']))."&trp=false&sprop=&sprop=name:&ctz=".$userTZ."\" target=\"_blank\">";
+            echo "<img src=\"//www.google.com/calendar/images/ext/gc_button1.gif\" border=0></a>";
+        }
 
-                echo "</td>";
-                */
+        echo "</td>";
+        */
 
         echo "</tr>\r\n";
     }

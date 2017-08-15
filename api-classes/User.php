@@ -31,6 +31,7 @@ class User
             $message .= ' or sub_type ('.$this->sub_type.')';
             $message .= ' or location ('.$this->location.')';
             $message .= ' cannot be empty.';
+
             throw new Exception($message);
         }
 

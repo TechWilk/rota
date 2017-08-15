@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // After we have inserted the data, we want to head back to the main page
-     header('Location: discussion.php');
+    header('Location: discussion.php');
     exit;
 }
     include 'includes/header.php';
@@ -89,8 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $categoryID = $row['id'];
         $categoryName = $row['name'];
 
-    // The following function lists the parents here to save a SQL query later
-    $listParents = $listParents."<option value='".$categoryID."'>".$categoryName.'</option>'; ?>
+        // The following function lists the parents here to save a SQL query later
+        $listParents = $listParents."<option value='".$categoryID."'>".$categoryName.'</option>'; ?>
 		<div class="elementBackground highlight">
 			<h2><a href="discussion.php?categoryid=<?php echo $categoryID; ?>"><?php echo $row['name']; ?></a> <?php 
             if (isAdmin()) {

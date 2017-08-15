@@ -98,8 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     include 'includes/header.php';
 
     if ($id == '') {
-        // If there is no topic, we want to create one
-    ?>
+        // If there is no topic, we want to create one ?>
 	
 	<div class="elementBackground">
 	<h2>New post</h2>
@@ -123,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Otherwise we want to display the requested topic
 
     // First we get the heading post for the topic . . .
-    $sql = "SELECT *, (SELECT CONCAT(`firstname`, ' ', `lastname`) FROM cr_users WHERE `cr_users`.id = `cr_discussion`.`userID` ) AS `name`,
+        $sql = "SELECT *, (SELECT CONCAT(`firstname`, ' ', `lastname`) FROM cr_users WHERE `cr_users`.id = `cr_discussion`.`userID` ) AS `name`,
 	DATE_FORMAT(date,'%W, %M %e @ %h:%i %p') AS dateFormatted	
 	FROM cr_discussion WHERE id = '$id'";
         $result = mysqli_query(db(), $sql) or die();
@@ -146,8 +145,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	<?php
         }
 
-    // Then we get all the posts that go in the topic
-    $sql = "SELECT *, (SELECT CONCAT(`firstname`, ' ', `lastname`) FROM cr_users WHERE `cr_users`.id = `cr_discussion`.`userID` ) AS `name`,
+        // Then we get all the posts that go in the topic
+        $sql = "SELECT *, (SELECT CONCAT(`firstname`, ' ', `lastname`) FROM cr_users WHERE `cr_users`.id = `cr_discussion`.`userID` ) AS `name`,
 	DATE_FORMAT(date,'%W, %M %e @ %h:%i %p') AS dateFormatted	
 	FROM cr_discussion WHERE topicParent = '$id' ORDER BY id";
 
@@ -172,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             while ($row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC)) {
                 // Check to see if we're subscribed or not. If yes, give the option to unsubscribe. If not, allow them to subscribe
-            $isSubscribed = $row2['id'];
+                $isSubscribed = $row2['id'];
             }
 
             if ($isSubscribed != '') {

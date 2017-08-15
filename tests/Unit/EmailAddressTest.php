@@ -14,17 +14,17 @@ class EmailAddressTest extends BaseTestCase
     ];
     }
 
-  /**
-   * @param string $email
-   *
-   * @dataProvider providerTestValidEmails
-   */
-  public function testValidEmails($email)
-  {
-      $emailObject = new EmailAddress($email);
+    /**
+     * @param string $email
+     *
+     * @dataProvider providerTestValidEmails
+     */
+    public function testValidEmails($email)
+    {
+        $emailObject = new EmailAddress($email);
 
-      $this->assertEquals((string) $emailObject, $email);
-  }
+        $this->assertEquals((string) $emailObject, $email);
+    }
 
     public function providerTestInvalidEmails()
     {
@@ -35,16 +35,16 @@ class EmailAddressTest extends BaseTestCase
     ];
     }
 
-  /**
-   * @param string $email
-   * @expectedException        InvalidArgumentException
-   *
-   * @dataProvider providerTestInvalidEmails
-   */
-  public function testInvalidEmails($email)
-  {
-      $emailObject = new EmailAddress($email);
+    /**
+     * @param string $email
+     * @expectedException        InvalidArgumentException
+     *
+     * @dataProvider providerTestInvalidEmails
+     */
+    public function testInvalidEmails($email)
+    {
+        $emailObject = new EmailAddress($email);
 
-    //$this->assertNotEqual((string)$emailObject, $email);
-  }
+        //$this->assertNotEqual((string)$emailObject, $email);
+    }
 }
