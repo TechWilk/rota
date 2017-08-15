@@ -111,7 +111,7 @@ class CalendarController extends BaseController
             return $this->view->render($response->withStatus(404), 'calendar-error.twig');
         }
 
-        return $this->renderCalendar($c, $args['format']);
+        return $this->renderCalendar($c, $args['format'], $response);
     }
 
     public function getLegacyRenderedCalendar(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -133,10 +133,10 @@ class CalendarController extends BaseController
             return $this->view->render($response->withStatus(404), 'calendar-error.twig');
         }
 
-        return $this->renderCalendar($c, $format);
+        return $this->renderCalendar($c, $format, $response);
     }
 
-    private function renderCalendar(CalendarToken $token, $format)
+    private function renderCalendar(CalendarToken $token, $format, ResponseInterface $response)
     {
         $token->setLastFetched(new DateTime());
         $token->save();
