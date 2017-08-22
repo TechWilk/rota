@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     include 'includes/header.php';
 
     if ($id == '') {
-        // If there is no topic, we want to create one ?>
+        // If there is no topic, we want to create one?>
 	
 	<div class="elementBackground">
 	<h2>New post</h2>
