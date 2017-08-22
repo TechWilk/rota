@@ -2,8 +2,6 @@
 
 namespace TechWilk\Rota;
 
-use TechWilk\Rota\User;
-
 interface AuthoriserInterface
 {
     /**

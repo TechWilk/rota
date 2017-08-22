@@ -3,10 +3,9 @@
 namespace TechWilk\Rota\Authoriser;
 
 use TechWilk\Rota\AuthoriserInterface;
-use TechWilk\Rota\User;
-use TechWilk\Rota\GroupQuery;
 use TechWilk\Rota\Event;
 use TechWilk\Rota\EventPersonQuery;
+use TechWilk\Rota\User;
 
 class EventAuthoriser implements AuthoriserInterface
 {
@@ -37,6 +36,7 @@ class EventAuthoriser implements AuthoriserInterface
         if ($involvementCount > 0) {
             return true;
         }
+
         return false;
     }
 
@@ -46,6 +46,7 @@ class EventAuthoriser implements AuthoriserInterface
         if ($user->isAdmin()) {
             return true;
         }
+
         return false;
     }
 
@@ -59,6 +60,7 @@ class EventAuthoriser implements AuthoriserInterface
         if ($user->isAdmin()) {
             return true;
         }
+
         return false;
     }
 
@@ -72,6 +74,7 @@ class EventAuthoriser implements AuthoriserInterface
         if ($user->isAdmin()) {
             return true;
         }
+
         return false;
     }
 }

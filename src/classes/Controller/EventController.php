@@ -5,6 +5,7 @@ namespace TechWilk\Rota\Controller;
 use DateTime;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TechWilk\Rota\Authoriser\EventAuthoriser;
 use TechWilk\Rota\Event;
 use TechWilk\Rota\EventPerson;
 use TechWilk\Rota\EventPersonQuery;
@@ -15,7 +16,6 @@ use TechWilk\Rota\GroupQuery;
 use TechWilk\Rota\LocationQuery;
 use TechWilk\Rota\UserQuery;
 use TechWilk\Rota\UserRoleQuery;
-use TechWilk\Rota\Authoriser\EventAuthoriser;
 
 class EventController extends BaseController
 {

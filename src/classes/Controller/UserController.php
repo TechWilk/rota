@@ -18,7 +18,7 @@ class UserController extends BaseController
         $usersAll = UserQuery::create()->orderByLastName()->orderByFirstName()->find();
         $roles = RoleQuery::create()->orderByName()->find();
         $users = [];
-        foreach($usersAll as $user) {
+        foreach ($usersAll as $user) {
             if ($user->authoriser()->readableBy($this->auth->currentUser())) {
                 $users[] = $user;
             }
@@ -84,6 +84,7 @@ class UserController extends BaseController
         if (is_null($u)) {
             return $this->view->render($response, 'error.twig');
         }
+
         return $this->view->render($response, 'user.twig', ['user' => $u]);
     }
 
@@ -105,6 +106,7 @@ class UserController extends BaseController
         if (!$u->authoriser()->updatableBy($this->auth->currentUser())) {
             return $this->view->render($response, 'error.twig');
         }
+
         return $this->view->render($response, 'user-edit.twig', ['user' => $u]);
     }
 
@@ -119,6 +121,7 @@ class UserController extends BaseController
         if (!$u->authoriser()->readableBy($this->auth->currentUser())) {
             return $this->view->render($response, 'error.twig');
         }
+
         return $this->view->render($response, 'user.twig', ['user' => $u]);
     }
 
@@ -133,6 +136,7 @@ class UserController extends BaseController
         if (!$u->authoriser()->readableBy($this->auth->currentUser())) {
             return $response; // no error message for ajax call
         }
+
         return $this->view->render($response, 'user-widget.twig', ['user' => $u]);
     }
 
@@ -147,6 +151,7 @@ class UserController extends BaseController
         if (!$u->authoriser()->updatableBy($this->auth->currentUser())) {
             return $this->view->render($response, 'error.twig');
         }
+
         return $this->view->render($response, 'user-password.twig', ['user' => $u]);
     }
 
