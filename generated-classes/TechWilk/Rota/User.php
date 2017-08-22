@@ -113,6 +113,9 @@ class User extends BaseUser
                     $baseUrl = getConfig()['auth']['onebody']['url'];
                     $photoFingerprint = $socialAuth->getMeta()['photo-fingerprint'];
                     $extension = pathinfo($socialAuth->getMeta()['photo-file-name'], PATHINFO_EXTENSION);
+                    if(empty($photoFingerprint)) {
+                        continue;
+                    }
                     switch ($size) {
                         case 'small': // 50px x 50px
                             return $baseUrl.'/system/production/people/photos/'.$socialAuth->getSocialId().'/tn/'.$photoFingerprint.'.'.$extension;
