@@ -20,7 +20,7 @@ class Authorisation
 
     // do something!
 
-    return $response;
+        return $response;
     }
 
     private function uriInWhitelist(ServerRequestInterface $request)

@@ -319,9 +319,7 @@ if (isAdmin()) {
             echo '<li class="time-label"><span class="bg-green">'.$month.'</span></li>';
         }
 
-        // Event details
-
-        ?>
+        // Event details?>
 		<li>
 			<i class="fa fa-bell bg-blue"></i>
 			<div class="timeline-item" id="event<?php echo $eventID; ?>">
@@ -460,13 +458,13 @@ if (isAdmin()) {
         if (isAdmin()) {
             //echo "<a class='btn btn-primary' href='index.php?notifyEveryone=true&eventID=$eventID'><i class='fa fa-envelope-o'></i><span> &nbsp;Send email</span></a> "; /* Send email */
 
-                    echo "<button type='button' class='btn btn-primary dropdown-toggle' data-toggle='dropdown' aria-expanded='true'><span class='caret'></span></button>"; /* Menu dropdown */
+            echo "<button type='button' class='btn btn-primary dropdown-toggle' data-toggle='dropdown' aria-expanded='true'><span class='caret'></span></button>"; /* Menu dropdown */
 
-                    echo "<ul class='dropdown-menu'>";
+            echo "<ul class='dropdown-menu'>";
 
             echo "<li><button type='button' class='btn btn-danger btn-block' data-toggle='modal' data-target='#deleteModal".$eventID."'>Delete</button></li>"; /* Delete Event */
 
-                    echo '</ul>';
+            echo '</ul>';
         } ?>
 			</div><!-- /.btn-group -->
 		</div>

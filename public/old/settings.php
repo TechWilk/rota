@@ -59,35 +59,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $lang_locale = mysqli_real_escape_string(db(), $lang_locale);
     //$event_sorting_latest = $_POST['event_sorting_latest'];
     //$event_sorting_latest = mysqli_real_escape_string(db(),$event_sorting_latest);
-        if (isset($_POST['event_sorting_latest'])) {
-            $event_sorting_latest = '1';
-        } else {
-            $event_sorting_latest = '0';
-        }
+    if (isset($_POST['event_sorting_latest'])) {
+        $event_sorting_latest = '1';
+    } else {
+        $event_sorting_latest = '0';
+    }
 
     //$snapshot_show_two_month = $_POST['snapshot_show_two_month'];
     //$snapshot_show_two_month = mysqli_real_escape_string(db(),$snapshot_show_two_month);
-        if (isset($_POST['snapshot_show_two_month'])) {
-            $snapshot_show_two_month = '1';
-        } else {
-            $snapshot_show_two_month = '0';
-        }
+    if (isset($_POST['snapshot_show_two_month'])) {
+        $snapshot_show_two_month = '1';
+    } else {
+        $snapshot_show_two_month = '0';
+    }
 
     //$snapshot_reduce_skills_by_group = $_POST['snapshot_reduce_skills_by_group'];
     //$snapshot_reduce_skills_by_group = mysqli_real_escape_string(db(),$snapshot_reduce_skills_by_group);
-        if (isset($_POST['snapshot_reduce_skills_by_group'])) {
-            $snapshot_reduce_skills_by_group = '1';
-        } else {
-            $snapshot_reduce_skills_by_group = '0';
-        }
+    if (isset($_POST['snapshot_reduce_skills_by_group'])) {
+        $snapshot_reduce_skills_by_group = '1';
+    } else {
+        $snapshot_reduce_skills_by_group = '0';
+    }
 
     //$logged_in_show_snapshot_button = $_POST['logged_in_show_snapshot_button'];
     //$logged_in_show_snapshot_button = mysqli_real_escape_string(db(),$logged_in_show_snapshot_button);
-        if (isset($_POST['logged_in_show_snapshot_button'])) {
-            $logged_in_show_snapshot_button = '1';
-        } else {
-            $logged_in_show_snapshot_button = '0';
-        }
+    if (isset($_POST['logged_in_show_snapshot_button'])) {
+        $logged_in_show_snapshot_button = '1';
+    } else {
+        $logged_in_show_snapshot_button = '0';
+    }
 
     if (isset($_POST['users_start_with_myevents'])) {
         $users_start_with_myevents = '1';
@@ -141,8 +141,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $token = $_POST['token'];
     $token = mysqli_real_escape_string(db(), $token);
 
-        // Update the database rather than insert new values
-        $sql = "UPDATE cr_settings SET siteurl = '$siteurl', notificationemail = '$notificationemail', adminemailaddress = '$siteadminemail', norehearsalemail = '$norehearsalemail', yesrehearsal = '$yesrehearsal', newusermessage = '$newusermessage', owner = '$owner',
+    // Update the database rather than insert new values
+    $sql = "UPDATE cr_settings SET siteurl = '$siteurl', notificationemail = '$notificationemail', adminemailaddress = '$siteadminemail', norehearsalemail = '$norehearsalemail', yesrehearsal = '$yesrehearsal', newusermessage = '$newusermessage', owner = '$owner',
 		lang_locale='$lang_locale',
 		event_sorting_latest='$event_sorting_latest',
 		snapshot_show_two_month='$snapshot_show_two_month',

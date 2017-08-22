@@ -41,7 +41,7 @@ class SocialAuth extends BaseSocialAuth
         return $this;
     }
 
- // setMeta()
+    // setMeta()
 
     /**
      * Get the [meta] column value.

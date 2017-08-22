@@ -27,12 +27,12 @@ if (isAdmin() && isset($_GET['id'])) {
 // link or unlink
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // ensure user is accessing correct data
-  if (isAdmin() && isset($_POST['id'])) {
-      $id = $_POST['id'];
-      $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-  } else {
-      $id = $_SESSION['userid'];
-  }
+    if (isAdmin() && isset($_POST['id'])) {
+        $id = $_POST['id'];
+        $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+    } else {
+        $id = $_SESSION['userid'];
+    }
 
     $platform = strtolower($_POST['platform']);
 

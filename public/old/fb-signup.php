@@ -39,7 +39,7 @@ $_SESSION['foo'] = 'bar';
 
 try {
     // Returns a `Facebook\FacebookResponse` object
-  $response = $fb->get('/me?fields=id,name,email', $accessToken);
+    $response = $fb->get('/me?fields=id,name,email', $accessToken);
 } catch (Facebook\Exceptions\FacebookResponseException $e) {
     echo 'Graph returned an error: '.$e->getMessage();
     exit;
@@ -54,7 +54,7 @@ $user = $response->getGraphUser();
 
 if (userExistsWithSocialIdForPlatform($user->getId(), 'facebook')) {
     // login
-  setSessionAndRedirect(getUsernameWithSocialId($user->getId()));
+    setSessionAndRedirect(getUsernameWithSocialId($user->getId()));
     exit;
 }
 

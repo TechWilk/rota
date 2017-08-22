@@ -15,8 +15,14 @@ class UserController extends BaseController
     public function getAllUsers(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->info("Fetch user GET '/users'");
-        $users = UserQuery::create()->orderByLastName()->orderByFirstName()->find();
+        $usersAll = UserQuery::create()->orderByLastName()->orderByFirstName()->find();
         $roles = RoleQuery::create()->orderByName()->find();
+        $users = [];
+        foreach ($usersAll as $user) {
+            if ($user->authoriser()->readableBy($this->auth->currentUser())) {
+                $users[] = $user;
+            }
+        }
 
         return $this->view->render($response, 'users.twig', ['users' => $users, 'roles' => $roles]);
     }
@@ -38,6 +44,9 @@ class UserController extends BaseController
             // edit existing user
             $returnPath = 'user';
             $u = UserQuery::create()->findPK($args['id']);
+            if (!$u->authoriser()->updatableBy($this->auth->currentUser())) {
+                return $this->view->render($response, 'error.twig');
+            }
         } else {
             // create new user
             $returnPath = 'user-roles';
@@ -72,11 +81,11 @@ class UserController extends BaseController
         // find user id from session
         $u = $this->auth->currentUser();
 
-        if (!is_null($u)) {
-            return $this->view->render($response, 'user.twig', ['user' => $u]);
-        } else {
+        if (is_null($u)) {
             return $this->view->render($response, 'error.twig');
         }
+
+        return $this->view->render($response, 'user.twig', ['user' => $u]);
     }
 
     public function getNewUserForm(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -91,11 +100,14 @@ class UserController extends BaseController
         $this->logger->info("Fetch user GET '/user/".$args['id']."/edit'");
         $u = UserQuery::create()->findPK($args['id']);
 
-        if (!is_null($u)) {
-            return $this->view->render($response, 'user-edit.twig', ['user' => $u]);
-        } else {
+        if (is_null($u)) {
             return $this->view->render($response, 'error.twig');
         }
+        if (!$u->authoriser()->updatableBy($this->auth->currentUser())) {
+            return $this->view->render($response, 'error.twig');
+        }
+
+        return $this->view->render($response, 'user-edit.twig', ['user' => $u]);
     }
 
     public function getUser(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -103,11 +115,14 @@ class UserController extends BaseController
         $this->logger->info("Fetch user GET '/user/".$args['id']."'");
         $u = UserQuery::create()->findPK($args['id']);
 
-        if (!is_null($u)) {
-            return $this->view->render($response, 'user.twig', ['user' => $u]);
-        } else {
+        if (is_null($u)) {
             return $this->view->render($response, 'error.twig');
         }
+        if (!$u->authoriser()->readableBy($this->auth->currentUser())) {
+            return $this->view->render($response, 'error.twig');
+        }
+
+        return $this->view->render($response, 'user.twig', ['user' => $u]);
     }
 
     public function getUserWidgetOnly(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -115,11 +130,14 @@ class UserController extends BaseController
         $this->logger->info("Fetch user GET '/user/".$args['id']."'");
         $u = UserQuery::create()->findPK($args['id']);
 
-        if (!is_null($u)) {
-            return $this->view->render($response, 'user-widget.twig', ['user' => $u]);
-        } else {
-            return $this->view->render($response, 'error.twig');
+        if (is_null($u)) {
+            return $response; // no error message for ajax call
         }
+        if (!$u->authoriser()->readableBy($this->auth->currentUser())) {
+            return $response; // no error message for ajax call
+        }
+
+        return $this->view->render($response, 'user-widget.twig', ['user' => $u]);
     }
 
     public function getUserPasswordForm(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -127,11 +145,14 @@ class UserController extends BaseController
         $this->logger->info("Fetch user GET '/user/".$args['id']."/password'");
         $u = UserQuery::create()->findPK($args['id']);
 
-        if (!is_null($u)) {
-            return $this->view->render($response, 'user-password.twig', ['user' => $u]);
-        } else {
+        if (is_null($u)) {
             return $this->view->render($response, 'error.twig');
         }
+        if (!$u->authoriser()->updatableBy($this->auth->currentUser())) {
+            return $this->view->render($response, 'error.twig');
+        }
+
+        return $this->view->render($response, 'user-password.twig', ['user' => $u]);
     }
 
     public function postUserPasswordChange(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -145,6 +166,13 @@ class UserController extends BaseController
         $new = filter_var(trim($data['new']), FILTER_SANITIZE_STRING);
 
         $u = UserQuery::create()->findPK($args['id']);
+
+        if (is_null($u)) {
+            return $this->view->render($response, 'error.twig');
+        }
+        if (!$u->authoriser()->updatableBy($this->auth->currentUser())) {
+            return $this->view->render($response, 'error.twig');
+        }
 
         if ($new == '' || $new != $confirm) {
             $message = 'New passwords did not match.';

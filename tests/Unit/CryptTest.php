@@ -21,19 +21,19 @@ class CryptTest extends BaseTestCase
     ];
     }
 
-  /**
-   * @param string $length
-   *
-   * @dataProvider providerTestGenerateToken
-   */
-  public function testGenerateToken($length)
-  {
-      $crypt = new Crypt();
-      $token = $crypt->generateToken($length);
+    /**
+     * @param string $length
+     *
+     * @dataProvider providerTestGenerateToken
+     */
+    public function testGenerateToken($length)
+    {
+        $crypt = new Crypt();
+        $token = $crypt->generateToken($length);
 
-      $this->assertEquals(strlen($token), $length);
-      $this->assertTrue(is_string($token));
-  }
+        $this->assertEquals(strlen($token), $length);
+        $this->assertTrue(is_string($token));
+    }
 
     public function providerTestGenerateIntBetween()
     {
@@ -47,21 +47,21 @@ class CryptTest extends BaseTestCase
     ];
     }
 
-  /**
-   * @param string $min
-   * @param string $max
-   *
-   * @dataProvider providerTestGenerateIntBetween
-   */
-  public function testGenerateIntBetween($min, $max)
-  {
-      $crypt = new Crypt();
-      $int = $crypt->generateInt($min, $max);
+    /**
+     * @param string $min
+     * @param string $max
+     *
+     * @dataProvider providerTestGenerateIntBetween
+     */
+    public function testGenerateIntBetween($min, $max)
+    {
+        $crypt = new Crypt();
+        $int = $crypt->generateInt($min, $max);
 
-      $this->assertTrue(is_int($int), 'Returned value is not of type int');
-      $this->assertGreaterThanOrEqual($min, $int);
-      $this->assertLessThanOrEqual($max, $int);
-  }
+        $this->assertTrue(is_int($int), 'Returned value is not of type int');
+        $this->assertGreaterThanOrEqual($min, $int);
+        $this->assertLessThanOrEqual($max, $int);
+    }
 
     public function providerTestGenerateIntInvalidConstraints()
     {
@@ -71,16 +71,16 @@ class CryptTest extends BaseTestCase
     ];
     }
 
-  /**
-   * @param string $min
-   * @param string $max
-   * @expectedException        InvalidArgumentException
-   *
-   * @dataProvider providerTestGenerateIntInvalidConstraints
-   */
-  public function testGenerateIntInvalidConstraints($min, $max)
-  {
-      $crypt = new Crypt();
-      $crypt->generateInt($min, $max);
-  }
+    /**
+     * @param string $min
+     * @param string $max
+     * @expectedException        InvalidArgumentException
+     *
+     * @dataProvider providerTestGenerateIntInvalidConstraints
+     */
+    public function testGenerateIntInvalidConstraints($min, $max)
+    {
+        $crypt = new Crypt();
+        $crypt->generateInt($min, $max);
+    }
 }

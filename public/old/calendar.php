@@ -59,12 +59,12 @@ switch ($_GET['format']) {
 function icalOutput($events)
 {
     // the iCal date format.
-  define('DATE_ICAL', 'Ymd\THis');
+    define('DATE_ICAL', 'Ymd\THis');
     define('HOUR', 60 * 60);
 
-  // max line length is 75 chars. New line is \r\n
+    // max line length is 75 chars. New line is \r\n
 
-  $output = 'BEGIN:VCALENDAR
+    $output = 'BEGIN:VCALENDAR
 METHOD:PUBLISH
 VERSION:2.0
 PRODID:-//Church Rota//Church Rota//EN
@@ -90,8 +90,8 @@ RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
 END:STANDARD
 END:VTIMEZONE\r\n";
 
-  // loop over events
-  foreach ($events as $event):
+    // loop over events
+    foreach ($events as $event):
     $output .=
 'BEGIN:VEVENT
 SUMMARY:'.$event->role.($event->name ? ' | '.$event->name.' ('.$event->type.')' : ' ('.$event->type.')').'
@@ -112,8 +112,8 @@ END:VALARM
 END:VEVENT\r\n";
     endforeach;
 
-  // close calendar
-  $output .= 'END:VCALENDAR';
+    // close calendar
+    $output .= 'END:VCALENDAR';
 
     echo $output;
 }
@@ -140,7 +140,7 @@ function ical_split($preamble, $value)
             } else {
                 $lines[] = $line;
                 $preamble_len = 1; // Still take the tab into account
-        $value = mb_substr($value, $mbcc);
+                $value = mb_substr($value, $mbcc);
                 break;
             }
         }

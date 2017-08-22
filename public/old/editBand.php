@@ -61,10 +61,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         mysqli_query(db(), $sql) or die(mysqli_error(db()));
     }
 
-        // Now we need to deal with the band changes
+    // Now we need to deal with the band changes
 
-        // First of all, we need to delete all the people already exisiting on this week so we can repopulate with the correct data.
-        $sql = "DELETE FROM cr_bandMembers WHERE bandID = '$bandID'";
+    // First of all, we need to delete all the people already exisiting on this week so we can repopulate with the correct data.
+    $sql = "DELETE FROM cr_bandMembers WHERE bandID = '$bandID'";
     mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
     foreach ($rehearsaldate as $key => $rehearsaldatevalue) {

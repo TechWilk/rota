@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             die('Error: '.mysqli_error(db()));
         }
 
-    // After we have inserted the data, we want to head back to the main users page
+        // After we have inserted the data, we want to head back to the main users page
      header('Location: locations.php'); // Move to the home page of the admin section
       exit;
     }

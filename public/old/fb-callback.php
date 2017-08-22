@@ -26,11 +26,11 @@ try {
     $accessToken = $helper->getAccessToken();
 } catch (Facebook\Exceptions\FacebookResponseException $e) {
     // When Graph returns an error
-  echo 'Graph returned an error: '.$e->getMessage();
+    echo 'Graph returned an error: '.$e->getMessage();
     exit;
 } catch (Facebook\Exceptions\FacebookSDKException $e) {
     // When validation fails or other local issues
-  echo 'Facebook SDK returned an error: '.$e->getMessage();
+    echo 'Facebook SDK returned an error: '.$e->getMessage();
     exit;
 }
 
@@ -62,12 +62,12 @@ $tokenMetadata->validateExpiration();
 
 if (!$accessToken->isLongLived()) {
     // Exchanges a short-lived access token for a long-lived one
-  try {
-      $accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
-  } catch (Facebook\Exceptions\FacebookSDKException $e) {
-      echo '<p>Error getting long-lived access token: '.$helper->getMessage()."</p>\n\n";
-      exit;
-  }
+    try {
+        $accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
+    } catch (Facebook\Exceptions\FacebookSDKException $e) {
+        echo '<p>Error getting long-lived access token: '.$helper->getMessage()."</p>\n\n";
+        exit;
+    }
 }
 
 $_SESSION['fb_access_token'] = (string) $accessToken;

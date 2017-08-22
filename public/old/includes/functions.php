@@ -81,7 +81,7 @@ date_default_timezone_set(siteSettings()->getTimeZone());
 
 if ((isset($holdQuery)) && ($holdQuery == true)) {
     //set variables during installtion to default values
-        $owner = 'A Church';
+    $owner = 'A Church';
     $owneremail = '-';
     $version = '0.0.0';
     $debug = 0;

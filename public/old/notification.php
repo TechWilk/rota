@@ -57,14 +57,14 @@ $notificationId = filter_var($notificationId, FILTER_SANITIZE_NUMBER_INT);
 if (!empty($notificationId)) {
     seenNotification($notificationId, $referer);
 
-  // redir if notification has URL
-  $redir = notificationLink($notificationId);
+    // redir if notification has URL
+    $redir = notificationLink($notificationId);
     if (!empty($redir)) {
         header('Location: '.$redir);
     }
 
-  // find notification
-  $notification = notificationWithId($notificationId);
+    // find notification
+    $notification = notificationWithId($notificationId);
 }
 
     // ------ Presentation --------

@@ -156,67 +156,67 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Band population
-if (isset($userRole)) {
-    if ($action != 'edit') {
-        //  This is if we are running through the first time, we just need to populate
-        foreach ($userRole as $key => $userRoleValue) {
-            addPeople($eventID, $userRoleValue);
-        }
-    } else {
-        // If this is not the case, we need to compare two arrays. The first array is the people already there. The second array is submitted people
-
-        // First array:
-        $sql = "SELECT userRoleId FROM cr_eventPeople WHERE eventID = '$eventID'";
-        //if ($userisBandAdmin) $sql = $sql . " and skillID in (select skillID from cr_skills where groupid=2)";
-        //if ($userisEventEditor) $sql = $sql . " and skillID in (select skillID from cr_skills where groupid!=2)";
-
-        //if ($userisBandAdmin) $sql = $sql . " AND userRoleId IN (SELECT id FROM cr_userRoles WHERE groupid IN (2,3,4))";
-        //if ($userisEventEditor) $sql = $sql . " AND userRoleId IN (SELECT id FROM cr_userRoles WHERE NOT (groupid IN (2,3,4)))";
-
-        $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
-
-        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-            // We're going to put it all in a nice array called membersArray
-            $membersArray[] = $row['userRoleId'];
-        }
-
-        // Compare the event one way to notice what's new
-        if (!empty($membersArray)) {
-            // Don't add empty things. Delete all members if there have been none sent back.
-
-                $addarray = array_diff($userRole, $membersArray);
-            while (list($key, $userRoleToAdd) = each($addarray)) {
-                addUserToEvent($eventID, $userRoleToAdd);
-            }
-                    // Compare the other way to notice what's disappeared
-                $deletearray = array_diff($membersArray, $userRole);
-
-            while (list($key2, $userRoleToRemove) = each($deletearray)) {
-                removeUserFromEvent($eventID, $userRoleToRemove);
+    if (isset($userRole)) {
+        if ($action != 'edit') {
+            //  This is if we are running through the first time, we just need to populate
+            foreach ($userRole as $key => $userRoleValue) {
+                addPeople($eventID, $userRoleValue);
             }
         } else {
-            // Don't add empty things.
-            if (!empty($userRole)) {
-                $addarray = $userRole;
+            // If this is not the case, we need to compare two arrays. The first array is the people already there. The second array is submitted people
+
+            // First array:
+            $sql = "SELECT userRoleId FROM cr_eventPeople WHERE eventID = '$eventID'";
+            //if ($userisBandAdmin) $sql = $sql . " and skillID in (select skillID from cr_skills where groupid=2)";
+            //if ($userisEventEditor) $sql = $sql . " and skillID in (select skillID from cr_skills where groupid!=2)";
+
+            //if ($userisBandAdmin) $sql = $sql . " AND userRoleId IN (SELECT id FROM cr_userRoles WHERE groupid IN (2,3,4))";
+            //if ($userisEventEditor) $sql = $sql . " AND userRoleId IN (SELECT id FROM cr_userRoles WHERE NOT (groupid IN (2,3,4)))";
+
+            $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+
+            while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                // We're going to put it all in a nice array called membersArray
+                $membersArray[] = $row['userRoleId'];
+            }
+
+            // Compare the event one way to notice what's new
+            if (!empty($membersArray)) {
+                // Don't add empty things. Delete all members if there have been none sent back.
+
+                $addarray = array_diff($userRole, $membersArray);
                 while (list($key, $userRoleToAdd) = each($addarray)) {
                     addUserToEvent($eventID, $userRoleToAdd);
                 }
+                // Compare the other way to notice what's disappeared
+                $deletearray = array_diff($membersArray, $userRole);
+
+                while (list($key2, $userRoleToRemove) = each($deletearray)) {
+                    removeUserFromEvent($eventID, $userRoleToRemove);
+                }
+            } else {
+                // Don't add empty things.
+                if (!empty($userRole)) {
+                    $addarray = $userRole;
+                    while (list($key, $userRoleToAdd) = each($addarray)) {
+                        addUserToEvent($eventID, $userRoleToAdd);
+                    }
+                }
             }
         }
-    }
-    // Otherwise there was nothing in userRole and we should just delete all people from the event
-} else {
-    $delete_all_sql = "DELETE FROM cr_eventPeople WHERE eventID = '$eventID'";
+        // Otherwise there was nothing in userRole and we should just delete all people from the event
+    } else {
+        $delete_all_sql = "DELETE FROM cr_eventPeople WHERE eventID = '$eventID'";
         //if ($userisBandAdmin) $delete_all_sql = $delete_all_sql . " and skillID in (select skillID from cr_skills where groupid=2)";
         //if ($userisEventEditor) $delete_all_sql = $delete_all_sql . " and skillID in (select skillID from cr_skills where groupid!=2)";
         if ($userisBandAdmin) {
             $delete_all_sql = $delete_all_sql.' and skillID in (select skillID from cr_skills where groupid in (2,3,4))';
         }
-    if ($userisEventEditor) {
-        $delete_all_sql = $delete_all_sql.' and skillID in (select skillID from cr_skills where not (groupid in (2,3,4)))';
+        if ($userisEventEditor) {
+            $delete_all_sql = $delete_all_sql.' and skillID in (select skillID from cr_skills where not (groupid in (2,3,4)))';
+        }
+        mysqli_query(db(), $delete_all_sql) or die(mysqli_error(db()));
     }
-    mysqli_query(db(), $delete_all_sql) or die(mysqli_error(db()));
-}
 
     // redirect
     if (isset($_SESSION['lastEventsFilter'])) {
@@ -545,6 +545,7 @@ include 'includes/header.php';
 						<div class="box-body">
 						<?php
                             $usersInEvent = [];
+
                             try {
                                 $userRolesInEvent = EventPersonQuery::create()->filterByEventId($eventID)->filterByRemoved('0')->find()->toArray(); //todo: ensure removed is not string
                                 foreach ($userRolesInEvent as $ur) {

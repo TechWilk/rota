@@ -298,7 +298,7 @@ include 'includes/header.php';
                             // Do nothing, because they are all in the same group
                         } else {
                             // Update the group heading
-                        $groupId = $viewPeople->group;
+                            $groupId = $viewPeople->group;
                             $groupName = $viewPeople->groupName;
                             if ($firstTime) {
                                 $firstTime = false;
@@ -475,7 +475,7 @@ include 'includes/header.php';
                             // Do nothing, because they are all in the same group
                         } else {
                             // Update the group heading
-                        $groupId = $viewPeople->group;
+                            $groupId = $viewPeople->group;
                             $groupName = $viewPeople->groupName;
                             if ($firstTime) {
                                 $firstTime = false;

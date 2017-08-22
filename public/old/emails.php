@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // After we have inserted the data, we want to head back to the main page
-         header('Location: index.php');
+        header('Location: index.php');
         exit;
     }
 
@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // After we have inserted the data, we want to head back to the main page
-         header('Location: index.php');
+        header('Location: index.php');
         exit;
     }
 }

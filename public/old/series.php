@@ -25,7 +25,7 @@ $method = getQueryStringForKey('method');
 if ($method == 'remove') {
     removeSeries($seriesId);
     header('Location: series.php'); // Remove query string from URL
- exit;
+    exit;
 }
 
 // If the form has been submitted, then we need to handle the data.
