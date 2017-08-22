@@ -8,6 +8,7 @@ use Exception;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TechWilk\Rota\SocialAuth;
 
 class Authentication
 {
@@ -84,6 +85,15 @@ class Authentication
                     ->filterBySocialId($this->authProvider->getUserId())
                     ->filterByRevoked(false)
                     ->findOne();
+                if (is_null($socialAuth)) {
+                    $user = UserQuery::create()->filterByEmail($email)->findOne();
+                    if (!is_null($user)) {
+                        $socialAuth = new SocialAuth();
+                        $socialAuth->setUser($user);
+                        $socialAuth->setPlatform('onebody');
+                        $socialAuth->setSocialId($this->authProvider->getUserId());
+                    }
+                }
                 if (!is_null($socialAuth)) {
                     $socialAuth->setMeta($this->authProvider->getMeta());
                     $socialAuth->save();
