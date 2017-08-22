@@ -3,6 +3,7 @@
 namespace TechWilk\Rota;
 
 use TechWilk\Rota\Base\Event as BaseEvent;
+use TechWilk\Rota\Authoriser\EventAuthoriser;
 
 /**
  * Skeleton subclass for representing a row from the 'cr_events' table.
@@ -30,5 +31,10 @@ class Event extends BaseEvent
         }
 
         return $userRoles;
+    }
+
+    public function authoriser()
+    {
+        return new EventAuthoriser($this);
     }
 }

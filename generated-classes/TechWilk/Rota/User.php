@@ -6,6 +6,7 @@ use DateTime;
 use Propel\Runtime\ActiveQuery\Criteria;
 use TechWilk\Rota\Base\User as BaseUser;
 use TechWilk\Rota\Map\UserTableMap;
+use TechWilk\Rota\Authoriser\UserAuthoriser;
 
 /**
  * Skeleton subclass for representing a row from the 'cr_users' table.
@@ -306,5 +307,10 @@ class User extends BaseUser
         }
 
         return $initials;
+    }
+
+    public function authoriser()
+    {
+        return new UserAuthoriser($this);
     }
 }

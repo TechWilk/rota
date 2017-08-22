@@ -15,6 +15,7 @@ use TechWilk\Rota\GroupQuery;
 use TechWilk\Rota\LocationQuery;
 use TechWilk\Rota\UserQuery;
 use TechWilk\Rota\UserRoleQuery;
+use TechWilk\Rota\Authoriser\EventAuthoriser;
 
 class EventController extends BaseController
 {
@@ -52,6 +53,10 @@ class EventController extends BaseController
     {
         $this->logger->info("Create event POST '/event'");
 
+        if (!EventAuthoriser::createableBy($this->auth->currentUser())) {
+            return $this->view->render($response, 'error.twig');
+        }
+
         $data = $request->getParsedBody();
 
         $data['firstname'] = filter_var(trim($data['firstname']), FILTER_SANITIZE_STRING);
@@ -77,6 +82,11 @@ class EventController extends BaseController
     public function getNewEventForm(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->info("Fetch event GET '/event/new'");
+
+        if (!EventAuthoriser::createableBy($this->auth->currentUser())) {
+            return $this->view->render($response, 'error.twig');
+        }
+
         $l = LocationQuery::create()->orderByName()->find();
         $et = EventTypeQuery::create()->orderByName()->find();
         $est = EventSubTypeQuery::create()->orderByName()->find();
@@ -88,6 +98,10 @@ class EventController extends BaseController
     {
         $this->logger->info("Fetch event GET '/event/".$args['id']."'");
         $e = EventQuery::create()->findPK($args['id']);
+
+        if (!$e->authoriser()->readableBy($this->auth->currentUser())) {
+            return $this->view->render($response, 'error.twig');
+        }
 
         if (!is_null($e)) {
             return $this->view->render($response, 'event.twig', ['event' => $e]);

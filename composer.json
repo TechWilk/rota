@@ -3,15 +3,12 @@
   "description": "AdminLTE - admin control panel and dashboard that's based on Bootstrap 3",
   "homepage": "https://github.com/TechWilk/rota",
   "keywords": [
-    "css",
-    "js",
-    "less",
-    "responsive",
-    "back-end",
-    "template",
-    "theme",
-    "web",
-    "admin"
+    "rota",
+    "church",
+    "email",
+    "reminders",
+    "ical",
+    "calendar"
   ],
   "authors": [
     {
