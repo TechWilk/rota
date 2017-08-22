@@ -3,8 +3,8 @@
 namespace TechWilk\Rota\Authoriser;
 
 use TechWilk\Rota\AuthoriserInterface;
-use TechWilk\Rota\User;
 use TechWilk\Rota\GroupQuery;
+use TechWilk\Rota\User;
 
 class UserAuthoriser implements AuthoriserInterface
 {
@@ -44,6 +44,7 @@ class UserAuthoriser implements AuthoriserInterface
         if ($sameGroups > 0) {
             return true;
         }
+
         return false;
     }
 
@@ -53,6 +54,7 @@ class UserAuthoriser implements AuthoriserInterface
         if ($user->isAdmin()) {
             return true;
         }
+
         return false;
     }
 
@@ -66,6 +68,7 @@ class UserAuthoriser implements AuthoriserInterface
         if ($user->isAdmin()) {
             return true;
         }
+
         return false;
     }
 
@@ -79,6 +82,7 @@ class UserAuthoriser implements AuthoriserInterface
         if ($user->isAdmin()) {
             return true;
         }
+
         return false;
     }
 }
