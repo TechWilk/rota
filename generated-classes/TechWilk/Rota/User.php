@@ -112,10 +112,11 @@ class User extends BaseUser
                 } elseif ($socialAuth->getPlatform() == 'onebody') {
                     $baseUrl = getConfig()['auth']['onebody']['url'];
                     $photoFingerprint = $socialAuth->getMeta()['photo-fingerprint'];
-                    $extension = pathinfo($socialAuth->getMeta()['photo-file-name'], PATHINFO_EXTENSION);
-                    if (empty($photoFingerprint)) {
+                    if (empty($photoFingerprint) || !is_string($photoFingerprint)) {
+                        // OneBody doesn't actually have a photo (or we don't know its URL)
                         continue;
                     }
+                    $extension = pathinfo($socialAuth->getMeta()['photo-file-name'], PATHINFO_EXTENSION);
                     switch ($size) {
                         case 'small': // 50px x 50px
                             return $baseUrl.'/system/production/people/photos/'.$socialAuth->getSocialId().'/tn/'.$photoFingerprint.'.'.$extension;
