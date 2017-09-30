@@ -178,6 +178,7 @@ class Authentication
         if ($this->authProvider instanceof UsernamePasswordInterface) {
             return $this->authProvider->getResetPasswordUrl();
         }
+
         return '';
     }
 
@@ -204,6 +205,7 @@ class Authentication
                     }
                 break;
             }
+
             return $this->loginSuccess($user);
         }
 
@@ -217,12 +219,12 @@ class Authentication
 
     public function isCallback()
     {
-        return ($this->authProvider instanceof CallbackInterface);
+        return $this->authProvider instanceof CallbackInterface;
     }
 
     public function isCredential()
     {
-        return ($this->authProvider instanceof UsernamePasswordInterface);
+        return $this->authProvider instanceof UsernamePasswordInterface;
     }
 
     public function getSocialUserId()
