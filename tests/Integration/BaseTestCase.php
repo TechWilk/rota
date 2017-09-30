@@ -91,6 +91,10 @@ class BaseTestCase extends TestCase
             ]
         );
 
+        // pretend we're an actual server
+        $_SERVER['HTTPS'] = 'on';
+        $_SERVER['HTTP_HOST'] = 'example.com';
+
         // Set up a request object based on the environment
         $request = Request::createFromEnvironment($environment);
 

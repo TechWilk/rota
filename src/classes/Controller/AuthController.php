@@ -7,6 +7,9 @@ use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TechWilk\Rota\EmailAddress;
+use TechWilk\Rota\AuthProvider\CallbackInterface;
+use TechWilk\Rota\AuthProvider\UsernamePasswordInterface;
+use TechWilk\Rota\Exception\UnknownUserException;
 
 class AuthController extends BaseController
 {
@@ -26,10 +29,21 @@ class AuthController extends BaseController
         if (isset($_SESSION['userId'])) {
             return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('home'));
         }
-        $auth = $this->auth;
-        $resetPasswordUrl = $auth->getResetPasswordUrl();
 
-        return $this->view->render($response->withStatus(401), 'login.twig', ['reset_password_url' => $resetPasswordUrl]);
+        $auth = $this->auth;
+        if ($auth->isCredential()) {
+            $resetPasswordUrl = $auth->getResetPasswordUrl();
+
+            return $this->view->render($response->withStatus(401), 'login-credentials.twig', [
+                'reset_password_url' => $resetPasswordUrl,
+            ]);
+        } elseif ($auth->isCallback()) {
+            return $this->view->render($response->withStatus(401), 'login-callback.twig', [
+                'provider' => $auth->getAuthProviderSlug(),
+            ]);
+        } else {
+            return $response->getBody()->write('Your authentication method is invalid. If you are the administrator, please adjust the site config.');
+        }
     }
 
     public function postLogin(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -44,30 +58,62 @@ class AuthController extends BaseController
         try {
             $email = new EmailAddress($data['username']);
         } catch (InvalidArgumentException $e) {
-            return $this->view->render($response->withStatus(401), 'login.twig', ['message' => $message, 'reset_password_url' => $resetPasswordUrl]);
+            return $this->view->render($response->withStatus(401), 'login-credentials.twig', ['message' => $message, 'reset_password_url' => $resetPasswordUrl]);
         }
         $password = $data['password'];
 
         if ($email == '' || $password == '') {
-            return $this->view->render($response->withStatus(401), 'login.twig', ['message' => $message, 'reset_password_url' => $resetPasswordUrl]);
+            return $this->view->render($response->withStatus(401), 'login-credentials.twig', ['message' => $message, 'reset_password_url' => $resetPasswordUrl]);
         }
 
         // login
         try {
             if ($auth->loginAttempt($email, $password)) {
-                if (isset($_SESSION['urlRedirect'])) {
-                    $url = $_SESSION['urlRedirect'];
-                    unset($_SESSION['urlRedirect']);
-
-                    return $response->withStatus(303)->withHeader('Location', $url);
-                }
-
-                return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('home'));
+                return $this->loginSuccess($response);
             }
         } catch (Exception $e) {
             $message = 'Too many failed login attempts. Please try again in 15 minutes.';
         }
 
-        return $this->view->render($response->withStatus(401), 'login.twig', ['username' => $email, 'message' => $message, 'reset_password_url' => $resetPasswordUrl]);
+        return $this->view->render($response->withStatus(401), 'login-credentials.twig', ['username' => $email, 'message' => $message, 'reset_password_url' => $resetPasswordUrl]);
+    }
+
+    public function getLoginAuth(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+        $this->logger->info("Login auth GET '/login/".$args['provider']."'");
+
+        // login
+        $authUrl = $this->auth->getCallbackUrl($this->router);
+
+        return $response->withStatus(302)->withHeader('Location', $authUrl);
+    }
+
+    public function getLoginCallback(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+        $this->logger->info("Login auth GET '/login/".$args['provider']."/callback'");
+
+        // login
+        try {
+            if ($this->auth->verifyCallback($args)) {
+                return $this->loginSuccess($response);
+            }
+        } catch (UnknownUserException $e) {
+            // allow user to sign up
+            return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('sign-up'));
+        }
+
+        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('login'));
+    }
+
+    private function loginSuccess(ResponseInterface $response)
+    {
+        if (isset($_SESSION['urlRedirect'])) {
+            $url = $_SESSION['urlRedirect'];
+            unset($_SESSION['urlRedirect']);
+
+            return $response->withStatus(303)->withHeader('Location', $url);
+        }
+
+        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('home'));
     }
 }

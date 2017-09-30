@@ -1,0 +1,14 @@
+{% extends 'login-layout.twig' %}
+
+{% block content %}
+
+<div class="form form--login">
+  {% if message %}
+  <p>{{ message }}</p>
+  {% endif %}
+  <div class="form__field">
+    <a class="btn" href="{{ path_for('login-auth', {'provider': provider} ) }}">Sign In with {{ provider | capitalize }}</a>
+  </div>
+</div>
+
+{% endblock %}

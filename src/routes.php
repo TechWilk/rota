@@ -11,6 +11,7 @@ use TechWilk\Rota\Controller\NotificationController;
 use TechWilk\Rota\Controller\ResourceController;
 use TechWilk\Rota\Controller\RoleController;
 use TechWilk\Rota\Controller\UserController;
+use TechWilk\Rota\Controller\PendingUserController;
 
 // Routes
 
@@ -92,9 +93,16 @@ $app->group('/resource', function () {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 $app->get('/login', AuthController::class.':getLoginForm')->setName('login');
+
+$app->get('/login/{provider}', AuthController::class.':getLoginAuth')->setName('login-auth');
+$app->get('/login/{provider}/callback', AuthController::class.':getLoginCallback')->setName('login-callback');
+$app->get('/signup', PendingUserController::class.':getSignUpForm')->setName('sign-up');
+$app->get('/signup/cancel', PendingUserController::class.':getSignUpCancel')->setName('sign-up-cancel');
+
 $app->get('/logout', AuthController::class.':getLogout')->setName('logout');
 
 $app->post('/login', AuthController::class.':postLogin')->setName('login-post');
+$app->post('/signup', PendingUserController::class.':postSignUp')->setName('sign-up-post');
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // NOTIFICATIONS
