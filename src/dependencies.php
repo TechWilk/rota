@@ -5,6 +5,7 @@ namespace TechWilk\Rota;
 use Aptoma\Twig\Extension\MarkdownEngine;
 use Aptoma\Twig\Extension\MarkdownExtension;
 use DPolac\TwigLambda\LambdaExtension;
+use Facebook;
 use GuzzleHttp;
 use Monolog;
 use Slim\Views\Twig;
@@ -12,7 +13,6 @@ use Slim\Views\TwigExtension;
 use TechWilk\Twig\Extension\LineWrap;
 use Twig_Extensions_Extension_Date;
 use Twig_Extensions_Extension_Text;
-use Facebook;
 
 // DIC configuration
 

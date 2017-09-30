@@ -8,10 +8,10 @@ use TechWilk\Rota\Controller\AvailabilityController;
 use TechWilk\Rota\Controller\CalendarController;
 use TechWilk\Rota\Controller\EventController;
 use TechWilk\Rota\Controller\NotificationController;
+use TechWilk\Rota\Controller\PendingUserController;
 use TechWilk\Rota\Controller\ResourceController;
 use TechWilk\Rota\Controller\RoleController;
 use TechWilk\Rota\Controller\UserController;
-use TechWilk\Rota\Controller\PendingUserController;
 
 // Routes
 

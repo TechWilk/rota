@@ -2,17 +2,12 @@
 
 namespace TechWilk\Rota\Controller;
 
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TechWilk\Rota\Crypt;
 use TechWilk\Rota\EmailAddress;
-use TechWilk\Rota\RoleQuery;
-use TechWilk\Rota\User;
-use TechWilk\Rota\UserQuery;
-use TechWilk\Rota\GroupQuery;
 use TechWilk\Rota\PendingUser;
 use TechWilk\Rota\PendingUserQuery;
-use Exception;
 
 class PendingUserController extends BaseController
 {
@@ -68,8 +63,8 @@ class PendingUserController extends BaseController
 
         return $this->view->render($response, 'login-sign-up.twig', [
             'firstname' => $firstName,
-            'lastname' => $lastName,
-            'email' => $email,
+            'lastname'  => $lastName,
+            'email'     => $email,
         ]);
     }
 

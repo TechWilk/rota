@@ -2,10 +2,10 @@
 
 namespace TechWilk\Rota\AuthProvider\Callback;
 
-use TechWilk\Rota\AuthProvider\CallbackInterface;
-use Facebook\Facebook;
 use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Exceptions\FacebookSDKException;
+use Facebook\Facebook;
+use TechWilk\Rota\AuthProvider\CallbackInterface;
 use TechWilk\Rota\EmailAddress;
 
 class FacebookAuth implements CallbackInterface
@@ -43,7 +43,7 @@ class FacebookAuth implements CallbackInterface
 
         $path = $this->router->pathFor('login-callback', ['provider' => $this->getAuthProviderSlug()]);
 
-        $url = $this->baseUrl . $path;
+        $url = $this->baseUrl.$path;
 
         return $helper->getLoginUrl($url, $this->permissions);
     }
@@ -57,10 +57,12 @@ class FacebookAuth implements CallbackInterface
         } catch (FacebookResponseException $e) {
             // When Graph returns an error
             echo 'Graph returned an error: '.$e->getMessage();
+
             return false;
         } catch (FacebookSDKException $e) {
             // When validation fails or other local issues
             echo 'Facebook SDK returned an error: '.$e->getMessage();
+
             return false;
         }
 
@@ -75,6 +77,7 @@ class FacebookAuth implements CallbackInterface
                 header('HTTP/1.0 400 Bad Request');
                 echo 'Bad request';
             }
+
             return false;
         }
 
@@ -96,6 +99,7 @@ class FacebookAuth implements CallbackInterface
                 $accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
             } catch (FacebookSDKException $e) {
                 echo '<p>Error getting long-lived access token: '.$helper->getMessage()."</p>\n\n";
+
                 return false;
             }
         }
@@ -139,7 +143,7 @@ class FacebookAuth implements CallbackInterface
         }
 
         return [
-            'name' => $this->user->getName(),
+            'name'  => $this->user->getName(),
             'email' => new EmailAddress($this->user->getEmail()),
         ];
     }
