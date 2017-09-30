@@ -23,12 +23,12 @@ class LoginLogoutTest extends BaseTestCase
     public function providerTestLoginInvalidCredentials()
     {
         return [
-      ['test@example.com', 'wrong-password'],
-      ['not-an-email', 'this-is-correct'],
-      ['another-not-an-email', 'wrong'],
-      ['', ''],
-      ['no-password@email.com', ''],
-    ];
+            ['test@example.com', 'wrong-password'],
+            ['not-an-email', 'this-is-correct'],
+            ['another-not-an-email', 'wrong'],
+            ['', ''],
+            ['no-password@email.com', ''],
+        ];
     }
 
     /**
@@ -76,8 +76,8 @@ class LoginLogoutTest extends BaseTestCase
         $this->assertEquals(303, $response->getStatusCode());
         $this->assertTrue(isset($_SESSION['userId']));
         //$this->assertContains('Dashboard', (string)$response->getBody());
-    //$this->assertContains('Upcoming Events', (string)$response->getBody());
-    //$this->assertNotContains('Hello', (string)$response->getBody());
+        //$this->assertContains('Upcoming Events', (string)$response->getBody());
+        //$this->assertNotContains('Hello', (string)$response->getBody());
     }
 
     /**

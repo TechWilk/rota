@@ -8,6 +8,9 @@ use Exception;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TechWilk\Rota\AuthProvider\CallbackInterface;
+use TechWilk\Rota\AuthProvider\UsernamePasswordInterface;
+use TechWilk\Rota\Exception\UnknownUserException;
 
 class Authentication
 {
@@ -72,9 +75,6 @@ class Authentication
         }
 
         switch ($this->authProvider->getAuthProviderSlug()) {
-            case 'usernamepassword':
-                $user = UserQuery::create()->filterByEmail($email)->findOne();
-                break;
             case 'onebody':
                 if (is_null($this->authProvider->getUserId())) {
                     return false;
@@ -98,27 +98,19 @@ class Authentication
                     $socialAuth->save();
                     $user = $socialAuth->getUser();
                 }
-                break;
-            case 'facebook':
-                $socialAuth = SocialAuthQuery::create()
-                    ->filterByPlatform($this->authProvider->getAuthProviderSlug())
-                    ->filterBySocialId($this->authProvider->getUserId())
-                    ->filterByRevoked(false)
-                    ->findOne();
-                if (!is_null($socialAuth)) {
-                    //$socialAuth->setMeta($this->authProvider->getMeta());
-                    //$socialAuth->save();
-                    $user = $socialAuth->getUser();
-                }
-                break;
-
+            break;
             default:
                 $user = UserQuery::create()->filterByEmail($email)->findOne();
-                break;
+            break;
         }
 
+        return $this->loginSuccess($user);
+    }
+
+    private function loginSuccess(User $user)
+    {
         if (is_null($user)) {
-            return false;
+            throw new UnknownUserException('User not found in the database.');
         }
 
         $_SESSION['userId'] = $user->getId();
@@ -183,6 +175,65 @@ class Authentication
 
     public function getResetPasswordUrl()
     {
-        return $this->authProvider->getResetPasswordUrl();
+        if ($this->authProvider instanceof UsernamePasswordInterface) {
+            return $this->authProvider->getResetPasswordUrl();
+        }
+
+        return '';
+    }
+
+    public function getCallbackUrl()
+    {
+        return $this->authProvider->getCallbackUrl();
+    }
+
+    public function verifyCallback($args)
+    {
+        if ($this->authProvider->verifyCallback($args)) {
+            switch ($this->authProvider->getAuthProviderSlug()) {
+                case 'facebook':
+                    $socialAuth = SocialAuthQuery::create()
+                        ->filterByPlatform($this->authProvider->getAuthProviderSlug())
+                        ->filterBySocialId($this->authProvider->getUserId())
+                        ->filterByRevoked(false)
+                        ->findOne();
+
+                    if (!is_null($socialAuth)) {
+                        //$socialAuth->setMeta($this->authProvider->getMeta());
+                        //$socialAuth->save();
+                        $user = $socialAuth->getUser();
+                    }
+                break;
+            }
+
+            return $this->loginSuccess($user);
+        }
+
+        return false;
+    }
+
+    public function getAuthProviderSlug()
+    {
+        return $this->authProvider->getAuthProviderSlug();
+    }
+
+    public function isCallback()
+    {
+        return $this->authProvider instanceof CallbackInterface;
+    }
+
+    public function isCredential()
+    {
+        return $this->authProvider instanceof UsernamePasswordInterface;
+    }
+
+    public function getSocialUserId()
+    {
+        return $this->authProvider->getUserId();
+    }
+
+    public function getMeta()
+    {
+        return $this->authProvider->getMeta();
     }
 }

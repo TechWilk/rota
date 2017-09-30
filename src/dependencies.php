@@ -5,6 +5,7 @@ namespace TechWilk\Rota;
 use Aptoma\Twig\Extension\MarkdownEngine;
 use Aptoma\Twig\Extension\MarkdownExtension;
 use DPolac\TwigLambda\LambdaExtension;
+use Facebook;
 use GuzzleHttp;
 use Monolog;
 use Slim\Views\Twig;
@@ -65,9 +66,18 @@ $container['logger'] = function ($c) {
 $container['auth'] = function ($c) {
     $authConfig = getConfig()['auth'];
 
+    // full domain e.g. https://example.com
+    $site = new Site();
+    $basePath = $site->getUrl()['base'];
+
     switch ($authConfig['scheme']) {
         case 'facebook':
-            $authProvider = new AuthProvider\FacebookAuth();
+            $facebook = new Facebook\Facebook([
+                'app_id'                => $authConfig['facebook']['appId'],
+                'app_secret'            => $authConfig['facebook']['appSecret'],
+                'default_graph_version' => 'v2.2',
+            ]);
+            $authProvider = new AuthProvider\Callback\FacebookAuth($facebook, $authConfig['facebook']['appId'], $basePath, $c['router']);
             break;
 
         case 'onebody':
@@ -84,5 +94,7 @@ $container['auth'] = function ($c) {
             break;
     }
 
-    return new Authentication($c, $authProvider, ['login', 'login-post', 'user-calendar']);
+    $allowedRoutes = ['login', 'login-post', 'login-auth', 'login-callback', 'sign-up', 'sign-up-post', 'sign-up-cancel', 'user-calendar', 'job-daily'];
+
+    return new Authentication($c, $authProvider, $allowedRoutes);
 };
