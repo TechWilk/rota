@@ -30,7 +30,13 @@
       </li>
       <li>
         <a href="{{ path_for('user-edit', { 'id': user.id }) }}">
-          Email Reminders <span class="pull-right badge bg-green">X days before</span>
+          Email Reminders <span class="pull-right badge {{ site.settings.daysToAlert > 0 ? 'bg-green' : 'bg-red'}}">
+            {% if site.settings.daysToAlert > 0 %}
+            {{ site.settings.daysToAlert }} days before
+            {% else %}
+            never
+            {% endif %}
+          </span>
         </a>
       </li>
       <li>
