@@ -7,11 +7,11 @@ use TechWilk\Rota\Controller\AuthController;
 use TechWilk\Rota\Controller\AvailabilityController;
 use TechWilk\Rota\Controller\CalendarController;
 use TechWilk\Rota\Controller\EventController;
+use TechWilk\Rota\Controller\GroupController;
 use TechWilk\Rota\Controller\NotificationController;
 use TechWilk\Rota\Controller\PendingUserController;
 use TechWilk\Rota\Controller\ResourceController;
 use TechWilk\Rota\Controller\RoleController;
-use TechWilk\Rota\Controller\GroupController;
 use TechWilk\Rota\Controller\UserController;
 
 // Routes
@@ -97,7 +97,6 @@ $app->group('/group', function () {
     $this->get('/{id}', GroupController::class.':getGroup')->setName('group');
     $this->get('/{id}/roles', GroupController::class.':getGroupRoles')->setName('group-roles');
 });
-
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // AUTH

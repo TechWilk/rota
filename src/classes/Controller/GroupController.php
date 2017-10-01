@@ -5,7 +5,6 @@ namespace TechWilk\Rota\Controller;
 use DateTime;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TechWilk\Rota\Authoriser\EventAuthoriser;
 use TechWilk\Rota\EventQuery;
 use TechWilk\Rota\GroupQuery;
 

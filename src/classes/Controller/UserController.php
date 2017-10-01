@@ -6,10 +6,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TechWilk\Rota\Crypt;
 use TechWilk\Rota\EmailAddress;
-use TechWilk\Rota\RoleQuery;
+use TechWilk\Rota\GroupQuery;
 use TechWilk\Rota\User;
 use TechWilk\Rota\UserQuery;
-use TechWilk\Rota\GroupQuery;
 
 class UserController extends BaseController
 {
