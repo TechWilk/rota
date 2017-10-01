@@ -22,25 +22,23 @@
     </foreign-key>
   </table>
 
-
-  <table name="cr_discussion" idMethod="native" phpName="Discussion">
+  <table name="cr_comments" idMethod="native" phpName="Comment">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="topicParent" phpName="Topicparent" type="INTEGER" size="6" required="true" defaultValue="0"/>
-    <column name="CategoryParent" phpName="Categoryparent" type="INTEGER" size="6" required="true" defaultValue="0"/>
-    <column name="userID" phpName="Userid" type="INTEGER" size="6" required="true" defaultValue="0"/>
-    <column name="topic" phpName="Topic" type="LONGVARCHAR" required="true"/>
-    <column name="topicName" phpName="Topicname" type="LONGVARCHAR" required="true"/>
-    <column name="date" phpName="Date" type="TIMESTAMP" required="true" defaultValue="0000-00-00 00:00:00"/>
+    <column name="eventId" phpName="EventId" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="userId" phpName="UserId" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="text" phpName="Text" type="VARCHAR" size="255"/>
+    <column name="removed" phpName="Removed" type="BOOLEAN" size="1" defaultValue="0"/>
+    <behavior name="timestampable">
+      <parameter name="create_column" value="created" />
+      <parameter name="update_column" value="updated" />
+    </behavior>
+    <foreign-key foreignTable="cr_events">
+      <reference local="eventId" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="cr_users">
+      <reference local="userId" foreign="id" />
+    </foreign-key>
   </table>
-
-
-  <table name="cr_discussionCategories" idMethod="native" phpName="DiscussionCategories">
-    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="name" phpName="Name" type="VARCHAR" size="255" required="true" defaultValue=""/>
-    <column name="description" phpName="Description" type="LONGVARCHAR" required="true"/>
-    <column name="parent" phpName="Parent" type="INTEGER" size="1" required="true" defaultValue="0"/>
-  </table>
-
 
   <table name="cr_documents" idMethod="native" phpName="Document">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
@@ -108,22 +106,21 @@
   </table>
 
 
-  <table name="cr_events" idMethod="native" phpName="Event">
+  <table name="cr_events" idMethod="native" phpName="Event" allowPkInsert="true">
     <column name="id" phpName="Id" type="INTEGER" size="6" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="date" phpName="Date" type="TIMESTAMP" required="true" defaultValue="0000-00-00 00:00:00"/>
     <column name="name" phpName="Name" type="LONGVARCHAR" required="true"/>
-    <column name="createdBy" phpName="CreatedBy" type="INTEGER" size="5" required="true" defaultValue="0"/>
+    <column name="createdBy" phpName="CreatedBy" type="INTEGER" required="true" defaultValue="0"/>
     <column name="rehearsalDate" phpName="RehearsalDate" type="TIMESTAMP" required="true" defaultValue="0000-00-00 00:00:00"/>
     <column name="type" phpName="EventTypeId" type="INTEGER" size="30" required="true" defaultValue="0"/>
     <column name="subType" phpName="EventSubTypeId" type="INTEGER" size="30" required="true" defaultValue="0"/>
     <column name="location" phpName="LocationId" type="INTEGER" required="true" defaultValue="0"/>
     <column name="notified" phpName="Notified" type="INTEGER" size="2" required="true" defaultValue="0"/>
     <column name="rehearsal" phpName="Rehearsal" type="INTEGER" required="true" defaultValue="0"/>
-    <column name="comment" phpName="Comment" type="LONGVARCHAR" required="true"/>
     <column name="removed" phpName="Removed" type="SMALLINT" size="1" defaultValue="0"/>
-    <column name="eventGroup" phpName="EventGroupId" type="INTEGER" size="30" required="true"/>
-    <column name="sermonTitle" phpName="SermonTitle" type="VARCHAR" size="64" required="true" defaultValue=""/>
-    <column name="bibleVerse" phpName="BibleVerse" type="VARCHAR" size="64" required="true" defaultValue=""/>
+    <column name="eventGroup" phpName="EventGroupId" type="INTEGER" size="30"/>
+    <column name="sermonTitle" phpName="SermonTitle" type="VARCHAR" size="64"/>
+    <column name="bibleVerse" phpName="BibleVerse" type="VARCHAR" size="64"/>
     <behavior name="timestampable">
       <parameter name="create_column" value="created" />
       <parameter name="update_column" value="updated" />
@@ -297,15 +294,6 @@
       <reference local="userid" foreign="id" />
     </foreign-key>
   </table>
-
-
-  <table name="cr_subscriptions" idMethod="native" phpName="Subscription">
-    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="userid" phpName="Userid" type="INTEGER" size="6" required="true" defaultValue="0"/>
-    <column name="categoryid" phpName="Categoryid" type="INTEGER" size="4" required="true" defaultValue="0"/>
-    <column name="topicid" phpName="Topicid" type="INTEGER" size="4" required="true" defaultValue="0"/>
-  </table>
-
 
   <table name="cr_swaps" idMethod="native" phpName="Swap">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>

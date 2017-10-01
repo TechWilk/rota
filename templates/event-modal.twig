@@ -9,13 +9,19 @@
       </div>
       <div class="modal-body">
         {% include 'event-info.twig' %}
-        <hr />
+      </div>
+      <hr />
+      <div class="modal-body">
         {% include 'event-people-list.twig' %}
+      </div>
+      <div class="modal-body box-comments">
+        {% include 'event-comments.twig' %}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
         <div class="btn-group">
           <a class="btn btn-success" href="{{ path_for('event', { 'id': event.id }) }}">View details</a>
+          <a class="btn btn-warning" href="{{ path_for('home') }}old/swap.php?event={{ event.id }}">Swap</a>
           <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
             Edit <span class="caret"></span>
           </button>

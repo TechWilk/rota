@@ -1306,7 +1306,7 @@ abstract class Availability implements ActiveRecordInterface
      */
     public function getUser(ConnectionInterface $con = null)
     {
-        if ($this->aUser === null && ($this->userid !== null)) {
+        if ($this->aUser === null && ($this->userid != 0)) {
             $this->aUser = ChildUserQuery::create()->findPk($this->userid, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -1357,7 +1357,7 @@ abstract class Availability implements ActiveRecordInterface
      */
     public function getEvent(ConnectionInterface $con = null)
     {
-        if ($this->aEvent === null && ($this->eventid !== null)) {
+        if ($this->aEvent === null && ($this->eventid != 0)) {
             $this->aEvent = ChildEventQuery::create()->findPk($this->eventid, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference

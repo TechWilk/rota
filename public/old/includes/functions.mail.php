@@ -416,10 +416,6 @@ function notifyEveryoneForEvent($eventId)
                 $rehearsaldate = strftime(siteSettings()->getTimeFormatNormal(), strtotime($eventrow['rehearsalDateFormatted']));
 
                 $type = $ob->eventType;
-                $comment = $eventrow['comment'];
-                if ($comment == '') {
-                    $comment = '-';
-                }
 
                 $eventdetails = $eventrow['eventGroup'].': '.$eventrow['sermonTitle'];
                 if (!empty($eventrow['bibleVerse'])) {
@@ -484,7 +480,6 @@ function notifyEveryoneForEvent($eventId)
                 'type'         => $type,
                 'rotadetails'  => $rotadetails,
                 'eventdetails' => $eventdetails,
-                'comment'      => $comment,
             ];
 
             $message = parseEmailTemplate($message, $templateFields);
@@ -557,7 +552,6 @@ function notifyUserForEvent($userId, $eventId, $subject, $message)
 						e.DATE_FORMAT(date,'%m/%d/%Y %H:%i:%S') AS date,
 						e.location,
 						e.type,
-						e.comment,
 						e.bibleVerse,
 						e.sermonTitle,
 						eg.name AS eventGroup
@@ -567,7 +561,7 @@ function notifyUserForEvent($userId, $eventId, $subject, $message)
 						INNER JOIN cr_eventGroups eg ON eg.id = e.eventGroup
 					WHERE
 						e.id = $eventId
-					GROUP BY date,id,location,type,comment";
+					GROUP BY date,id,location,type";
 
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $event = mysqli_fetch_object($result);
@@ -577,8 +571,6 @@ function notifyUserForEvent($userId, $eventId, $subject, $message)
     $eventDetails .= "\r\n";
     $eventDetails .= $event->type;
     $eventDetails .= $event->eventGroup.': '.$event->sermonTitle.' ('.$event->bibleVerse.')';
-    $eventDetails .= "\r\n";
-    $eventDetails .= 'Notes: '.$event->comment;
     $eventDetails .= "\r\n";
     $eventDetails .= "\r\n";
 
@@ -601,7 +593,6 @@ function notifyUserForEvent($userId, $eventId, $subject, $message)
         'event.name'     => $event->name,
         'event.type'     => $event->type,
         'event.location' => $event->location,
-        'event.comment'  => $event->comment,
 
         'event.sermon'        => $event->eventGroup.': '.$event->sermonTitle.' ('.$event->bibleVerse.')',
         'event.sermon.name'   => $event->sermonTitle,
@@ -783,7 +774,6 @@ function sendEventMessageEmailToUser($userId, $eventId, $subject, $message)
 						e.date,
 						l.name AS location,
 						et.name AS type,
-						e.comment,
 						group_concat(CONCAT(r.name, ': ', u.firstname,' ',u.lastname) SEPARATOR ', ') AS roles
 					FROM
 						cr_events e
@@ -815,8 +805,6 @@ function sendEventMessageEmailToUser($userId, $eventId, $subject, $message)
     $eventDetails .= "\r\n";
 
     $eventDetails .= $ob->roles;
-    $eventDetails .= "\r\n";
-    $eventDetails .= 'Notes: '.$ob->comment;
     $eventDetails .= "\r\n";
     $eventDetails .= "\r\n";
 
@@ -910,7 +898,6 @@ function sendUpcomingEventsToUser($userId, $subject, $message)
 					DATE_FORMAT(date,'%m/%d/%Y %H:%i:%S') AS date,
 					location,
 					type,
-					comment,
 					group_concat(rota separator '\r\n') AS joinedskills
 				FROM (
 					SELECT
@@ -918,7 +905,6 @@ function sendUpcomingEventsToUser($userId, $subject, $message)
 						e.date,
 						l.name AS location,
 						et.name AS type,
-						e.comment,
 						r.id AS roleId,
 						r.name AS role,
 						CONCAT(u.firstname,' ',u.lastname) as name,
@@ -937,7 +923,7 @@ function sendUpcomingEventsToUser($userId, $subject, $message)
 						)
 					ORDER BY date ASC, role DESC
 				) sub
-				GROUP BY date,id,location,type,comment";
+				GROUP BY date,id,location,type";
 
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 

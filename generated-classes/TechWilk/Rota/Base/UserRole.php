@@ -1425,7 +1425,7 @@ abstract class UserRole implements ActiveRecordInterface
      */
     public function getUser(ConnectionInterface $con = null)
     {
-        if ($this->aUser === null && ($this->userid !== null)) {
+        if ($this->aUser === null && ($this->userid != 0)) {
             $this->aUser = ChildUserQuery::create()->findPk($this->userid, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -1476,7 +1476,7 @@ abstract class UserRole implements ActiveRecordInterface
      */
     public function getRole(ConnectionInterface $con = null)
     {
-        if ($this->aRole === null && ($this->roleid !== null)) {
+        if ($this->aRole === null && ($this->roleid != 0)) {
             $this->aRole = ChildRoleQuery::create()->findPk($this->roleid, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference

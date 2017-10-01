@@ -1731,7 +1731,7 @@ abstract class Swap implements ActiveRecordInterface
      */
     public function getEventPerson(ConnectionInterface $con = null)
     {
-        if ($this->aEventPerson === null && ($this->eventpersonid !== null)) {
+        if ($this->aEventPerson === null && ($this->eventpersonid != 0)) {
             $this->aEventPerson = ChildEventPersonQuery::create()->findPk($this->eventpersonid, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -1782,7 +1782,7 @@ abstract class Swap implements ActiveRecordInterface
      */
     public function getOldUserRole(ConnectionInterface $con = null)
     {
-        if ($this->aOldUserRole === null && ($this->olduserroleid !== null)) {
+        if ($this->aOldUserRole === null && ($this->olduserroleid != 0)) {
             $this->aOldUserRole = ChildUserRoleQuery::create()->findPk($this->olduserroleid, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -1833,7 +1833,7 @@ abstract class Swap implements ActiveRecordInterface
      */
     public function getNewUserRole(ConnectionInterface $con = null)
     {
-        if ($this->aNewUserRole === null && ($this->newuserroleid !== null)) {
+        if ($this->aNewUserRole === null && ($this->newuserroleid != 0)) {
             $this->aNewUserRole = ChildUserRoleQuery::create()->findPk($this->newuserroleid, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -1884,7 +1884,7 @@ abstract class Swap implements ActiveRecordInterface
      */
     public function getUser(ConnectionInterface $con = null)
     {
-        if ($this->aUser === null && ($this->requestedby !== null)) {
+        if ($this->aUser === null && ($this->requestedby != 0)) {
             $this->aUser = ChildUserQuery::create()->findPk($this->requestedby, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference

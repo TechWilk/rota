@@ -2,6 +2,7 @@
 
 namespace TechWilk\Rota\Base;
 
+use \DateTime;
 use \Exception;
 use \PDO;
 use Propel\Runtime\Propel;
@@ -15,26 +16,28 @@ use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
-use TechWilk\Rota\Permission as ChildPermission;
-use TechWilk\Rota\PermissionGroup as ChildPermissionGroup;
-use TechWilk\Rota\PermissionGroupPermissionQuery as ChildPermissionGroupPermissionQuery;
-use TechWilk\Rota\PermissionGroupQuery as ChildPermissionGroupQuery;
-use TechWilk\Rota\PermissionQuery as ChildPermissionQuery;
-use TechWilk\Rota\Map\PermissionGroupPermissionTableMap;
+use Propel\Runtime\Util\PropelDateTime;
+use TechWilk\Rota\Comment as ChildComment;
+use TechWilk\Rota\CommentQuery as ChildCommentQuery;
+use TechWilk\Rota\Event as ChildEvent;
+use TechWilk\Rota\EventQuery as ChildEventQuery;
+use TechWilk\Rota\User as ChildUser;
+use TechWilk\Rota\UserQuery as ChildUserQuery;
+use TechWilk\Rota\Map\CommentTableMap;
 
 /**
- * Base class that represents a row from the 'cr_permissionGroupPermissions' table.
+ * Base class that represents a row from the 'cr_comments' table.
  *
  *
  *
  * @package    propel.generator.TechWilk.Rota.Base
  */
-abstract class PermissionGroupPermission implements ActiveRecordInterface
+abstract class Comment implements ActiveRecordInterface
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\TechWilk\\Rota\\Map\\PermissionGroupPermissionTableMap';
+    const TABLE_MAP = '\\TechWilk\\Rota\\Map\\CommentTableMap';
 
 
     /**
@@ -71,30 +74,59 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
     protected $id;
 
     /**
-     * The value for the permissionid field.
+     * The value for the eventid field.
      *
      * Note: this column has a database default value of: 0
      * @var        int
      */
-    protected $permissionid;
+    protected $eventid;
 
     /**
-     * The value for the permissiongroupid field.
+     * The value for the userid field.
      *
      * Note: this column has a database default value of: 0
      * @var        int
      */
-    protected $permissiongroupid;
+    protected $userid;
 
     /**
-     * @var        ChildPermission
+     * The value for the text field.
+     *
+     * @var        string
      */
-    protected $aPermission;
+    protected $text;
 
     /**
-     * @var        ChildPermissionGroup
+     * The value for the removed field.
+     *
+     * Note: this column has a database default value of: false
+     * @var        boolean
      */
-    protected $aPermissionGroup;
+    protected $removed;
+
+    /**
+     * The value for the created field.
+     *
+     * @var        DateTime
+     */
+    protected $created;
+
+    /**
+     * The value for the updated field.
+     *
+     * @var        DateTime
+     */
+    protected $updated;
+
+    /**
+     * @var        ChildEvent
+     */
+    protected $aEvent;
+
+    /**
+     * @var        ChildUser
+     */
+    protected $aUser;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -112,12 +144,13 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
      */
     public function applyDefaultValues()
     {
-        $this->permissionid = 0;
-        $this->permissiongroupid = 0;
+        $this->eventid = 0;
+        $this->userid = 0;
+        $this->removed = false;
     }
 
     /**
-     * Initializes internal state of TechWilk\Rota\Base\PermissionGroupPermission object.
+     * Initializes internal state of TechWilk\Rota\Base\Comment object.
      * @see applyDefaults()
      */
     public function __construct()
@@ -214,9 +247,9 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>PermissionGroupPermission</code> instance.  If
-     * <code>obj</code> is an instance of <code>PermissionGroupPermission</code>, delegates to
-     * <code>equals(PermissionGroupPermission)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>Comment</code> instance.  If
+     * <code>obj</code> is an instance of <code>Comment</code>, delegates to
+     * <code>equals(Comment)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -282,7 +315,7 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return $this|PermissionGroupPermission The current object, for fluid interface
+     * @return $this|Comment The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -354,30 +387,100 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
     }
 
     /**
-     * Get the [permissionid] column value.
+     * Get the [eventid] column value.
+     *
+     * @return int
+     */
+    public function getEventId()
+    {
+        return $this->eventid;
+    }
+
+    /**
+     * Get the [userid] column value.
      *
      * @return int
      */
     public function getUserId()
     {
-        return $this->permissionid;
+        return $this->userid;
     }
 
     /**
-     * Get the [permissiongroupid] column value.
+     * Get the [text] column value.
      *
-     * @return int
+     * @return string
      */
-    public function getPermissionId()
+    public function getText()
     {
-        return $this->permissiongroupid;
+        return $this->text;
+    }
+
+    /**
+     * Get the [removed] column value.
+     *
+     * @return boolean
+     */
+    public function getRemoved()
+    {
+        return $this->removed;
+    }
+
+    /**
+     * Get the [removed] column value.
+     *
+     * @return boolean
+     */
+    public function isRemoved()
+    {
+        return $this->getRemoved();
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [created] column value.
+     *
+     *
+     * @param      string $format The date/time format string (either date()-style or strftime()-style).
+     *                            If format is NULL, then the raw DateTime object will be returned.
+     *
+     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+     *
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getCreated($format = null)
+    {
+        if ($format === null) {
+            return $this->created;
+        } else {
+            return $this->created instanceof \DateTimeInterface ? $this->created->format($format) : null;
+        }
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [updated] column value.
+     *
+     *
+     * @param      string $format The date/time format string (either date()-style or strftime()-style).
+     *                            If format is NULL, then the raw DateTime object will be returned.
+     *
+     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+     *
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getUpdated($format = null)
+    {
+        if ($format === null) {
+            return $this->updated;
+        } else {
+            return $this->updated instanceof \DateTimeInterface ? $this->updated->format($format) : null;
+        }
     }
 
     /**
      * Set the value of [id] column.
      *
      * @param int $v new value
-     * @return $this|\TechWilk\Rota\PermissionGroupPermission The current object (for fluent API support)
+     * @return $this|\TechWilk\Rota\Comment The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -387,17 +490,41 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[PermissionGroupPermissionTableMap::COL_ID] = true;
+            $this->modifiedColumns[CommentTableMap::COL_ID] = true;
         }
 
         return $this;
     } // setId()
 
     /**
-     * Set the value of [permissionid] column.
+     * Set the value of [eventid] column.
      *
      * @param int $v new value
-     * @return $this|\TechWilk\Rota\PermissionGroupPermission The current object (for fluent API support)
+     * @return $this|\TechWilk\Rota\Comment The current object (for fluent API support)
+     */
+    public function setEventId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->eventid !== $v) {
+            $this->eventid = $v;
+            $this->modifiedColumns[CommentTableMap::COL_EVENTID] = true;
+        }
+
+        if ($this->aEvent !== null && $this->aEvent->getId() !== $v) {
+            $this->aEvent = null;
+        }
+
+        return $this;
+    } // setEventId()
+
+    /**
+     * Set the value of [userid] column.
+     *
+     * @param int $v new value
+     * @return $this|\TechWilk\Rota\Comment The current object (for fluent API support)
      */
     public function setUserId($v)
     {
@@ -405,41 +532,105 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
             $v = (int) $v;
         }
 
-        if ($this->permissionid !== $v) {
-            $this->permissionid = $v;
-            $this->modifiedColumns[PermissionGroupPermissionTableMap::COL_PERMISSIONID] = true;
+        if ($this->userid !== $v) {
+            $this->userid = $v;
+            $this->modifiedColumns[CommentTableMap::COL_USERID] = true;
         }
 
-        if ($this->aPermission !== null && $this->aPermission->getId() !== $v) {
-            $this->aPermission = null;
+        if ($this->aUser !== null && $this->aUser->getId() !== $v) {
+            $this->aUser = null;
         }
 
         return $this;
     } // setUserId()
 
     /**
-     * Set the value of [permissiongroupid] column.
+     * Set the value of [text] column.
      *
-     * @param int $v new value
-     * @return $this|\TechWilk\Rota\PermissionGroupPermission The current object (for fluent API support)
+     * @param string $v new value
+     * @return $this|\TechWilk\Rota\Comment The current object (for fluent API support)
      */
-    public function setPermissionId($v)
+    public function setText($v)
     {
         if ($v !== null) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
-        if ($this->permissiongroupid !== $v) {
-            $this->permissiongroupid = $v;
-            $this->modifiedColumns[PermissionGroupPermissionTableMap::COL_PERMISSIONGROUPID] = true;
-        }
-
-        if ($this->aPermissionGroup !== null && $this->aPermissionGroup->getId() !== $v) {
-            $this->aPermissionGroup = null;
+        if ($this->text !== $v) {
+            $this->text = $v;
+            $this->modifiedColumns[CommentTableMap::COL_TEXT] = true;
         }
 
         return $this;
-    } // setPermissionId()
+    } // setText()
+
+    /**
+     * Sets the value of the [removed] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param  boolean|integer|string $v The new value
+     * @return $this|\TechWilk\Rota\Comment The current object (for fluent API support)
+     */
+    public function setRemoved($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->removed !== $v) {
+            $this->removed = $v;
+            $this->modifiedColumns[CommentTableMap::COL_REMOVED] = true;
+        }
+
+        return $this;
+    } // setRemoved()
+
+    /**
+     * Sets the value of [created] column to a normalized version of the date/time value specified.
+     *
+     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
+     *               Empty strings are treated as NULL.
+     * @return $this|\TechWilk\Rota\Comment The current object (for fluent API support)
+     */
+    public function setCreated($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->created !== null || $dt !== null) {
+            if ($this->created === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->created->format("Y-m-d H:i:s.u")) {
+                $this->created = $dt === null ? null : clone $dt;
+                $this->modifiedColumns[CommentTableMap::COL_CREATED] = true;
+            }
+        } // if either are not null
+
+        return $this;
+    } // setCreated()
+
+    /**
+     * Sets the value of [updated] column to a normalized version of the date/time value specified.
+     *
+     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
+     *               Empty strings are treated as NULL.
+     * @return $this|\TechWilk\Rota\Comment The current object (for fluent API support)
+     */
+    public function setUpdated($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->updated !== null || $dt !== null) {
+            if ($this->updated === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->updated->format("Y-m-d H:i:s.u")) {
+                $this->updated = $dt === null ? null : clone $dt;
+                $this->modifiedColumns[CommentTableMap::COL_UPDATED] = true;
+            }
+        } // if either are not null
+
+        return $this;
+    } // setUpdated()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -451,11 +642,15 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
-        if ($this->permissionid !== 0) {
+        if ($this->eventid !== 0) {
             return false;
         }
 
-        if ($this->permissiongroupid !== 0) {
+        if ($this->userid !== 0) {
+            return false;
+        }
+
+        if ($this->removed !== false) {
             return false;
         }
 
@@ -484,14 +679,32 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
     public function hydrate($row, $startcol = 0, $rehydrate = false, $indexType = TableMap::TYPE_NUM)
     {
         try {
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : PermissionGroupPermissionTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : CommentTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : PermissionGroupPermissionTableMap::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->permissionid = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : CommentTableMap::translateFieldName('EventId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->eventid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : PermissionGroupPermissionTableMap::translateFieldName('PermissionId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->permissiongroupid = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : CommentTableMap::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->userid = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : CommentTableMap::translateFieldName('Text', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->text = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : CommentTableMap::translateFieldName('Removed', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->removed = (null !== $col) ? (boolean) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : CommentTableMap::translateFieldName('Created', TableMap::TYPE_PHPNAME, $indexType)];
+            if ($col === '0000-00-00 00:00:00') {
+                $col = null;
+            }
+            $this->created = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : CommentTableMap::translateFieldName('Updated', TableMap::TYPE_PHPNAME, $indexType)];
+            if ($col === '0000-00-00 00:00:00') {
+                $col = null;
+            }
+            $this->updated = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -500,9 +713,9 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 3; // 3 = PermissionGroupPermissionTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = CommentTableMap::NUM_HYDRATE_COLUMNS.
         } catch (Exception $e) {
-            throw new PropelException(sprintf('Error populating %s object', '\\TechWilk\\Rota\\PermissionGroupPermission'), 0, $e);
+            throw new PropelException(sprintf('Error populating %s object', '\\TechWilk\\Rota\\Comment'), 0, $e);
         }
     }
 
@@ -521,11 +734,11 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aPermission !== null && $this->permissionid !== $this->aPermission->getId()) {
-            $this->aPermission = null;
+        if ($this->aEvent !== null && $this->eventid !== $this->aEvent->getId()) {
+            $this->aEvent = null;
         }
-        if ($this->aPermissionGroup !== null && $this->permissiongroupid !== $this->aPermissionGroup->getId()) {
-            $this->aPermissionGroup = null;
+        if ($this->aUser !== null && $this->userid !== $this->aUser->getId()) {
+            $this->aUser = null;
         }
     } // ensureConsistency
 
@@ -550,13 +763,13 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(PermissionGroupPermissionTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(CommentTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildPermissionGroupPermissionQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildCommentQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -566,8 +779,8 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aPermission = null;
-            $this->aPermissionGroup = null;
+            $this->aEvent = null;
+            $this->aUser = null;
         } // if (deep)
     }
 
@@ -577,8 +790,8 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see PermissionGroupPermission::setDeleted()
-     * @see PermissionGroupPermission::isDeleted()
+     * @see Comment::setDeleted()
+     * @see Comment::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -587,11 +800,11 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(PermissionGroupPermissionTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(CommentTableMap::DATABASE_NAME);
         }
 
         $con->transaction(function () use ($con) {
-            $deleteQuery = ChildPermissionGroupPermissionQuery::create()
+            $deleteQuery = ChildCommentQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -626,7 +839,7 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(PermissionGroupPermissionTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(CommentTableMap::DATABASE_NAME);
         }
 
         return $con->transaction(function () use ($con) {
@@ -634,8 +847,20 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
             $isInsert = $this->isNew();
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
+                // timestampable behavior
+
+                if (!$this->isColumnModified(CommentTableMap::COL_CREATED)) {
+                    $this->setCreated(\Propel\Runtime\Util\PropelDateTime::createHighPrecision());
+                }
+                if (!$this->isColumnModified(CommentTableMap::COL_UPDATED)) {
+                    $this->setUpdated(\Propel\Runtime\Util\PropelDateTime::createHighPrecision());
+                }
             } else {
                 $ret = $ret && $this->preUpdate($con);
+                // timestampable behavior
+                if ($this->isModified() && !$this->isColumnModified(CommentTableMap::COL_UPDATED)) {
+                    $this->setUpdated(\Propel\Runtime\Util\PropelDateTime::createHighPrecision());
+                }
             }
             if ($ret) {
                 $affectedRows = $this->doSave($con);
@@ -645,7 +870,7 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                PermissionGroupPermissionTableMap::addInstanceToPool($this);
+                CommentTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -676,18 +901,18 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aPermission !== null) {
-                if ($this->aPermission->isModified() || $this->aPermission->isNew()) {
-                    $affectedRows += $this->aPermission->save($con);
+            if ($this->aEvent !== null) {
+                if ($this->aEvent->isModified() || $this->aEvent->isNew()) {
+                    $affectedRows += $this->aEvent->save($con);
                 }
-                $this->setPermission($this->aPermission);
+                $this->setEvent($this->aEvent);
             }
 
-            if ($this->aPermissionGroup !== null) {
-                if ($this->aPermissionGroup->isModified() || $this->aPermissionGroup->isNew()) {
-                    $affectedRows += $this->aPermissionGroup->save($con);
+            if ($this->aUser !== null) {
+                if ($this->aUser->isModified() || $this->aUser->isNew()) {
+                    $affectedRows += $this->aUser->save($con);
                 }
-                $this->setPermissionGroup($this->aPermissionGroup);
+                $this->setUser($this->aUser);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -720,24 +945,36 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[PermissionGroupPermissionTableMap::COL_ID] = true;
+        $this->modifiedColumns[CommentTableMap::COL_ID] = true;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PermissionGroupPermissionTableMap::COL_ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . CommentTableMap::COL_ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(PermissionGroupPermissionTableMap::COL_ID)) {
+        if ($this->isColumnModified(CommentTableMap::COL_ID)) {
             $modifiedColumns[':p' . $index++]  = 'id';
         }
-        if ($this->isColumnModified(PermissionGroupPermissionTableMap::COL_PERMISSIONID)) {
-            $modifiedColumns[':p' . $index++]  = 'permissionId';
+        if ($this->isColumnModified(CommentTableMap::COL_EVENTID)) {
+            $modifiedColumns[':p' . $index++]  = 'eventId';
         }
-        if ($this->isColumnModified(PermissionGroupPermissionTableMap::COL_PERMISSIONGROUPID)) {
-            $modifiedColumns[':p' . $index++]  = 'permissionGroupId';
+        if ($this->isColumnModified(CommentTableMap::COL_USERID)) {
+            $modifiedColumns[':p' . $index++]  = 'userId';
+        }
+        if ($this->isColumnModified(CommentTableMap::COL_TEXT)) {
+            $modifiedColumns[':p' . $index++]  = 'text';
+        }
+        if ($this->isColumnModified(CommentTableMap::COL_REMOVED)) {
+            $modifiedColumns[':p' . $index++]  = 'removed';
+        }
+        if ($this->isColumnModified(CommentTableMap::COL_CREATED)) {
+            $modifiedColumns[':p' . $index++]  = 'created';
+        }
+        if ($this->isColumnModified(CommentTableMap::COL_UPDATED)) {
+            $modifiedColumns[':p' . $index++]  = 'updated';
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_permissionGroupPermissions (%s) VALUES (%s)',
+            'INSERT INTO cr_comments (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -749,11 +986,23 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
                     case 'id':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'permissionId':
-                        $stmt->bindValue($identifier, $this->permissionid, PDO::PARAM_INT);
+                    case 'eventId':
+                        $stmt->bindValue($identifier, $this->eventid, PDO::PARAM_INT);
                         break;
-                    case 'permissionGroupId':
-                        $stmt->bindValue($identifier, $this->permissiongroupid, PDO::PARAM_INT);
+                    case 'userId':
+                        $stmt->bindValue($identifier, $this->userid, PDO::PARAM_INT);
+                        break;
+                    case 'text':
+                        $stmt->bindValue($identifier, $this->text, PDO::PARAM_STR);
+                        break;
+                    case 'removed':
+                        $stmt->bindValue($identifier, (int) $this->removed, PDO::PARAM_INT);
+                        break;
+                    case 'created':
+                        $stmt->bindValue($identifier, $this->created ? $this->created->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
+                        break;
+                    case 'updated':
+                        $stmt->bindValue($identifier, $this->updated ? $this->updated->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -801,7 +1050,7 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = PermissionGroupPermissionTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = CommentTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -821,10 +1070,22 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
                 return $this->getId();
                 break;
             case 1:
-                return $this->getUserId();
+                return $this->getEventId();
                 break;
             case 2:
-                return $this->getPermissionId();
+                return $this->getUserId();
+                break;
+            case 3:
+                return $this->getText();
+                break;
+            case 4:
+                return $this->getRemoved();
+                break;
+            case 5:
+                return $this->getCreated();
+                break;
+            case 6:
+                return $this->getUpdated();
                 break;
             default:
                 return null;
@@ -849,49 +1110,61 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
      */
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['PermissionGroupPermission'][$this->hashCode()])) {
+        if (isset($alreadyDumpedObjects['Comment'][$this->hashCode()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['PermissionGroupPermission'][$this->hashCode()] = true;
-        $keys = PermissionGroupPermissionTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['Comment'][$this->hashCode()] = true;
+        $keys = CommentTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getUserId(),
-            $keys[2] => $this->getPermissionId(),
+            $keys[1] => $this->getEventId(),
+            $keys[2] => $this->getUserId(),
+            $keys[3] => $this->getText(),
+            $keys[4] => $this->getRemoved(),
+            $keys[5] => $this->getCreated(),
+            $keys[6] => $this->getUpdated(),
         );
+        if ($result[$keys[5]] instanceof \DateTimeInterface) {
+            $result[$keys[5]] = $result[$keys[5]]->format('c');
+        }
+
+        if ($result[$keys[6]] instanceof \DateTimeInterface) {
+            $result[$keys[6]] = $result[$keys[6]]->format('c');
+        }
+
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aPermission) {
+            if (null !== $this->aEvent) {
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
-                        $key = 'permission';
+                        $key = 'event';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_permissions';
+                        $key = 'cr_events';
                         break;
                     default:
-                        $key = 'Permission';
+                        $key = 'Event';
                 }
 
-                $result[$key] = $this->aPermission->toArray($keyType, $includeLazyLoadColumns, $alreadyDumpedObjects, true);
+                $result[$key] = $this->aEvent->toArray($keyType, $includeLazyLoadColumns, $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aPermissionGroup) {
+            if (null !== $this->aUser) {
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
-                        $key = 'permissionGroup';
+                        $key = 'user';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_permissionGroups';
+                        $key = 'cr_users';
                         break;
                     default:
-                        $key = 'PermissionGroup';
+                        $key = 'User';
                 }
 
-                $result[$key] = $this->aPermissionGroup->toArray($keyType, $includeLazyLoadColumns, $alreadyDumpedObjects, true);
+                $result[$key] = $this->aUser->toArray($keyType, $includeLazyLoadColumns, $alreadyDumpedObjects, true);
             }
         }
 
@@ -907,11 +1180,11 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
      *                one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *                Defaults to TableMap::TYPE_PHPNAME.
-     * @return $this|\TechWilk\Rota\PermissionGroupPermission
+     * @return $this|\TechWilk\Rota\Comment
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = PermissionGroupPermissionTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = CommentTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -922,7 +1195,7 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
      *
      * @param  int $pos position in xml schema
      * @param  mixed $value field value
-     * @return $this|\TechWilk\Rota\PermissionGroupPermission
+     * @return $this|\TechWilk\Rota\Comment
      */
     public function setByPosition($pos, $value)
     {
@@ -931,10 +1204,22 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
                 $this->setId($value);
                 break;
             case 1:
-                $this->setUserId($value);
+                $this->setEventId($value);
                 break;
             case 2:
-                $this->setPermissionId($value);
+                $this->setUserId($value);
+                break;
+            case 3:
+                $this->setText($value);
+                break;
+            case 4:
+                $this->setRemoved($value);
+                break;
+            case 5:
+                $this->setCreated($value);
+                break;
+            case 6:
+                $this->setUpdated($value);
                 break;
         } // switch()
 
@@ -960,16 +1245,28 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = PermissionGroupPermissionTableMap::getFieldNames($keyType);
+        $keys = CommentTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
             $this->setId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setUserId($arr[$keys[1]]);
+            $this->setEventId($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setPermissionId($arr[$keys[2]]);
+            $this->setUserId($arr[$keys[2]]);
+        }
+        if (array_key_exists($keys[3], $arr)) {
+            $this->setText($arr[$keys[3]]);
+        }
+        if (array_key_exists($keys[4], $arr)) {
+            $this->setRemoved($arr[$keys[4]]);
+        }
+        if (array_key_exists($keys[5], $arr)) {
+            $this->setCreated($arr[$keys[5]]);
+        }
+        if (array_key_exists($keys[6], $arr)) {
+            $this->setUpdated($arr[$keys[6]]);
         }
     }
 
@@ -990,7 +1287,7 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
      * @param string $data The source data to import from
      * @param string $keyType The type of keys the array uses.
      *
-     * @return $this|\TechWilk\Rota\PermissionGroupPermission The current object, for fluid interface
+     * @return $this|\TechWilk\Rota\Comment The current object, for fluid interface
      */
     public function importFrom($parser, $data, $keyType = TableMap::TYPE_PHPNAME)
     {
@@ -1010,16 +1307,28 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(PermissionGroupPermissionTableMap::DATABASE_NAME);
+        $criteria = new Criteria(CommentTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(PermissionGroupPermissionTableMap::COL_ID)) {
-            $criteria->add(PermissionGroupPermissionTableMap::COL_ID, $this->id);
+        if ($this->isColumnModified(CommentTableMap::COL_ID)) {
+            $criteria->add(CommentTableMap::COL_ID, $this->id);
         }
-        if ($this->isColumnModified(PermissionGroupPermissionTableMap::COL_PERMISSIONID)) {
-            $criteria->add(PermissionGroupPermissionTableMap::COL_PERMISSIONID, $this->permissionid);
+        if ($this->isColumnModified(CommentTableMap::COL_EVENTID)) {
+            $criteria->add(CommentTableMap::COL_EVENTID, $this->eventid);
         }
-        if ($this->isColumnModified(PermissionGroupPermissionTableMap::COL_PERMISSIONGROUPID)) {
-            $criteria->add(PermissionGroupPermissionTableMap::COL_PERMISSIONGROUPID, $this->permissiongroupid);
+        if ($this->isColumnModified(CommentTableMap::COL_USERID)) {
+            $criteria->add(CommentTableMap::COL_USERID, $this->userid);
+        }
+        if ($this->isColumnModified(CommentTableMap::COL_TEXT)) {
+            $criteria->add(CommentTableMap::COL_TEXT, $this->text);
+        }
+        if ($this->isColumnModified(CommentTableMap::COL_REMOVED)) {
+            $criteria->add(CommentTableMap::COL_REMOVED, $this->removed);
+        }
+        if ($this->isColumnModified(CommentTableMap::COL_CREATED)) {
+            $criteria->add(CommentTableMap::COL_CREATED, $this->created);
+        }
+        if ($this->isColumnModified(CommentTableMap::COL_UPDATED)) {
+            $criteria->add(CommentTableMap::COL_UPDATED, $this->updated);
         }
 
         return $criteria;
@@ -1037,8 +1346,8 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = ChildPermissionGroupPermissionQuery::create();
-        $criteria->add(PermissionGroupPermissionTableMap::COL_ID, $this->id);
+        $criteria = ChildCommentQuery::create();
+        $criteria->add(CommentTableMap::COL_ID, $this->id);
 
         return $criteria;
     }
@@ -1100,15 +1409,19 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \TechWilk\Rota\PermissionGroupPermission (or compatible) type.
+     * @param      object $copyObj An object of \TechWilk\Rota\Comment (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setEventId($this->getEventId());
         $copyObj->setUserId($this->getUserId());
-        $copyObj->setPermissionId($this->getPermissionId());
+        $copyObj->setText($this->getText());
+        $copyObj->setRemoved($this->getRemoved());
+        $copyObj->setCreated($this->getCreated());
+        $copyObj->setUpdated($this->getUpdated());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(null); // this is a auto-increment column, so set to default value
@@ -1124,7 +1437,7 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
      * objects.
      *
      * @param  boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return \TechWilk\Rota\PermissionGroupPermission Clone of current object.
+     * @return \TechWilk\Rota\Comment Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1138,13 +1451,64 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildPermission object.
+     * Declares an association between this object and a ChildEvent object.
      *
-     * @param  ChildPermission $v
-     * @return $this|\TechWilk\Rota\PermissionGroupPermission The current object (for fluent API support)
+     * @param  ChildEvent $v
+     * @return $this|\TechWilk\Rota\Comment The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setPermission(ChildPermission $v = null)
+    public function setEvent(ChildEvent $v = null)
+    {
+        if ($v === null) {
+            $this->setEventId(0);
+        } else {
+            $this->setEventId($v->getId());
+        }
+
+        $this->aEvent = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildEvent object, it will not be re-added.
+        if ($v !== null) {
+            $v->addComment($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildEvent object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildEvent The associated ChildEvent object.
+     * @throws PropelException
+     */
+    public function getEvent(ConnectionInterface $con = null)
+    {
+        if ($this->aEvent === null && ($this->eventid != 0)) {
+            $this->aEvent = ChildEventQuery::create()->findPk($this->eventid, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aEvent->addComments($this);
+             */
+        }
+
+        return $this->aEvent;
+    }
+
+    /**
+     * Declares an association between this object and a ChildUser object.
+     *
+     * @param  ChildUser $v
+     * @return $this|\TechWilk\Rota\Comment The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setUser(ChildUser $v = null)
     {
         if ($v === null) {
             $this->setUserId(0);
@@ -1152,12 +1516,12 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
             $this->setUserId($v->getId());
         }
 
-        $this->aPermission = $v;
+        $this->aUser = $v;
 
         // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildPermission object, it will not be re-added.
+        // If this object has already been added to the ChildUser object, it will not be re-added.
         if ($v !== null) {
-            $v->addPermissionGroupPermission($this);
+            $v->addComment($this);
         }
 
 
@@ -1166,77 +1530,26 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
 
 
     /**
-     * Get the associated ChildPermission object
+     * Get the associated ChildUser object
      *
      * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildPermission The associated ChildPermission object.
+     * @return ChildUser The associated ChildUser object.
      * @throws PropelException
      */
-    public function getPermission(ConnectionInterface $con = null)
+    public function getUser(ConnectionInterface $con = null)
     {
-        if ($this->aPermission === null && ($this->permissionid != 0)) {
-            $this->aPermission = ChildPermissionQuery::create()->findPk($this->permissionid, $con);
+        if ($this->aUser === null && ($this->userid != 0)) {
+            $this->aUser = ChildUserQuery::create()->findPk($this->userid, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aPermission->addPermissionGroupPermissions($this);
+                $this->aUser->addComments($this);
              */
         }
 
-        return $this->aPermission;
-    }
-
-    /**
-     * Declares an association between this object and a ChildPermissionGroup object.
-     *
-     * @param  ChildPermissionGroup $v
-     * @return $this|\TechWilk\Rota\PermissionGroupPermission The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setPermissionGroup(ChildPermissionGroup $v = null)
-    {
-        if ($v === null) {
-            $this->setPermissionId(0);
-        } else {
-            $this->setPermissionId($v->getId());
-        }
-
-        $this->aPermissionGroup = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildPermissionGroup object, it will not be re-added.
-        if ($v !== null) {
-            $v->addPermissionGroupPermission($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildPermissionGroup object
-     *
-     * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildPermissionGroup The associated ChildPermissionGroup object.
-     * @throws PropelException
-     */
-    public function getPermissionGroup(ConnectionInterface $con = null)
-    {
-        if ($this->aPermissionGroup === null && ($this->permissiongroupid != 0)) {
-            $this->aPermissionGroup = ChildPermissionGroupQuery::create()->findPk($this->permissiongroupid, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aPermissionGroup->addPermissionGroupPermissions($this);
-             */
-        }
-
-        return $this->aPermissionGroup;
+        return $this->aUser;
     }
 
     /**
@@ -1246,15 +1559,19 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
      */
     public function clear()
     {
-        if (null !== $this->aPermission) {
-            $this->aPermission->removePermissionGroupPermission($this);
+        if (null !== $this->aEvent) {
+            $this->aEvent->removeComment($this);
         }
-        if (null !== $this->aPermissionGroup) {
-            $this->aPermissionGroup->removePermissionGroupPermission($this);
+        if (null !== $this->aUser) {
+            $this->aUser->removeComment($this);
         }
         $this->id = null;
-        $this->permissionid = null;
-        $this->permissiongroupid = null;
+        $this->eventid = null;
+        $this->userid = null;
+        $this->text = null;
+        $this->removed = null;
+        $this->created = null;
+        $this->updated = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->applyDefaultValues();
@@ -1276,8 +1593,8 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
-        $this->aPermission = null;
-        $this->aPermissionGroup = null;
+        $this->aEvent = null;
+        $this->aUser = null;
     }
 
     /**
@@ -1287,7 +1604,21 @@ abstract class PermissionGroupPermission implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(PermissionGroupPermissionTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(CommentTableMap::DEFAULT_STRING_FORMAT);
+    }
+
+    // timestampable behavior
+
+    /**
+     * Mark the current object so that the update date doesn't get updated during next save
+     *
+     * @return     $this|ChildComment The current object (for fluent API support)
+     */
+    public function keepUpdateDateUnchanged()
+    {
+        $this->modifiedColumns[CommentTableMap::COL_UPDATED] = true;
+
+        return $this;
     }
 
     /**

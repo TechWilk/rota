@@ -150,7 +150,6 @@ $sessionUserId = $_SESSION['userid'];
 						(SELECT l.name FROM cr_locations l WHERE l.id = e.location) AS eventLocation,
 						(SELECT g.name FROM cr_eventGroups g WHERE g.id = e.eventGroup) AS eventGroup,
 						name,
-						comment,
 						sermonTitle,
 						bibleVerse,
 						DATE_FORMAT(date,'%m/%d/%Y %H:%i:%S') AS sundayDate,
@@ -181,7 +180,6 @@ $sessionUserId = $_SESSION['userid'];
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $eventID = $row['id'];
-        $comment = $row['comment'];
         $preacher = '';
         $leader = '';
         $band = '';
@@ -213,9 +211,6 @@ $sessionUserId = $_SESSION['userid'];
         }
         if (!empty($row['bibleVerse'])) {
             echo ' <em>('.$row['bibleVerse'].')</em>';
-        }
-        if (!empty($row['comment'])) {
-            echo '<br /><em>&nbsp;&nbsp;&nbsp;('.$row['comment'].')</em>';
         }
         echo '</td>';
 
@@ -271,33 +266,6 @@ $sessionUserId = $_SESSION['userid'];
             }
             echo '</td>';
         }
-        /*
-        // EXPORT column
-        echo "<td class='no-print'>";
-
-        //generate google calendar urls
-        putenv("TZ=".$userTZ);
-        $eventDate = $row['sundayDate'];
-        $eventDateGMT = gmdate("Ymd\THis\Z",strtotime($eventDate." ".date("T",strtotime($eventDate))));
-        //echo $eventDateGMT."<br>";
-        $eventDate = $row['sundayEndDate'];
-        $eventDateEndGMT = gmdate("Ymd\THis\Z",strtotime($eventDate." ".date("T",strtotime($eventDate))));
-        //echo $eventDateEndGMT;
-
-        if (isAdmin()) {
-            if ($comment<>"")
-                $comment = "; " . $comment;
-            $comment = str_replace("\r\n","; ",$comment);
-            echo "<a href=\"http://www.google.com/calendar/event?action=TEMPLATE&text=".urlencode(utf8_wrapper(getEventDetails($eventID, " / ",1)." (".$row['eventType'].")"))."&dates=".$eventDateGMT."/".$eventDateEndGMT."&details=".urlencode(utf8_wrapper(ltrim(getEventDetails($eventID, "; ",0,false) . $comment,"; ")))."&location=".urlencode(utf8_wrapper($row['eventLocation']))."&trp=false&sprop=&sprop=name:&src=".$google_group_calendar."&ctz=".$userTZ."\" target=\"_blank\">";
-            echo "<img src=\"//www.google.com/calendar/images/ext/gc_button1.gif\" border=0></a><BR>";
-            //echo "iCal";
-        }else{
-            echo "<a href=\"http://www.google.com/calendar/event?action=TEMPLATE&text=".urlencode(utf8_wrapper($row['eventType']))."&dates=".$eventDateGMT."/".$eventDateEndGMT."&details=&location=".urlencode(utf8_wrapper($row['eventLocation']))."&trp=false&sprop=&sprop=name:&ctz=".$userTZ."\" target=\"_blank\">";
-            echo "<img src=\"//www.google.com/calendar/images/ext/gc_button1.gif\" border=0></a>";
-        }
-
-        echo "</td>";
-        */
 
         echo "</tr>\r\n";
     }

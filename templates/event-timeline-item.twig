@@ -24,9 +24,11 @@
           <p>{{ event.comment }}</p>
         </blockquote>
         {% endif %}
+        <a href="#" class="btn btn-default btn-xs" data-toggle='modal' data-target="#event{{ event.id }}_modal">View details</a>
+        <a href="{{ path_for('home') }}old/swap.php?event={{ event.id }}" class="btn btn-default btn-xs">Swap</a>
       </div>
-      <div class="timeline-footer">
-        <a href="#" class="btn btn-warning btn-xs">Swap</a>
+      <div class="timeline-footer box-comments">
+        {% include 'event-comments.twig' %}
       </div>
     </div>
   </li>

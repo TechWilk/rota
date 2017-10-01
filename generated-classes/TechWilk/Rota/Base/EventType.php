@@ -1576,7 +1576,7 @@ abstract class EventType implements ActiveRecordInterface
      */
     public function getLocation(ConnectionInterface $con = null)
     {
-        if ($this->aLocation === null && ($this->defaultlocationid !== null)) {
+        if ($this->aLocation === null && ($this->defaultlocationid != 0)) {
             $this->aLocation = ChildLocationQuery::create()->findPk($this->defaultlocationid, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference

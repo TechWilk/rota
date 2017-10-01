@@ -281,7 +281,7 @@ include 'includes/header.php';
 } ?>" placeholder="Enter service name" />
 								</div>
 								<!-- /.form-group -->
-								
+
 								<div class="form-group">
 									<label for="type">Type: <strong><?php if (isset($typename) && ($hiddenForBandAdmin)) {
     echo $typename;
@@ -380,7 +380,7 @@ include 'includes/header.php';
 									<!-- /.input group -->
 								</div>
 								<!-- /.form-group -->
-								
+
 									<div class="form-group">
 									<label for="time">Time (24h): <strong><?php if (isset($time) && (($hiddenForBandAdmin) || ($hiddenForEventEditor))) {
                                             echo $time;
@@ -402,23 +402,11 @@ include 'includes/header.php';
 								<!-- /.form-group -->
 							</div><!-- ./col -->
 
-							<div class="form-group">
-								<label for="comment">Notes: <?php if (isset($comment) && ($hiddenForBandAdmin)) {
-                                            echo $comment;
-                                        } ?></label>
-								<textarea name="comment" class="mceNoEditor form-control" rows="3" <?php if ($hiddenForBandAdmin) {
-                                            echo 'hidden';
-                                        } ?>><?php if (isset($comment)) {
-                                            echo $comment;
-                                        } ?></textarea>
-							</div>
-							<!-- /.form-group -->
-
 							</div><!-- /.box-body -->
 						</div><!-- /.box -->
-						
-						
-						
+
+
+
 						<div class="box box-primary">
 							<div class="box-header">
 								<h3 class="box-title">Rehersal Details</h3>
@@ -459,9 +447,9 @@ include 'includes/header.php';
 
 							</div><!-- /.box-body -->
 						</div><!-- /.box -->
-						
-						
-						
+
+
+
 						<div class="box box-primary">
 							<div class="box-header">
 								<h3 class="box-title">Sermon Details</h3>
