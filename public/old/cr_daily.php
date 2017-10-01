@@ -80,14 +80,14 @@ if ((isset($_GET['token'])) && ($_GET['token'] == $token)) {
     $out = '';
     if ($daysAlert > 0) {
         $sqlEvents = 'SELECT
-										id,
-										date
-									FROM
-										cr_events
-									WHERE
-										date >= CURDATE()
-										AND date_format( date , "%y-%m-%d" )
-												<= date_format( DATE_ADD(now(), INTERVAL '.$daysAlert.' DAY ) , "%y-%m-%d" )';
+                        id,
+                        date
+                    FROM
+                        cr_events
+                    WHERE
+                        date >= CURDATE()
+                        AND date_format( date , "%y-%m-%d" )
+                                <= date_format( DATE_ADD(now(), INTERVAL '.$daysAlert.' DAY ) , "%y-%m-%d" )';
         $resultEvents = mysqli_query(db(), $sqlEvents) or die(mysqli_error(db()));
         $i = 0;
         while ($rowEvents = mysqli_fetch_array($resultEvents, MYSQLI_ASSOC)) {
@@ -115,7 +115,6 @@ if ((isset($_GET['token'])) && ($_GET['token'] == $token)) {
 </html>
 	<?php
 } else {
-        //redirect to start page
-        header('Location: index.php');
-    }
-?>
+    //redirect to start page
+    header('Location: index.php');
+}

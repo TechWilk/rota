@@ -1,4 +1,6 @@
-<?php include 'includes/config.php';
+<?php namespace TechWilk\Rota;
+
+include 'includes/config.php';
 include 'includes/functions.php';
 /*
     This file is part of Church Rota.
@@ -43,8 +45,7 @@ include 'includes/header.php'; ?>
 <h2>Error <?php echo $no; ?></h2>
 <br>
 The following error has occurred
-<?php namespace TechWilk\Rota;
-
+<?php
 echo " on page '".$page."':<br><br>";
     echo '<strong>';
 

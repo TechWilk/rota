@@ -137,7 +137,9 @@ $app->get('/settings', function ($request, $response, $args) {
     // Sample log message
     $this->logger->info("Fetch settings GET '/settings'");
 
-    return $this->view->render($response, 'settings.twig', []);
+    $url = $this->router->pathFor('home') . 'old/settings.php';
+    return $response->withStatus(303)->withHeader('Location', $url);
+    //return $this->view->render($response, 'settings.twig', []);
 })->setName('settings');
 
 $app->get('/token', function ($request, $response, $args) {
