@@ -1404,7 +1404,7 @@ abstract class Role implements ActiveRecordInterface
      */
     public function getGroup(ConnectionInterface $con = null)
     {
-        if ($this->aGroup === null && ($this->groupid !== null)) {
+        if ($this->aGroup === null && ($this->groupid != 0)) {
             $this->aGroup = ChildGroupQuery::create()->findPk($this->groupid, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference

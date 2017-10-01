@@ -1653,7 +1653,7 @@ abstract class CalendarToken implements ActiveRecordInterface
      */
     public function getUser(ConnectionInterface $con = null)
     {
-        if ($this->aUser === null && ($this->userid !== null)) {
+        if ($this->aUser === null && ($this->userid != 0)) {
             $this->aUser = ChildUserQuery::create()->findPk($this->userid, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference

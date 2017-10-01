@@ -1368,7 +1368,7 @@ abstract class EventPerson implements ActiveRecordInterface
      */
     public function getEvent(ConnectionInterface $con = null)
     {
-        if ($this->aEvent === null && ($this->eventid !== null)) {
+        if ($this->aEvent === null && ($this->eventid != 0)) {
             $this->aEvent = ChildEventQuery::create()->findPk($this->eventid, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -1419,7 +1419,7 @@ abstract class EventPerson implements ActiveRecordInterface
      */
     public function getUserRole(ConnectionInterface $con = null)
     {
-        if ($this->aUserRole === null && ($this->userroleid !== null)) {
+        if ($this->aUserRole === null && ($this->userroleid != 0)) {
             $this->aUserRole = ChildUserRoleQuery::create()->findPk($this->userroleid, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference

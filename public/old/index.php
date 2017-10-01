@@ -22,7 +22,6 @@ $userRoles = UserRoleQuery::create()->filterByUser($user)->find();
 $sql = "SELECT
           DISTINCT e.id AS id,
           e.name AS eventName,
-          e.comment AS comment,
           et.name AS eventType,
           et.id AS eventTypeId,
           est.name AS eventSubType,
@@ -154,7 +153,7 @@ include 'includes/header.php';
       </div><!-- /.info-box -->
     </div><!-- /.col -->
 
-    
+
     <?php
     if ((isAdmin()) || ($logged_in_show_snapshot_button == '1')): ?>
 
@@ -181,7 +180,7 @@ include 'includes/header.php';
       // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       // ~~~~~~~~ Events this week ~~~~~~~~
       // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      ?> 
+      ?>
 
       <h2>Events this week:</h2>
 
@@ -224,14 +223,16 @@ include 'includes/header.php';
             <div class="timeline-body">
               <p><strong><?php echo $event->getEventGroup() ? $event->getEventGroup()->getName().': ' : '' ?></strong><?php echo $event->getSermonTitle() ?> <?php echo $event->getBibleVerse() ? '('.$event->getBibleVerse().')' : '' ?></p>
               <p><strong>Location:</strong> <?php echo $event->getLocation()->getName(); ?></p>
-              
-              <?php if ($event->getComment() != ''): ?>
+
+              <?php if ($event->getComments()): ?>
+              <?php foreach ($event->getComments() as $comment): ?>
               <blockquote>
                 <p>
-                  <?php echo $event->getComment() ?>
+                  <?php echo $comment->getText() ?>
                 </p>
                 <small>Comments</small>
               </blockquote>
+              <?php endforeach ?>
               <?php endif ?>
             </div><!-- /.box-body -->
 
@@ -398,7 +399,7 @@ include 'includes/header.php';
             <div class="timeline-body">
               <p><strong><?php echo $event->eventGroup ? $event->eventGroup.': ' : '' ?></strong><?php echo $event->sermonTitle ?> <?php echo $event->bibleVerse ? '('.$event->bibleVerse.')' : '' ?></p>
               <p><strong>Location:</strong> <?php echo $event->eventLocation; ?></p>
-              
+
               <?php if ($event->comment != ''): ?>
               <blockquote>
                 <p>
@@ -619,8 +620,8 @@ include 'includes/header.php';
       // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       // ~~~~~~~~~ User details ~~~~~~~~~~~
       // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      ?>  
-    
+      ?>
+
       <div class="box box-widget widget-user-2">
         <div class="widget-user-header bg-yellow">
           <div class="widget-user-image">
@@ -669,7 +670,7 @@ include 'includes/header.php';
   </div><!-- /.row -->
 
 
-    
+
 <?php
 include 'includes/footer.php';
 ?>

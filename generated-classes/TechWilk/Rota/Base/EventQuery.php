@@ -30,7 +30,6 @@ use TechWilk\Rota\Map\EventTableMap;
  * @method     ChildEventQuery orderByLocationId($order = Criteria::ASC) Order by the location column
  * @method     ChildEventQuery orderByNotified($order = Criteria::ASC) Order by the notified column
  * @method     ChildEventQuery orderByRehearsal($order = Criteria::ASC) Order by the rehearsal column
- * @method     ChildEventQuery orderByComment($order = Criteria::ASC) Order by the comment column
  * @method     ChildEventQuery orderByRemoved($order = Criteria::ASC) Order by the removed column
  * @method     ChildEventQuery orderByEventGroupId($order = Criteria::ASC) Order by the eventGroup column
  * @method     ChildEventQuery orderBySermonTitle($order = Criteria::ASC) Order by the sermonTitle column
@@ -48,7 +47,6 @@ use TechWilk\Rota\Map\EventTableMap;
  * @method     ChildEventQuery groupByLocationId() Group by the location column
  * @method     ChildEventQuery groupByNotified() Group by the notified column
  * @method     ChildEventQuery groupByRehearsal() Group by the rehearsal column
- * @method     ChildEventQuery groupByComment() Group by the comment column
  * @method     ChildEventQuery groupByRemoved() Group by the removed column
  * @method     ChildEventQuery groupByEventGroupId() Group by the eventGroup column
  * @method     ChildEventQuery groupBySermonTitle() Group by the sermonTitle column
@@ -114,6 +112,16 @@ use TechWilk\Rota\Map\EventTableMap;
  * @method     ChildEventQuery rightJoinWithEventGroup() Adds a RIGHT JOIN clause and with to the query using the EventGroup relation
  * @method     ChildEventQuery innerJoinWithEventGroup() Adds a INNER JOIN clause and with to the query using the EventGroup relation
  *
+ * @method     ChildEventQuery leftJoinComment($relationAlias = null) Adds a LEFT JOIN clause to the query using the Comment relation
+ * @method     ChildEventQuery rightJoinComment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Comment relation
+ * @method     ChildEventQuery innerJoinComment($relationAlias = null) Adds a INNER JOIN clause to the query using the Comment relation
+ *
+ * @method     ChildEventQuery joinWithComment($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Comment relation
+ *
+ * @method     ChildEventQuery leftJoinWithComment() Adds a LEFT JOIN clause and with to the query using the Comment relation
+ * @method     ChildEventQuery rightJoinWithComment() Adds a RIGHT JOIN clause and with to the query using the Comment relation
+ * @method     ChildEventQuery innerJoinWithComment() Adds a INNER JOIN clause and with to the query using the Comment relation
+ *
  * @method     ChildEventQuery leftJoinEventPerson($relationAlias = null) Adds a LEFT JOIN clause to the query using the EventPerson relation
  * @method     ChildEventQuery rightJoinEventPerson($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EventPerson relation
  * @method     ChildEventQuery innerJoinEventPerson($relationAlias = null) Adds a INNER JOIN clause to the query using the EventPerson relation
@@ -134,7 +142,7 @@ use TechWilk\Rota\Map\EventTableMap;
  * @method     ChildEventQuery rightJoinWithAvailability() Adds a RIGHT JOIN clause and with to the query using the Availability relation
  * @method     ChildEventQuery innerJoinWithAvailability() Adds a INNER JOIN clause and with to the query using the Availability relation
  *
- * @method     \TechWilk\Rota\UserQuery|\TechWilk\Rota\EventTypeQuery|\TechWilk\Rota\EventSubTypeQuery|\TechWilk\Rota\LocationQuery|\TechWilk\Rota\EventGroupQuery|\TechWilk\Rota\EventPersonQuery|\TechWilk\Rota\AvailabilityQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \TechWilk\Rota\UserQuery|\TechWilk\Rota\EventTypeQuery|\TechWilk\Rota\EventSubTypeQuery|\TechWilk\Rota\LocationQuery|\TechWilk\Rota\EventGroupQuery|\TechWilk\Rota\CommentQuery|\TechWilk\Rota\EventPersonQuery|\TechWilk\Rota\AvailabilityQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildEvent findOne(ConnectionInterface $con = null) Return the first ChildEvent matching the query
  * @method     ChildEvent findOneOrCreate(ConnectionInterface $con = null) Return the first ChildEvent matching the query, or a new ChildEvent object populated from the query conditions when no match is found
@@ -149,7 +157,6 @@ use TechWilk\Rota\Map\EventTableMap;
  * @method     ChildEvent findOneByLocationId(int $location) Return the first ChildEvent filtered by the location column
  * @method     ChildEvent findOneByNotified(int $notified) Return the first ChildEvent filtered by the notified column
  * @method     ChildEvent findOneByRehearsal(int $rehearsal) Return the first ChildEvent filtered by the rehearsal column
- * @method     ChildEvent findOneByComment(string $comment) Return the first ChildEvent filtered by the comment column
  * @method     ChildEvent findOneByRemoved(int $removed) Return the first ChildEvent filtered by the removed column
  * @method     ChildEvent findOneByEventGroupId(int $eventGroup) Return the first ChildEvent filtered by the eventGroup column
  * @method     ChildEvent findOneBySermonTitle(string $sermonTitle) Return the first ChildEvent filtered by the sermonTitle column
@@ -170,7 +177,6 @@ use TechWilk\Rota\Map\EventTableMap;
  * @method     ChildEvent requireOneByLocationId(int $location) Return the first ChildEvent filtered by the location column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEvent requireOneByNotified(int $notified) Return the first ChildEvent filtered by the notified column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEvent requireOneByRehearsal(int $rehearsal) Return the first ChildEvent filtered by the rehearsal column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildEvent requireOneByComment(string $comment) Return the first ChildEvent filtered by the comment column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEvent requireOneByRemoved(int $removed) Return the first ChildEvent filtered by the removed column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEvent requireOneByEventGroupId(int $eventGroup) Return the first ChildEvent filtered by the eventGroup column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEvent requireOneBySermonTitle(string $sermonTitle) Return the first ChildEvent filtered by the sermonTitle column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -189,7 +195,6 @@ use TechWilk\Rota\Map\EventTableMap;
  * @method     ChildEvent[]|ObjectCollection findByLocationId(int $location) Return ChildEvent objects filtered by the location column
  * @method     ChildEvent[]|ObjectCollection findByNotified(int $notified) Return ChildEvent objects filtered by the notified column
  * @method     ChildEvent[]|ObjectCollection findByRehearsal(int $rehearsal) Return ChildEvent objects filtered by the rehearsal column
- * @method     ChildEvent[]|ObjectCollection findByComment(string $comment) Return ChildEvent objects filtered by the comment column
  * @method     ChildEvent[]|ObjectCollection findByRemoved(int $removed) Return ChildEvent objects filtered by the removed column
  * @method     ChildEvent[]|ObjectCollection findByEventGroupId(int $eventGroup) Return ChildEvent objects filtered by the eventGroup column
  * @method     ChildEvent[]|ObjectCollection findBySermonTitle(string $sermonTitle) Return ChildEvent objects filtered by the sermonTitle column
@@ -294,7 +299,7 @@ abstract class EventQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, date, name, createdBy, rehearsalDate, type, subType, location, notified, rehearsal, comment, removed, eventGroup, sermonTitle, bibleVerse, created, updated FROM cr_events WHERE id = :p0';
+        $sql = 'SELECT id, date, name, createdBy, rehearsalDate, type, subType, location, notified, rehearsal, removed, eventGroup, sermonTitle, bibleVerse, created, updated FROM cr_events WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -786,31 +791,6 @@ abstract class EventQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(EventTableMap::COL_REHEARSAL, $rehearsal, $comparison);
-    }
-
-    /**
-     * Filter the query on the comment column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByComment('fooValue');   // WHERE comment = 'fooValue'
-     * $query->filterByComment('%fooValue%', Criteria::LIKE); // WHERE comment LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $comment The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildEventQuery The current query, for fluid interface
-     */
-    public function filterByComment($comment = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($comment)) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(EventTableMap::COL_COMMENT, $comment, $comparison);
     }
 
     /**
@@ -1376,7 +1356,7 @@ abstract class EventQuery extends ModelCriteria
      *
      * @return $this|ChildEventQuery The current query, for fluid interface
      */
-    public function joinEventGroup($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinEventGroup($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('EventGroup');
@@ -1411,11 +1391,84 @@ abstract class EventQuery extends ModelCriteria
      *
      * @return \TechWilk\Rota\EventGroupQuery A secondary query class using the current class as primary query
      */
-    public function useEventGroupQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useEventGroupQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinEventGroup($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'EventGroup', '\TechWilk\Rota\EventGroupQuery');
+    }
+
+    /**
+     * Filter the query by a related \TechWilk\Rota\Comment object
+     *
+     * @param \TechWilk\Rota\Comment|ObjectCollection $comment the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildEventQuery The current query, for fluid interface
+     */
+    public function filterByComment($comment, $comparison = null)
+    {
+        if ($comment instanceof \TechWilk\Rota\Comment) {
+            return $this
+                ->addUsingAlias(EventTableMap::COL_ID, $comment->getEventId(), $comparison);
+        } elseif ($comment instanceof ObjectCollection) {
+            return $this
+                ->useCommentQuery()
+                ->filterByPrimaryKeys($comment->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByComment() only accepts arguments of type \TechWilk\Rota\Comment or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Comment relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildEventQuery The current query, for fluid interface
+     */
+    public function joinComment($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Comment');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Comment');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Comment relation Comment object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \TechWilk\Rota\CommentQuery A secondary query class using the current class as primary query
+     */
+    public function useCommentQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinComment($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Comment', '\TechWilk\Rota\CommentQuery');
     }
 
     /**

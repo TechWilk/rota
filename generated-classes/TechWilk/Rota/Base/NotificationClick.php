@@ -1198,7 +1198,7 @@ abstract class NotificationClick implements ActiveRecordInterface
      */
     public function getNotification(ConnectionInterface $con = null)
     {
-        if ($this->aNotification === null && ($this->notificationid !== null)) {
+        if ($this->aNotification === null && ($this->notificationid != 0)) {
             $this->aNotification = ChildNotificationQuery::create()->findPk($this->notificationid, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference

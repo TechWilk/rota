@@ -11,11 +11,11 @@ use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Map\TableMapTrait;
-use TechWilk\Rota\User;
-use TechWilk\Rota\UserQuery;
+use TechWilk\Rota\Comment;
+use TechWilk\Rota\CommentQuery;
 
 /**
- * This class defines the structure of the 'cr_users' table.
+ * This class defines the structure of the 'cr_comments' table.
  *
  *
  *
@@ -25,7 +25,7 @@ use TechWilk\Rota\UserQuery;
  * (i.e. if it's a text column type).
  *
  */
-class UserTableMap extends TableMap
+class CommentTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -33,7 +33,7 @@ class UserTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'TechWilk.Rota.Map.UserTableMap';
+    const CLASS_NAME = 'TechWilk.Rota.Map.CommentTableMap';
 
     /**
      * The default database name for this class
@@ -43,22 +43,22 @@ class UserTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_users';
+    const TABLE_NAME = 'cr_comments';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\TechWilk\\Rota\\User';
+    const OM_CLASS = '\\TechWilk\\Rota\\Comment';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'TechWilk.Rota.User';
+    const CLASS_DEFAULT = 'TechWilk.Rota.Comment';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 16;
+    const NUM_COLUMNS = 7;
 
     /**
      * The number of lazy-loaded columns
@@ -68,87 +68,42 @@ class UserTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 16;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_users.id';
+    const COL_ID = 'cr_comments.id';
 
     /**
-     * the column name for the firstName field
+     * the column name for the eventId field
      */
-    const COL_FIRSTNAME = 'cr_users.firstName';
+    const COL_EVENTID = 'cr_comments.eventId';
 
     /**
-     * the column name for the lastName field
+     * the column name for the userId field
      */
-    const COL_LASTNAME = 'cr_users.lastName';
+    const COL_USERID = 'cr_comments.userId';
 
     /**
-     * the column name for the username field
+     * the column name for the text field
      */
-    const COL_USERNAME = 'cr_users.username';
+    const COL_TEXT = 'cr_comments.text';
 
     /**
-     * the column name for the password field
+     * the column name for the removed field
      */
-    const COL_PASSWORD = 'cr_users.password';
-
-    /**
-     * the column name for the isAdmin field
-     */
-    const COL_ISADMIN = 'cr_users.isAdmin';
-
-    /**
-     * the column name for the email field
-     */
-    const COL_EMAIL = 'cr_users.email';
-
-    /**
-     * the column name for the mobile field
-     */
-    const COL_MOBILE = 'cr_users.mobile';
-
-    /**
-     * the column name for the isOverviewRecipient field
-     */
-    const COL_ISOVERVIEWRECIPIENT = 'cr_users.isOverviewRecipient';
-
-    /**
-     * the column name for the recieveReminderEmails field
-     */
-    const COL_RECIEVEREMINDEREMAILS = 'cr_users.recieveReminderEmails';
-
-    /**
-     * the column name for the isBandAdmin field
-     */
-    const COL_ISBANDADMIN = 'cr_users.isBandAdmin';
-
-    /**
-     * the column name for the isEventEditor field
-     */
-    const COL_ISEVENTEDITOR = 'cr_users.isEventEditor';
-
-    /**
-     * the column name for the lastLogin field
-     */
-    const COL_LASTLOGIN = 'cr_users.lastLogin';
-
-    /**
-     * the column name for the passwordChanged field
-     */
-    const COL_PASSWORDCHANGED = 'cr_users.passwordChanged';
+    const COL_REMOVED = 'cr_comments.removed';
 
     /**
      * the column name for the created field
      */
-    const COL_CREATED = 'cr_users.created';
+    const COL_CREATED = 'cr_comments.created';
 
     /**
      * the column name for the updated field
      */
-    const COL_UPDATED = 'cr_users.updated';
+    const COL_UPDATED = 'cr_comments.updated';
 
     /**
      * The default string format for model objects of the related table
@@ -162,11 +117,11 @@ class UserTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array(
-        self::TYPE_PHPNAME       => array('Id', 'FirstName', 'LastName', 'Username', 'Password', 'IsAdmin', 'Email', 'Mobile', 'IsOverviewRecipient', 'RecieveReminderEmails', 'IsBandAdmin', 'IsEventEditor', 'LastLogin', 'PasswordChanged', 'Created', 'Updated', ),
-        self::TYPE_CAMELNAME     => array('id', 'firstName', 'lastName', 'username', 'password', 'isAdmin', 'email', 'mobile', 'isOverviewRecipient', 'recieveReminderEmails', 'isBandAdmin', 'isEventEditor', 'lastLogin', 'passwordChanged', 'created', 'updated', ),
-        self::TYPE_COLNAME       => array(UserTableMap::COL_ID, UserTableMap::COL_FIRSTNAME, UserTableMap::COL_LASTNAME, UserTableMap::COL_USERNAME, UserTableMap::COL_PASSWORD, UserTableMap::COL_ISADMIN, UserTableMap::COL_EMAIL, UserTableMap::COL_MOBILE, UserTableMap::COL_ISOVERVIEWRECIPIENT, UserTableMap::COL_RECIEVEREMINDEREMAILS, UserTableMap::COL_ISBANDADMIN, UserTableMap::COL_ISEVENTEDITOR, UserTableMap::COL_LASTLOGIN, UserTableMap::COL_PASSWORDCHANGED, UserTableMap::COL_CREATED, UserTableMap::COL_UPDATED, ),
-        self::TYPE_FIELDNAME     => array('id', 'firstName', 'lastName', 'username', 'password', 'isAdmin', 'email', 'mobile', 'isOverviewRecipient', 'recieveReminderEmails', 'isBandAdmin', 'isEventEditor', 'lastLogin', 'passwordChanged', 'created', 'updated', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
+        self::TYPE_PHPNAME       => array('Id', 'EventId', 'UserId', 'Text', 'Removed', 'Created', 'Updated', ),
+        self::TYPE_CAMELNAME     => array('id', 'eventId', 'userId', 'text', 'removed', 'created', 'updated', ),
+        self::TYPE_COLNAME       => array(CommentTableMap::COL_ID, CommentTableMap::COL_EVENTID, CommentTableMap::COL_USERID, CommentTableMap::COL_TEXT, CommentTableMap::COL_REMOVED, CommentTableMap::COL_CREATED, CommentTableMap::COL_UPDATED, ),
+        self::TYPE_FIELDNAME     => array('id', 'eventId', 'userId', 'text', 'removed', 'created', 'updated', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -176,11 +131,11 @@ class UserTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array(
-        self::TYPE_PHPNAME       => array('Id' => 0, 'FirstName' => 1, 'LastName' => 2, 'Username' => 3, 'Password' => 4, 'IsAdmin' => 5, 'Email' => 6, 'Mobile' => 7, 'IsOverviewRecipient' => 8, 'RecieveReminderEmails' => 9, 'IsBandAdmin' => 10, 'IsEventEditor' => 11, 'LastLogin' => 12, 'PasswordChanged' => 13, 'Created' => 14, 'Updated' => 15, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'firstName' => 1, 'lastName' => 2, 'username' => 3, 'password' => 4, 'isAdmin' => 5, 'email' => 6, 'mobile' => 7, 'isOverviewRecipient' => 8, 'recieveReminderEmails' => 9, 'isBandAdmin' => 10, 'isEventEditor' => 11, 'lastLogin' => 12, 'passwordChanged' => 13, 'created' => 14, 'updated' => 15, ),
-        self::TYPE_COLNAME       => array(UserTableMap::COL_ID => 0, UserTableMap::COL_FIRSTNAME => 1, UserTableMap::COL_LASTNAME => 2, UserTableMap::COL_USERNAME => 3, UserTableMap::COL_PASSWORD => 4, UserTableMap::COL_ISADMIN => 5, UserTableMap::COL_EMAIL => 6, UserTableMap::COL_MOBILE => 7, UserTableMap::COL_ISOVERVIEWRECIPIENT => 8, UserTableMap::COL_RECIEVEREMINDEREMAILS => 9, UserTableMap::COL_ISBANDADMIN => 10, UserTableMap::COL_ISEVENTEDITOR => 11, UserTableMap::COL_LASTLOGIN => 12, UserTableMap::COL_PASSWORDCHANGED => 13, UserTableMap::COL_CREATED => 14, UserTableMap::COL_UPDATED => 15, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'firstName' => 1, 'lastName' => 2, 'username' => 3, 'password' => 4, 'isAdmin' => 5, 'email' => 6, 'mobile' => 7, 'isOverviewRecipient' => 8, 'recieveReminderEmails' => 9, 'isBandAdmin' => 10, 'isEventEditor' => 11, 'lastLogin' => 12, 'passwordChanged' => 13, 'created' => 14, 'updated' => 15, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'EventId' => 1, 'UserId' => 2, 'Text' => 3, 'Removed' => 4, 'Created' => 5, 'Updated' => 6, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'eventId' => 1, 'userId' => 2, 'text' => 3, 'removed' => 4, 'created' => 5, 'updated' => 6, ),
+        self::TYPE_COLNAME       => array(CommentTableMap::COL_ID => 0, CommentTableMap::COL_EVENTID => 1, CommentTableMap::COL_USERID => 2, CommentTableMap::COL_TEXT => 3, CommentTableMap::COL_REMOVED => 4, CommentTableMap::COL_CREATED => 5, CommentTableMap::COL_UPDATED => 6, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'eventId' => 1, 'userId' => 2, 'text' => 3, 'removed' => 4, 'created' => 5, 'updated' => 6, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -193,27 +148,18 @@ class UserTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_users');
-        $this->setPhpName('User');
+        $this->setName('cr_comments');
+        $this->setPhpName('Comment');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\TechWilk\\Rota\\User');
+        $this->setClassName('\\TechWilk\\Rota\\Comment');
         $this->setPackage('TechWilk.Rota');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, 30, null);
-        $this->addColumn('firstName', 'FirstName', 'VARCHAR', true, 30, '');
-        $this->addColumn('lastName', 'LastName', 'VARCHAR', true, 30, '');
-        $this->addColumn('username', 'Username', 'VARCHAR', true, 30, '');
-        $this->addColumn('password', 'Password', 'VARCHAR', true, 200, '');
-        $this->addColumn('isAdmin', 'IsAdmin', 'CHAR', true, 2, '0');
-        $this->addColumn('email', 'Email', 'VARCHAR', false, 255, null);
-        $this->addColumn('mobile', 'Mobile', 'VARCHAR', true, 15, '');
-        $this->addColumn('isOverviewRecipient', 'IsOverviewRecipient', 'CHAR', true, 2, '0');
-        $this->addColumn('recieveReminderEmails', 'RecieveReminderEmails', 'BOOLEAN', true, 1, true);
-        $this->addColumn('isBandAdmin', 'IsBandAdmin', 'CHAR', true, 2, '0');
-        $this->addColumn('isEventEditor', 'IsEventEditor', 'CHAR', true, 2, '0');
-        $this->addColumn('lastLogin', 'LastLogin', 'TIMESTAMP', false, null, null);
-        $this->addColumn('passwordChanged', 'PasswordChanged', 'TIMESTAMP', false, null, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('eventId', 'EventId', 'INTEGER', 'cr_events', 'id', true, null, 0);
+        $this->addForeignKey('userId', 'UserId', 'INTEGER', 'cr_users', 'id', true, null, 0);
+        $this->addColumn('text', 'Text', 'VARCHAR', false, 255, null);
+        $this->addColumn('removed', 'Removed', 'BOOLEAN', false, 1, false);
         $this->addColumn('created', 'Created', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated', 'Updated', 'TIMESTAMP', false, null, null);
     } // initialize()
@@ -223,76 +169,20 @@ class UserTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('CalendarToken', '\\TechWilk\\Rota\\CalendarToken', RelationMap::ONE_TO_MANY, array(
+        $this->addRelation('Event', '\\TechWilk\\Rota\\Event', RelationMap::MANY_TO_ONE, array(
+  0 =>
+  array(
+    0 => ':eventId',
+    1 => ':id',
+  ),
+), null, null, null, false);
+        $this->addRelation('User', '\\TechWilk\\Rota\\User', RelationMap::MANY_TO_ONE, array(
   0 =>
   array(
     0 => ':userId',
     1 => ':id',
   ),
-), null, null, 'CalendarTokens', false);
-        $this->addRelation('Comment', '\\TechWilk\\Rota\\Comment', RelationMap::ONE_TO_MANY, array(
-  0 =>
-  array(
-    0 => ':userId',
-    1 => ':id',
-  ),
-), null, null, 'Comments', false);
-        $this->addRelation('Event', '\\TechWilk\\Rota\\Event', RelationMap::ONE_TO_MANY, array(
-  0 =>
-  array(
-    0 => ':createdBy',
-    1 => ':id',
-  ),
-), null, null, 'Events', false);
-        $this->addRelation('Availability', '\\TechWilk\\Rota\\Availability', RelationMap::ONE_TO_MANY, array(
-  0 =>
-  array(
-    0 => ':userId',
-    1 => ':id',
-  ),
-), null, null, 'Availabilities', false);
-        $this->addRelation('Notification', '\\TechWilk\\Rota\\Notification', RelationMap::ONE_TO_MANY, array(
-  0 =>
-  array(
-    0 => ':userId',
-    1 => ':id',
-  ),
-), null, null, 'Notifications', false);
-        $this->addRelation('SocialAuth', '\\TechWilk\\Rota\\SocialAuth', RelationMap::ONE_TO_MANY, array(
-  0 =>
-  array(
-    0 => ':userId',
-    1 => ':id',
-  ),
-), null, null, 'SocialAuths', false);
-        $this->addRelation('Statistic', '\\TechWilk\\Rota\\Statistic', RelationMap::ONE_TO_MANY, array(
-  0 =>
-  array(
-    0 => ':userid',
-    1 => ':id',
-  ),
-), null, null, 'Statistics', false);
-        $this->addRelation('Swap', '\\TechWilk\\Rota\\Swap', RelationMap::ONE_TO_MANY, array(
-  0 =>
-  array(
-    0 => ':requestedBy',
-    1 => ':id',
-  ),
-), null, null, 'Swaps', false);
-        $this->addRelation('UserRole', '\\TechWilk\\Rota\\UserRole', RelationMap::ONE_TO_MANY, array(
-  0 =>
-  array(
-    0 => ':userId',
-    1 => ':id',
-  ),
-), null, null, 'UserRoles', false);
-        $this->addRelation('UserPermission', '\\TechWilk\\Rota\\UserPermission', RelationMap::ONE_TO_MANY, array(
-  0 =>
-  array(
-    0 => ':userId',
-    1 => ':id',
-  ),
-), null, null, 'UserPermissions', false);
+), null, null, null, false);
     } // buildRelations()
 
     /**
@@ -365,7 +255,7 @@ class UserTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? UserTableMap::CLASS_DEFAULT : UserTableMap::OM_CLASS;
+        return $withPrefix ? CommentTableMap::CLASS_DEFAULT : CommentTableMap::OM_CLASS;
     }
 
     /**
@@ -379,22 +269,22 @@ class UserTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (User object, last column rank)
+     * @return array           (Comment object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = UserTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = UserTableMap::getInstanceFromPool($key))) {
+        $key = CommentTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = CommentTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + UserTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + CommentTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = UserTableMap::OM_CLASS;
-            /** @var User $obj */
+            $cls = CommentTableMap::OM_CLASS;
+            /** @var Comment $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            UserTableMap::addInstanceToPool($obj, $key);
+            CommentTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -417,18 +307,18 @@ class UserTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = UserTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = UserTableMap::getInstanceFromPool($key))) {
+            $key = CommentTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = CommentTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var User $obj */
+                /** @var Comment $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                UserTableMap::addInstanceToPool($obj, $key);
+                CommentTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -449,37 +339,19 @@ class UserTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(UserTableMap::COL_ID);
-            $criteria->addSelectColumn(UserTableMap::COL_FIRSTNAME);
-            $criteria->addSelectColumn(UserTableMap::COL_LASTNAME);
-            $criteria->addSelectColumn(UserTableMap::COL_USERNAME);
-            $criteria->addSelectColumn(UserTableMap::COL_PASSWORD);
-            $criteria->addSelectColumn(UserTableMap::COL_ISADMIN);
-            $criteria->addSelectColumn(UserTableMap::COL_EMAIL);
-            $criteria->addSelectColumn(UserTableMap::COL_MOBILE);
-            $criteria->addSelectColumn(UserTableMap::COL_ISOVERVIEWRECIPIENT);
-            $criteria->addSelectColumn(UserTableMap::COL_RECIEVEREMINDEREMAILS);
-            $criteria->addSelectColumn(UserTableMap::COL_ISBANDADMIN);
-            $criteria->addSelectColumn(UserTableMap::COL_ISEVENTEDITOR);
-            $criteria->addSelectColumn(UserTableMap::COL_LASTLOGIN);
-            $criteria->addSelectColumn(UserTableMap::COL_PASSWORDCHANGED);
-            $criteria->addSelectColumn(UserTableMap::COL_CREATED);
-            $criteria->addSelectColumn(UserTableMap::COL_UPDATED);
+            $criteria->addSelectColumn(CommentTableMap::COL_ID);
+            $criteria->addSelectColumn(CommentTableMap::COL_EVENTID);
+            $criteria->addSelectColumn(CommentTableMap::COL_USERID);
+            $criteria->addSelectColumn(CommentTableMap::COL_TEXT);
+            $criteria->addSelectColumn(CommentTableMap::COL_REMOVED);
+            $criteria->addSelectColumn(CommentTableMap::COL_CREATED);
+            $criteria->addSelectColumn(CommentTableMap::COL_UPDATED);
         } else {
             $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.firstName');
-            $criteria->addSelectColumn($alias . '.lastName');
-            $criteria->addSelectColumn($alias . '.username');
-            $criteria->addSelectColumn($alias . '.password');
-            $criteria->addSelectColumn($alias . '.isAdmin');
-            $criteria->addSelectColumn($alias . '.email');
-            $criteria->addSelectColumn($alias . '.mobile');
-            $criteria->addSelectColumn($alias . '.isOverviewRecipient');
-            $criteria->addSelectColumn($alias . '.recieveReminderEmails');
-            $criteria->addSelectColumn($alias . '.isBandAdmin');
-            $criteria->addSelectColumn($alias . '.isEventEditor');
-            $criteria->addSelectColumn($alias . '.lastLogin');
-            $criteria->addSelectColumn($alias . '.passwordChanged');
+            $criteria->addSelectColumn($alias . '.eventId');
+            $criteria->addSelectColumn($alias . '.userId');
+            $criteria->addSelectColumn($alias . '.text');
+            $criteria->addSelectColumn($alias . '.removed');
             $criteria->addSelectColumn($alias . '.created');
             $criteria->addSelectColumn($alias . '.updated');
         }
@@ -494,7 +366,7 @@ class UserTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(UserTableMap::DATABASE_NAME)->getTable(UserTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(CommentTableMap::DATABASE_NAME)->getTable(CommentTableMap::TABLE_NAME);
     }
 
     /**
@@ -502,16 +374,16 @@ class UserTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(UserTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(UserTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new UserTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(CommentTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(CommentTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new CommentTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a User or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Comment or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or User object or primary key or array of primary keys
+     * @param mixed               $values Criteria or Comment object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -522,27 +394,27 @@ class UserTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
          if (null === $con) {
-             $con = Propel::getServiceContainer()->getWriteConnection(UserTableMap::DATABASE_NAME);
+             $con = Propel::getServiceContainer()->getWriteConnection(CommentTableMap::DATABASE_NAME);
          }
 
          if ($values instanceof Criteria) {
              // rename for clarity
             $criteria = $values;
-         } elseif ($values instanceof \TechWilk\Rota\User) { // it's a model object
+         } elseif ($values instanceof \TechWilk\Rota\Comment) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
          } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(UserTableMap::DATABASE_NAME);
-             $criteria->add(UserTableMap::COL_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(CommentTableMap::DATABASE_NAME);
+             $criteria->add(CommentTableMap::COL_ID, (array) $values, Criteria::IN);
          }
 
-         $query = UserQuery::create()->mergeWith($criteria);
+         $query = CommentQuery::create()->mergeWith($criteria);
 
          if ($values instanceof Criteria) {
-             UserTableMap::clearInstancePool();
+             CommentTableMap::clearInstancePool();
          } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                UserTableMap::removeInstanceFromPool($singleval);
+                CommentTableMap::removeInstanceFromPool($singleval);
             }
          }
 
@@ -550,20 +422,20 @@ class UserTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_users table.
+     * Deletes all rows from the cr_comments table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return UserQuery::create()->doDeleteAll($con);
+        return CommentQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a User or Criteria object.
+     * Performs an INSERT on the database, given a Comment or Criteria object.
      *
-     * @param mixed               $criteria Criteria or User object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or Comment object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -572,18 +444,22 @@ class UserTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(UserTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(CommentTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from User object
+            $criteria = $criteria->buildCriteria(); // build Criteria from Comment object
+        }
+
+        if ($criteria->containsKey(CommentTableMap::COL_ID) && $criteria->keyContainsValue(CommentTableMap::COL_ID)) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.CommentTableMap::COL_ID.')');
         }
 
 
         // Set the correct dbName
-        $query = UserQuery::create()->mergeWith($criteria);
+        $query = CommentQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -591,7 +467,7 @@ class UserTableMap extends TableMap
             return $query->doInsert($con);
         });
     }
-} // UserTableMap
+} // CommentTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-UserTableMap::buildTableMap();
+CommentTableMap::buildTableMap();

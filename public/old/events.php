@@ -193,13 +193,13 @@ if (isAdmin()) {
 		<!-- Main content -->
 		<section class="content">
 
-		
+
 <style>
 .timeline-item:target {
 	background-color: #eee!important;
 }
 </style>
-			
+
 			<?php if (!empty($pendingSwaps) && $pendingSwaps > 0):
                 if ($pendingSwaps > 1) {
                     $swapsMessage = $pendingSwaps.' swaps are pending approval. Emails have been sent to the people covering to approve the swaps.';
@@ -232,7 +232,6 @@ if (isAdmin()) {
         $sql = "SELECT
 							e.id AS id,
 							e.name AS eventName,
-							e.comment AS comment,
 							et.name AS eventType,
 							est.name AS eventSubType,
 							l.name AS eventLocation,
@@ -253,7 +252,6 @@ if (isAdmin()) {
         $sql = "SELECT
 							e.id AS id,
 							e.name AS eventName,
-							e.comment AS comment,
 							et.name AS eventType,
 							est.name AS eventSubType,
 							l.name AS eventLocation,
@@ -275,7 +273,6 @@ if (isAdmin()) {
         $sql = "SELECT
 							DISTINCT e.id AS id,
 							e.name AS eventName,
-							e.comment AS comment,
 							et.name AS eventType,
 							est.name AS eventSubType,
 							l.name AS eventLocation,
@@ -343,17 +340,11 @@ if (isAdmin()) {
 
 				<?php //<p><strong>Rehearsal:</strong> <?php
                 //echo ($row->rehearsalDateFormatted = "0000-00-00 00:00:00") ? "none" : strftime(siteSettings()->time_format_normal,strtotime($row->rehearsalDateFormatted));</p>?>
-					
+
 				<p><strong><?php echo $row->eventGroup ? $row->eventGroup.': ' : '' ?></strong><?php echo $row->sermonTitle ?> <?php echo $row->bibleVerse ? '('.$row->bibleVerse.')' : '' ?></p>
-				
+
 				<p><strong>Location:</strong> <?php echo $row->eventLocation; ?></p>
-				
-				<?php if ($row->comment != '') {
-                    echo '<blockquote>';
-                    echo '<p>';
-                    echo $row->comment;
-                    echo '</p><small>Comments</small></blockquote>';
-                } ?>
+
 				<div id="deleteModal<?php echo $eventID; ?>" class="modal modal-danger fade" role="dialogue">
 					<div class="modal-dialog">
 						<div class="modal-content">
@@ -473,8 +464,8 @@ if (isAdmin()) {
 	<?php
     } ?>
 	</div><!-- /.row -->
-	
-	
+
+
 	<div class="col-sm-4 col-md-4 col-lg-6">
 	<!-- row of action buttons -->
 			<div class="row">
@@ -524,9 +515,9 @@ if (isAdmin()) {
 					<?php endif; /* END isAdmin() || logged_in_show_snapshot_button=='1' */ ?>
 
 			</div><!-- /.row -->
-			
+
 			</div><!-- /.column -->
-			
+
 			<div class="row">
 
 

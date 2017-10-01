@@ -730,9 +730,10 @@ abstract class EventGroup implements ActiveRecordInterface
 
             if ($this->eventsScheduledForDeletion !== null) {
                 if (!$this->eventsScheduledForDeletion->isEmpty()) {
-                    \TechWilk\Rota\EventQuery::create()
-                        ->filterByPrimaryKeys($this->eventsScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
+                    foreach ($this->eventsScheduledForDeletion as $event) {
+                        // need to save related object because we set the relation to null
+                        $event->save($con);
+                    }
                     $this->eventsScheduledForDeletion = null;
                 }
             }
@@ -1435,7 +1436,7 @@ abstract class EventGroup implements ActiveRecordInterface
                 $this->eventsScheduledForDeletion = clone $this->collEvents;
                 $this->eventsScheduledForDeletion->clear();
             }
-            $this->eventsScheduledForDeletion[]= clone $event;
+            $this->eventsScheduledForDeletion[]= $event;
             $event->setEventGroup(null);
         }
 

@@ -406,7 +406,7 @@ abstract class EventGroupQuery extends ModelCriteria
      *
      * @return $this|ChildEventGroupQuery The current query, for fluid interface
      */
-    public function joinEvent($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinEvent($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Event');
@@ -441,7 +441,7 @@ abstract class EventGroupQuery extends ModelCriteria
      *
      * @return \TechWilk\Rota\EventQuery A secondary query class using the current class as primary query
      */
-    public function useEventQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useEventQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinEvent($relationAlias, $joinType)

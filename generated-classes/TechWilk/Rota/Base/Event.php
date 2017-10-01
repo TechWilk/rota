@@ -20,6 +20,8 @@ use Propel\Runtime\Parser\AbstractParser;
 use Propel\Runtime\Util\PropelDateTime;
 use TechWilk\Rota\Availability as ChildAvailability;
 use TechWilk\Rota\AvailabilityQuery as ChildAvailabilityQuery;
+use TechWilk\Rota\Comment as ChildComment;
+use TechWilk\Rota\CommentQuery as ChildCommentQuery;
 use TechWilk\Rota\Event as ChildEvent;
 use TechWilk\Rota\EventGroup as ChildEventGroup;
 use TechWilk\Rota\EventGroupQuery as ChildEventGroupQuery;
@@ -35,6 +37,7 @@ use TechWilk\Rota\LocationQuery as ChildLocationQuery;
 use TechWilk\Rota\User as ChildUser;
 use TechWilk\Rota\UserQuery as ChildUserQuery;
 use TechWilk\Rota\Map\AvailabilityTableMap;
+use TechWilk\Rota\Map\CommentTableMap;
 use TechWilk\Rota\Map\EventPersonTableMap;
 use TechWilk\Rota\Map\EventTableMap;
 
@@ -158,13 +161,6 @@ abstract class Event implements ActiveRecordInterface
     protected $rehearsal;
 
     /**
-     * The value for the comment field.
-     *
-     * @var        string
-     */
-    protected $comment;
-
-    /**
      * The value for the removed field.
      *
      * Note: this column has a database default value of: 0
@@ -182,7 +178,6 @@ abstract class Event implements ActiveRecordInterface
     /**
      * The value for the sermontitle field.
      *
-     * Note: this column has a database default value of: ''
      * @var        string
      */
     protected $sermontitle;
@@ -190,7 +185,6 @@ abstract class Event implements ActiveRecordInterface
     /**
      * The value for the bibleverse field.
      *
-     * Note: this column has a database default value of: ''
      * @var        string
      */
     protected $bibleverse;
@@ -235,6 +229,12 @@ abstract class Event implements ActiveRecordInterface
     protected $aEventGroup;
 
     /**
+     * @var        ObjectCollection|ChildComment[] Collection to store aggregation of ChildComment objects.
+     */
+    protected $collComments;
+    protected $collCommentsPartial;
+
+    /**
      * @var        ObjectCollection|ChildEventPerson[] Collection to store aggregation of ChildEventPerson objects.
      */
     protected $collEventpeople;
@@ -253,6 +253,12 @@ abstract class Event implements ActiveRecordInterface
      * @var boolean
      */
     protected $alreadyInSave = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildComment[]
+     */
+    protected $commentsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -283,8 +289,6 @@ abstract class Event implements ActiveRecordInterface
         $this->notified = 0;
         $this->rehearsal = 0;
         $this->removed = 0;
-        $this->sermontitle = '';
-        $this->bibleverse = '';
     }
 
     /**
@@ -635,16 +639,6 @@ abstract class Event implements ActiveRecordInterface
     }
 
     /**
-     * Get the [comment] column value.
-     *
-     * @return string
-     */
-    public function getComment()
-    {
-        return $this->comment;
-    }
-
-    /**
      * Get the [removed] column value.
      *
      * @return int
@@ -945,26 +939,6 @@ abstract class Event implements ActiveRecordInterface
     } // setRehearsal()
 
     /**
-     * Set the value of [comment] column.
-     *
-     * @param string $v new value
-     * @return $this|\TechWilk\Rota\Event The current object (for fluent API support)
-     */
-    public function setComment($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->comment !== $v) {
-            $this->comment = $v;
-            $this->modifiedColumns[EventTableMap::COL_COMMENT] = true;
-        }
-
-        return $this;
-    } // setComment()
-
-    /**
      * Set the value of [removed] column.
      *
      * @param int $v new value
@@ -1134,14 +1108,6 @@ abstract class Event implements ActiveRecordInterface
             return false;
         }
 
-        if ($this->sermontitle !== '') {
-            return false;
-        }
-
-        if ($this->bibleverse !== '') {
-            return false;
-        }
-
         // otherwise, everything was equal, so return TRUE
         return true;
     } // hasOnlyDefaultValues()
@@ -1203,28 +1169,25 @@ abstract class Event implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : EventTableMap::translateFieldName('Rehearsal', TableMap::TYPE_PHPNAME, $indexType)];
             $this->rehearsal = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : EventTableMap::translateFieldName('Comment', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->comment = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : EventTableMap::translateFieldName('Removed', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : EventTableMap::translateFieldName('Removed', TableMap::TYPE_PHPNAME, $indexType)];
             $this->removed = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : EventTableMap::translateFieldName('EventGroupId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : EventTableMap::translateFieldName('EventGroupId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->eventgroup = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : EventTableMap::translateFieldName('SermonTitle', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : EventTableMap::translateFieldName('SermonTitle', TableMap::TYPE_PHPNAME, $indexType)];
             $this->sermontitle = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : EventTableMap::translateFieldName('BibleVerse', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : EventTableMap::translateFieldName('BibleVerse', TableMap::TYPE_PHPNAME, $indexType)];
             $this->bibleverse = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : EventTableMap::translateFieldName('Created', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : EventTableMap::translateFieldName('Created', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 16 + $startcol : EventTableMap::translateFieldName('Updated', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : EventTableMap::translateFieldName('Updated', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
@@ -1237,7 +1200,7 @@ abstract class Event implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 17; // 17 = EventTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 16; // 16 = EventTableMap::NUM_HYDRATE_COLUMNS.
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\TechWilk\\Rota\\Event'), 0, $e);
         }
@@ -1317,6 +1280,8 @@ abstract class Event implements ActiveRecordInterface
             $this->aEventSubType = null;
             $this->aLocation = null;
             $this->aEventGroup = null;
+            $this->collComments = null;
+
             $this->collEventpeople = null;
 
             $this->collAvailabilities = null;
@@ -1486,6 +1451,23 @@ abstract class Event implements ActiveRecordInterface
                 $this->resetModified();
             }
 
+            if ($this->commentsScheduledForDeletion !== null) {
+                if (!$this->commentsScheduledForDeletion->isEmpty()) {
+                    \TechWilk\Rota\CommentQuery::create()
+                        ->filterByPrimaryKeys($this->commentsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->commentsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collComments !== null) {
+                foreach ($this->collComments as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->eventpeopleScheduledForDeletion !== null) {
                 if (!$this->eventpeopleScheduledForDeletion->isEmpty()) {
                     \TechWilk\Rota\EventPersonQuery::create()
@@ -1540,9 +1522,6 @@ abstract class Event implements ActiveRecordInterface
         $index = 0;
 
         $this->modifiedColumns[EventTableMap::COL_ID] = true;
-        if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . EventTableMap::COL_ID . ')');
-        }
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(EventTableMap::COL_ID)) {
@@ -1574,9 +1553,6 @@ abstract class Event implements ActiveRecordInterface
         }
         if ($this->isColumnModified(EventTableMap::COL_REHEARSAL)) {
             $modifiedColumns[':p' . $index++]  = 'rehearsal';
-        }
-        if ($this->isColumnModified(EventTableMap::COL_COMMENT)) {
-            $modifiedColumns[':p' . $index++]  = 'comment';
         }
         if ($this->isColumnModified(EventTableMap::COL_REMOVED)) {
             $modifiedColumns[':p' . $index++]  = 'removed';
@@ -1637,9 +1613,6 @@ abstract class Event implements ActiveRecordInterface
                     case 'rehearsal':
                         $stmt->bindValue($identifier, $this->rehearsal, PDO::PARAM_INT);
                         break;
-                    case 'comment':
-                        $stmt->bindValue($identifier, $this->comment, PDO::PARAM_STR);
-                        break;
                     case 'removed':
                         $stmt->bindValue($identifier, $this->removed, PDO::PARAM_INT);
                         break;
@@ -1671,7 +1644,9 @@ abstract class Event implements ActiveRecordInterface
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', 0, $e);
         }
-        $this->setId($pk);
+        if ($pk !== null) {
+            $this->setId($pk);
+        }
 
         $this->setNew(false);
     }
@@ -1751,24 +1726,21 @@ abstract class Event implements ActiveRecordInterface
                 return $this->getRehearsal();
                 break;
             case 10:
-                return $this->getComment();
-                break;
-            case 11:
                 return $this->getRemoved();
                 break;
-            case 12:
+            case 11:
                 return $this->getEventGroupId();
                 break;
-            case 13:
+            case 12:
                 return $this->getSermonTitle();
                 break;
-            case 14:
+            case 13:
                 return $this->getBibleVerse();
                 break;
-            case 15:
+            case 14:
                 return $this->getCreated();
                 break;
-            case 16:
+            case 15:
                 return $this->getUpdated();
                 break;
             default:
@@ -1810,13 +1782,12 @@ abstract class Event implements ActiveRecordInterface
             $keys[7] => $this->getLocationId(),
             $keys[8] => $this->getNotified(),
             $keys[9] => $this->getRehearsal(),
-            $keys[10] => $this->getComment(),
-            $keys[11] => $this->getRemoved(),
-            $keys[12] => $this->getEventGroupId(),
-            $keys[13] => $this->getSermonTitle(),
-            $keys[14] => $this->getBibleVerse(),
-            $keys[15] => $this->getCreated(),
-            $keys[16] => $this->getUpdated(),
+            $keys[10] => $this->getRemoved(),
+            $keys[11] => $this->getEventGroupId(),
+            $keys[12] => $this->getSermonTitle(),
+            $keys[13] => $this->getBibleVerse(),
+            $keys[14] => $this->getCreated(),
+            $keys[15] => $this->getUpdated(),
         );
         if ($result[$keys[1]] instanceof \DateTimeInterface) {
             $result[$keys[1]] = $result[$keys[1]]->format('c');
@@ -1826,12 +1797,12 @@ abstract class Event implements ActiveRecordInterface
             $result[$keys[4]] = $result[$keys[4]]->format('c');
         }
 
-        if ($result[$keys[15]] instanceof \DateTimeInterface) {
-            $result[$keys[15]] = $result[$keys[15]]->format('c');
+        if ($result[$keys[14]] instanceof \DateTimeInterface) {
+            $result[$keys[14]] = $result[$keys[14]]->format('c');
         }
 
-        if ($result[$keys[16]] instanceof \DateTimeInterface) {
-            $result[$keys[16]] = $result[$keys[16]]->format('c');
+        if ($result[$keys[15]] instanceof \DateTimeInterface) {
+            $result[$keys[15]] = $result[$keys[15]]->format('c');
         }
 
         $virtualColumns = $this->virtualColumns;
@@ -1909,6 +1880,20 @@ abstract class Event implements ActiveRecordInterface
                 }
 
                 $result[$key] = $this->aEventGroup->toArray($keyType, $includeLazyLoadColumns, $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->collComments) {
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'comments';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'cr_commentss';
+                        break;
+                    default:
+                        $key = 'Comments';
+                }
+
+                $result[$key] = $this->collComments->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collEventpeople) {
                 switch ($keyType) {
@@ -2003,24 +1988,21 @@ abstract class Event implements ActiveRecordInterface
                 $this->setRehearsal($value);
                 break;
             case 10:
-                $this->setComment($value);
-                break;
-            case 11:
                 $this->setRemoved($value);
                 break;
-            case 12:
+            case 11:
                 $this->setEventGroupId($value);
                 break;
-            case 13:
+            case 12:
                 $this->setSermonTitle($value);
                 break;
-            case 14:
+            case 13:
                 $this->setBibleVerse($value);
                 break;
-            case 15:
+            case 14:
                 $this->setCreated($value);
                 break;
-            case 16:
+            case 15:
                 $this->setUpdated($value);
                 break;
         } // switch()
@@ -2080,25 +2062,22 @@ abstract class Event implements ActiveRecordInterface
             $this->setRehearsal($arr[$keys[9]]);
         }
         if (array_key_exists($keys[10], $arr)) {
-            $this->setComment($arr[$keys[10]]);
+            $this->setRemoved($arr[$keys[10]]);
         }
         if (array_key_exists($keys[11], $arr)) {
-            $this->setRemoved($arr[$keys[11]]);
+            $this->setEventGroupId($arr[$keys[11]]);
         }
         if (array_key_exists($keys[12], $arr)) {
-            $this->setEventGroupId($arr[$keys[12]]);
+            $this->setSermonTitle($arr[$keys[12]]);
         }
         if (array_key_exists($keys[13], $arr)) {
-            $this->setSermonTitle($arr[$keys[13]]);
+            $this->setBibleVerse($arr[$keys[13]]);
         }
         if (array_key_exists($keys[14], $arr)) {
-            $this->setBibleVerse($arr[$keys[14]]);
+            $this->setCreated($arr[$keys[14]]);
         }
         if (array_key_exists($keys[15], $arr)) {
-            $this->setCreated($arr[$keys[15]]);
-        }
-        if (array_key_exists($keys[16], $arr)) {
-            $this->setUpdated($arr[$keys[16]]);
+            $this->setUpdated($arr[$keys[15]]);
         }
     }
 
@@ -2170,9 +2149,6 @@ abstract class Event implements ActiveRecordInterface
         }
         if ($this->isColumnModified(EventTableMap::COL_REHEARSAL)) {
             $criteria->add(EventTableMap::COL_REHEARSAL, $this->rehearsal);
-        }
-        if ($this->isColumnModified(EventTableMap::COL_COMMENT)) {
-            $criteria->add(EventTableMap::COL_COMMENT, $this->comment);
         }
         if ($this->isColumnModified(EventTableMap::COL_REMOVED)) {
             $criteria->add(EventTableMap::COL_REMOVED, $this->removed);
@@ -2287,7 +2263,6 @@ abstract class Event implements ActiveRecordInterface
         $copyObj->setLocationId($this->getLocationId());
         $copyObj->setNotified($this->getNotified());
         $copyObj->setRehearsal($this->getRehearsal());
-        $copyObj->setComment($this->getComment());
         $copyObj->setRemoved($this->getRemoved());
         $copyObj->setEventGroupId($this->getEventGroupId());
         $copyObj->setSermonTitle($this->getSermonTitle());
@@ -2299,6 +2274,12 @@ abstract class Event implements ActiveRecordInterface
             // important: temporarily setNew(false) because this affects the behavior of
             // the getter/setter methods for fkey referrer objects.
             $copyObj->setNew(false);
+
+            foreach ($this->getComments() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addComment($relObj->copy($deepCopy));
+                }
+            }
 
             foreach ($this->getEventpeople() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
@@ -2378,7 +2359,7 @@ abstract class Event implements ActiveRecordInterface
      */
     public function getUser(ConnectionInterface $con = null)
     {
-        if ($this->aUser === null && ($this->createdby !== null)) {
+        if ($this->aUser === null && ($this->createdby != 0)) {
             $this->aUser = ChildUserQuery::create()->findPk($this->createdby, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -2429,7 +2410,7 @@ abstract class Event implements ActiveRecordInterface
      */
     public function getEventType(ConnectionInterface $con = null)
     {
-        if ($this->aEventType === null && ($this->type !== null)) {
+        if ($this->aEventType === null && ($this->type != 0)) {
             $this->aEventType = ChildEventTypeQuery::create()->findPk($this->type, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -2480,7 +2461,7 @@ abstract class Event implements ActiveRecordInterface
      */
     public function getEventSubType(ConnectionInterface $con = null)
     {
-        if ($this->aEventSubType === null && ($this->subtype !== null)) {
+        if ($this->aEventSubType === null && ($this->subtype != 0)) {
             $this->aEventSubType = ChildEventSubTypeQuery::create()->findPk($this->subtype, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -2531,7 +2512,7 @@ abstract class Event implements ActiveRecordInterface
      */
     public function getLocation(ConnectionInterface $con = null)
     {
-        if ($this->aLocation === null && ($this->location !== null)) {
+        if ($this->aLocation === null && ($this->location != 0)) {
             $this->aLocation = ChildLocationQuery::create()->findPk($this->location, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -2582,7 +2563,7 @@ abstract class Event implements ActiveRecordInterface
      */
     public function getEventGroup(ConnectionInterface $con = null)
     {
-        if ($this->aEventGroup === null && ($this->eventgroup !== null)) {
+        if ($this->aEventGroup === null && ($this->eventgroup != 0)) {
             $this->aEventGroup = ChildEventGroupQuery::create()->findPk($this->eventgroup, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -2607,6 +2588,10 @@ abstract class Event implements ActiveRecordInterface
      */
     public function initRelation($relationName)
     {
+        if ('Comment' == $relationName) {
+            $this->initComments();
+            return;
+        }
         if ('EventPerson' == $relationName) {
             $this->initEventpeople();
             return;
@@ -2615,6 +2600,256 @@ abstract class Event implements ActiveRecordInterface
             $this->initAvailabilities();
             return;
         }
+    }
+
+    /**
+     * Clears out the collComments collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addComments()
+     */
+    public function clearComments()
+    {
+        $this->collComments = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collComments collection loaded partially.
+     */
+    public function resetPartialComments($v = true)
+    {
+        $this->collCommentsPartial = $v;
+    }
+
+    /**
+     * Initializes the collComments collection.
+     *
+     * By default this just sets the collComments collection to an empty array (like clearcollComments());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initComments($overrideExisting = true)
+    {
+        if (null !== $this->collComments && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = CommentTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collComments = new $collectionClassName;
+        $this->collComments->setModel('\TechWilk\Rota\Comment');
+    }
+
+    /**
+     * Gets an array of ChildComment objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildEvent is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildComment[] List of ChildComment objects
+     * @throws PropelException
+     */
+    public function getComments(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collCommentsPartial && !$this->isNew();
+        if (null === $this->collComments || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collComments) {
+                // return empty collection
+                $this->initComments();
+            } else {
+                $collComments = ChildCommentQuery::create(null, $criteria)
+                    ->filterByEvent($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collCommentsPartial && count($collComments)) {
+                        $this->initComments(false);
+
+                        foreach ($collComments as $obj) {
+                            if (false == $this->collComments->contains($obj)) {
+                                $this->collComments->append($obj);
+                            }
+                        }
+
+                        $this->collCommentsPartial = true;
+                    }
+
+                    return $collComments;
+                }
+
+                if ($partial && $this->collComments) {
+                    foreach ($this->collComments as $obj) {
+                        if ($obj->isNew()) {
+                            $collComments[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collComments = $collComments;
+                $this->collCommentsPartial = false;
+            }
+        }
+
+        return $this->collComments;
+    }
+
+    /**
+     * Sets a collection of ChildComment objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $comments A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildEvent The current object (for fluent API support)
+     */
+    public function setComments(Collection $comments, ConnectionInterface $con = null)
+    {
+        /** @var ChildComment[] $commentsToDelete */
+        $commentsToDelete = $this->getComments(new Criteria(), $con)->diff($comments);
+
+
+        $this->commentsScheduledForDeletion = $commentsToDelete;
+
+        foreach ($commentsToDelete as $commentRemoved) {
+            $commentRemoved->setEvent(null);
+        }
+
+        $this->collComments = null;
+        foreach ($comments as $comment) {
+            $this->addComment($comment);
+        }
+
+        $this->collComments = $comments;
+        $this->collCommentsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Comment objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Comment objects.
+     * @throws PropelException
+     */
+    public function countComments(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collCommentsPartial && !$this->isNew();
+        if (null === $this->collComments || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collComments) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getComments());
+            }
+
+            $query = ChildCommentQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByEvent($this)
+                ->count($con);
+        }
+
+        return count($this->collComments);
+    }
+
+    /**
+     * Method called to associate a ChildComment object to this object
+     * through the ChildComment foreign key attribute.
+     *
+     * @param  ChildComment $l ChildComment
+     * @return $this|\TechWilk\Rota\Event The current object (for fluent API support)
+     */
+    public function addComment(ChildComment $l)
+    {
+        if ($this->collComments === null) {
+            $this->initComments();
+            $this->collCommentsPartial = true;
+        }
+
+        if (!$this->collComments->contains($l)) {
+            $this->doAddComment($l);
+
+            if ($this->commentsScheduledForDeletion and $this->commentsScheduledForDeletion->contains($l)) {
+                $this->commentsScheduledForDeletion->remove($this->commentsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildComment $comment The ChildComment object to add.
+     */
+    protected function doAddComment(ChildComment $comment)
+    {
+        $this->collComments[]= $comment;
+        $comment->setEvent($this);
+    }
+
+    /**
+     * @param  ChildComment $comment The ChildComment object to remove.
+     * @return $this|ChildEvent The current object (for fluent API support)
+     */
+    public function removeComment(ChildComment $comment)
+    {
+        if ($this->getComments()->contains($comment)) {
+            $pos = $this->collComments->search($comment);
+            $this->collComments->remove($pos);
+            if (null === $this->commentsScheduledForDeletion) {
+                $this->commentsScheduledForDeletion = clone $this->collComments;
+                $this->commentsScheduledForDeletion->clear();
+            }
+            $this->commentsScheduledForDeletion[]= clone $comment;
+            $comment->setEvent(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Event is new, it will return
+     * an empty collection; or if this Event has previously
+     * been saved, it will retrieve related Comments from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Event.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildComment[] List of ChildComment objects
+     */
+    public function getCommentsJoinUser(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildCommentQuery::create(null, $criteria);
+        $query->joinWith('User', $joinBehavior);
+
+        return $this->getComments($query, $con);
     }
 
     /**
@@ -3149,7 +3384,6 @@ abstract class Event implements ActiveRecordInterface
         $this->location = null;
         $this->notified = null;
         $this->rehearsal = null;
-        $this->comment = null;
         $this->removed = null;
         $this->eventgroup = null;
         $this->sermontitle = null;
@@ -3175,6 +3409,11 @@ abstract class Event implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collComments) {
+                foreach ($this->collComments as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collEventpeople) {
                 foreach ($this->collEventpeople as $o) {
                     $o->clearAllReferences($deep);
@@ -3187,6 +3426,7 @@ abstract class Event implements ActiveRecordInterface
             }
         } // if ($deep)
 
+        $this->collComments = null;
         $this->collEventpeople = null;
         $this->collAvailabilities = null;
         $this->aUser = null;

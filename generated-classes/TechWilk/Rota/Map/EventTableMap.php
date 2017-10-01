@@ -58,7 +58,7 @@ class EventTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 17;
+    const NUM_COLUMNS = 16;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class EventTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 17;
+    const NUM_HYDRATE_COLUMNS = 16;
 
     /**
      * the column name for the id field
@@ -121,11 +121,6 @@ class EventTableMap extends TableMap
     const COL_REHEARSAL = 'cr_events.rehearsal';
 
     /**
-     * the column name for the comment field
-     */
-    const COL_COMMENT = 'cr_events.comment';
-
-    /**
      * the column name for the removed field
      */
     const COL_REMOVED = 'cr_events.removed';
@@ -167,11 +162,11 @@ class EventTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array(
-        self::TYPE_PHPNAME       => array('Id', 'Date', 'Name', 'CreatedBy', 'RehearsalDate', 'EventTypeId', 'EventSubTypeId', 'LocationId', 'Notified', 'Rehearsal', 'Comment', 'Removed', 'EventGroupId', 'SermonTitle', 'BibleVerse', 'Created', 'Updated', ),
-        self::TYPE_CAMELNAME     => array('id', 'date', 'name', 'createdBy', 'rehearsalDate', 'eventTypeId', 'eventSubTypeId', 'locationId', 'notified', 'rehearsal', 'comment', 'removed', 'eventGroupId', 'sermonTitle', 'bibleVerse', 'created', 'updated', ),
-        self::TYPE_COLNAME       => array(EventTableMap::COL_ID, EventTableMap::COL_DATE, EventTableMap::COL_NAME, EventTableMap::COL_CREATEDBY, EventTableMap::COL_REHEARSALDATE, EventTableMap::COL_TYPE, EventTableMap::COL_SUBTYPE, EventTableMap::COL_LOCATION, EventTableMap::COL_NOTIFIED, EventTableMap::COL_REHEARSAL, EventTableMap::COL_COMMENT, EventTableMap::COL_REMOVED, EventTableMap::COL_EVENTGROUP, EventTableMap::COL_SERMONTITLE, EventTableMap::COL_BIBLEVERSE, EventTableMap::COL_CREATED, EventTableMap::COL_UPDATED, ),
-        self::TYPE_FIELDNAME     => array('id', 'date', 'name', 'createdBy', 'rehearsalDate', 'type', 'subType', 'location', 'notified', 'rehearsal', 'comment', 'removed', 'eventGroup', 'sermonTitle', 'bibleVerse', 'created', 'updated', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
+        self::TYPE_PHPNAME       => array('Id', 'Date', 'Name', 'CreatedBy', 'RehearsalDate', 'EventTypeId', 'EventSubTypeId', 'LocationId', 'Notified', 'Rehearsal', 'Removed', 'EventGroupId', 'SermonTitle', 'BibleVerse', 'Created', 'Updated', ),
+        self::TYPE_CAMELNAME     => array('id', 'date', 'name', 'createdBy', 'rehearsalDate', 'eventTypeId', 'eventSubTypeId', 'locationId', 'notified', 'rehearsal', 'removed', 'eventGroupId', 'sermonTitle', 'bibleVerse', 'created', 'updated', ),
+        self::TYPE_COLNAME       => array(EventTableMap::COL_ID, EventTableMap::COL_DATE, EventTableMap::COL_NAME, EventTableMap::COL_CREATEDBY, EventTableMap::COL_REHEARSALDATE, EventTableMap::COL_TYPE, EventTableMap::COL_SUBTYPE, EventTableMap::COL_LOCATION, EventTableMap::COL_NOTIFIED, EventTableMap::COL_REHEARSAL, EventTableMap::COL_REMOVED, EventTableMap::COL_EVENTGROUP, EventTableMap::COL_SERMONTITLE, EventTableMap::COL_BIBLEVERSE, EventTableMap::COL_CREATED, EventTableMap::COL_UPDATED, ),
+        self::TYPE_FIELDNAME     => array('id', 'date', 'name', 'createdBy', 'rehearsalDate', 'type', 'subType', 'location', 'notified', 'rehearsal', 'removed', 'eventGroup', 'sermonTitle', 'bibleVerse', 'created', 'updated', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
     );
 
     /**
@@ -181,11 +176,11 @@ class EventTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array(
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Date' => 1, 'Name' => 2, 'CreatedBy' => 3, 'RehearsalDate' => 4, 'EventTypeId' => 5, 'EventSubTypeId' => 6, 'LocationId' => 7, 'Notified' => 8, 'Rehearsal' => 9, 'Comment' => 10, 'Removed' => 11, 'EventGroupId' => 12, 'SermonTitle' => 13, 'BibleVerse' => 14, 'Created' => 15, 'Updated' => 16, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'date' => 1, 'name' => 2, 'createdBy' => 3, 'rehearsalDate' => 4, 'eventTypeId' => 5, 'eventSubTypeId' => 6, 'locationId' => 7, 'notified' => 8, 'rehearsal' => 9, 'comment' => 10, 'removed' => 11, 'eventGroupId' => 12, 'sermonTitle' => 13, 'bibleVerse' => 14, 'created' => 15, 'updated' => 16, ),
-        self::TYPE_COLNAME       => array(EventTableMap::COL_ID => 0, EventTableMap::COL_DATE => 1, EventTableMap::COL_NAME => 2, EventTableMap::COL_CREATEDBY => 3, EventTableMap::COL_REHEARSALDATE => 4, EventTableMap::COL_TYPE => 5, EventTableMap::COL_SUBTYPE => 6, EventTableMap::COL_LOCATION => 7, EventTableMap::COL_NOTIFIED => 8, EventTableMap::COL_REHEARSAL => 9, EventTableMap::COL_COMMENT => 10, EventTableMap::COL_REMOVED => 11, EventTableMap::COL_EVENTGROUP => 12, EventTableMap::COL_SERMONTITLE => 13, EventTableMap::COL_BIBLEVERSE => 14, EventTableMap::COL_CREATED => 15, EventTableMap::COL_UPDATED => 16, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'date' => 1, 'name' => 2, 'createdBy' => 3, 'rehearsalDate' => 4, 'type' => 5, 'subType' => 6, 'location' => 7, 'notified' => 8, 'rehearsal' => 9, 'comment' => 10, 'removed' => 11, 'eventGroup' => 12, 'sermonTitle' => 13, 'bibleVerse' => 14, 'created' => 15, 'updated' => 16, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Date' => 1, 'Name' => 2, 'CreatedBy' => 3, 'RehearsalDate' => 4, 'EventTypeId' => 5, 'EventSubTypeId' => 6, 'LocationId' => 7, 'Notified' => 8, 'Rehearsal' => 9, 'Removed' => 10, 'EventGroupId' => 11, 'SermonTitle' => 12, 'BibleVerse' => 13, 'Created' => 14, 'Updated' => 15, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'date' => 1, 'name' => 2, 'createdBy' => 3, 'rehearsalDate' => 4, 'eventTypeId' => 5, 'eventSubTypeId' => 6, 'locationId' => 7, 'notified' => 8, 'rehearsal' => 9, 'removed' => 10, 'eventGroupId' => 11, 'sermonTitle' => 12, 'bibleVerse' => 13, 'created' => 14, 'updated' => 15, ),
+        self::TYPE_COLNAME       => array(EventTableMap::COL_ID => 0, EventTableMap::COL_DATE => 1, EventTableMap::COL_NAME => 2, EventTableMap::COL_CREATEDBY => 3, EventTableMap::COL_REHEARSALDATE => 4, EventTableMap::COL_TYPE => 5, EventTableMap::COL_SUBTYPE => 6, EventTableMap::COL_LOCATION => 7, EventTableMap::COL_NOTIFIED => 8, EventTableMap::COL_REHEARSAL => 9, EventTableMap::COL_REMOVED => 10, EventTableMap::COL_EVENTGROUP => 11, EventTableMap::COL_SERMONTITLE => 12, EventTableMap::COL_BIBLEVERSE => 13, EventTableMap::COL_CREATED => 14, EventTableMap::COL_UPDATED => 15, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'date' => 1, 'name' => 2, 'createdBy' => 3, 'rehearsalDate' => 4, 'type' => 5, 'subType' => 6, 'location' => 7, 'notified' => 8, 'rehearsal' => 9, 'removed' => 10, 'eventGroup' => 11, 'sermonTitle' => 12, 'bibleVerse' => 13, 'created' => 14, 'updated' => 15, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
     );
 
     /**
@@ -208,18 +203,17 @@ class EventTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, 6, null);
         $this->addColumn('date', 'Date', 'TIMESTAMP', true, null, '0000-00-00 00:00:00');
         $this->addColumn('name', 'Name', 'LONGVARCHAR', true, null, null);
-        $this->addForeignKey('createdBy', 'CreatedBy', 'INTEGER', 'cr_users', 'id', true, 5, 0);
+        $this->addForeignKey('createdBy', 'CreatedBy', 'INTEGER', 'cr_users', 'id', true, null, 0);
         $this->addColumn('rehearsalDate', 'RehearsalDate', 'TIMESTAMP', true, null, '0000-00-00 00:00:00');
         $this->addForeignKey('type', 'EventTypeId', 'INTEGER', 'cr_eventTypes', 'id', true, 30, 0);
         $this->addForeignKey('subType', 'EventSubTypeId', 'INTEGER', 'cr_eventSubTypes', 'id', true, 30, 0);
         $this->addForeignKey('location', 'LocationId', 'INTEGER', 'cr_locations', 'id', true, null, 0);
         $this->addColumn('notified', 'Notified', 'INTEGER', true, 2, 0);
         $this->addColumn('rehearsal', 'Rehearsal', 'INTEGER', true, null, 0);
-        $this->addColumn('comment', 'Comment', 'LONGVARCHAR', true, null, null);
         $this->addColumn('removed', 'Removed', 'SMALLINT', false, 1, 0);
-        $this->addForeignKey('eventGroup', 'EventGroupId', 'INTEGER', 'cr_eventGroups', 'id', true, 30, null);
-        $this->addColumn('sermonTitle', 'SermonTitle', 'VARCHAR', true, 64, '');
-        $this->addColumn('bibleVerse', 'BibleVerse', 'VARCHAR', true, 64, '');
+        $this->addForeignKey('eventGroup', 'EventGroupId', 'INTEGER', 'cr_eventGroups', 'id', false, 30, null);
+        $this->addColumn('sermonTitle', 'SermonTitle', 'VARCHAR', false, 64, null);
+        $this->addColumn('bibleVerse', 'BibleVerse', 'VARCHAR', false, 64, null);
         $this->addColumn('created', 'Created', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated', 'Updated', 'TIMESTAMP', false, null, null);
     } // initialize()
@@ -264,6 +258,13 @@ class EventTableMap extends TableMap
     1 => ':id',
   ),
 ), null, null, null, false);
+        $this->addRelation('Comment', '\\TechWilk\\Rota\\Comment', RelationMap::ONE_TO_MANY, array(
+  0 =>
+  array(
+    0 => ':eventId',
+    1 => ':id',
+  ),
+), null, null, 'Comments', false);
         $this->addRelation('EventPerson', '\\TechWilk\\Rota\\EventPerson', RelationMap::ONE_TO_MANY, array(
   0 =>
   array(
@@ -444,7 +445,6 @@ class EventTableMap extends TableMap
             $criteria->addSelectColumn(EventTableMap::COL_LOCATION);
             $criteria->addSelectColumn(EventTableMap::COL_NOTIFIED);
             $criteria->addSelectColumn(EventTableMap::COL_REHEARSAL);
-            $criteria->addSelectColumn(EventTableMap::COL_COMMENT);
             $criteria->addSelectColumn(EventTableMap::COL_REMOVED);
             $criteria->addSelectColumn(EventTableMap::COL_EVENTGROUP);
             $criteria->addSelectColumn(EventTableMap::COL_SERMONTITLE);
@@ -462,7 +462,6 @@ class EventTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.location');
             $criteria->addSelectColumn($alias . '.notified');
             $criteria->addSelectColumn($alias . '.rehearsal');
-            $criteria->addSelectColumn($alias . '.comment');
             $criteria->addSelectColumn($alias . '.removed');
             $criteria->addSelectColumn($alias . '.eventGroup');
             $criteria->addSelectColumn($alias . '.sermonTitle');
@@ -566,10 +565,6 @@ class EventTableMap extends TableMap
             $criteria = clone $criteria; // rename for clarity
         } else {
             $criteria = $criteria->buildCriteria(); // build Criteria from Event object
-        }
-
-        if ($criteria->containsKey(EventTableMap::COL_ID) && $criteria->keyContainsValue(EventTableMap::COL_ID)) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.EventTableMap::COL_ID.')');
         }
 
 

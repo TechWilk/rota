@@ -6,6 +6,8 @@ use DateTime;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TechWilk\Rota\Authoriser\EventAuthoriser;
+use TechWilk\Rota\Comment;
+use TechWilk\Rota\Crypt;
 use TechWilk\Rota\Event;
 use TechWilk\Rota\EventPerson;
 use TechWilk\Rota\EventPersonQuery;
@@ -53,27 +55,47 @@ class EventController extends BaseController
     {
         $this->logger->info("Create event POST '/event'");
 
-        if (!EventAuthoriser::createableBy($this->auth->currentUser())) {
-            return $this->view->render($response, 'error.twig');
-        }
-
         $data = $request->getParsedBody();
 
-        $data['firstname'] = filter_var(trim($data['firstname']), FILTER_SANITIZE_STRING);
-        $data['lastname'] = filter_var(trim($data['lastname']), FILTER_SANITIZE_STRING);
-        $data['email'] = filter_var(trim($data['email']), FILTER_SANITIZE_EMAIL);
-        $data['mobile'] = filter_var(trim($data['mobile']), FILTER_SANITIZE_STRING);
+        $data['name'] = filter_var(trim($data['name']), FILTER_SANITIZE_STRING);
+        $data['comment'] = filter_var(trim($data['comment']), FILTER_SANITIZE_STRING);
 
         $e = new Event();
         if (isset($args['id'])) {
-            $e = EventQuery::create()->findPk($args['id']);
+            // edit existing event
+            $returnPath = 'user';
+            $e = EventQuery::create()->findPK($args['id']);
+            if (!$e->authoriser()->updatableBy($this->auth->currentUser())) {
+                return $this->view->render($response, 'error.twig');
+            }
+        } else {
+            // create new event
+            if (!EventAuthoriser::createableBy($this->auth->currentUser())) {
+                return $this->view->render($response, 'error.twig');
+            }
+            $returnPath = 'user-roles';
+            $newIdFound = false;
+            while (!$newIdFound) {
+                $id = Crypt::generateInt(0, 2147483648); // largest int in db column
+                if (is_null(EventQuery::create()->findPK($id))) {
+                    $newIdFound = true;
+                    $e->setId($id);
+                }
+            }
+            $e->setCreatedBy($this->auth->currentUser());
         }
         $e->setName($data['name']);
         $e->setDate(DateTime::createFromFormat('d/m/Y H:i', $data['date'].' '.$data['time']));
         $e->setEventTypeId($data['type']);
         $e->setEventSubTypeId($data['subtype']);
         $e->setLocationId($data['location']);
-        $e->setComment($data['comment']);
+
+        if (!empty($data['comment'])) {
+            $c = new Comment();
+            $c->setEvent($e);
+            $c->setUser($this->auth->currentUser());
+            $c->setText($data['comment']);
+        }
         $e->save();
 
         return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('event', ['id' => $e->getId()]));
@@ -224,5 +246,22 @@ class EventController extends BaseController
             ->find();
 
         return $this->view->render($response, 'events-print.twig', ['events' => $events, 'groups' => $groups, 'users' => $users]);
+    }
+
+    public function getAllEventInfoToPrint(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+        $this->logger->info("Fetch event printable page GET '/events/print/info'");
+
+        $events = EventQuery::create()
+            ->filterByDate(['min' => new DateTime()])
+            ->filterByRemoved(false)
+            ->orderByDate('asc')
+            ->find();
+
+        $groups = GroupQuery::create()
+            ->filterById(136)
+            ->find();
+
+        return $this->view->render($response, 'events-print-info.twig', ['events' => $events, 'groups' => $groups]);
     }
 }
