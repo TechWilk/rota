@@ -448,11 +448,16 @@
 				<!-- Sidebar Menu -->
 				<ul class="sidebar-menu">
 					<li class="header">ROTAS</li>
-					<li <?php echo basename($_SERVER['SCRIPT_FILENAME']) == 'index.php' ? 'class="active"' : ''; ?>>
+        <li>
+            <a href="../">
+              <i class="fa fa-arrow-left"></i> <span>Return to new system</span>
+            </a>
+        </li>
+        <li <?php echo basename($_SERVER['SCRIPT_FILENAME']) == 'index.php' ? 'class="active"' : ''; ?>>
             <a href="index.php">
               <i class="fa fa-tachometer"></i> <span>Dashboard</span>
             </a>
-          </li>
+        </li>
 					<?php if (isLoggedIn()) {
                                             ?>
 					<li class="treeview <?php echo basename($_SERVER['SCRIPT_FILENAME']) == 'events.php' || basename($_SERVER['SCRIPT_FILENAME']) == 'createEvent.php' ? ' active' : ''; ?>">
@@ -491,31 +496,10 @@
 								<?php endif ?>
 						</ul>
 					</li>
-
-					<li <?php echo basename($_SERVER['SCRIPT_FILENAME']) == 'resources.php' ? 'class="active"' : ''; ?>>
-            <a href="resources.php">
-              <i class="fa fa-folder-o"></i> <span>Resources</span>
-            </a>
-          </li>
-					<?php if (!isAdmin()) {
-                                                ?>
-            <li <?php echo basename($_SERVER['SCRIPT_FILENAME']) == 'addUser.php' ? 'class="active"' : ''; ?>>
-              <a href="addUser.php?action=edit">
-                <i class="fa fa-user"></i> <span>My account</span>
-              </a>
-            </li>
-            <?php
-                                            } ?>
 					<?php
                                         }
                     if (isAdmin()) {
                         ?>
-  					<li <?php echo basename($_SERVER['SCRIPT_FILENAME']) == 'users.php' ? 'class="active"' : '';
-                        echo basename($_SERVER['SCRIPT_FILENAME']) == 'addUser.php' ? 'class="active"' : ''; ?>>
-          <a href="users.php">
-            <i class="fa fa-users"></i> <span>Users</span>
-          </a>
-        </li>
 					<li <?php echo basename($_SERVER['SCRIPT_FILENAME']) == 'settings.php' ? 'class="active"' : '';
                         echo basename($_SERVER['SCRIPT_FILENAME']) == 'editeventtype.php' ? 'class="active"' : '';
                         echo basename($_SERVER['SCRIPT_FILENAME']) == 'editSkills.php' ? 'class="active"' : '';

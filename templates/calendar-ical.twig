@@ -41,7 +41,7 @@ DTSTART;TZID=Europe/London:{{ event.date | date(dateFormat) }}T{{ event.date | d
 DTEND;TZID=Europe/London:{{ event.date | date_modify('+1 hour') | date(dateFormat) }}T{{ event.date | date_modify('+1 hour') | date(timeFormat) }}
 LAST-MODIFIED:{{ event.updated | date(dateFormat) }}T{{ event.updated | date(timeFormat) }}Z
 LOCATION:{{ event.location.name }}, {{ event.location.address }}
-URL:{# add site root url here #}{{ path_for('event', {'id': event.id }) }}
+URL:{{ site.url.base }}{{ path_for('event', {'id': event.id }) }}
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Reminder for Rota
