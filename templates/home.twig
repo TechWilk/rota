@@ -63,7 +63,7 @@
                 <th>Name</th>
                 <th>Type</th>
                 <th>SubType</th>
-                <th>Notes</th>
+                <th></th>
               </tr>
               {% for event in eventsthisweek %}
               <tr data-toggle='modal' data-target="#event{{ event.id }}_modal">
@@ -71,7 +71,7 @@
                 <td>{{ event.name }}</td>
                 <td>{{ event.eventtype.name }}</td>
                 <td>{{ event.eventsubtype.name }}</td>
-                <td>{{ event.comment }}</td>
+                <td><a class="js-no-link btn btn-xs btn-primary" href="{{ path_for('event', { 'id': event.id }) }}">View</a></td>
               </tr>
               {% include 'event-modal.twig' %}
               {% else %}
@@ -88,7 +88,7 @@
       </div>
       
 
-      {% include 'events-upcoming-user-table.twig' with { 'user': currentuser } %}
+      {% include 'events-upcoming-table.twig' with { 'user': currentuser, 'events': currentuser.upcomingevents } %}
     </div>
     <div class="col-sm-12 col-md-4 col-lg-6">
 
@@ -99,33 +99,35 @@
               <div class="box-header">
                 <h2 class="box-title">Last events for group</h2>
               </div>
-              <div class="box-body">
+              <div class="box-body no-padding">
+                <ul class="nav nav-stacked">
+                  {% for group in remainingeventsingroups %}
+                  <li>
+                    <a href="{{ path_for('group', { 'id': group.id }) }}">
+                      {{ group.name }}
+                      {% set lastevent = group.lastevent %}
+                      {% if lastevent %}
+                      <span class="pull-right badge
+                        {{ lastevent.date | date('U') < ('+1 month' | date('U')) ?
+                            ( lastevent.date | date('U') < ('+2 weeks' | date('U')) ?
+                                ( lastevent.date | date('U') < ('now' | date('U')) ?
+                                    '' :
+                                    'bg-red' ) :
+                                'bg-orange' ) :
+                            'bg-green' }}
+                        ">
+                        {{ lastevent.date | time_diff }}
+                      </span>
+                      {% else %}
+                      <span class="pull-right badge">
+                        never
+                      </span>
+                      {% endif %}
+                    </a>
+                  </li>
 
-                {% for group in remainingeventsingroups %}
-
-                <p>
-                  {{ group.name }}
-                  {% set lastevent = group.lastevent %}
-                  {% if lastevent %}
-                  <span class="pull-right badge
-                    {{ lastevent.date | date('U') < ('+1 month' | date('U')) ?
-                        ( lastevent.date | date('U') < ('+2 weeks' | date('U')) ?
-                            ( lastevent.date | date('U') < ('now' | date('U')) ?
-                                '' :
-                                'bg-red' ) :
-                            'bg-orange' ) :
-                        'bg-green' }}
-                    ">
-                    {{ lastevent.date | time_diff }}
-                  </span>
-                  {% else %}
-                  <span class="pull-right badge">
-                    never
-                  </span>
-                  {% endif %}
-                </p>
-
-                {% endfor %}
+                  {% endfor %}
+                </ul>
               </div>
             </div>
           </div>

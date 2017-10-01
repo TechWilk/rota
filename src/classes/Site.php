@@ -22,10 +22,14 @@ class Site
     {
         if (!isset($this->menu)) {
             $this->menu['events']['type'] = EventTypeQuery::create()
-                                        ->useEventQuery()
-                                          ->filterByRemoved(false)
-                                          ->filterByDate(['min' => new DateTime()])
-                                        ->endUse()
+                ->useEventQuery()
+                    ->filterByRemoved(false)
+                    ->filterByDate(['min' => new DateTime()])
+                ->endUse()
+                ->distinct()
+                ->find();
+
+            $this->menu['groups'] = GroupQuery::create()
                                         ->distinct()
                                         ->find();
         }

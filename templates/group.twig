@@ -1,0 +1,27 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+
+<div class="row">
+
+  <div class="col-md-3">
+
+    <div class="box box-primary">
+      <div class="box-body box-profile">
+
+        <h3 class="profile-username text-center">{{ group.name }}</h3>
+
+      </div>
+    </div>
+
+    {% include 'roles-list-box.twig' %}
+
+  </div>
+
+  <div class="col-md-9">
+    {% include 'events-upcoming-table.twig' %}
+  </div>
+
+</div>
+
+{% endblock %}

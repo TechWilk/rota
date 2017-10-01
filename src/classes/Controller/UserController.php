@@ -6,7 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TechWilk\Rota\Crypt;
 use TechWilk\Rota\EmailAddress;
-use TechWilk\Rota\RoleQuery;
+use TechWilk\Rota\GroupQuery;
 use TechWilk\Rota\User;
 use TechWilk\Rota\UserQuery;
 
@@ -16,7 +16,7 @@ class UserController extends BaseController
     {
         $this->logger->info("Fetch user GET '/users'");
         $usersAll = UserQuery::create()->orderByLastName()->orderByFirstName()->find();
-        $roles = RoleQuery::create()->orderByName()->find();
+        $groups = GroupQuery::create()->orderByName()->find();
         $users = [];
         foreach ($usersAll as $user) {
             if ($user->authoriser()->readableBy($this->auth->currentUser())) {
@@ -24,7 +24,7 @@ class UserController extends BaseController
             }
         }
 
-        return $this->view->render($response, 'users.twig', ['users' => $users, 'roles' => $roles]);
+        return $this->view->render($response, 'users.twig', ['users' => $users, 'groups' => $groups]);
     }
 
     public function postUser(ServerRequestInterface $request, ResponseInterface $response, $args)

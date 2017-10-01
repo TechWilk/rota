@@ -7,6 +7,7 @@ use TechWilk\Rota\Controller\AuthController;
 use TechWilk\Rota\Controller\AvailabilityController;
 use TechWilk\Rota\Controller\CalendarController;
 use TechWilk\Rota\Controller\EventController;
+use TechWilk\Rota\Controller\GroupController;
 use TechWilk\Rota\Controller\NotificationController;
 use TechWilk\Rota\Controller\PendingUserController;
 use TechWilk\Rota\Controller\ResourceController;
@@ -86,6 +87,15 @@ $app->group('/resource', function () {
     $this->get('/{id}', ResourceController::class.':getResourceFile')->setName('resource');
 
     $this->post('[/{id}]', ResourceController::class.':postResource')->setName('resource-post');
+});
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ROLES & GROUPS
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+$app->group('/group', function () {
+    $this->get('/{id}', GroupController::class.':getGroup')->setName('group');
+    $this->get('/{id}/roles', GroupController::class.':getGroupRoles')->setName('group-roles');
 });
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
