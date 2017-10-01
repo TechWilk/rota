@@ -52,6 +52,7 @@ class Event extends BaseEvent
      * Set the value of [createdby] column.
      *
      * @param User|int $v new value
+     *
      * @return $this|\TechWilk\Rota\Event The current object (for fluent API support)
      */
     public function setCreatedBy($v)
@@ -61,5 +62,7 @@ class Event extends BaseEvent
         }
 
         return parent::setCreatedBy($v);
-    } // setCreatedBy()
+    }
+
+    // setCreatedBy()
 }
