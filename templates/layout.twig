@@ -245,8 +245,8 @@
 						<a href="{{ path_for('group', { 'id': group.id }) }}">{{ group.name }}</a>
 					</li>
 					{% endfor %}
-					<li class="{% if currentroute.name == 'event-new' %}active{% endif %}">
-						<a href="{#{ path_for('group-new') }#}">Add Team</a>
+					<li class="{% if currentroute.name == 'group-new' %}active{% endif %}">
+						<a href="{#{ path_for('group-new') }#}" data-toggle="modal" data-target="#group">Add Team</a>
 					</li>
 				</ul>
 			</li>
@@ -298,6 +298,8 @@
 			{% include 'error-banner.twig' %}
 
 			{% block content %}{% endblock %}
+
+			{% include 'group-edit-modal.twig' only %}
 
         </section><!-- /.content -->
 </div><!-- /.content-wrapper -->

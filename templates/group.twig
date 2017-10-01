@@ -10,7 +10,9 @@
       <div class="box-body box-profile">
 
         <h3 class="profile-username text-center">{{ group.name }}</h3>
-
+        <div class="text-muted text-center">{{ group.description | markdown }}</div>
+        <a href="" class="btn btn-primary btn-block" data-toggle="modal" data-target="#group{{ group.id }}"><b>Edit</b></a>
+        {% include 'group-edit-modal.twig' %}
       </div>
     </div>
 

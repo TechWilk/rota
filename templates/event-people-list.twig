@@ -23,6 +23,8 @@
       {% endfor %}
       </ul>
     </div>
+    {% else %}
+    <p>There are no people assigned to this event. <a href="{{ path_for('event-assign', { 'id': event.id }) }}">Assign people</a></p>
     {% endfor %}
   </div>
 </div>

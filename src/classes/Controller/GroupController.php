@@ -6,6 +6,7 @@ use DateTime;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TechWilk\Rota\EventQuery;
+use TechWilk\Rota\Group;
 use TechWilk\Rota\GroupQuery;
 
 class GroupController extends BaseController
@@ -28,9 +29,6 @@ class GroupController extends BaseController
             ->find();
 
         $group = GroupQuery::create()
-                ->useRoleQuery()
-                ->endUse()
-                ->distinct()
                 ->findPk($args['id']);
 
         return $this->view->render($response, 'group.twig', ['events' => $events, 'group' => $group]);
@@ -63,5 +61,24 @@ class GroupController extends BaseController
         return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('home').'old/roles.php');
 
         return $this->view->render($response, 'group-roles.twig', ['events' => $events, 'group' => $group]);
+    }
+
+    public function postGroup(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+        $this->logger->info("Create/edit group POST '/group/".$args['id']."'");
+
+        $group = new Group();
+
+        if (!empty($args['id'])) {
+            $group = GroupQuery::create()->findPk($args['id']);
+        }
+
+        $data = $request->getParsedBody();
+
+        $group->setName($data['name']);
+        $group->setDescription($data['description']);
+        $group->save();
+
+        return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('group', ['id' => $group->getId()]));
     }
 }
