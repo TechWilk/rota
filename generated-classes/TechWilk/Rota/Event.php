@@ -37,4 +37,32 @@ class Event extends BaseEvent
     {
         return new EventAuthoriser($this);
     }
+
+    /**
+     * Get the [createdby] column value.
+     *
+     * @return User
+     */
+    public function getCreatedBy()
+    {
+        return UserQuery::create()->findPk($this->createdby);
+    }
+
+    /**
+     * Set the value of [createdby] column.
+     *
+     * @param User|int $v new value
+     *
+     * @return $this|\TechWilk\Rota\Event The current object (for fluent API support)
+     */
+    public function setCreatedBy($v)
+    {
+        if (is_a('\TechWilk\Rota\User', $v)) {
+            $v = $v->getId();
+        }
+
+        return parent::setCreatedBy($v);
+    }
+
+    // setCreatedBy()
 }
