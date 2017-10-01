@@ -1,4 +1,6 @@
-<?php namespace TechWilk\Rota;
+<?php
+
+namespace TechWilk\Rota;
 
 if (!empty($_GET['action']) && $_GET['action'] == 'edit') {
     header('Location: ../user/me');
