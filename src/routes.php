@@ -96,6 +96,8 @@ $app->group('/resource', function () {
 $app->group('/group', function () {
     $this->get('/{id}', GroupController::class.':getGroup')->setName('group');
     $this->get('/{id}/roles', GroupController::class.':getGroupRoles')->setName('group-roles');
+
+    $this->post('[/{id}]', GroupController::class.':postGroup')->setName('group-post');
 });
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

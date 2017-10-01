@@ -72,22 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!mysqli_query(db(), $sql)) {
             die('Error: '.mysqli_error(db()));
         }
-    } elseif ($method == 'newgroup') {
-        $groupId = $_POST['groups'];
-
-        $newgroup = $_POST['newgroup'];
-        $newgroup = mysqli_real_escape_string(db(), stripslashes($newgroup));
-        // reject imput if name not present
-        if (empty($newgroup)) {
-            header('Location: roles.php');
-            exit;
-        }
-
-        $sql = "INSERT INTO cr_groups (name, description)
-            VALUES ('$newgroup', '$newgroup')";
-        if (!mysqli_query(db(), $sql)) {
-            die('Error: '.mysqli_error(db()));
-        }
     } else {
         // Handle renaming of the roles
         $roleId = $_POST['roleId'];
@@ -257,24 +241,6 @@ include 'includes/header.php';
   	</form>
   </div><!-- /.box -->
 
-  <div class="box box-primary">
-    <div class="box-header">
-  	 	<h2 class="box-title">Add a new group:</h2>
-    </div><!-- /.box-header -->
-    <div class="box-body">
-  		<form action="roles.php?method=newgroup" method="post" id="addGroup">
-  		<fieldset>
-        <div class="form-group">
-      		<label class="hidden" for="newgroup">Group</label>
-      		<input class="form-control" id="newgroup" name="newgroup" type="text" placeholder="Enter group name" maxlength="25"/>
-        </div>
-      </div><!-- /.box-body -->
-      <div class="box-footer">
-        <input class="btn btn-primary" type="submit" value="Add new group" />
-      </div><!-- /.box-footer -->
-  		</fieldset>
-  	</form>
-  </div><!-- /.box -->
 </div><!-- /.col -->
 
 <?php
