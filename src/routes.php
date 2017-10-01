@@ -11,6 +11,7 @@ use TechWilk\Rota\Controller\NotificationController;
 use TechWilk\Rota\Controller\PendingUserController;
 use TechWilk\Rota\Controller\ResourceController;
 use TechWilk\Rota\Controller\RoleController;
+use TechWilk\Rota\Controller\GroupController;
 use TechWilk\Rota\Controller\UserController;
 
 // Routes
@@ -87,6 +88,16 @@ $app->group('/resource', function () {
 
     $this->post('[/{id}]', ResourceController::class.':postResource')->setName('resource-post');
 });
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ROLES & GROUPS
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+$app->group('/group', function () {
+    $this->get('/{id}', GroupController::class.':getGroup')->setName('group');
+    $this->get('/{id}/roles', GroupController::class.':getGroupRoles')->setName('group-roles');
+});
+
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // AUTH

@@ -28,4 +28,17 @@ class Group extends BaseGroup
             ->orderByDate('desc')
             ->findOne();
     }
+
+    public function getRolesInEvent(Event $event)
+    {
+        return RoleQuery::create()
+            ->filterByGroup($this)
+            ->useUserRoleQuery()
+                ->useEventPersonQuery()
+                    ->filterByEvent($event)
+                ->endUse()
+            ->endUse()
+            ->orderByName()
+            ->find();
+    }
 }

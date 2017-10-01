@@ -15,21 +15,27 @@
         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
         <div class="btn-group">
         <a class="btn btn-success" href="{{ path_for('user', { 'id': user.id }) }}">View profile</a>
+          {% if user.authoriser.updatableBy(currentuser) %}
           <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
             Edit <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
+            {% if user.authoriser.updatableBy(currentuser) %}
             <li>
               <a class="" href="{{ path_for('user-edit', { 'id': user.id }) }}">Edit details</a>
             </li>
+            {% endif %}
+            {% if user.authoriser.updatableBy(currentuser) %}
             <li>
               <a class="" href="{{ path_for('user-roles', { 'id': user.id }) }}">Assign roles</a>
             </li>
+            {% endif %}
             <li class="divider"></li>
             <li>
               <a class="text-red" href="{{ path_for('user-password', { 'id': user.id }) }}">Reset password</a>
             </li>
           </ul>
+          {% endif %}
         </div>
       </div>
     </div>

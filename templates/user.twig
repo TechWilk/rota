@@ -26,9 +26,10 @@
           </li>
           {% endif %}
         </ul>
-
+        {% if user.authoriser.updatableBy(currentuser) %}
         <a href="{{ path_for('user-edit', { 'id': user.id }) }}" class="btn btn-primary btn-block"><b>Edit details</b></a>
         <a class="btn btn-link text-red btn-block" href="{{ path_for('user-password', { 'id': user.id }) }}">Reset password</a>
+        {% endif %}
       </div>
     </div>
 
@@ -63,7 +64,7 @@
   </div>
 
   <div class="col-md-9">
-    {% include 'events-upcoming-user-table.twig' %}
+    {% include 'events-upcoming-table.twig' with { 'events': user.upcomingevents } %}
   </div>
 
 </div>
