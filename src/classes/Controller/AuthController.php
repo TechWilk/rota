@@ -81,7 +81,7 @@ class AuthController extends BaseController
         $this->logger->info("Login auth GET '/login/".$args['provider']."'");
 
         // login
-        $authUrl = $this->auth->getCallbackUrl($this->router);
+        $authUrl = $this->auth->getCallbackUrl();
 
         return $response->withStatus(302)->withHeader('Location', $authUrl);
     }
