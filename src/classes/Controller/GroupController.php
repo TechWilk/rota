@@ -6,8 +6,8 @@ use DateTime;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TechWilk\Rota\EventQuery;
-use TechWilk\Rota\GroupQuery;
 use TechWilk\Rota\Group;
+use TechWilk\Rota\GroupQuery;
 
 class GroupController extends BaseController
 {
