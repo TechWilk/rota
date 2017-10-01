@@ -2,6 +2,8 @@
 
 {% block content %}
 
+{% include 'event-banner.twig' %}
+
 <div class="row">
   <form action="{{ path_for('event-assign-post', { 'id': event.id }) }}" method="post">
     {% for group, groupedroles in userroles|sort_by(=> _.role.group.name, 'ASC')|group_by(=> _.role.group) %}

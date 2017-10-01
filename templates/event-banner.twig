@@ -1,0 +1,21 @@
+<div class="box box-solid">
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-2">
+                <h2 class="text-center">{{ event.name }}</h2>
+                <p class="text-center">{{ event.date is empty ? 'sometime' : user.created | date('jS M. Y') }}</p>
+            </div>
+            <div class="col-md-2 pad">
+                <p class="text-muted text-center">{{ event.eventtype.name }}</p>
+                <p class="text-muted text-center">{{ event.eventsubtype.name }}</p>
+            </div>
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-2">
+                <div class="pad margin">
+                    <a href="{{ path_for('event', { 'id': event.id }) }}" class="btn btn-primary btn-block"><b>View event</b></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
