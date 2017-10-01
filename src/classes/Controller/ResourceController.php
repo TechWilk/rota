@@ -75,12 +75,13 @@ class ResourceController extends BaseController
     {
         $this->logger->info("Fetch resource GET '/resource/".$args['id']."'");
         $resource = DocumentQuery::create()->findPk($args['id']);
+        $directory = __DIR__.'/../../../documents/';
 
         if (!is_null($resource)) {
-            if (file_exists(__DIR__.'/../documents/'.$resource->getUrl())) {
-                $file = __DIR__.'/../documents/'.$resource->getUrl();
-            } elseif (file_exists(__DIR__.'/../documents/'.$resource->getId())) {
-                $file = __DIR__.'/../documents/'.$resource->getId();
+            if (file_exists($directory.$resource->getUrl())) {
+                $file = $directory.$resource->getUrl();
+            } elseif (file_exists($directory.$resource->getId())) {
+                $file = $directory.$resource->getId();
             } else {
                 return $this->view->render($response, 'error.twig');
             }
