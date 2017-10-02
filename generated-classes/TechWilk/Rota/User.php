@@ -5,9 +5,9 @@ namespace TechWilk\Rota;
 use DateTime;
 use Propel\Runtime\ActiveQuery\Criteria;
 use TechWilk\Rota\Authoriser\UserAuthoriser;
+use TechWilk\Rota\Base\SocialAuthQuery;
 use TechWilk\Rota\Base\User as BaseUser;
 use TechWilk\Rota\Map\UserTableMap;
-use TechWilk\Rota\Base\SocialAuthQuery;
 
 /**
  * Skeleton subclass for representing a row from the 'cr_users' table.
