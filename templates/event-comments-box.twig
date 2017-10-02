@@ -1,0 +1,40 @@
+<div class="box box-success direct-chat direct-chat-success">
+    <div class="box-header with-border">
+        <h3 class="box-title">Comments</h3>
+
+        <div class="box-tools pull-right">
+        <span data-toggle="tooltip" title="" class="badge bg-green" data-original-title="{{ event.comments.count }} New Comments">{{ event.comments.count }}</span>
+        </div>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <div class="direct-chat-messages">
+            {% for comment in event.comments %}
+            <div class="direct-chat-msg {{ comment.user == currentuser ? 'right' : '' }}">
+                <div class="direct-chat-info clearfix">
+                    <span class="direct-chat-name pull-{{ comment.user == currentuser ? 'right' : 'left' }}">{{ comment.user.name }}</span>
+                    <span class="direct-chat-timestamp pull-{{ comment.user == currentuser ? 'left' : 'right' }}">{{ comment.created | date('d M h:i a') }}</span>
+                </div>
+                <img class="direct-chat-img" src="{{ comment.user.profileimage('small') }}" alt="{{ comment.user.name }} profile image"><!-- /.direct-chat-img -->
+                <div class="direct-chat-text">
+                {{ comment.text }}
+                </div>
+            </div>
+            {% else %}
+            <p>No comments, be the first!</p>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer">
+        <form action="{{ path_for('event-comment-post', { 'id': event.id }) }}" method="post">
+        <div class="input-group">
+            <input type="text" name="comment" placeholder="Type Comment ..." class="form-control">
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-success btn-flat">Send</button>
+            </span>
+        </div>
+        </form>
+    </div>
+    <!-- /.box-footer-->
+    </div>

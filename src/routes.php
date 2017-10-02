@@ -72,6 +72,7 @@ $app->group('/event', function () {
 
     $this->post('[/{id}]', EventController::class.':postEvent')->setName('event-post');
     $this->post('/{id}/assign', EventController::class.':postEventAssign')->setName('event-assign-post');
+    $this->post('/{id}/comment', EventController::class.':postEventComment')->setName('event-comment-post');
 });
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

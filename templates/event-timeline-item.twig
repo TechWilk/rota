@@ -30,6 +30,15 @@
       <div class="timeline-footer box-comments">
         {% include 'event-comments.twig' %}
       </div>
+      <div class="box-footer">
+        <form action="{{ path_for('event-comment-post', { 'id': event.id }) }}" method="post">
+        <img class="img-responsive img-circle img-sm" src="{{ currentuser.profileimage('small') }}" alt="Alt Text">
+        <!-- .img-push is used to add margin to elements next to floating images -->
+        <div class="img-push">
+            <input type="text" class="form-control input-sm" name="comment" placeholder="Press enter to post comment">
+        </div>
+        </form>
+    </div>
     </div>
   </li>
   {% include 'event-modal.twig' %}

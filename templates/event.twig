@@ -4,7 +4,7 @@
 
 <div class="row">
 
-  <div class="col-md-6">
+  <div class="col-md-3">
 
     <div class="box">
       <div class="box-header">
@@ -19,6 +19,10 @@
         <a class="btn btn-primary" href="{{ path_for('event-edit', { 'id': event.id }) }}">Edit</a>
       </div>
     </div>
+
+  </div>
+
+  <div class="col-md-6">
 
     <div class="box">
       <div class="box-header">
@@ -36,18 +40,9 @@
 
   </div>
 
-  <div class="col-md-6">
+  <div class="col-md-3">
   
-    <div class="box">
-      <div class="box-header">
-        <h4 class="box-title">
-          Comments
-        </h4>
-      </div>
-      <div class="box-body box-comments">
-        {% include 'event-comments.twig' %}
-      </div>
-    </div>
+    {% include 'event-comments-box.twig' %}
 
   </div>
 
