@@ -71,7 +71,13 @@
                 <td>{{ event.name }}</td>
                 <td>{{ event.eventtype.name }}</td>
                 <td>{{ event.eventsubtype.name }}</td>
-                <td><a class="js-no-link btn btn-xs btn-primary" href="{{ path_for('event', { 'id': event.id }) }}">View</a></td>
+                <td>
+                  {% if event.comments.count > 0 %}
+                  <span data-toggle="tooltip" title="" class="badge bg-green" data-original-title="{{ event.comments.count }} Comments">{{ event.comments.count }}</span>
+                  &nbsp;
+                  {% endif %}
+                  <a class="js-no-link btn btn-xs btn-primary" href="{{ path_for('event', { 'id': event.id }) }}">View</a>
+                </td>
               </tr>
               {% include 'event-modal.twig' %}
               {% else %}
