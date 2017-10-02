@@ -18,6 +18,11 @@ class Site
         return $this->settings;
     }
 
+    public function getConfig()
+    {
+        return getConfig();
+    }
+
     public function getMenu()
     {
         if (!isset($this->menu)) {

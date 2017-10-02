@@ -30,6 +30,12 @@
         <a href="{{ path_for('user-edit', { 'id': user.id }) }}" class="btn btn-primary btn-block"><b>Edit details</b></a>
         <a class="btn btn-link text-red btn-block" href="{{ path_for('user-password', { 'id': user.id }) }}">Reset password</a>
         {% endif %}
+        {% if user.socialAuthForPlatform('facebook') %}
+        <a class="btn btn-link btn-block" href="https://facebook.com/{{ user.socialAuthForPlatform('facebook').socialId }}">View on Facebook</a>
+        {% endif %}
+        {% if user.socialAuthForPlatform('onebody') %}
+        <a class="btn btn-link btn-block" href="{{ site.config.auth.onebody.url }}/people/{{ user.socialAuthForPlatform('onebody').socialId }}">View on OneBody</a>
+        {% endif %}
       </div>
     </div>
 
