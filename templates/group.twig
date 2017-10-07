@@ -16,6 +16,14 @@
       </div>
     </div>
 
+    <div class="box box-solid">
+      <div class="box-body">
+
+        <a href="{{ path_for('group-events-print', {'id': group.id}) }}" class="btn btn-primary btn-block">Print {{ group.name }} Events</a>
+        
+      </div>
+    </div>
+
     {% include 'roles-list-box.twig' %}
 
   </div>

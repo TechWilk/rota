@@ -12,7 +12,7 @@
 
 <div class="box box-solid">
     <div class="box-header">
-        <h2 class="box-title">{{ group.name }} Rota</h2>
+        <h2 class="box-title">Event Info</h2>
     </div>
     <div class="box-body">
         <table class="table table-hover">
@@ -21,11 +21,7 @@
                     <th>Date</th>
                     <th>Sunday</th>
                     <th>Service</th>
-                    {% for role in group.roles %}
-                    <th>{{ role.name }}</th>
-                    {% endfor %}
                     <th>Subject/Notes</th>
-                    <th>Availability</th>
                 </tr>
             </thead>
             {% for date, eventsInDay in events|group_by(=> _.date|date('jS M')) %}
@@ -41,27 +37,11 @@
                 <td rowspan="{{ eventsWithName | length }}">{{ eventName }}</td>
                 {% endif %}
                 <td>{{ event.eventsubtype.name is empty ? event.eventtype.name : event.eventsubtype.name }}</td>
-                {% for role in group.roles %}
-                <td>
-                    {% for eventperson in event.eventpeople | filter(=> _.userrole.role == role) %}
-                    <span>
-                    {{ eventperson.userrole.user.initials }}
-                    </span>
-                    {% endfor %}
-                </td>
-                {% endfor %}
                 <td>
                     <em>{{ event.eventGroup.name }}:</em>
                     {{ event.sermontitle }}
                     {{ event.bibleVerse is empty ? '' : '(' ~ event.bibleVerse ~ ')' }}
-                    {{ event.comment is empty ? '' : '(' ~ event.comment ~ ')' }}</td>
-                <td>
-                    {% for user in users if user.isavailableforevent(event) == true or user.isavailableforevent(event) is null %}
-                    <span>
-                    {{ user.isavailableforevent(event) == true ? user.initials : '' }}
-                    {{( user.isavailableforevent(event) is null ? '(' ~ user.initials ~ ')?' : '' ) }}
-                    </span>
-                    {% endfor %}
+                    {{ event.comment is empty ? '' : '(' ~ event.comment ~ ')' }}
                 </td>
             </tr>
             {% endfor %}

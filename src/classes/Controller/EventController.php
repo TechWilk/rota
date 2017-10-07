@@ -221,9 +221,11 @@ class EventController extends BaseController
         return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('event', ['id' => $eventId]));
     }
 
-    public function getAllEventsToPrint(ServerRequestInterface $request, ResponseInterface $response, $args)
+    public function getAllEventsToPrintForGroup(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
-        $this->logger->info("Fetch event printable page GET '/events/print'");
+        $this->logger->info("Fetch event printable page GET '/group/".$args['id']."/events'");
+
+        $groupId = (int) $args['id'];
 
         $events = EventQuery::create()
             ->filterByDate(['min' => new DateTime()])
@@ -231,21 +233,21 @@ class EventController extends BaseController
             ->orderByDate('asc')
             ->find();
 
-        $groups = GroupQuery::create()
-            ->filterById(136)
-            ->find();
+        $group = GroupQuery::create()
+            ->filterById($groupId)
+            ->findOne();
 
         $users = UserQuery::create()
             ->useUserRoleQuery()
                 ->filterByReserve(false)
                 ->useRoleQuery()
-                    ->filterByGroup($groups)
+                    ->filterByGroup($group)
                 ->endUse()
             ->endUse()
             ->distinct()
             ->find();
 
-        return $this->view->render($response, 'events-print.twig', ['events' => $events, 'groups' => $groups, 'users' => $users]);
+        return $this->view->render($response, 'events-print.twig', ['events' => $events, 'group' => $group, 'users' => $users]);
     }
 
     public function getAllEventInfoToPrint(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -263,5 +265,22 @@ class EventController extends BaseController
             ->find();
 
         return $this->view->render($response, 'events-print-info.twig', ['events' => $events, 'groups' => $groups]);
+    }
+
+    public function postEventComment(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+        $this->logger->info("Create event people POST '/event".$args['id']."/comment'");
+
+        $eventId = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
+
+        $data = $request->getParsedBody();
+
+        $comment = new Comment();
+        $comment->setUser($this->auth->currentUser());
+        $comment->setText($data['comment']);
+        $comment->setEventId($eventId);
+        $comment->save();
+
+        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('event', ['id' => $eventId]));
     }
 }

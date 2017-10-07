@@ -313,6 +313,14 @@ class User extends BaseUser
         return $initials;
     }
 
+    public function getSocialAuthForPlatform($platform)
+    {
+        return SocialAuthQuery::create()
+            ->filterByUser($this)
+            ->filterByPlatform($platform)
+            ->findOne();
+    }
+
     public function authoriser()
     {
         return new UserAuthoriser($this);
