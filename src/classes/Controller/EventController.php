@@ -225,7 +225,7 @@ class EventController extends BaseController
     {
         $this->logger->info("Fetch event printable page GET '/group/".$args['id']."/events'");
 
-        $groupId = (int)$args['id'];
+        $groupId = (int) $args['id'];
 
         $events = EventQuery::create()
             ->filterByDate(['min' => new DateTime()])
