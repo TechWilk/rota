@@ -61,7 +61,7 @@ $app->group('/event', function () {
     $this->get('s/type/{id}', EventController::class.':getAllEventsWithType')->setName('events-eventtype');
     $this->get('s/subtype/{id}', EventController::class.':getAllEventsWithSubType')->setName('events-eventsubtype');
 
-    $this->get('s/print/preachers', EventController::class.':getAllEventsToPrint')->setName('events-print');
+    $this->get('s/print/info', EventController::class.':getAllEventInfoToPrint')->setName('events-print-info');
 
     $this->get('/new', EventController::class.':getNewEventForm')->setName('event-new');
     $this->get('/{id}/edit', EventController::class.':getEventEditForm')->setName('event-edit');
@@ -97,6 +97,8 @@ $app->group('/resource', function () {
 $app->group('/group', function () {
     $this->get('/{id}', GroupController::class.':getGroup')->setName('group');
     $this->get('/{id}/roles', GroupController::class.':getGroupRoles')->setName('group-roles');
+
+    $this->get('/{id}/events', EventController::class.':getAllEventsToPrintForGroup')->setName('group-events-print');
 
     $this->post('[/{id}]', GroupController::class.':postGroup')->setName('group-post');
 });

@@ -22,7 +22,15 @@
       </div>
       <div class="box-body">
         <ul>
-          <li><a href="{{ path_for('events-print') }}">Preachers</a></li>
+          <li><a href="{{ path_for('events-print-info') }}">Event Info</a></li>
+          <li>
+            Team:
+            <ul>
+              {% for group in site.menu.groups %}
+              <li><a href="{{ path_for('group-events-print', {'id': group.id}) }}">{{ group.name }}</a></li>
+              {% endfor %}
+            </ul>  
+          </li>
         </ul>
       </div>
     </div>
