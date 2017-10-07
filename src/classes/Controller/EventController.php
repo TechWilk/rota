@@ -266,4 +266,21 @@ class EventController extends BaseController
 
         return $this->view->render($response, 'events-print-info.twig', ['events' => $events, 'groups' => $groups]);
     }
+
+    public function postEventComment(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+        $this->logger->info("Create event people POST '/event".$args['id']."/comment'");
+
+        $eventId = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
+
+        $data = $request->getParsedBody();
+
+        $comment = new Comment();
+        $comment->setUser($this->auth->currentUser());
+        $comment->setText($data['comment']);
+        $comment->setEventId($eventId);
+        $comment->save();
+
+        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('event', ['id' => $eventId]));
+    }
 }
