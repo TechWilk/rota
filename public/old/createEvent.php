@@ -87,7 +87,6 @@ if ($action == 'edit' || $action == 'copy') {
             $formaction = '';
         }
         $norehearsal = $row['rehearsal'];
-        $comment = $row['comment'];
         $eventName = $row['name'];
         $eventGroup = $row['eventGroup'];
         $eventGroupName = $row['groupname'];
@@ -118,7 +117,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $eventName = $_POST['eventName'];
     $bibleVerse = $_POST['bibleVerse'];
     $sermonTitle = $_POST['sermonTitle'];
-    $comment = $_POST['comment'];
 
     //$date = $date;
     //$userRole = $userRole;
@@ -130,7 +128,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $eventGroup = filter_var($eventGroup, FILTER_SANITIZE_NUMBER_INT);
     $eventName = mysqli_real_escape_string(db(), trim($eventName));
     $bibleVerse = mysqli_real_escape_string(db(), trim($bibleVerse));
-    $comment = mysqli_real_escape_string(db(), trim($comment));
     $sermonTitle = mysqli_real_escape_string(db(), trim($sermonTitle));
 
     if ($norehearsal) {
@@ -145,11 +142,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($action == 'edit') {
         $sql = "UPDATE cr_events SET date = '$date', rehearsalDate = '$rehersalDate', location = '$location',
-		rehearsal = '$norehearsal', type = '$type', subType = '$subType', name = '$eventName', eventGroup = '$eventGroup', sermonTitle = '$sermonTitle', bibleVerse = '$bibleVerse', comment = '$comment' WHERE id = '$id'";
+		rehearsal = '$norehearsal', type = '$type', subType = '$subType', name = '$eventName', eventGroup = '$eventGroup', sermonTitle = '$sermonTitle', bibleVerse = '$bibleVerse' WHERE id = '$id'";
         mysqli_query(db(), $sql) or die(mysqli_error(db()));
     } else {
-        $sql = "INSERT INTO cr_events (date, createdBy, rehearsalDate, type, subType, location, rehearsal, name, eventGroup, sermonTitle, bibleVerse, comment)
-		VALUES ('$date', '$sessionUserID','$rehersalDate', '$type', '$subType', '$location', '$norehearsal', '$eventName', '$eventGroup', '$sermonTitle', '$bibleVerse', '$comment')";
+        $sql = "INSERT INTO cr_events (date, createdBy, rehearsalDate, type, subType, location, rehearsal, name, eventGroup, sermonTitle, bibleVerse)
+		VALUES ('$date', '$sessionUserID','$rehersalDate', '$type', '$subType', '$location', '$norehearsal', '$eventName', '$eventGroup', '$sermonTitle', '$bibleVerse')";
         mysqli_query(db(), $sql) or die(mysqli_error(db()));
         $id = mysqli_insert_id(db());
         $eventID = mysqli_insert_id(db());
