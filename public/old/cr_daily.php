@@ -80,7 +80,6 @@ $daysAlert = siteSettings()->getDaysToAlert(); //  0 => disable automatic notifi
 $token = siteSettings()->getToken();
 
 if ((isset($_GET['token'])) && ($_GET['token'] == $token)) {
-
     $commitHash = trim(exec('git rev-parse HEAD'));
 
     $client = new Client();
@@ -94,7 +93,6 @@ if ((isset($_GET['token'])) && ($_GET['token'] == $token)) {
             $updateAvailable = true;
         }
     }
-
 
     $out = '';
     if ($daysAlert > 0) {
