@@ -80,7 +80,6 @@ $daysAlert = siteSettings()->getDaysToAlert(); //  0 => disable automatic notifi
 $token = siteSettings()->getToken();
 
 if ((isset($_GET['token'])) && ($_GET['token'] == $token)) {
-
     $commitHash = trim(exec('git rev-parse HEAD'));
 
     $client = new Client();
@@ -92,9 +91,18 @@ if ((isset($_GET['token'])) && ($_GET['token'] == $token)) {
 
         if ($availableCommits[0]['sha'] == $commitHash) {
             $updateAvailable = true;
+
+            $email = siteSettings()->getAdminEmail();
+            $message = <<<MESSAGE
+There is an update available for your installation of Rota.
+
+You are strongly advised to update at your earliest convenience since security issues may have been resolved.
+Upgrade instructions are provided: https://github.com/techwilk/rota/wiki
+MESSAGE;
+
+            sendMail($email, 'Update available for Rota', $message, $email);
         }
     }
-
 
     $out = '';
     if ($daysAlert > 0) {
