@@ -209,7 +209,7 @@ class Authentication
             if (is_null($user)) {
                 throw new UnknownUserException('User not found in the database.');
             }
-            
+
             return $this->loginSuccess($user);
         }
 
