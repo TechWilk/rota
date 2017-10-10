@@ -92,8 +92,8 @@ if ((isset($_GET['token'])) && ($_GET['token'] == $token)) {
         if ($availableCommits[0]['sha'] !== $commitHash) {
             $updateAvailable = true;
 
-            $email = siteSettings()->getOwner() . ' <' . siteSettings()->getAdminEmailAddress() . '>';
-            $message = <<<MESSAGE
+            $email = siteSettings()->getOwner().' <'.siteSettings()->getAdminEmailAddress().'>';
+            $message = <<<'MESSAGE'
 There is an update available for your installation of Rota.
 
 You are strongly advised to update at your earliest convenience since security issues may have been resolved.
