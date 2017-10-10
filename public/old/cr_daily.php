@@ -3,6 +3,9 @@
 // Include files, including the database connection
 include 'includes/config.php';
 include 'includes/functions.php';
+
+use GuzzleHttp\Client;
+
 session_start();
 
 //--------------------------------------------------------------------------------
@@ -77,6 +80,22 @@ $daysAlert = siteSettings()->getDaysToAlert(); //  0 => disable automatic notifi
 $token = siteSettings()->getToken();
 
 if ((isset($_GET['token'])) && ($_GET['token'] == $token)) {
+
+    $commitHash = trim(exec('git rev-parse HEAD'));
+
+    $client = new Client();
+    $response = $client->request('GET', 'https://api.github.com/repos/techwilk/rota/commits');
+
+    $updateAvailable = false;
+    if ($response->getStatusCode() == 200) {
+        $availableCommits = json_decode($response->getBody(), true);
+
+        if ($availableCommits[0]['sha'] == $commitHash) {
+            $updateAvailable = true;
+        }
+    }
+
+
     $out = '';
     if ($daysAlert > 0) {
         $sqlEvents = 'SELECT
@@ -107,7 +126,8 @@ if ((isset($_GET['token'])) && ($_GET['token'] == $token)) {
     } ?>
 <html>
 	<body>
-		ChurchRota <?php echo date('Y-m-d H:i:s') ?>
+		ChurchRota <?php echo date('Y-m-d H:i:s') ?> (<?= $commitHash ?>)
+        <?php $updateAvailable ? 'Update available' : '' ?>
 		<div>
 			<?php echo $out ?>
 		</div>
