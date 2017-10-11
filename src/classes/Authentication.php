@@ -104,15 +104,15 @@ class Authentication
             break;
         }
 
+        if (is_null($user)) {
+            throw new UnknownUserException('User not found in the database.');
+        }
+
         return $this->loginSuccess($user);
     }
 
     private function loginSuccess(User $user)
     {
-        if (is_null($user)) {
-            throw new UnknownUserException('User not found in the database.');
-        }
-
         $_SESSION['userId'] = $user->getId();
         $user->setLastLogin(new DateTime());
         $user->save();
@@ -204,6 +204,10 @@ class Authentication
                         $user = $socialAuth->getUser();
                     }
                 break;
+            }
+
+            if (is_null($user)) {
+                throw new UnknownUserException('User not found in the database.');
             }
 
             return $this->loginSuccess($user);

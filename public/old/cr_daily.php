@@ -3,6 +3,9 @@
 // Include files, including the database connection
 include 'includes/config.php';
 include 'includes/functions.php';
+
+use GuzzleHttp\Client;
+
 session_start();
 
 //--------------------------------------------------------------------------------
@@ -77,6 +80,30 @@ $daysAlert = siteSettings()->getDaysToAlert(); //  0 => disable automatic notifi
 $token = siteSettings()->getToken();
 
 if ((isset($_GET['token'])) && ($_GET['token'] == $token)) {
+    $commitHash = trim(exec('git rev-parse HEAD'));
+
+    $client = new Client();
+    $response = $client->request('GET', 'https://api.github.com/repos/techwilk/rota/commits');
+
+    $updateAvailable = false;
+    if ($response->getStatusCode() == 200) {
+        $availableCommits = json_decode($response->getBody(), true);
+
+        if ($availableCommits[0]['sha'] !== $commitHash) {
+            $updateAvailable = true;
+
+            $email = siteSettings()->getOwner().' <'.siteSettings()->getAdminEmailAddress().'>';
+            $message = <<<'MESSAGE'
+There is an update available for your installation of Rota.
+
+You are strongly advised to update at your earliest convenience since security issues may have been resolved.
+Upgrade instructions are provided: https://github.com/techwilk/rota/wiki
+MESSAGE;
+
+            sendMail($email, 'Update available for Rota', $message, $email);
+        }
+    }
+
     $out = '';
     if ($daysAlert > 0) {
         $sqlEvents = 'SELECT
@@ -108,6 +135,7 @@ if ((isset($_GET['token'])) && ($_GET['token'] == $token)) {
 <html>
 	<body>
 		ChurchRota <?php echo date('Y-m-d H:i:s') ?>
+        <p>(<?= $commitHash ?>)<?= $updateAvailable ? ' <strong>Update available</strong>' : '' ?></p>
 		<div>
 			<?php echo $out ?>
 		</div>
