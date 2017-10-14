@@ -9,10 +9,10 @@ use Monolog\Logger;
 include __DIR__.'/errors.php';
 
 // setup the autoloading
-require_once dirname(__FILE__).'/../../../vendor/autoload.php';
+require_once __DIR__.'/../../../vendor/autoload.php';
 
 // setup Propel
-require_once dirname(__FILE__).'/../../../generated-conf/config.php';
+require_once __DIR__.'/../../../generated-conf/config.php';
 
 $defaultLogger = new Logger('defaultLogger');
 $defaultLogger->pushHandler(new StreamHandler(__DIR__.'/../../../logs/propel.log', Logger::WARNING));
