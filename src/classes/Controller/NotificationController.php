@@ -14,8 +14,11 @@ class NotificationController extends BaseController
         $this->logger->info("Fetch settings GET '/notification/".$args['id']."'");
 
         $n = NotificationQuery::create()->findPk($args['id']);
+
+        // log a click
         $click = new NotificationClick();
         $click->setNotification($n);
+
         if (isset($args['referrer'])) {
             $click->setReferer($args['referrer']);
         } elseif (isset($_SERVER['HTTP_REFERER'])) {
@@ -25,6 +28,7 @@ class NotificationController extends BaseController
         }
         $click->save();
 
+        // then redirect
         if ($n->getLink()) {
             if (json_decode($n->getLink())) {
                 $link = json_decode($n->getLink());
