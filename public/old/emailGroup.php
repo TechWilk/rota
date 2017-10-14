@@ -67,9 +67,9 @@ $sql = 'SELECT
           g.name,
           COUNT(DISTINCT ur.userId) AS users
         FROM
-          cr_groups g
-          INNER JOIN cr_roles r ON r.groupId = g.id
-          INNER JOIN cr_userRoles ur ON ur.roleId = r.id
+          groups g
+          INNER JOIN roles r ON r.groupId = g.id
+          INNER JOIN userRoles ur ON ur.roleId = r.id
         GROUP BY
           g.id';
 $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));

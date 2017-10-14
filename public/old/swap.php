@@ -229,7 +229,7 @@ include 'includes/header.php';
                   } else {
                       $whereAnd = 'r.id = '.$role->roleId;
                   }
-                  $sql = 'SELECT ur.id, u.firstName, u.lastName, r.name FROM cr_users u INNER JOIN cr_userRoles ur ON ur.userId = u.id INNER JOIN cr_roles r ON r.id = ur.roleId WHERE u.id <> '.$role->userId.' AND '.$whereAnd.' ORDER BY lastName, firstName, r.name';
+                  $sql = 'SELECT ur.id, u.firstName, u.lastName, r.name FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN roles r ON r.id = ur.roleId WHERE u.id <> '.$role->userId.' AND '.$whereAnd.' ORDER BY lastName, firstName, r.name';
                   $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
                   while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {

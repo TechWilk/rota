@@ -277,7 +277,7 @@
 						<?php
                         if (isset($_SESSION['userid'])):
                             $userId = $_SESSION['userid'];
-                            $sql = "SELECT id, timestamp, summary, body, link, seen FROM cr_notifications WHERE userId = '$userId' AND dismissed = FALSE AND archived = FALSE ORDER BY id DESC";
+                            $sql = "SELECT id, timestamp, summary, body, link, seen FROM notifications WHERE userId = '$userId' AND dismissed = FALSE AND archived = FALSE ORDER BY id DESC";
 
                             $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
@@ -359,7 +359,7 @@
 						<!-- User Account Menu -->
 						<li class="dropdown user user-menu">
 							<?php
-                            $sql = 'SELECT u.created FROM cr_users u WHERE id = '.$_SESSION['userid'];
+                            $sql = 'SELECT u.created FROM users u WHERE id = '.$_SESSION['userid'];
                                             $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
                                             $currentUser = mysqli_fetch_object($result);
                             ?>
@@ -466,12 +466,12 @@
 							<?php /*<li><a href="events.php?view=user">My Events</a></li>*/ ?>
 							<?php
                                 $filter_sql = 'SELECT id, name
-								FROM cr_eventTypes
+								FROM eventTypes
 								WHERE id IN
-									(SELECT `cr_events`.`type`
-									FROM cr_events
+									(SELECT `events`.`type`
+									FROM events
 									WHERE date >= DATE(NOW())
-									AND cr_events.removed = 0)
+									AND events.removed = 0)
 								ORDER BY name';
                                             $result = mysqli_query(db(), $filter_sql) or die(mysqli_error(db()));
 

@@ -118,16 +118,16 @@ function sendViaSendmail($to, $subject, $message, $from, $bcc = '')
     //echo str_replace($crlf,"<br>\r\n",$headers)."<br>\r\n";  //debug output
     //--------------------------------------------------------------------------------
     //general mail footer
-    $sqlSettings = 'SELECT * FROM cr_settings';
+    $sqlSettings = 'SELECT * FROM settings';
     $resultSettings = mysqli_query(db(), $sqlSettings) or die(mysqli_error(db()));
     $rowSettings = mysqli_fetch_array($resultSettings, MYSQLI_ASSOC);
-    $cr_version = $rowSettings['version'];
-    $cr_owner = $rowSettings['owner'];
+    $version = $rowSettings['version'];
+    $owner = $rowSettings['owner'];
 
     // $message .= $crlf . $crlf;
     // $message .= "-- \r\n"; //needs exactly this syntax, only one space before linebreak
-    // $message .= $cr_owner . $crlf;
-    // $message .= "Mail generated with ChurchRota V." . $cr_version . $crlf;
+    // $message .= $owner . $crlf;
+    // $message .= "Mail generated with ChurchRota V." . $version . $crlf;
     // $message .= "http://sourceforge.net/projects/churchrota" . $crlf;
 
     //--------------------------------------------------------------------------------
@@ -177,20 +177,20 @@ function notifySubscribers($id, $type, $userid)
 {
     if ($type == 'category') {
         $sql = "SELECT *,
-		(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM cr_users WHERE `cr_users`.id = `cr_subscriptions`.`userID`) AS `name`,
-		(SELECT email FROM cr_users WHERE `cr_users`.id = `cr_subscriptions`.`userID`) AS `email`,
-		(SELECT name FROM cr_discussionCategories WHERE `cr_discussionCategories`.id = `cr_subscriptions`.`categoryid`) AS `categoryname`,
-		(SELECT topicName FROM cr_discussion WHERE `cr_discussion`.id = `cr_subscriptions`.`topicid` GROUP BY topicname) AS topicname,
-		(SELECT `adminemailaddress` FROM cr_settings) AS `siteadmin`
-		FROM cr_subscriptions WHERE categoryid = '$id' AND userid != '$userid'";
+		(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users WHERE `users`.id = `subscriptions`.`userID`) AS `name`,
+		(SELECT email FROM users WHERE `users`.id = `subscriptions`.`userID`) AS `email`,
+		(SELECT name FROM discussionCategories WHERE `discussionCategories`.id = `subscriptions`.`categoryid`) AS `categoryname`,
+		(SELECT topicName FROM discussion WHERE `discussion`.id = `subscriptions`.`topicid` GROUP BY topicname) AS topicname,
+		(SELECT `adminemailaddress` FROM settings) AS `siteadmin`
+		FROM subscriptions WHERE categoryid = '$id' AND userid != '$userid'";
         $message = 'There has been a new post in the following category: ';
     } elseif ($type == 'post') {
-        $sql = "SELECT *, (SELECT CONCAT(`firstname`, ' ', `lastname`) FROM cr_users WHERE `cr_users`.id = `cr_subscriptions`.`userID`)
-		AS `name`, (SELECT email FROM cr_users WHERE `cr_users`.id = `cr_subscriptions`.`userID`) AS `email`,
-		(SELECT `adminemailaddress` FROM cr_settings) AS `siteadmin`,
-		(SELECT name FROM cr_discussionCategories WHERE `cr_discussionCategories`.id = `cr_subscriptions`.`categoryid`)
-		AS `categoryname`, (SELECT topicName FROM cr_discussion WHERE `cr_discussion`.id = `cr_subscriptions`.`topicid` GROUP BY topicname)
-		AS topicname FROM cr_subscriptions WHERE topicid = '$id' AND userid != '$userid'";
+        $sql = "SELECT *, (SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users WHERE `users`.id = `subscriptions`.`userID`)
+		AS `name`, (SELECT email FROM users WHERE `users`.id = `subscriptions`.`userID`) AS `email`,
+		(SELECT `adminemailaddress` FROM settings) AS `siteadmin`,
+		(SELECT name FROM discussionCategories WHERE `discussionCategories`.id = `subscriptions`.`categoryid`)
+		AS `categoryname`, (SELECT topicName FROM discussion WHERE `discussion`.id = `subscriptions`.`topicid` GROUP BY topicname)
+		AS topicname FROM subscriptions WHERE topicid = '$id' AND userid != '$userid'";
         $message = 'There has been a new post in the following discussion: ';
     }
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
@@ -216,7 +216,7 @@ function notifySubscribers($id, $type, $userid)
 function mailNewUser($userId, $password = '*******')
 {
     $userId = filter_var($userId, FILTER_SANITIZE_NUMBER_INT);
-    $sql = "SELECT firstName, lastName, email, username FROM cr_users WHERE id = $userId";
+    $sql = "SELECT firstName, lastName, email, username FROM users WHERE id = $userId";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $user = mysqli_fetch_object($result);
 
@@ -286,29 +286,29 @@ function notifyIndividual($userID, $eventID, $skillID)
     $eventID = 0;  //disables following code through empty sql result
 
     $sql = "SELECT *,
-	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM cr_users WHERE `cr_users`.id = `cr_skills`.`userID` ORDER BY `cr_users`.firstname) AS `name`,
-	(SELECT email FROM cr_users WHERE `cr_users`.id = `cr_skills`.`userID`) AS `email`,
-	(SELECT id FROM cr_users WHERE `cr_users`.id = `cr_skills`.`userID`) AS `userid`,
-	(SELECT username FROM cr_users WHERE `cr_users`.id = `cr_skills`.`userID`) AS `username`,
-	(SELECT `notificationemail` FROM cr_settings ) AS `notificationmessage`,
-	(SELECT `adminemailaddress` FROM cr_settings) AS `siteadmin`,
-	(SELECT `norehearsalemail` FROM cr_settings) AS `norehearsalemail`,
-	(SELECT `yesrehearsal` FROM cr_settings) AS `yesrehearsal`,
-	(SELECT `siteurl` FROM cr_settings) AS `siteurl`,
-	(SELECT `type` FROM cr_events WHERE id = '$eventID') AS `eventType`,
-	(SELECT `location` FROM cr_events WHERE id = '$eventID') AS `eventLocation`,
-	(SELECT `description` FROM cr_eventTypes WHERE cr_eventTypes.id = eventType) AS eventTypeFormatted,
-	(SELECT `rehearsal` FROM cr_eventTypes WHERE cr_eventTypes.id = eventType) AS eventRehearsal,
-	(SELECT `rehearsal` FROM cr_events WHERE id = '$eventID') AS `eventRehearsalChange`,
-	(SELECT `description` FROM cr_locations WHERE cr_locations.id = eventLocation) AS eventLocationFormatted,
-	(SELECT `description` FROM cr_groups WHERE `cr_skills`.`groupID` = `cr_groups`.`groupID`) AS `category`,
-	(SELECT `rehearsal` FROM cr_groups WHERE `cr_skills`.`groupID` = `cr_groups`.`groupID`) AS `rehearsal`, GROUP_CONCAT(skill) AS joinedskill
-	FROM cr_skills WHERE skillID IN (SELECT skillID FROM cr_eventPeople WHERE eventID = '$eventID')
+	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users WHERE `users`.id = `skills`.`userID` ORDER BY `users`.firstname) AS `name`,
+	(SELECT email FROM users WHERE `users`.id = `skills`.`userID`) AS `email`,
+	(SELECT id FROM users WHERE `users`.id = `skills`.`userID`) AS `userid`,
+	(SELECT username FROM users WHERE `users`.id = `skills`.`userID`) AS `username`,
+	(SELECT `notificationemail` FROM settings ) AS `notificationmessage`,
+	(SELECT `adminemailaddress` FROM settings) AS `siteadmin`,
+	(SELECT `norehearsalemail` FROM settings) AS `norehearsalemail`,
+	(SELECT `yesrehearsal` FROM settings) AS `yesrehearsal`,
+	(SELECT `siteurl` FROM settings) AS `siteurl`,
+	(SELECT `type` FROM events WHERE id = '$eventID') AS `eventType`,
+	(SELECT `location` FROM events WHERE id = '$eventID') AS `eventLocation`,
+	(SELECT `description` FROM eventTypes WHERE eventTypes.id = eventType) AS eventTypeFormatted,
+	(SELECT `rehearsal` FROM eventTypes WHERE eventTypes.id = eventType) AS eventRehearsal,
+	(SELECT `rehearsal` FROM events WHERE id = '$eventID') AS `eventRehearsalChange`,
+	(SELECT `description` FROM locations WHERE locations.id = eventLocation) AS eventLocationFormatted,
+	(SELECT `description` FROM groups WHERE `skills`.`groupID` = `groups`.`groupID`) AS `category`,
+	(SELECT `rehearsal` FROM groups WHERE `skills`.`groupID` = `groups`.`groupID`) AS `rehearsal`, GROUP_CONCAT(skill) AS joinedskill
+	FROM skills WHERE skillID IN (SELECT skillID FROM eventPeople WHERE eventID = '$eventID')
 	AND skillID = '$skillID' GROUP BY userID, groupID ORDER BY groupID";
     $userresult = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($userresult, MYSQLI_ASSOC)) {
-        $eventsql = "SELECT *, DATE_FORMAT(date,'%W, %M %e') AS sundayDate, DATE_FORMAT(rehearsalDate,'%W, %M %e @ %h:%i %p') AS rehearsalDateFormatted FROM cr_events WHERE id = $eventID ORDER BY date";
+        $eventsql = "SELECT *, DATE_FORMAT(date,'%W, %M %e') AS sundayDate, DATE_FORMAT(rehearsalDate,'%W, %M %e @ %h:%i %p') AS rehearsalDateFormatted FROM events WHERE id = $eventID ORDER BY date";
         $eventresult = mysqli_query(db(), $eventsql) or die(mysqli_error(db()));
 
         $location = $row['eventLocationFormatted'];
@@ -336,7 +336,7 @@ function notifyIndividual($userID, $eventID, $skillID)
         }
         $temp_user_id = $row['userid'];
 
-        $sql = "UPDATE cr_eventPeople SET notified = '1' WHERE skillID = '$skillID' AND eventID = '$eventID'";
+        $sql = "UPDATE eventPeople SET notified = '1' WHERE skillID = '$skillID' AND eventID = '$eventID'";
         mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
         $message = $row['notificationmessage'];
@@ -368,14 +368,14 @@ function notifyEveryoneForEvent($eventId)
 						t.name AS eventType,
 						l.name AS location
 					FROM
-						cr_events e
-						INNER JOIN cr_eventTypes t ON t.id = e.type
-						INNER JOIN cr_locations l ON l.id = e.location
-						INNER JOIN cr_eventPeople ep ON ep.eventId = e.id
-						INNER JOIN cr_userRoles ur ON ur.id = ep.userRoleId
-						INNER JOIN cr_users u ON u.id = ur.userId
-						INNER JOIN cr_roles r ON r.id = ur.roleId
-						INNER JOIN cr_groups g ON g.id = r.groupId
+						events e
+						INNER JOIN eventTypes t ON t.id = e.type
+						INNER JOIN locations l ON l.id = e.location
+						INNER JOIN eventPeople ep ON ep.eventId = e.id
+						INNER JOIN userRoles ur ON ur.id = ep.userRoleId
+						INNER JOIN users u ON u.id = ur.userId
+						INNER JOIN roles r ON r.id = ur.roleId
+						INNER JOIN groups g ON g.id = r.groupId
 					WHERE
 						e.id = $eventId
 						AND ep.notified = 0
@@ -400,8 +400,8 @@ function notifyEveryoneForEvent($eventId)
 										DATE_FORMAT(date,'%m/%d/%Y %H:%i:%S') AS sundayDate,
 										DATE_FORMAT(rehearsalDate,'%m/%d/%Y %H:%i:%S') AS rehearsalDateFormatted
 									FROM
-										cr_events e
-										LEFT JOIN cr_eventGroups eg ON eg.id = e.eventGroup
+										events e
+										LEFT JOIN eventGroups eg ON eg.id = e.eventGroup
 									WHERE
 										e.id = $eventId ORDER BY date";
 
@@ -429,10 +429,10 @@ function notifyEveryoneForEvent($eventId)
 											r.name,
 											r.description
 										FROM
-											cr_roles r
-											INNER JOIN cr_userRoles ur ON r.id = ur.roleId
-										  LEFT JOIN cr_eventPeople ep ON ep.userRoleId = ur.id
-											LEFT JOIN cr_groups g ON r.groupId = g.id
+											roles r
+											INNER JOIN userRoles ur ON r.id = ur.roleId
+										  LEFT JOIN eventPeople ep ON ep.userRoleId = ur.id
+											LEFT JOIN groups g ON r.groupId = g.id
 										WHERE
 											ur.userId = '$temp_user_id'
 											AND ep.eventId = '$eventId'";
@@ -495,8 +495,8 @@ function notifyEveryoneForEvent($eventId)
 
     if (count($countarray) > 0) {
         $sql = "UPDATE
-							cr_eventPeople ep
-							INNER JOIN cr_userRoles ur ON ep.userRoleId = ur.id
+							eventPeople ep
+							INNER JOIN userRoles ur ON ep.userRoleId = ur.id
 						SET
 							ep.notified = 1
 						WHERE
@@ -507,13 +507,13 @@ function notifyEveryoneForEvent($eventId)
     }
 
     $sql = "UPDATE
-						cr_events e
+						events e
 					SET
 						e.notified = e.notified + 1
 					WHERE
 						e.id = '$eventId'
 						AND e.id NOT IN
-							(SELECT ep.eventId FROM cr_eventPeople ep WHERE ep.notified = 0 AND ep.eventId = e.id)";
+							(SELECT ep.eventId FROM eventPeople ep WHERE ep.notified = 0 AND ep.eventId = e.id)";
     mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
     return $countarray;
@@ -525,7 +525,7 @@ function notifyUserForEvent($userId, $eventId, $subject, $message)
     $userId = filter_var($userId, FILTER_SANITIZE_NUMBER_INT);
     $eventId = filter_var($eventId, FILTER_SANITIZE_NUMBER_INT);
 
-    $sql = "SELECT firstName, lastName, email, recieveReminderEmails FROM cr_users WHERE id = $userId";
+    $sql = "SELECT firstName, lastName, email, recieveReminderEmails FROM users WHERE id = $userId";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $user = mysqli_fetch_object($result);
 
@@ -557,8 +557,8 @@ function notifyUserForEvent($userId, $eventId, $subject, $message)
 						eg.name AS eventGroup
 
 					FROM
-						cr_events e
-						INNER JOIN cr_eventGroups eg ON eg.id = e.eventGroup
+						events e
+						INNER JOIN eventGroups eg ON eg.id = e.eventGroup
 					WHERE
 						e.id = $eventId
 					GROUP BY date,id,location,type";
@@ -577,7 +577,7 @@ function notifyUserForEvent($userId, $eventId, $subject, $message)
     $sql = "SELECT
 						r.name,
 					FROM
-						cr_roles r
+						roles r
 					WHERE
 						e.id = $eventId";
 
@@ -645,11 +645,11 @@ function sendEventEmailToGroups($eventId, $subject, $message, $groups)
     $sql = "SELECT
 						DISTINCT u.id AS userId
 					FROM
-						cr_users u
-						INNER JOIN cr_userRoles ur ON u.id = ur.userId
-						INNER JOIN cr_roles r ON r.id = ur.roleId
-						INNER JOIN cr_groups g ON g.id = r.groupId
-						INNER JOIN cr_eventPeople ep ON ep.userRoleId = ur.id
+						users u
+						INNER JOIN userRoles ur ON u.id = ur.userId
+						INNER JOIN roles r ON r.id = ur.roleId
+						INNER JOIN groups g ON g.id = r.groupId
+						INNER JOIN eventPeople ep ON ep.userRoleId = ur.id
 					WHERE
 						g.id IN ($groupsString)
 						AND ep.eventId = $eventId";
@@ -663,7 +663,7 @@ function sendEventEmailToGroups($eventId, $subject, $message, $groups)
         }
     }
 
-    $sql = "SELECT name FROM cr_groups WHERE id IN ($groupsString)";
+    $sql = "SELECT name FROM groups WHERE id IN ($groupsString)";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $groupNames = '';
     while ($group = mysqli_fetch_object($result)) {
@@ -688,7 +688,7 @@ function getGroupEmailSubject()
 
 function getGroupEmailMessage()
 {
-    $sql = 'SELECT overviewemail FROM cr_settings';
+    $sql = 'SELECT overviewemail FROM settings';
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $ob = mysqli_fetch_object($result);
 
@@ -707,10 +707,10 @@ function sendGroupEmail($subject, $message, $groups)
     $sql = "SELECT
 						DISTINCT u.id AS userId
 					FROM
-						cr_users u
-						INNER JOIN cr_userRoles ur ON u.id = ur.userId
-						INNER JOIN cr_roles r ON r.id = ur.roleId
-						INNER JOIN cr_groups g ON g.id = r.groupId
+						users u
+						INNER JOIN userRoles ur ON u.id = ur.userId
+						INNER JOIN roles r ON r.id = ur.roleId
+						INNER JOIN groups g ON g.id = r.groupId
 					WHERE
 						g.id IN ($groupsString)
 						";
@@ -724,7 +724,7 @@ function sendGroupEmail($subject, $message, $groups)
         }
     }
 
-    $sql = "SELECT name FROM cr_groups WHERE id IN ($groupsString)";
+    $sql = "SELECT name FROM groups WHERE id IN ($groupsString)";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $groupNames = '';
     while ($group = mysqli_fetch_object($result)) {
@@ -748,7 +748,7 @@ function sendEventMessageEmailToUser($userId, $eventId, $subject, $message)
     $userId = filter_var($userId, FILTER_SANITIZE_NUMBER_INT);
     $eventId = filter_var($eventId, FILTER_SANITIZE_NUMBER_INT);
 
-    $sql = "SELECT firstName, lastName, email, isOverviewRecipient FROM cr_users WHERE id = $userId";
+    $sql = "SELECT firstName, lastName, email, isOverviewRecipient FROM users WHERE id = $userId";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $user = mysqli_fetch_object($result);
 
@@ -776,13 +776,13 @@ function sendEventMessageEmailToUser($userId, $eventId, $subject, $message)
 						et.name AS type,
 						group_concat(CONCAT(r.name, ': ', u.firstname,' ',u.lastname) SEPARATOR ', ') AS roles
 					FROM
-						cr_events e
-						INNER JOIN cr_eventPeople ep ON ep.eventId = e.id
-						INNER JOIN cr_userRoles ur ON ur.id = ep.userRoleId
-						INNER JOIN cr_users u ON u.id = ur.userId
-						INNER JOIN cr_roles r ON r.id = ur.roleId
-						INNER JOIN cr_locations l ON l.id = e.location
-						INNER JOIN cr_eventTypes et ON et.id = e.type
+						events e
+						INNER JOIN eventPeople ep ON ep.eventId = e.id
+						INNER JOIN userRoles ur ON ur.id = ep.userRoleId
+						INNER JOIN users u ON u.id = ur.userId
+						INNER JOIN roles r ON r.id = ur.roleId
+						INNER JOIN locations l ON l.id = e.location
+						INNER JOIN eventTypes et ON et.id = e.type
 					WHERE
 						e.id = $eventId
 						AND e.removed = 0
@@ -843,7 +843,7 @@ function sendUpcomingEventsToUser($userId, $subject, $message)
 {
     $userId = filter_var($userId, FILTER_SANITIZE_NUMBER_INT);
 
-    $sql = "SELECT firstName, lastName, email, isOverviewRecipient FROM cr_users WHERE id = $userId";
+    $sql = "SELECT firstName, lastName, email, isOverviewRecipient FROM users WHERE id = $userId";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $user = mysqli_fetch_object($result);
 
@@ -862,7 +862,7 @@ function sendUpcomingEventsToUser($userId, $subject, $message)
     //spaces to suppress automatic removal of "unnecessary linefeeds" in outlook 2003
     $crlf = "      \n";
 
-    $sql = 'SELECT lang_locale, time_format_normal, adminemailaddress, owner FROM cr_settings';
+    $sql = 'SELECT lang_locale, time_format_normal, adminemailaddress, owner FROM settings';
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     //siteSettings() = mysqli_fetch_object($result);
     // todo: fix settings in this function
@@ -873,9 +873,9 @@ function sendUpcomingEventsToUser($userId, $subject, $message)
     $sql = "SELECT
 						e.id
 					FROM
-						cr_events e
-						INNER JOIN cr_eventPeople ep ON ep.eventId = e.id
-						INNER JOIN cr_userRoles ur ON ur.id = ep.userRoleId
+						events e
+						INNER JOIN eventPeople ep ON ep.eventId = e.id
+						INNER JOIN userRoles ur ON ur.id = ep.userRoleId
 					WHERE
 						ur.userId = $userId
 						AND e.date >= CURRENT_DATE()
@@ -910,13 +910,13 @@ function sendUpcomingEventsToUser($userId, $subject, $message)
 						CONCAT(u.firstname,' ',u.lastname) as name,
 						CONCAT(r.name, ': ', u.firstname,' ',u.lastname) as rota
 					FROM
-						cr_eventPeople ep
-						INNER JOIN cr_events e ON e.id = ep.eventId
-						INNER JOIN cr_userRoles ur ON ur.id = ep.userRoleId
-						INNER JOIN cr_roles r ON r.id = ur.roleId
-						INNER JOIN cr_users u ON u.id = ur.userId
-						INNER JOIN cr_locations l ON l.id = e.location
-						INNER JOIN cr_eventTypes et ON et.id = e.type
+						eventPeople ep
+						INNER JOIN events e ON e.id = ep.eventId
+						INNER JOIN userRoles ur ON ur.id = ep.userRoleId
+						INNER JOIN roles r ON r.id = ur.roleId
+						INNER JOIN users u ON u.id = ur.userId
+						INNER JOIN locations l ON l.id = e.location
+						INNER JOIN eventTypes et ON et.id = e.type
 					WHERE
 						(
 							e.id IN ($events)
@@ -976,9 +976,9 @@ function notifyAttack($fileName, $attackType, $attackerID)
 {
     $sql = "SELECT `siteurl`,
 	`adminemailaddress` AS `siteadmin`,
-	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM cr_users WHERE `cr_users`.id = $attackerID) AS `name`,
+	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users WHERE `users`.id = $attackerID) AS `name`,
 	Now() AS `attackTime`
-	FROM cr_settings";
+	FROM settings";
 
     $userresult = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
@@ -1007,8 +1007,8 @@ function notifyInfo($fileName, $infoMsg, $userID)
 {
     $sql = "SELECT `siteurl`,
 	`adminemailaddress` AS `siteadmin`,
-	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM cr_users WHERE `cr_users`.id = $userID) AS `name`
-	FROM cr_settings";
+	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users WHERE `users`.id = $userID) AS `name`
+	FROM settings";
 
     $userresult = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
@@ -1062,7 +1062,7 @@ function mailToDb($to, $subject, $message, $from, $bcc = '')
     $from = mysqli_real_escape_string(db(), $from);
     $bcc = mysqli_real_escape_string(db(), $bcc);
 
-    $sql = "INSERT INTO cr_emails (emailTo, emailBcc, emailFrom, subject, message) VALUES ('$to', '$bcc', '$from', '$subject', '$message')";
+    $sql = "INSERT INTO emails (emailTo, emailBcc, emailFrom, subject, message) VALUES ('$to', '$bcc', '$from', '$subject', '$message')";
     mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
     return mysqli_insert_id(db());
@@ -1073,6 +1073,6 @@ function logFailedMailWithId($id, $error)
     $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
     $error = mysqli_real_escape_string(db(), $error);
 
-    $sql = "UPDATE cr_emails SET error = '$error' WHERE id = '$id'";
+    $sql = "UPDATE emails SET error = '$error' WHERE id = '$id'";
     mysqli_query(db(), $sql) or die(mysqli_error(db()));
 }

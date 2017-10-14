@@ -54,7 +54,7 @@ $sessionUserId = $_SESSION['userid'];
 
 <?php
 
-    $sqlSettings = 'SELECT * FROM cr_settings';
+    $sqlSettings = 'SELECT * FROM settings';
 
     $resultSettings = mysqli_query(db(), $sqlSettings) or die(mysqli_error(db()));
     $rowSettings = mysqli_fetch_array($resultSettings, MYSQLI_ASSOC);
@@ -80,7 +80,7 @@ $sessionUserId = $_SESSION['userid'];
         $group_sorting_name = 'g.id';
     }
 
-    $sql = 'SELECT count(*) AS colcount FROM cr_groups g';
+    $sql = 'SELECT count(*) AS colcount FROM groups g';
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
     $colCnt = $row['colcount'] + 2;
@@ -108,9 +108,9 @@ $sessionUserId = $_SESSION['userid'];
 		<?php
             }
         $filter_sql = 'SELECT *
-									 FROM cr_eventTypes et
+									 FROM eventTypes et
 									 WHERE id IN (SELECT e.type
-										 						FROM cr_events e
+										 						FROM events e
 																WHERE '.$whereTwoMonth.'
 																AND e.removed = 0)
 									 ORDER BY name';
@@ -132,7 +132,7 @@ $sessionUserId = $_SESSION['userid'];
 <tr>
 	<td ><strong>Event</strong></td>
 	<?php
-    $sql = 'SELECT * FROM cr_groups g ORDER BY '.$group_sorting_name;
+    $sql = 'SELECT * FROM groups g ORDER BY '.$group_sorting_name;
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
@@ -145,10 +145,10 @@ $sessionUserId = $_SESSION['userid'];
 
     $sql = "SELECT
 						*,
-						(SELECT `name` FROM cr_eventTypes et WHERE et.id = e.type) AS eventType,
-						(SELECT `name` FROM cr_eventSubTypes st WHERE st.id = e.subType) AS eventSubType,
-						(SELECT l.name FROM cr_locations l WHERE l.id = e.location) AS eventLocation,
-						(SELECT g.name FROM cr_eventGroups g WHERE g.id = e.eventGroup) AS eventGroup,
+						(SELECT `name` FROM eventTypes et WHERE et.id = e.type) AS eventType,
+						(SELECT `name` FROM eventSubTypes st WHERE st.id = e.subType) AS eventSubType,
+						(SELECT l.name FROM locations l WHERE l.id = e.location) AS eventLocation,
+						(SELECT g.name FROM eventGroups g WHERE g.id = e.eventGroup) AS eventGroup,
 						name,
 						sermonTitle,
 						bibleVerse,
@@ -156,7 +156,7 @@ $sessionUserId = $_SESSION['userid'];
 						DATE_FORMAT(rehearsalDate,'%m/%d/%Y %H:%i:%S') AS rehearsalDateFormatted,
 						DATE_FORMAT(DATE_ADD(date, INTERVAL 90 MINUTE),'%m/%d/%Y %H:%i:%S') AS sundayEndDate
 					FROM
-						cr_events e
+						events e
 					WHERE
 						e.removed = 0";
 
@@ -220,11 +220,11 @@ $sessionUserId = $_SESSION['userid'];
 											u.id AS userId,
 											g.name category,
 											GROUP_CONCAT(r.name SEPARATOR ', ') AS role
-											FROM cr_userRoles ur
-											INNER JOIN cr_roles r ON r.id = ur.roleId
-											INNER JOIN cr_groups g ON g.id = r.groupId
-											INNER JOIN cr_users u ON ur.userId = u.id
-											INNER JOIN cr_eventPeople ep ON ep.userRoleId = ur.id
+											FROM userRoles ur
+											INNER JOIN roles r ON r.id = ur.roleId
+											INNER JOIN groups g ON g.id = r.groupId
+											INNER JOIN users u ON ur.userId = u.id
+											INNER JOIN eventPeople ep ON ep.userRoleId = ur.id
 											WHERE ep.eventId = '$eventID'
 											GROUP BY u.id
 											ORDER BY r.name";

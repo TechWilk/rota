@@ -32,7 +32,7 @@ $assignTo = filter_var($assignTo, FILTER_SANITIZE_NUMBER_INT);
 
 // move roles between groups
 if ($role && $assignTo) {
-    $sql = "UPDATE cr_roles r SET r.groupId = '$assignTo' WHERE r.id = '$role'";
+    $sql = "UPDATE roles r SET r.groupId = '$assignTo' WHERE r.id = '$role'";
     if (!mysqli_query(db(), $sql)) {
         die('Error: '.mysqli_error(db()));
     }
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $rehersal = 0; // TODO: this needs completely redoing to accept multiple rehersals
         $rehersal = filter_var($rehersal, FILTER_SANITIZE_NUMBER_INT);
 
-        $sql = "INSERT INTO cr_roles (name, description, rehersalId, groupId)
+        $sql = "INSERT INTO roles (name, description, rehersalId, groupId)
             VALUES ('$newrole', '$newrole', $rehersal, $groupId)";
         if (!mysqli_query(db(), $sql)) {
             die('Error: '.mysqli_error(db()));
@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 function listOfGroups($type = 'option', $roleId = '0')
 {
     $sql = 'SELECT *
-          FROM cr_groups g
+          FROM groups g
           ORDER BY g.id';
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
@@ -153,8 +153,8 @@ include 'includes/header.php';
                 r.id AS roleId,
                 g.name AS groupName,
                 g.id as groupId
-                FROM cr_groups g
-                LEFT JOIN cr_roles r ON g.id = r.groupId
+                FROM groups g
+                LEFT JOIN roles r ON g.id = r.groupId
                 ORDER BY g.id, r.name';
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
