@@ -4,9 +4,8 @@ namespace TechWilk\Rota\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TechWilk\Rota\Site;
-use TechWilk\Rota\SettingsQuery;
 use TechWilk\Rota\Job\SendReminders;
+use TechWilk\Rota\Site;
 
 class JobController extends BaseController
 {
