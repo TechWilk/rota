@@ -319,7 +319,7 @@ if (isAdmin()) {
             echo '<li class="time-label"><span class="bg-green">'.$month.'</span></li>';
         }
 
-        // Event details ?>
+        // Event details?>
 		<li>
 			<i class="fa fa-bell bg-blue"></i>
 			<div class="timeline-item" id="event<?php echo $eventID; ?>">

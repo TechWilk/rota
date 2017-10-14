@@ -269,7 +269,7 @@ if (isset($action) && $action != 'create') {
                     }
                     $isCompromised = false;
                 } else {
-                    // if isAdmin() == true ?>
+                    // if isAdmin() == true?>
           <div class="form-group">
       			<label for="firstname">First name:</label>
       			<input class="form-control" name="firstname" id="firstname" type="text" value="<?php echo $firstname; ?>" placeholder="Enter first name" />
