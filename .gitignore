@@ -1,4 +1,5 @@
 vendor/*
+**/logs/*
 *.log
 config/*
 !config/*.default.php
