@@ -2,8 +2,8 @@
 
 namespace TechWilk\Rota\Job;
 
-use TechWilk\Rota\EmailSender;
 use TechWilk\Rota\Base\Settings;
+use TechWilk\Rota\EmailSender;
 
 class SendReminders
 {
@@ -29,7 +29,7 @@ class SendReminders
     {
         $this->dateFilter = [
             'min' => new DateTime(),
-            'max' => new DateTime('+ '.$this->settings->getDaysToAlert().' days')
+            'max' => new DateTime('+ '.$this->settings->getDaysToAlert().' days'),
         ];
 
         $this->userToBeNotified = User::create()
@@ -79,7 +79,6 @@ class SendReminders
         }
 
         // build email
-
 
         // send
     }

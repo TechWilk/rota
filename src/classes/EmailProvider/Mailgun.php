@@ -16,7 +16,6 @@ class Mailgun
         $this->settings = $settings;
     }
 
-
     public function send()
     {
     }
