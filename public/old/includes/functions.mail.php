@@ -53,8 +53,8 @@ function sendMail($to, $subject, $message, $from, $bcc = '')
             break;
 
         default:
-            var_dump($dbMailId);
-            exit;
+            logFailedMailWithId($dbMailId, 'Mail provider not setup in config');
+            $mailSentOk = true;
             break;
     }
 

@@ -20,12 +20,15 @@ class JobController extends BaseController
 
         $client = new Client();
         $url = $site->getUrl()['base'].$this->router->pathFor('home').'old/cr_daily.php';
-        $response = $client->get($url, [
+        $guzzleResponse = $client->get($url, [
             'query' => [
                 'token' => $args['token'],
             ],
         ]);
 
-        return $response;
+        $body = $response->getBody();
+        $body->write($guzzleResponse->getBody()->getContents());
+
+        return $response->withBody($body);
     }
 }
