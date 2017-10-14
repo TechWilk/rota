@@ -5,6 +5,7 @@ namespace TechWilk\Rota;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use TechWilk\Rota\User;
 
 class Authorisation
 {
@@ -19,7 +20,7 @@ class Authorisation
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
     {
-    
+
     // do something!
 
     return $response;
@@ -32,9 +33,8 @@ class Authorisation
         return in_array($route->getName(), $this->routesWhitelist);
     }
 
-
-    public function isUserLoggedIn()
+    public function userCan(User $user, $actionId)
     {
-        return isset($_SESSION['userId']);
+        return true;
     }
 }
