@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\Email as BaseEmail;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_emails' table.
+ * Skeleton subclass for representing a row from the 'emails' table.
  *
  *
  *

@@ -21,7 +21,7 @@ use TechWilk\Rota\UserQuery as ChildUserQuery;
 use TechWilk\Rota\Map\SocialAuthTableMap;
 
 /**
- * Base class that represents a row from the 'cr_socialAuth' table.
+ * Base class that represents a row from the 'socialAuth' table.
  *
  *
  *
@@ -809,7 +809,7 @@ abstract class SocialAuth implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_socialAuth (%s) VALUES (%s)',
+            'INSERT INTO socialAuth (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -950,7 +950,7 @@ abstract class SocialAuth implements ActiveRecordInterface
                         $key = 'user';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_users';
+                        $key = 'users';
                         break;
                     default:
                         $key = 'User';
@@ -1143,7 +1143,7 @@ abstract class SocialAuth implements ActiveRecordInterface
         $validPrimaryKeyFKs = 1;
         $primaryKeyFKs = [];
 
-        //relation cr_socialAuth_fk_c9d9b8 to table cr_users
+        //relation socialAuth_fk_c9d9b8 to table users
         if ($this->aUser && $hash = spl_object_hash($this->aUser)) {
             $primaryKeyFKs[] = $hash;
         } else {

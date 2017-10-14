@@ -24,22 +24,22 @@ $method = getQueryStringForKey('method');
 // If the form has been submitted, then we need to handle the data.
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($method == 'truncate') {
-        $sql = "CREATE TABLE tmp_system_statistics as SELECT * from cr_statistics WHERE type='system'";
+        $sql = "CREATE TABLE tmp_system_statistics as SELECT * from statistics WHERE type='system'";
         if (!mysqli_query(db(), $sql)) {
             die('Error: '.mysqli_error(db()));
         }
 
-        $sql = ('TRUNCATE TABLE cr_statistics');
+        $sql = ('TRUNCATE TABLE statistics');
         if (!mysqli_query(db(), $sql)) {
             die('Error: '.mysqli_error(db()));
         }
 
-        $sql = ('ALTER TABLE cr_statistics  AUTO_INCREMENT = 50');
+        $sql = ('ALTER TABLE statistics  AUTO_INCREMENT = 50');
         if (!mysqli_query(db(), $sql)) {
             die('Error: '.mysqli_error(db()));
         }
 
-        $sql = 'INSERT INTO cr_statistics (userid,date,type,detail1,detail2,detail3,script) ';
+        $sql = 'INSERT INTO statistics (userid,date,type,detail1,detail2,detail3,script) ';
         $sql = $sql.'SELECT userid,date,type,detail1,detail2,detail3,script from tmp_system_statistics order by date';
         if (!mysqli_query(db(), $sql)) {
             die('Error: '.mysqli_error(db()));
@@ -108,9 +108,9 @@ include 'includes/header.php';
             $mysqli_version = $dbv['mysqli_version'];
 
             if (substr($mysqli_version, 0, 1) == 5) {
-                $sql = "SELECT getBrowserInfo(detail3) as browser,count(*) as count from cr_statistics where detail1 like 'login%' and detail3!='' group by getBrowserInfo(detail3) order by count desc ".$browserLimit;
+                $sql = "SELECT getBrowserInfo(detail3) as browser,count(*) as count from statistics where detail1 like 'login%' and detail3!='' group by getBrowserInfo(detail3) order by count desc ".$browserLimit;
             } else {
-                $sql = "SELECT detail3 as browser,count(*) as count from cr_statistics where detail1 like 'login%' and detail3!='' group by detail3 order by count desc ".$browserLimit;
+                $sql = "SELECT detail3 as browser,count(*) as count from statistics where detail1 like 'login%' and detail3!='' group by detail3 order by count desc ".$browserLimit;
             }
 
             $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
@@ -138,7 +138,7 @@ include 'includes/header.php';
     		</thead>
     		<tbody>
     		<?php
-                $sql = "SELECT s.date,s.detail1,s.detail2,s.detail3,s.type,trim(concat(u.firstName,' ',u.lastName)) AS name FROM cr_statistics s INNER JOIN cr_users u ON u.id = s.userid";
+                $sql = "SELECT s.date,s.detail1,s.detail2,s.detail3,s.type,trim(concat(u.firstName,' ',u.lastName)) AS name FROM statistics s INNER JOIN users u ON u.id = s.userid";
           if (!isAdmin()) {
               $sql .= 'WHERE u.ID=s.userID';
               if (!$debug) {

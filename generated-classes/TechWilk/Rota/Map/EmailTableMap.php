@@ -15,7 +15,7 @@ use TechWilk\Rota\Email;
 use TechWilk\Rota\EmailQuery;
 
 /**
- * This class defines the structure of the 'cr_emails' table.
+ * This class defines the structure of the 'emails' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class EmailTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_emails';
+    const TABLE_NAME = 'emails';
 
     /**
      * The related Propel class for this table
@@ -73,37 +73,37 @@ class EmailTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_emails.id';
+    const COL_ID = 'emails.id';
 
     /**
      * the column name for the emailTo field
      */
-    const COL_EMAILTO = 'cr_emails.emailTo';
+    const COL_EMAILTO = 'emails.emailTo';
 
     /**
      * the column name for the emailBcc field
      */
-    const COL_EMAILBCC = 'cr_emails.emailBcc';
+    const COL_EMAILBCC = 'emails.emailBcc';
 
     /**
      * the column name for the emailFrom field
      */
-    const COL_EMAILFROM = 'cr_emails.emailFrom';
+    const COL_EMAILFROM = 'emails.emailFrom';
 
     /**
      * the column name for the subject field
      */
-    const COL_SUBJECT = 'cr_emails.subject';
+    const COL_SUBJECT = 'emails.subject';
 
     /**
      * the column name for the message field
      */
-    const COL_MESSAGE = 'cr_emails.message';
+    const COL_MESSAGE = 'emails.message';
 
     /**
      * the column name for the error field
      */
-    const COL_ERROR = 'cr_emails.error';
+    const COL_ERROR = 'emails.error';
 
     /**
      * The default string format for model objects of the related table
@@ -148,7 +148,7 @@ class EmailTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_emails');
+        $this->setName('emails');
         $this->setPhpName('Email');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\Email');
@@ -395,7 +395,7 @@ class EmailTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_emails table.
+     * Deletes all rows from the emails table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

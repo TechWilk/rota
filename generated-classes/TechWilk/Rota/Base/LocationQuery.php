@@ -16,7 +16,7 @@ use TechWilk\Rota\LocationQuery as ChildLocationQuery;
 use TechWilk\Rota\Map\LocationTableMap;
 
 /**
- * Base class that represents a query for the 'cr_locations' table.
+ * Base class that represents a query for the 'locations' table.
  *
  *
  *
@@ -174,7 +174,7 @@ abstract class LocationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, name, address FROM cr_locations WHERE id = :p0';
+        $sql = 'SELECT id, name, address FROM locations WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -516,7 +516,7 @@ abstract class LocationQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_locations table.
+     * Deletes all rows from the locations table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

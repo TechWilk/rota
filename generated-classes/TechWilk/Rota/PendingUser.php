@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\PendingUser as BasePendingUser;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_pendingUsers' table.
+ * Skeleton subclass for representing a row from the 'pendingUsers' table.
  *
  *
  *

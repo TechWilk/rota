@@ -42,7 +42,7 @@ use TechWilk\Rota\Map\EventPersonTableMap;
 use TechWilk\Rota\Map\EventTableMap;
 
 /**
- * Base class that represents a row from the 'cr_events' table.
+ * Base class that represents a row from the 'events' table.
  *
  *
  *
@@ -1574,7 +1574,7 @@ abstract class Event implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_events (%s) VALUES (%s)',
+            'INSERT INTO events (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -1817,7 +1817,7 @@ abstract class Event implements ActiveRecordInterface
                         $key = 'user';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_users';
+                        $key = 'users';
                         break;
                     default:
                         $key = 'User';
@@ -1831,7 +1831,7 @@ abstract class Event implements ActiveRecordInterface
                         $key = 'eventType';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_eventTypes';
+                        $key = 'eventTypes';
                         break;
                     default:
                         $key = 'EventType';
@@ -1845,7 +1845,7 @@ abstract class Event implements ActiveRecordInterface
                         $key = 'eventSubType';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_eventSubTypes';
+                        $key = 'eventSubTypes';
                         break;
                     default:
                         $key = 'EventSubType';
@@ -1859,7 +1859,7 @@ abstract class Event implements ActiveRecordInterface
                         $key = 'location';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_locations';
+                        $key = 'locations';
                         break;
                     default:
                         $key = 'Location';
@@ -1873,7 +1873,7 @@ abstract class Event implements ActiveRecordInterface
                         $key = 'eventGroup';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_eventGroups';
+                        $key = 'eventGroups';
                         break;
                     default:
                         $key = 'EventGroup';
@@ -1887,7 +1887,7 @@ abstract class Event implements ActiveRecordInterface
                         $key = 'comments';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_commentss';
+                        $key = 'commentss';
                         break;
                     default:
                         $key = 'Comments';
@@ -1901,7 +1901,7 @@ abstract class Event implements ActiveRecordInterface
                         $key = 'eventpeople';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_eventPeoples';
+                        $key = 'eventPeoples';
                         break;
                     default:
                         $key = 'Eventpeople';
@@ -1915,7 +1915,7 @@ abstract class Event implements ActiveRecordInterface
                         $key = 'availabilities';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_availabilities';
+                        $key = 'availabilities';
                         break;
                     default:
                         $key = 'Availabilities';

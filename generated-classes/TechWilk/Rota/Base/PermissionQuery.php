@@ -16,7 +16,7 @@ use TechWilk\Rota\PermissionQuery as ChildPermissionQuery;
 use TechWilk\Rota\Map\PermissionTableMap;
 
 /**
- * Base class that represents a query for the 'cr_permissions' table.
+ * Base class that represents a query for the 'permissions' table.
  *
  *
  *
@@ -179,7 +179,7 @@ abstract class PermissionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, name, description, slug FROM cr_permissions WHERE id = :p0';
+        $sql = 'SELECT id, name, description, slug FROM permissions WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -546,7 +546,7 @@ abstract class PermissionQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_permissions table.
+     * Deletes all rows from the permissions table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

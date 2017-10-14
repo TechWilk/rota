@@ -19,7 +19,7 @@ use TechWilk\Rota\PendingUserQuery as ChildPendingUserQuery;
 use TechWilk\Rota\Map\PendingUserTableMap;
 
 /**
- * Base class that represents a row from the 'cr_pendingUsers' table.
+ * Base class that represents a row from the 'pendingUsers' table.
  *
  *
  *
@@ -938,7 +938,7 @@ abstract class PendingUser implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_pendingUsers (%s) VALUES (%s)',
+            'INSERT INTO pendingUsers (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );

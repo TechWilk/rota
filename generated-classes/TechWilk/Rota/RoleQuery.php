@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\RoleQuery as BaseRoleQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cr_roles' table.
+ * Skeleton subclass for performing query and update operations on the 'roles' table.
  *
  *
  *

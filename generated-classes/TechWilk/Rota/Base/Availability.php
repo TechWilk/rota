@@ -23,7 +23,7 @@ use TechWilk\Rota\UserQuery as ChildUserQuery;
 use TechWilk\Rota\Map\AvailabilityTableMap;
 
 /**
- * Base class that represents a row from the 'cr_availability' table.
+ * Base class that represents a row from the 'availability' table.
  *
  *
  *
@@ -835,7 +835,7 @@ abstract class Availability implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_availability (%s) VALUES (%s)',
+            'INSERT INTO availability (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -983,7 +983,7 @@ abstract class Availability implements ActiveRecordInterface
                         $key = 'user';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_users';
+                        $key = 'users';
                         break;
                     default:
                         $key = 'User';
@@ -997,7 +997,7 @@ abstract class Availability implements ActiveRecordInterface
                         $key = 'event';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_events';
+                        $key = 'events';
                         break;
                     default:
                         $key = 'Event';

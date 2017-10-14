@@ -15,7 +15,7 @@ use TechWilk\Rota\Swap;
 use TechWilk\Rota\SwapQuery;
 
 /**
- * This class defines the structure of the 'cr_swaps' table.
+ * This class defines the structure of the 'swaps' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class SwapTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_swaps';
+    const TABLE_NAME = 'swaps';
 
     /**
      * The related Propel class for this table
@@ -73,52 +73,52 @@ class SwapTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_swaps.id';
+    const COL_ID = 'swaps.id';
 
     /**
      * the column name for the eventPersonId field
      */
-    const COL_EVENTPERSONID = 'cr_swaps.eventPersonId';
+    const COL_EVENTPERSONID = 'swaps.eventPersonId';
 
     /**
      * the column name for the oldUserRoleId field
      */
-    const COL_OLDUSERROLEID = 'cr_swaps.oldUserRoleId';
+    const COL_OLDUSERROLEID = 'swaps.oldUserRoleId';
 
     /**
      * the column name for the newUserRoleId field
      */
-    const COL_NEWUSERROLEID = 'cr_swaps.newUserRoleId';
+    const COL_NEWUSERROLEID = 'swaps.newUserRoleId';
 
     /**
      * the column name for the accepted field
      */
-    const COL_ACCEPTED = 'cr_swaps.accepted';
+    const COL_ACCEPTED = 'swaps.accepted';
 
     /**
      * the column name for the declined field
      */
-    const COL_DECLINED = 'cr_swaps.declined';
+    const COL_DECLINED = 'swaps.declined';
 
     /**
      * the column name for the requestedBy field
      */
-    const COL_REQUESTEDBY = 'cr_swaps.requestedBy';
+    const COL_REQUESTEDBY = 'swaps.requestedBy';
 
     /**
      * the column name for the verificationCode field
      */
-    const COL_VERIFICATIONCODE = 'cr_swaps.verificationCode';
+    const COL_VERIFICATIONCODE = 'swaps.verificationCode';
 
     /**
      * the column name for the created field
      */
-    const COL_CREATED = 'cr_swaps.created';
+    const COL_CREATED = 'swaps.created';
 
     /**
      * the column name for the updated field
      */
-    const COL_UPDATED = 'cr_swaps.updated';
+    const COL_UPDATED = 'swaps.updated';
 
     /**
      * The default string format for model objects of the related table
@@ -163,7 +163,7 @@ class SwapTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_swaps');
+        $this->setName('swaps');
         $this->setPhpName('Swap');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\Swap');
@@ -171,12 +171,12 @@ class SwapTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('eventPersonId', 'EventPersonId', 'INTEGER', 'cr_eventPeople', 'id', true, null, 0);
-        $this->addForeignKey('oldUserRoleId', 'OldUserRoleId', 'INTEGER', 'cr_userRoles', 'id', true, null, 0);
-        $this->addForeignKey('newUserRoleId', 'NewUserRoleId', 'INTEGER', 'cr_userRoles', 'id', true, null, 0);
+        $this->addForeignKey('eventPersonId', 'EventPersonId', 'INTEGER', 'eventPeople', 'id', true, null, 0);
+        $this->addForeignKey('oldUserRoleId', 'OldUserRoleId', 'INTEGER', 'userRoles', 'id', true, null, 0);
+        $this->addForeignKey('newUserRoleId', 'NewUserRoleId', 'INTEGER', 'userRoles', 'id', true, null, 0);
         $this->addColumn('accepted', 'Accepted', 'INTEGER', true, 1, 0);
         $this->addColumn('declined', 'Declined', 'INTEGER', true, 1, 0);
-        $this->addForeignKey('requestedBy', 'RequestedBy', 'INTEGER', 'cr_users', 'id', true, null, null);
+        $this->addForeignKey('requestedBy', 'RequestedBy', 'INTEGER', 'users', 'id', true, null, null);
         $this->addColumn('verificationCode', 'VerificationCode', 'VARCHAR', true, 18, null);
         $this->addColumn('created', 'Created', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated', 'Updated', 'TIMESTAMP', false, null, null);
@@ -460,7 +460,7 @@ class SwapTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_swaps table.
+     * Deletes all rows from the swaps table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

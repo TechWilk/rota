@@ -16,7 +16,7 @@ use TechWilk\Rota\UserPermissionQuery as ChildUserPermissionQuery;
 use TechWilk\Rota\Map\UserPermissionTableMap;
 
 /**
- * Base class that represents a query for the 'cr_userPermissions' table.
+ * Base class that represents a query for the 'userPermissions' table.
  *
  *
  *
@@ -184,7 +184,7 @@ abstract class UserPermissionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, userId, permissionId, created, updated FROM cr_userPermissions WHERE id = :p0';
+        $sql = 'SELECT id, userId, permissionId, created, updated FROM userPermissions WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -656,7 +656,7 @@ abstract class UserPermissionQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_userPermissions table.
+     * Deletes all rows from the userPermissions table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

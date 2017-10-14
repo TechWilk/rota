@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\UserPermissionQuery as BaseUserPermissionQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cr_userPermissions' table.
+ * Skeleton subclass for performing query and update operations on the 'userPermissions' table.
  *
  *
  *

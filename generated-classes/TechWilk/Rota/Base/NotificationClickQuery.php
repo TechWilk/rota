@@ -16,7 +16,7 @@ use TechWilk\Rota\NotificationClickQuery as ChildNotificationClickQuery;
 use TechWilk\Rota\Map\NotificationClickTableMap;
 
 /**
- * Base class that represents a query for the 'cr_notificationClicks' table.
+ * Base class that represents a query for the 'notificationClicks' table.
  *
  *
  *
@@ -169,7 +169,7 @@ abstract class NotificationClickQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, notificationId, referer, timestamp FROM cr_notificationClicks WHERE id = :p0';
+        $sql = 'SELECT id, notificationId, referer, timestamp FROM notificationClicks WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -503,7 +503,7 @@ abstract class NotificationClickQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_notificationClicks table.
+     * Deletes all rows from the notificationClicks table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

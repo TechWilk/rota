@@ -88,7 +88,7 @@ if ((isset($holdQuery)) && ($holdQuery == true)) {
 } else {
     //if call is not during installation,
     //query real values from db for these variables
-    $sql = 'SELECT * FROM cr_settings';
+    $sql = 'SELECT * FROM settings';
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
@@ -156,13 +156,13 @@ function isLoggedIn()
 
 function subscribeto($userid, $categoryid, $topicid)
 {
-    $query = "INSERT INTO cr_subscriptions(userid, categoryid, topicid) VALUES ('$userid', '$categoryid', '$topicid')";
+    $query = "INSERT INTO subscriptions(userid, categoryid, topicid) VALUES ('$userid', '$categoryid', '$topicid')";
     mysqli_query(db(), $query) or die(mysqli_error(db()));
 }
 
 function unsubscribefrom($subscription)
 {
-    $query = "DELETE FROM cr_subscriptions WHERE id = '$subscription'";
+    $query = "DELETE FROM subscriptions WHERE id = '$subscription'";
     mysqli_query(db(), $query) or die(mysqli_error(db()));
 }
 

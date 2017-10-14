@@ -24,7 +24,7 @@ use TechWilk\Rota\Map\GroupTableMap;
 use TechWilk\Rota\Map\RoleTableMap;
 
 /**
- * Base class that represents a row from the 'cr_groups' table.
+ * Base class that represents a row from the 'groups' table.
  *
  *
  *
@@ -882,7 +882,7 @@ abstract class Group implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_groups (%s) VALUES (%s)',
+            'INSERT INTO groups (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -1037,7 +1037,7 @@ abstract class Group implements ActiveRecordInterface
                         $key = 'roles';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_roless';
+                        $key = 'roless';
                         break;
                     default:
                         $key = 'Roles';

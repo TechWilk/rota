@@ -15,7 +15,7 @@ use TechWilk\Rota\PermissionGroupPermission;
 use TechWilk\Rota\PermissionGroupPermissionQuery;
 
 /**
- * This class defines the structure of the 'cr_permissionGroupPermissions' table.
+ * This class defines the structure of the 'permissionGroupPermissions' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class PermissionGroupPermissionTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_permissionGroupPermissions';
+    const TABLE_NAME = 'permissionGroupPermissions';
 
     /**
      * The related Propel class for this table
@@ -73,17 +73,17 @@ class PermissionGroupPermissionTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_permissionGroupPermissions.id';
+    const COL_ID = 'permissionGroupPermissions.id';
 
     /**
      * the column name for the permissionId field
      */
-    const COL_PERMISSIONID = 'cr_permissionGroupPermissions.permissionId';
+    const COL_PERMISSIONID = 'permissionGroupPermissions.permissionId';
 
     /**
      * the column name for the permissionGroupId field
      */
-    const COL_PERMISSIONGROUPID = 'cr_permissionGroupPermissions.permissionGroupId';
+    const COL_PERMISSIONGROUPID = 'permissionGroupPermissions.permissionGroupId';
 
     /**
      * The default string format for model objects of the related table
@@ -128,7 +128,7 @@ class PermissionGroupPermissionTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_permissionGroupPermissions');
+        $this->setName('permissionGroupPermissions');
         $this->setPhpName('PermissionGroupPermission');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\PermissionGroupPermission');
@@ -136,8 +136,8 @@ class PermissionGroupPermissionTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('permissionId', 'UserId', 'INTEGER', 'cr_permissions', 'id', true, 30, 0);
-        $this->addForeignKey('permissionGroupId', 'PermissionId', 'INTEGER', 'cr_permissionGroups', 'id', true, null, 0);
+        $this->addForeignKey('permissionId', 'UserId', 'INTEGER', 'permissions', 'id', true, 30, 0);
+        $this->addForeignKey('permissionGroupId', 'PermissionId', 'INTEGER', 'permissionGroups', 'id', true, null, 0);
     } // initialize()
 
     /**
@@ -377,7 +377,7 @@ class PermissionGroupPermissionTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_permissionGroupPermissions table.
+     * Deletes all rows from the permissionGroupPermissions table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

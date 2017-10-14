@@ -15,7 +15,7 @@ use TechWilk\Rota\Permission;
 use TechWilk\Rota\PermissionQuery;
 
 /**
- * This class defines the structure of the 'cr_permissions' table.
+ * This class defines the structure of the 'permissions' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class PermissionTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_permissions';
+    const TABLE_NAME = 'permissions';
 
     /**
      * The related Propel class for this table
@@ -73,22 +73,22 @@ class PermissionTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_permissions.id';
+    const COL_ID = 'permissions.id';
 
     /**
      * the column name for the name field
      */
-    const COL_NAME = 'cr_permissions.name';
+    const COL_NAME = 'permissions.name';
 
     /**
      * the column name for the description field
      */
-    const COL_DESCRIPTION = 'cr_permissions.description';
+    const COL_DESCRIPTION = 'permissions.description';
 
     /**
      * the column name for the slug field
      */
-    const COL_SLUG = 'cr_permissions.slug';
+    const COL_SLUG = 'permissions.slug';
 
     /**
      * The default string format for model objects of the related table
@@ -133,7 +133,7 @@ class PermissionTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_permissions');
+        $this->setName('permissions');
         $this->setPhpName('Permission');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\Permission');
@@ -385,7 +385,7 @@ class PermissionTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_permissions table.
+     * Deletes all rows from the permissions table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

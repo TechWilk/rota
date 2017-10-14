@@ -16,7 +16,7 @@ use TechWilk\Rota\EventSubTypeQuery as ChildEventSubTypeQuery;
 use TechWilk\Rota\Map\EventSubTypeTableMap;
 
 /**
- * Base class that represents a query for the 'cr_eventSubTypes' table.
+ * Base class that represents a query for the 'eventSubTypes' table.
  *
  *
  *
@@ -164,7 +164,7 @@ abstract class EventSubTypeQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, name, description FROM cr_eventSubTypes WHERE id = :p0';
+        $sql = 'SELECT id, name, description FROM eventSubTypes WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -433,7 +433,7 @@ abstract class EventSubTypeQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_eventSubTypes table.
+     * Deletes all rows from the eventSubTypes table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

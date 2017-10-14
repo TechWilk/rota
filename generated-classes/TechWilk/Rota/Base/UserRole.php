@@ -31,7 +31,7 @@ use TechWilk\Rota\Map\SwapTableMap;
 use TechWilk\Rota\Map\UserRoleTableMap;
 
 /**
- * Base class that represents a row from the 'cr_userRoles' table.
+ * Base class that represents a row from the 'userRoles' table.
  *
  *
  *
@@ -904,7 +904,7 @@ abstract class UserRole implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_userRoles (%s) VALUES (%s)',
+            'INSERT INTO userRoles (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -1045,7 +1045,7 @@ abstract class UserRole implements ActiveRecordInterface
                         $key = 'user';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_users';
+                        $key = 'users';
                         break;
                     default:
                         $key = 'User';
@@ -1059,7 +1059,7 @@ abstract class UserRole implements ActiveRecordInterface
                         $key = 'role';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_roles';
+                        $key = 'roles';
                         break;
                     default:
                         $key = 'Role';
@@ -1073,7 +1073,7 @@ abstract class UserRole implements ActiveRecordInterface
                         $key = 'eventpeople';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_eventPeoples';
+                        $key = 'eventPeoples';
                         break;
                     default:
                         $key = 'Eventpeople';
@@ -1087,7 +1087,7 @@ abstract class UserRole implements ActiveRecordInterface
                         $key = 'swaps';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_swapss';
+                        $key = 'swapss';
                         break;
                     default:
                         $key = 'Swaps';
@@ -1101,7 +1101,7 @@ abstract class UserRole implements ActiveRecordInterface
                         $key = 'swaps';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_swapss';
+                        $key = 'swapss';
                         break;
                     default:
                         $key = 'Swaps';

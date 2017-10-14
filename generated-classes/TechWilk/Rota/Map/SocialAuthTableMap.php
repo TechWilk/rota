@@ -15,7 +15,7 @@ use TechWilk\Rota\SocialAuth;
 use TechWilk\Rota\SocialAuthQuery;
 
 /**
- * This class defines the structure of the 'cr_socialAuth' table.
+ * This class defines the structure of the 'socialAuth' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class SocialAuthTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_socialAuth';
+    const TABLE_NAME = 'socialAuth';
 
     /**
      * The related Propel class for this table
@@ -73,27 +73,27 @@ class SocialAuthTableMap extends TableMap
     /**
      * the column name for the userId field
      */
-    const COL_USERID = 'cr_socialAuth.userId';
+    const COL_USERID = 'socialAuth.userId';
 
     /**
      * the column name for the platform field
      */
-    const COL_PLATFORM = 'cr_socialAuth.platform';
+    const COL_PLATFORM = 'socialAuth.platform';
 
     /**
      * the column name for the socialId field
      */
-    const COL_SOCIALID = 'cr_socialAuth.socialId';
+    const COL_SOCIALID = 'socialAuth.socialId';
 
     /**
      * the column name for the meta field
      */
-    const COL_META = 'cr_socialAuth.meta';
+    const COL_META = 'socialAuth.meta';
 
     /**
      * the column name for the revoked field
      */
-    const COL_REVOKED = 'cr_socialAuth.revoked';
+    const COL_REVOKED = 'socialAuth.revoked';
 
     /**
      * The default string format for model objects of the related table
@@ -138,14 +138,14 @@ class SocialAuthTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_socialAuth');
+        $this->setName('socialAuth');
         $this->setPhpName('SocialAuth');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\SocialAuth');
         $this->setPackage('TechWilk.Rota');
         $this->setUseIdGenerator(false);
         // columns
-        $this->addForeignPrimaryKey('userId', 'UserId', 'INTEGER', 'cr_users', 'id', true, 30, null);
+        $this->addForeignPrimaryKey('userId', 'UserId', 'INTEGER', 'users', 'id', true, 30, null);
         $this->addPrimaryKey('platform', 'Platform', 'VARCHAR', true, 10, null);
         $this->addPrimaryKey('socialId', 'SocialId', 'BIGINT', true, 30, null);
         $this->addColumn('meta', 'Meta', 'LONGVARCHAR', false, null, null);
@@ -463,7 +463,7 @@ class SocialAuthTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_socialAuth table.
+     * Deletes all rows from the socialAuth table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

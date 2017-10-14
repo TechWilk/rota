@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\EventGroup as BaseEventGroup;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_eventGroups' table.
+ * Skeleton subclass for representing a row from the 'eventGroups' table.
  *
  *
  *

@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $editid = str_replace('title', '', $editid);
         if ($type == 'title') {
-            $sql = "UPDATE cr_locations SET name = '$name' WHERE id = '$editid'";
+            $sql = "UPDATE locations SET name = '$name' WHERE id = '$editid'";
         }
         if (!mysqli_query(db(), $sql)) {
             die('Error: '.mysqli_error(db()));
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $rehearsal = $_POST['rehearsal'];
         $rehearsal = strip_tags($rehearsal);
 
-        $sql = ("INSERT INTO cr_locations (name) VALUES ('$newlocation')");
+        $sql = ("INSERT INTO locations (name) VALUES ('$newlocation')");
         if (!mysqli_query(db(), $sql)) {
             die('Error: '.mysqli_error(db()));
         }
@@ -90,7 +90,7 @@ include 'includes/header.php';
   </div>
   <div class="box-body">
 		<p>
-		<?php $sql = 'SELECT * FROM cr_locations ORDER BY name';
+		<?php $sql = 'SELECT * FROM locations ORDER BY name';
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {

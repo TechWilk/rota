@@ -44,12 +44,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $roleId = $_POST['role'];
     //$roleId = filter_var($roleId, FILTER_SANITIZE_NUMBER_INT);
     if (empty($users)) {
-        $sql = "DELETE FROM cr_userRoles WHERE roleId = '$roleId'";
+        $sql = "DELETE FROM userRoles WHERE roleId = '$roleId'";
         mysqli_query(db(), $sql) or die(mysqli_error(db()));
     } else {
         $sqlPeople = "SELECT
 										userId
-									FROM cr_userRoles
+									FROM userRoles
 									WHERE roleId = '$roleId'";
 
         $resultPeople = mysqli_query(db(), $sqlPeople) or die('mysqli_error(db())');
@@ -86,7 +86,7 @@ if (!$roleId) {
 }
 
 $sql = "SELECT *
-FROM cr_roles
+FROM roles
 WHERE id = '$roleId'";
 $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
@@ -99,8 +99,8 @@ $formatting = 'true';
 
 $sqlPeople = "SELECT *,
 							CONCAT(u.firstName, ' ', u.lastName) AS name,
-							(SELECT roleId FROM cr_userRoles ur WHERE ur.userId = u.id AND ur.roleId = '$roleId' LIMIT 1) AS existing
-							FROM cr_users u
+							(SELECT roleId FROM userRoles ur WHERE ur.userId = u.id AND ur.roleId = '$roleId' LIMIT 1) AS existing
+							FROM users u
 							ORDER BY u.firstName";
 
 $result = mysqli_query(db(), $sqlPeople) or die(mysqli_error(db()));

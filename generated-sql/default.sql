@@ -1,10 +1,10 @@
 -----------------------------------------------------------------------
--- cr_availability
+-- availability
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_availability];
+DROP TABLE IF EXISTS [availability];
 
-CREATE TABLE [cr_availability]
+CREATE TABLE [availability]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [eventId] INTEGER(30) NOT NULL,
@@ -12,17 +12,17 @@ CREATE TABLE [cr_availability]
     [available] BOOLEAN NOT NULL DEFAULT 1,
     [comment] VARCHAR(64) NOT NULL,
     UNIQUE ([id]),
-    FOREIGN KEY ([userId]) REFERENCES [cr_users] ([id]),
-    FOREIGN KEY ([eventId]) REFERENCES [cr_events] ([id])
+    FOREIGN KEY ([userId]) REFERENCES [users] ([id]),
+    FOREIGN KEY ([eventId]) REFERENCES [events] ([id])
 );
 
 -----------------------------------------------------------------------
--- cr_calendarTokens
+-- calendarTokens
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_calendarTokens];
+DROP TABLE IF EXISTS [calendarTokens];
 
-CREATE TABLE [cr_calendarTokens]
+CREATE TABLE [calendarTokens]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [token] VARCHAR(30) NOT NULL,
@@ -35,16 +35,16 @@ CREATE TABLE [cr_calendarTokens]
     [created] TIMESTAMP,
     [updated] TIMESTAMP,
     UNIQUE ([token]),
-    FOREIGN KEY ([userId]) REFERENCES [cr_users] ([id])
+    FOREIGN KEY ([userId]) REFERENCES [users] ([id])
 );
 
 -----------------------------------------------------------------------
--- cr_discussion
+-- discussion
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_discussion];
+DROP TABLE IF EXISTS [discussion];
 
-CREATE TABLE [cr_discussion]
+CREATE TABLE [discussion]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [topicParent] INTEGER(6) DEFAULT 0 NOT NULL,
@@ -57,12 +57,12 @@ CREATE TABLE [cr_discussion]
 );
 
 -----------------------------------------------------------------------
--- cr_discussionCategories
+-- discussionCategories
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_discussionCategories];
+DROP TABLE IF EXISTS [discussionCategories];
 
-CREATE TABLE [cr_discussionCategories]
+CREATE TABLE [discussionCategories]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [name] VARCHAR(255) DEFAULT '' NOT NULL,
@@ -72,12 +72,12 @@ CREATE TABLE [cr_discussionCategories]
 );
 
 -----------------------------------------------------------------------
--- cr_documents
+-- documents
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_documents];
+DROP TABLE IF EXISTS [documents];
 
-CREATE TABLE [cr_documents]
+CREATE TABLE [documents]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [title] VARCHAR(127) DEFAULT '' NOT NULL,
@@ -88,12 +88,12 @@ CREATE TABLE [cr_documents]
 );
 
 -----------------------------------------------------------------------
--- cr_emails
+-- emails
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_emails];
+DROP TABLE IF EXISTS [emails];
 
-CREATE TABLE [cr_emails]
+CREATE TABLE [emails]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [emailTo] VARCHAR(100) DEFAULT '' NOT NULL,
@@ -106,12 +106,12 @@ CREATE TABLE [cr_emails]
 );
 
 -----------------------------------------------------------------------
--- cr_eventGroups
+-- eventGroups
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_eventGroups];
+DROP TABLE IF EXISTS [eventGroups];
 
-CREATE TABLE [cr_eventGroups]
+CREATE TABLE [eventGroups]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [name] VARCHAR(128) DEFAULT '' NOT NULL,
@@ -121,12 +121,12 @@ CREATE TABLE [cr_eventGroups]
 );
 
 -----------------------------------------------------------------------
--- cr_eventPeople
+-- eventPeople
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_eventPeople];
+DROP TABLE IF EXISTS [eventPeople];
 
-CREATE TABLE [cr_eventPeople]
+CREATE TABLE [eventPeople]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [eventId] INTEGER DEFAULT 0 NOT NULL,
@@ -134,17 +134,17 @@ CREATE TABLE [cr_eventPeople]
     [notified] SMALLINT(1) DEFAULT 0 NOT NULL,
     [removed] SMALLINT(1) DEFAULT 0,
     UNIQUE ([id]),
-    FOREIGN KEY ([eventId]) REFERENCES [cr_events] ([id]),
-    FOREIGN KEY ([userRoleId]) REFERENCES [cr_userRoles] ([id])
+    FOREIGN KEY ([eventId]) REFERENCES [events] ([id]),
+    FOREIGN KEY ([userRoleId]) REFERENCES [userRoles] ([id])
 );
 
 -----------------------------------------------------------------------
--- cr_eventSubTypes
+-- eventSubTypes
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_eventSubTypes];
+DROP TABLE IF EXISTS [eventSubTypes];
 
-CREATE TABLE [cr_eventSubTypes]
+CREATE TABLE [eventSubTypes]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [name] VARCHAR(128) DEFAULT '' NOT NULL,
@@ -153,12 +153,12 @@ CREATE TABLE [cr_eventSubTypes]
 );
 
 -----------------------------------------------------------------------
--- cr_eventTypes
+-- eventTypes
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_eventTypes];
+DROP TABLE IF EXISTS [eventTypes];
 
-CREATE TABLE [cr_eventTypes]
+CREATE TABLE [eventTypes]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [name] VARCHAR(30) NOT NULL,
@@ -170,17 +170,17 @@ CREATE TABLE [cr_eventTypes]
     [rehearsal] INTEGER(2) DEFAULT 0 NOT NULL,
     [groupformat] INTEGER(1) DEFAULT 0 NOT NULL,
     UNIQUE ([id]),
-    FOREIGN KEY ([defaultLocationId]) REFERENCES [cr_locations] ([id])
+    FOREIGN KEY ([defaultLocationId]) REFERENCES [locations] ([id])
         ON DELETE SET NULL
 );
 
 -----------------------------------------------------------------------
--- cr_events
+-- events
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_events];
+DROP TABLE IF EXISTS [events];
 
-CREATE TABLE [cr_events]
+CREATE TABLE [events]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [date] TIMESTAMP DEFAULT '0000-00-00 00:00:00' NOT NULL,
@@ -200,20 +200,20 @@ CREATE TABLE [cr_events]
     [created] TIMESTAMP,
     [updated] TIMESTAMP,
     UNIQUE ([id]),
-    FOREIGN KEY ([createdBy]) REFERENCES [cr_users] ([id]),
-    FOREIGN KEY ([type]) REFERENCES [cr_eventTypes] ([id]),
-    FOREIGN KEY ([subType]) REFERENCES [cr_eventSubTypes] ([id]),
-    FOREIGN KEY ([location]) REFERENCES [cr_locations] ([id]),
-    FOREIGN KEY ([eventGroup]) REFERENCES [cr_eventGroups] ([id])
+    FOREIGN KEY ([createdBy]) REFERENCES [users] ([id]),
+    FOREIGN KEY ([type]) REFERENCES [eventTypes] ([id]),
+    FOREIGN KEY ([subType]) REFERENCES [eventSubTypes] ([id]),
+    FOREIGN KEY ([location]) REFERENCES [locations] ([id]),
+    FOREIGN KEY ([eventGroup]) REFERENCES [eventGroups] ([id])
 );
 
 -----------------------------------------------------------------------
--- cr_groups
+-- groups
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_groups];
+DROP TABLE IF EXISTS [groups];
 
-CREATE TABLE [cr_groups]
+CREATE TABLE [groups]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [name] VARCHAR(25) DEFAULT '' NOT NULL,
@@ -225,12 +225,12 @@ CREATE TABLE [cr_groups]
 );
 
 -----------------------------------------------------------------------
--- cr_locations
+-- locations
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_locations];
+DROP TABLE IF EXISTS [locations];
 
-CREATE TABLE [cr_locations]
+CREATE TABLE [locations]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [name] MEDIUMTEXT NOT NULL,
@@ -239,28 +239,28 @@ CREATE TABLE [cr_locations]
 );
 
 -----------------------------------------------------------------------
--- cr_notificationClicks
+-- notificationClicks
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_notificationClicks];
+DROP TABLE IF EXISTS [notificationClicks];
 
-CREATE TABLE [cr_notificationClicks]
+CREATE TABLE [notificationClicks]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [notificationId] INTEGER(30) NOT NULL,
     [referer] VARCHAR(50) NOT NULL,
     [timestamp] TIMESTAMP,
     UNIQUE ([id]),
-    FOREIGN KEY ([notificationId]) REFERENCES [cr_notifications] ([id])
+    FOREIGN KEY ([notificationId]) REFERENCES [notifications] ([id])
 );
 
 -----------------------------------------------------------------------
--- cr_notifications
+-- notifications
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_notifications];
+DROP TABLE IF EXISTS [notifications];
 
-CREATE TABLE [cr_notifications]
+CREATE TABLE [notifications]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [timestamp] TIMESTAMP DEFAULT (datetime(CURRENT_TIMESTAMP, 'localtime')) NOT NULL,
@@ -273,16 +273,16 @@ CREATE TABLE [cr_notifications]
     [dismissed] INTEGER(1) DEFAULT 0 NOT NULL,
     [archived] INTEGER(1) DEFAULT 0 NOT NULL,
     UNIQUE ([id]),
-    FOREIGN KEY ([userId]) REFERENCES [cr_users] ([id])
+    FOREIGN KEY ([userId]) REFERENCES [users] ([id])
 );
 
 -----------------------------------------------------------------------
--- cr_pendingUsers
+-- pendingUsers
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_pendingUsers];
+DROP TABLE IF EXISTS [pendingUsers];
 
-CREATE TABLE [cr_pendingUsers]
+CREATE TABLE [pendingUsers]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [socialId] BIGINT(30),
@@ -297,12 +297,12 @@ CREATE TABLE [cr_pendingUsers]
 );
 
 -----------------------------------------------------------------------
--- cr_roles
+-- roles
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_roles];
+DROP TABLE IF EXISTS [roles];
 
-CREATE TABLE [cr_roles]
+CREATE TABLE [roles]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [groupId] INTEGER(6) DEFAULT 0 NOT NULL,
@@ -311,16 +311,16 @@ CREATE TABLE [cr_roles]
     [rehersalId] INTEGER(6) DEFAULT 0 NOT NULL,
     [allowRoleSwaps] INTEGER(1),
     UNIQUE ([id]),
-    FOREIGN KEY ([groupId]) REFERENCES [cr_groups] ([id])
+    FOREIGN KEY ([groupId]) REFERENCES [groups] ([id])
 );
 
 -----------------------------------------------------------------------
--- cr_settings
+-- settings
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_settings];
+DROP TABLE IF EXISTS [settings];
 
-CREATE TABLE [cr_settings]
+CREATE TABLE [settings]
 (
     [siteurl] MEDIUMTEXT NOT NULL,
     [owner] MEDIUMTEXT NOT NULL,
@@ -353,12 +353,12 @@ CREATE TABLE [cr_settings]
 );
 
 -----------------------------------------------------------------------
--- cr_socialAuth
+-- socialAuth
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_socialAuth];
+DROP TABLE IF EXISTS [socialAuth];
 
-CREATE TABLE [cr_socialAuth]
+CREATE TABLE [socialAuth]
 (
     [userId] INTEGER(30) NOT NULL,
     [platform] MEDIUMTEXT NOT NULL,
@@ -369,16 +369,16 @@ CREATE TABLE [cr_socialAuth]
     UNIQUE ([socialId]),
     UNIQUE ([userId]),
     UNIQUE ([platform]),
-    FOREIGN KEY ([userId]) REFERENCES [cr_users] ([id])
+    FOREIGN KEY ([userId]) REFERENCES [users] ([id])
 );
 
 -----------------------------------------------------------------------
--- cr_statistics
+-- statistics
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_statistics];
+DROP TABLE IF EXISTS [statistics];
 
-CREATE TABLE [cr_statistics]
+CREATE TABLE [statistics]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [userid] INTEGER(6) DEFAULT 0,
@@ -389,16 +389,16 @@ CREATE TABLE [cr_statistics]
     [detail3] MEDIUMTEXT NOT NULL,
     [script] MEDIUMTEXT NOT NULL,
     UNIQUE ([id]),
-    FOREIGN KEY ([userid]) REFERENCES [cr_users] ([id])
+    FOREIGN KEY ([userid]) REFERENCES [users] ([id])
 );
 
 -----------------------------------------------------------------------
--- cr_subscriptions
+-- subscriptions
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_subscriptions];
+DROP TABLE IF EXISTS [subscriptions];
 
-CREATE TABLE [cr_subscriptions]
+CREATE TABLE [subscriptions]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [userid] INTEGER(6) DEFAULT 0 NOT NULL,
@@ -408,12 +408,12 @@ CREATE TABLE [cr_subscriptions]
 );
 
 -----------------------------------------------------------------------
--- cr_swaps
+-- swaps
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_swaps];
+DROP TABLE IF EXISTS [swaps];
 
-CREATE TABLE [cr_swaps]
+CREATE TABLE [swaps]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [eventPersonId] INTEGER DEFAULT 0 NOT NULL,
@@ -426,36 +426,36 @@ CREATE TABLE [cr_swaps]
     [created] TIMESTAMP,
     [updated] TIMESTAMP,
     UNIQUE ([id]),
-    FOREIGN KEY ([eventPersonId]) REFERENCES [cr_eventPeople] ([id]),
-    FOREIGN KEY ([oldUserRoleId]) REFERENCES [cr_userRoles] ([id]),
-    FOREIGN KEY ([newUserRoleId]) REFERENCES [cr_userRoles] ([id]),
-    FOREIGN KEY ([requestedBy]) REFERENCES [cr_users] ([id])
+    FOREIGN KEY ([eventPersonId]) REFERENCES [eventPeople] ([id]),
+    FOREIGN KEY ([oldUserRoleId]) REFERENCES [userRoles] ([id]),
+    FOREIGN KEY ([newUserRoleId]) REFERENCES [userRoles] ([id]),
+    FOREIGN KEY ([requestedBy]) REFERENCES [users] ([id])
 );
 
 -----------------------------------------------------------------------
--- cr_userRoles
+-- userRoles
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_userRoles];
+DROP TABLE IF EXISTS [userRoles];
 
-CREATE TABLE [cr_userRoles]
+CREATE TABLE [userRoles]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [userId] INTEGER(30) DEFAULT 0 NOT NULL,
     [roleId] INTEGER DEFAULT 0 NOT NULL,
     [reserve] INTEGER DEFAULT 0 NOT NULL,
     UNIQUE ([id]),
-    FOREIGN KEY ([userId]) REFERENCES [cr_users] ([id]),
-    FOREIGN KEY ([roleId]) REFERENCES [cr_roles] ([id])
+    FOREIGN KEY ([userId]) REFERENCES [users] ([id]),
+    FOREIGN KEY ([roleId]) REFERENCES [roles] ([id])
 );
 
 -----------------------------------------------------------------------
--- cr_users
+-- users
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_users];
+DROP TABLE IF EXISTS [users];
 
-CREATE TABLE [cr_users]
+CREATE TABLE [users]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [firstName] VARCHAR(30) DEFAULT '' NOT NULL,
@@ -477,12 +477,12 @@ CREATE TABLE [cr_users]
 );
 
 -----------------------------------------------------------------------
--- cr_userPermissions
+-- userPermissions
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_userPermissions];
+DROP TABLE IF EXISTS [userPermissions];
 
-CREATE TABLE [cr_userPermissions]
+CREATE TABLE [userPermissions]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [userId] INTEGER(30) DEFAULT 0 NOT NULL,
@@ -490,17 +490,17 @@ CREATE TABLE [cr_userPermissions]
     [created] TIMESTAMP,
     [updated] TIMESTAMP,
     UNIQUE ([id]),
-    FOREIGN KEY ([userId]) REFERENCES [cr_users] ([id]),
-    FOREIGN KEY ([permissionId]) REFERENCES [cr_permissions] ([id])
+    FOREIGN KEY ([userId]) REFERENCES [users] ([id]),
+    FOREIGN KEY ([permissionId]) REFERENCES [permissions] ([id])
 );
 
 -----------------------------------------------------------------------
--- cr_permissionGroups
+-- permissionGroups
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_permissionGroups];
+DROP TABLE IF EXISTS [permissionGroups];
 
-CREATE TABLE [cr_permissionGroups]
+CREATE TABLE [permissionGroups]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [name] VARCHAR(255),
@@ -511,28 +511,28 @@ CREATE TABLE [cr_permissionGroups]
 );
 
 -----------------------------------------------------------------------
--- cr_permissionGroupPermissions
+-- permissionGroupPermissions
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_permissionGroupPermissions];
+DROP TABLE IF EXISTS [permissionGroupPermissions];
 
-CREATE TABLE [cr_permissionGroupPermissions]
+CREATE TABLE [permissionGroupPermissions]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [permissionId] INTEGER(30) DEFAULT 0 NOT NULL,
     [permissionGroupId] INTEGER DEFAULT 0 NOT NULL,
     UNIQUE ([id]),
-    FOREIGN KEY ([permissionId]) REFERENCES [cr_permissions] ([id]),
-    FOREIGN KEY ([permissionGroupId]) REFERENCES [cr_permissionGroups] ([id])
+    FOREIGN KEY ([permissionId]) REFERENCES [permissions] ([id]),
+    FOREIGN KEY ([permissionGroupId]) REFERENCES [permissionGroups] ([id])
 );
 
 -----------------------------------------------------------------------
--- cr_permissions
+-- permissions
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_permissions];
+DROP TABLE IF EXISTS [permissions];
 
-CREATE TABLE [cr_permissions]
+CREATE TABLE [permissions]
 (
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [name] VARCHAR(255),
@@ -542,12 +542,12 @@ CREATE TABLE [cr_permissions]
 );
 
 -----------------------------------------------------------------------
--- cr_loginFailures
+-- loginFailures
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [cr_loginFailures];
+DROP TABLE IF EXISTS [loginFailures];
 
-CREATE TABLE [cr_loginFailures]
+CREATE TABLE [loginFailures]
 (
     [username] VARCHAR(30) NOT NULL,
     [ipAddress] VARCHAR(15) NOT NULL,

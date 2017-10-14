@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\Notification as BaseNotification;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_notifications' table.
+ * Skeleton subclass for representing a row from the 'notifications' table.
  *
  *
  *

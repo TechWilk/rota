@@ -77,10 +77,10 @@ $sql = "SELECT
           g.name,
           COUNT(DISTINCT ur.userId) AS users
         FROM
-          cr_groups g
-          INNER JOIN cr_roles r ON r.groupId = g.id
-          INNER JOIN cr_userRoles ur ON ur.roleId = r.id
-          INNER JOIN cr_eventPeople ep ON ep.userRoleId = ur.id
+          groups g
+          INNER JOIN roles r ON r.groupId = g.id
+          INNER JOIN userRoles ur ON ur.roleId = r.id
+          INNER JOIN eventPeople ep ON ep.userRoleId = ur.id
         WHERE
           ep.eventId = $eventId
         GROUP BY
@@ -121,7 +121,7 @@ include 'includes/header.php';
         <div class="box-body">
           <?php if (count($groups) > 0): ?>
             <?php foreach ($groups as $group): ?>
-              <div>              
+              <div>
                 <label><input type="checkbox" name="group[]" value="<?php echo $group->id ?>"> <?php echo $group->name ?> (<?php echo $group->users ?>)</label>
               </div>
             <?php endforeach; ?>

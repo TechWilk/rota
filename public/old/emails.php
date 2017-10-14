@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $editbandID = $_POST['band'];
 
     if ($editskillID != '') {
-        $sql = ("INSERT INTO cr_eventPeople (eventID, skillID) VALUES ('$editeventID', '$editskillID')");
+        $sql = ("INSERT INTO eventPeople (eventID, skillID) VALUES ('$editeventID', '$editskillID')");
         if (!mysqli_query(db(), $sql)) {
             die('Error: '.mysqli_error(db()));
         }
@@ -80,13 +80,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if ($editbandID != '') {
-        $sqlbandMembers = "SELECT * FROM cr_bandMembers WHERE bandID = '$editbandID'";
+        $sqlbandMembers = "SELECT * FROM bandMembers WHERE bandID = '$editbandID'";
         $resultbandMembers = mysqli_query(db(), $sqlbandMembers) or die(mysqli_error(db()));
 
         while ($bandMember = mysqli_fetch_array($resultbandMembers, MYSQLI_ASSOC)) {
             $editskillID = $bandMember['skillID'];
 
-            $sql = ("INSERT INTO cr_eventPeople (eventID, skillID) VALUES ('$editeventID', '$editskillID')");
+            $sql = ("INSERT INTO eventPeople (eventID, skillID) VALUES ('$editeventID', '$editskillID')");
             if (!mysqli_query(db(), $sql)) {
                 die('Error: '.mysqli_error(db()));
             }
@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 $formatting = 'light';
-$sql = 'select * FROM cr_subscriptions';
+$sql = 'select * FROM subscriptions';
 $result = mysqli_query(db(), $sql);
 
 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {

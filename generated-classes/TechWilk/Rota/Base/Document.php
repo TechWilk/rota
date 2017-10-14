@@ -19,7 +19,7 @@ use TechWilk\Rota\DocumentQuery as ChildDocumentQuery;
 use TechWilk\Rota\Map\DocumentTableMap;
 
 /**
- * Base class that represents a row from the 'cr_documents' table.
+ * Base class that represents a row from the 'documents' table.
  *
  *
  *
@@ -773,7 +773,7 @@ abstract class Document implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_documents (%s) VALUES (%s)',
+            'INSERT INTO documents (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );

@@ -15,7 +15,7 @@ use TechWilk\Rota\User;
 use TechWilk\Rota\UserQuery;
 
 /**
- * This class defines the structure of the 'cr_users' table.
+ * This class defines the structure of the 'users' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class UserTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_users';
+    const TABLE_NAME = 'users';
 
     /**
      * The related Propel class for this table
@@ -73,82 +73,82 @@ class UserTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_users.id';
+    const COL_ID = 'users.id';
 
     /**
      * the column name for the firstName field
      */
-    const COL_FIRSTNAME = 'cr_users.firstName';
+    const COL_FIRSTNAME = 'users.firstName';
 
     /**
      * the column name for the lastName field
      */
-    const COL_LASTNAME = 'cr_users.lastName';
+    const COL_LASTNAME = 'users.lastName';
 
     /**
      * the column name for the username field
      */
-    const COL_USERNAME = 'cr_users.username';
+    const COL_USERNAME = 'users.username';
 
     /**
      * the column name for the password field
      */
-    const COL_PASSWORD = 'cr_users.password';
+    const COL_PASSWORD = 'users.password';
 
     /**
      * the column name for the isAdmin field
      */
-    const COL_ISADMIN = 'cr_users.isAdmin';
+    const COL_ISADMIN = 'users.isAdmin';
 
     /**
      * the column name for the email field
      */
-    const COL_EMAIL = 'cr_users.email';
+    const COL_EMAIL = 'users.email';
 
     /**
      * the column name for the mobile field
      */
-    const COL_MOBILE = 'cr_users.mobile';
+    const COL_MOBILE = 'users.mobile';
 
     /**
      * the column name for the isOverviewRecipient field
      */
-    const COL_ISOVERVIEWRECIPIENT = 'cr_users.isOverviewRecipient';
+    const COL_ISOVERVIEWRECIPIENT = 'users.isOverviewRecipient';
 
     /**
      * the column name for the recieveReminderEmails field
      */
-    const COL_RECIEVEREMINDEREMAILS = 'cr_users.recieveReminderEmails';
+    const COL_RECIEVEREMINDEREMAILS = 'users.recieveReminderEmails';
 
     /**
      * the column name for the isBandAdmin field
      */
-    const COL_ISBANDADMIN = 'cr_users.isBandAdmin';
+    const COL_ISBANDADMIN = 'users.isBandAdmin';
 
     /**
      * the column name for the isEventEditor field
      */
-    const COL_ISEVENTEDITOR = 'cr_users.isEventEditor';
+    const COL_ISEVENTEDITOR = 'users.isEventEditor';
 
     /**
      * the column name for the lastLogin field
      */
-    const COL_LASTLOGIN = 'cr_users.lastLogin';
+    const COL_LASTLOGIN = 'users.lastLogin';
 
     /**
      * the column name for the passwordChanged field
      */
-    const COL_PASSWORDCHANGED = 'cr_users.passwordChanged';
+    const COL_PASSWORDCHANGED = 'users.passwordChanged';
 
     /**
      * the column name for the created field
      */
-    const COL_CREATED = 'cr_users.created';
+    const COL_CREATED = 'users.created';
 
     /**
      * the column name for the updated field
      */
-    const COL_UPDATED = 'cr_users.updated';
+    const COL_UPDATED = 'users.updated';
 
     /**
      * The default string format for model objects of the related table
@@ -193,7 +193,7 @@ class UserTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_users');
+        $this->setName('users');
         $this->setPhpName('User');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\User');
@@ -550,7 +550,7 @@ class UserTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_users table.
+     * Deletes all rows from the users table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

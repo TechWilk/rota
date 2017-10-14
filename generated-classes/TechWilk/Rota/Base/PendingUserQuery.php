@@ -15,7 +15,7 @@ use TechWilk\Rota\PendingUserQuery as ChildPendingUserQuery;
 use TechWilk\Rota\Map\PendingUserTableMap;
 
 /**
- * Base class that represents a query for the 'cr_pendingUsers' table.
+ * Base class that represents a query for the 'pendingUsers' table.
  *
  *
  *
@@ -176,7 +176,7 @@ abstract class PendingUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, socialId, firstName, lastName, email, approved, declined, source FROM cr_pendingUsers WHERE id = :p0';
+        $sql = 'SELECT id, socialId, firstName, lastName, email, approved, declined, source FROM pendingUsers WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -517,7 +517,7 @@ abstract class PendingUserQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_pendingUsers table.
+     * Deletes all rows from the pendingUsers table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

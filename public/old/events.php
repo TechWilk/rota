@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $editbandID = $_POST['band'];
 
     if ($editskillID != '') {
-        $sql = ("INSERT INTO cr_eventPeople (eventId, userRoleId) VALUES ('$editeventID', '$editskillID')");
+        $sql = ("INSERT INTO eventPeople (eventId, userRoleId) VALUES ('$editeventID', '$editskillID')");
         if (!mysqli_query(db(), $sql)) {
             die('Error: '.mysqli_error(db()));
         }
@@ -117,13 +117,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if ($editbandID != '') {
-        $sqlbandMembers = "SELECT * FROM cr_bandMembers WHERE bandID = '$editbandID'";
+        $sqlbandMembers = "SELECT * FROM bandMembers WHERE bandID = '$editbandID'";
         $resultbandMembers = mysqli_query(db(), $sqlbandMembers) or die(mysqli_error(db()));
 
         while ($bandMember = mysqli_fetch_object($resultbandMembers)) {
             $editskillID = $bandMember->skillID;
 
-            $sql = ("INSERT INTO cr_eventPeople (eventId, userRoleId) VALUES ('$editeventID', '$editskillID')");
+            $sql = ("INSERT INTO eventPeople (eventId, userRoleId) VALUES ('$editeventID', '$editskillID')");
             if (!mysqli_query(db(), $sql)) {
                 die('Error: '.mysqli_error(db()));
             }
@@ -155,7 +155,7 @@ if (siteSettings()->getLoggedInShowSnapshotButton() == 1) {
 }
 
 if (isAdmin()) {
-    $sql = 'SELECT COUNT(id) AS pendingSwaps FROM cr_swaps WHERE accepted = 0 AND declined = 0';
+    $sql = 'SELECT COUNT(id) AS pendingSwaps FROM swaps WHERE accepted = 0 AND declined = 0';
     $results = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $ob = mysqli_fetch_object($results);
 
@@ -172,7 +172,7 @@ if (isAdmin()) {
                 if ($_SESSION['onlyShowUserEvents'] == '0' && $filter == '') {
                     echo 'All Events';
                 } elseif ($filter != '') {
-                    $mysqli_query = "SELECT DISTINCT name FROM cr_eventTypes WHERE id = $filter";
+                    $mysqli_query = "SELECT DISTINCT name FROM eventTypes WHERE id = $filter";
                     $result = mysqli_query(db(), $mysqli_query) or die(mysqli_error(db()));
                     $row = mysqli_fetch_object($result);
 
@@ -240,11 +240,11 @@ if (isAdmin()) {
 							eg.name AS eventGroup,
 							DATE_FORMAT(e.date,'%m/%d/%Y %H:%i:%S') AS sundayDate,
 							DATE_FORMAT(e.rehearsalDate,'%m/%d/%Y %H:%i:%S') AS rehearsalDateFormatted
-							FROM cr_events e
-							LEFT JOIN cr_eventTypes et ON e.type = et.id
-							LEFT JOIN cr_eventGroups eg ON e.eventGroup = eg.id
-							LEFT JOIN cr_eventSubTypes est ON e.subType = est.id
-							LEFT JOIN cr_locations l ON e.location = l.id
+							FROM events e
+							LEFT JOIN eventTypes et ON e.type = et.id
+							LEFT JOIN eventGroups eg ON e.eventGroup = eg.id
+							LEFT JOIN eventSubTypes est ON e.subType = est.id
+							LEFT JOIN locations l ON e.location = l.id
 							WHERE e.date >= DATE(NOW())
 							AND e.removed = 0
 							ORDER BY ".$dateOrderBy;
@@ -260,11 +260,11 @@ if (isAdmin()) {
 							eg.name AS eventGroup,
 							DATE_FORMAT(e.date,'%m/%d/%Y %H:%i:%S') AS sundayDate,
 							DATE_FORMAT(e.rehearsalDate,'%m/%d/%Y %H:%i:%S') AS rehearsalDateFormatted
-							FROM cr_events e
-							LEFT JOIN cr_eventTypes et ON e.type = et.id
-							LEFT JOIN cr_eventGroups eg ON e.eventGroup = eg.id
-							LEFT JOIN cr_eventSubTypes est ON e.subType = est.id
-							LEFT JOIN cr_locations l ON e.location = l.id
+							FROM events e
+							LEFT JOIN eventTypes et ON e.type = et.id
+							LEFT JOIN eventGroups eg ON e.eventGroup = eg.id
+							LEFT JOIN eventSubTypes est ON e.subType = est.id
+							LEFT JOIN locations l ON e.location = l.id
 							WHERE e.type = '$filter'
 							AND e.date >= DATE(NOW())
 							AND e.removed = 0
@@ -284,14 +284,14 @@ if (isAdmin()) {
 							ur.userId AS userID
 
 
-							FROM cr_events e
-							LEFT JOIN cr_eventTypes et ON e.type = et.id
-							LEFT JOIN cr_eventGroups eg ON e.eventGroup = eg.id
-							LEFT JOIN cr_eventSubTypes est ON e.subType = est.id
-							LEFT JOIN cr_locations l ON e.location = l.id
-							LEFT JOIN cr_eventPeople ep ON ep.eventId = e.id
-							INNER JOIN cr_userRoles ur ON ep.userRoleId = ur.id
-							INNER JOIN cr_roles r ON r.id = ur.roleId
+							FROM events e
+							LEFT JOIN eventTypes et ON e.type = et.id
+							LEFT JOIN eventGroups eg ON e.eventGroup = eg.id
+							LEFT JOIN eventSubTypes est ON e.subType = est.id
+							LEFT JOIN locations l ON e.location = l.id
+							LEFT JOIN eventPeople ep ON ep.eventId = e.id
+							INNER JOIN userRoles ur ON ep.userRoleId = ur.id
+							INNER JOIN roles r ON r.id = ur.roleId
 							WHERE e.date >= DATE(NOW())
 							AND ur.userId = '$view'
 							AND e.removed = 0
@@ -376,12 +376,12 @@ if (isAdmin()) {
 												ep.notified AS `notified`,
 												g.id AS `group`,
 												g.name AS `groupName`,
-												(SELECT sw.id FROM cr_swaps sw WHERE sw.accepted = 0 AND sw.declined = 0 AND sw.eventPersonId = ep.id ORDER BY sw.id DESC LIMIT 1) AS swap
-												FROM cr_userRoles ur
-													INNER JOIN cr_roles r ON r.id  = ur.roleId
-													INNER JOIN cr_groups g ON g.id = r.groupId
-													INNER JOIN cr_users u ON u.id = ur.userId
-													INNER JOIN cr_eventPeople ep ON ep.userRoleId = ur.id
+												(SELECT sw.id FROM swaps sw WHERE sw.accepted = 0 AND sw.declined = 0 AND sw.eventPersonId = ep.id ORDER BY sw.id DESC LIMIT 1) AS swap
+												FROM userRoles ur
+													INNER JOIN roles r ON r.id  = ur.roleId
+													INNER JOIN groups g ON g.id = r.groupId
+													INNER JOIN users u ON u.id = ur.userId
+													INNER JOIN eventPeople ep ON ep.userRoleId = ur.id
 												WHERE ep.eventId = '$eventID'
 													AND ep.removed = 0
 												ORDER BY g.name, r.name";

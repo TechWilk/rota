@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\Document as BaseDocument;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_documents' table.
+ * Skeleton subclass for representing a row from the 'documents' table.
  *
  *
  *

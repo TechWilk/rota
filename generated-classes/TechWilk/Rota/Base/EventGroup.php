@@ -24,7 +24,7 @@ use TechWilk\Rota\Map\EventGroupTableMap;
 use TechWilk\Rota\Map\EventTableMap;
 
 /**
- * Base class that represents a row from the 'cr_eventGroups' table.
+ * Base class that represents a row from the 'eventGroups' table.
  *
  *
  *
@@ -785,7 +785,7 @@ abstract class EventGroup implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_eventGroups (%s) VALUES (%s)',
+            'INSERT INTO eventGroups (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -926,7 +926,7 @@ abstract class EventGroup implements ActiveRecordInterface
                         $key = 'events';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_eventss';
+                        $key = 'eventss';
                         break;
                     default:
                         $key = 'Events';

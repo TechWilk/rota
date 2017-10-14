@@ -16,7 +16,7 @@ use TechWilk\Rota\UserRoleQuery as ChildUserRoleQuery;
 use TechWilk\Rota\Map\UserRoleTableMap;
 
 /**
- * Base class that represents a query for the 'cr_userRoles' table.
+ * Base class that represents a query for the 'userRoles' table.
  *
  *
  *
@@ -209,7 +209,7 @@ abstract class UserRoleQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, userId, roleId, reserve FROM cr_userRoles WHERE id = :p0';
+        $sql = 'SELECT id, userId, roleId, reserve FROM userRoles WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -841,7 +841,7 @@ abstract class UserRoleQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_userRoles table.
+     * Deletes all rows from the userRoles table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

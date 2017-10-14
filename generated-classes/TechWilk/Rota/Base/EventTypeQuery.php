@@ -16,7 +16,7 @@ use TechWilk\Rota\EventTypeQuery as ChildEventTypeQuery;
 use TechWilk\Rota\Map\EventTypeTableMap;
 
 /**
- * Base class that represents a query for the 'cr_eventTypes' table.
+ * Base class that represents a query for the 'eventTypes' table.
  *
  *
  *
@@ -204,7 +204,7 @@ abstract class EventTypeQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, name, description, defaultDay, defaultTime, defaultRepitition, defaultLocationId, rehearsal, groupformat FROM cr_eventTypes WHERE id = :p0';
+        $sql = 'SELECT id, name, description, defaultDay, defaultTime, defaultRepitition, defaultLocationId, rehearsal, groupformat FROM eventTypes WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -800,7 +800,7 @@ abstract class EventTypeQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_eventTypes table.
+     * Deletes all rows from the eventTypes table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

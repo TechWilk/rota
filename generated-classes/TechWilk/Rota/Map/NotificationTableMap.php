@@ -15,7 +15,7 @@ use TechWilk\Rota\Notification;
 use TechWilk\Rota\NotificationQuery;
 
 /**
- * This class defines the structure of the 'cr_notifications' table.
+ * This class defines the structure of the 'notifications' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class NotificationTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_notifications';
+    const TABLE_NAME = 'notifications';
 
     /**
      * The related Propel class for this table
@@ -73,52 +73,52 @@ class NotificationTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_notifications.id';
+    const COL_ID = 'notifications.id';
 
     /**
      * the column name for the timestamp field
      */
-    const COL_TIMESTAMP = 'cr_notifications.timestamp';
+    const COL_TIMESTAMP = 'notifications.timestamp';
 
     /**
      * the column name for the userId field
      */
-    const COL_USERID = 'cr_notifications.userId';
+    const COL_USERID = 'notifications.userId';
 
     /**
      * the column name for the summary field
      */
-    const COL_SUMMARY = 'cr_notifications.summary';
+    const COL_SUMMARY = 'notifications.summary';
 
     /**
      * the column name for the body field
      */
-    const COL_BODY = 'cr_notifications.body';
+    const COL_BODY = 'notifications.body';
 
     /**
      * the column name for the link field
      */
-    const COL_LINK = 'cr_notifications.link';
+    const COL_LINK = 'notifications.link';
 
     /**
      * the column name for the type field
      */
-    const COL_TYPE = 'cr_notifications.type';
+    const COL_TYPE = 'notifications.type';
 
     /**
      * the column name for the seen field
      */
-    const COL_SEEN = 'cr_notifications.seen';
+    const COL_SEEN = 'notifications.seen';
 
     /**
      * the column name for the dismissed field
      */
-    const COL_DISMISSED = 'cr_notifications.dismissed';
+    const COL_DISMISSED = 'notifications.dismissed';
 
     /**
      * the column name for the archived field
      */
-    const COL_ARCHIVED = 'cr_notifications.archived';
+    const COL_ARCHIVED = 'notifications.archived';
 
     /**
      * The default string format for model objects of the related table
@@ -163,7 +163,7 @@ class NotificationTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_notifications');
+        $this->setName('notifications');
         $this->setPhpName('Notification');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\Notification');
@@ -172,7 +172,7 @@ class NotificationTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, 30, null);
         $this->addColumn('timestamp', 'Timestamp', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
-        $this->addForeignKey('userId', 'UserId', 'INTEGER', 'cr_users', 'id', true, 30, null);
+        $this->addForeignKey('userId', 'UserId', 'INTEGER', 'users', 'id', true, 30, null);
         $this->addColumn('summary', 'Summary', 'VARCHAR', true, 40, null);
         $this->addColumn('body', 'Body', 'LONGVARCHAR', true, null, null);
         $this->addColumn('link', 'Link', 'VARCHAR', false, 150, null);
@@ -433,7 +433,7 @@ class NotificationTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_notifications table.
+     * Deletes all rows from the notifications table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

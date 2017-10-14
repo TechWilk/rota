@@ -15,7 +15,7 @@ use TechWilk\Rota\Subscription;
 use TechWilk\Rota\SubscriptionQuery;
 
 /**
- * This class defines the structure of the 'cr_subscriptions' table.
+ * This class defines the structure of the 'subscriptions' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class SubscriptionTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_subscriptions';
+    const TABLE_NAME = 'subscriptions';
 
     /**
      * The related Propel class for this table
@@ -73,22 +73,22 @@ class SubscriptionTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_subscriptions.id';
+    const COL_ID = 'subscriptions.id';
 
     /**
      * the column name for the userid field
      */
-    const COL_USERID = 'cr_subscriptions.userid';
+    const COL_USERID = 'subscriptions.userid';
 
     /**
      * the column name for the categoryid field
      */
-    const COL_CATEGORYID = 'cr_subscriptions.categoryid';
+    const COL_CATEGORYID = 'subscriptions.categoryid';
 
     /**
      * the column name for the topicid field
      */
-    const COL_TOPICID = 'cr_subscriptions.topicid';
+    const COL_TOPICID = 'subscriptions.topicid';
 
     /**
      * The default string format for model objects of the related table
@@ -133,7 +133,7 @@ class SubscriptionTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_subscriptions');
+        $this->setName('subscriptions');
         $this->setPhpName('Subscription');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\Subscription');
@@ -371,7 +371,7 @@ class SubscriptionTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_subscriptions table.
+     * Deletes all rows from the subscriptions table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

@@ -16,7 +16,7 @@ use TechWilk\Rota\LoginFailure;
 use TechWilk\Rota\LoginFailureQuery;
 
 /**
- * This class defines the structure of the 'cr_loginFailures' table.
+ * This class defines the structure of the 'loginFailures' table.
  *
  *
  *
@@ -44,7 +44,7 @@ class LoginFailureTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_loginFailures';
+    const TABLE_NAME = 'loginFailures';
 
     /**
      * The related Propel class for this table
@@ -74,17 +74,17 @@ class LoginFailureTableMap extends TableMap
     /**
      * the column name for the username field
      */
-    const COL_USERNAME = 'cr_loginFailures.username';
+    const COL_USERNAME = 'loginFailures.username';
 
     /**
      * the column name for the ipAddress field
      */
-    const COL_IPADDRESS = 'cr_loginFailures.ipAddress';
+    const COL_IPADDRESS = 'loginFailures.ipAddress';
 
     /**
      * the column name for the timestamp field
      */
-    const COL_TIMESTAMP = 'cr_loginFailures.timestamp';
+    const COL_TIMESTAMP = 'loginFailures.timestamp';
 
     /**
      * The default string format for model objects of the related table
@@ -129,7 +129,7 @@ class LoginFailureTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_loginFailures');
+        $this->setName('loginFailures');
         $this->setPhpName('LoginFailure');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\LoginFailure');
@@ -354,7 +354,7 @@ class LoginFailureTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_loginFailures table.
+     * Deletes all rows from the loginFailures table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

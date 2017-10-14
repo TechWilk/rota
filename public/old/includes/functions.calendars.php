@@ -10,7 +10,7 @@ function createCalendarToken($userId, $format, $description)
 
     $token = mysqli_real_escape_string(db(), RandomPassword(30, true, true, true));
 
-    $sql = "INSERT INTO cr_calendarTokens (userId, format, token, description) VALUES ($userId, '$format', '$token', '$description')";
+    $sql = "INSERT INTO calendarTokens (userId, format, token, description) VALUES ($userId, '$format', '$token', '$description')";
     if (mysqli_query(db(), $sql)) {
         return $token;
     } else {
@@ -26,7 +26,7 @@ function checkCalendarToken($userId, $format, $token)
     $format = mysqli_real_escape_string(db(), $format);
     $token = mysqli_real_escape_string(db(), $token);
 
-    $sql = "SELECT COUNT(*) AS count FROM cr_calendarTokens WHERE userId = $userId AND format = '$format' AND token = '$token' AND revoked = false";
+    $sql = "SELECT COUNT(*) AS count FROM calendarTokens WHERE userId = $userId AND format = '$format' AND token = '$token' AND revoked = false";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $ob = mysqli_fetch_object($result);
 
@@ -41,7 +41,7 @@ function revokeCalendarToken($id)
 {
     $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
 
-    $sql = "UPDATE cr_calendarTokens SET revoked = true WHERE id = $id";
+    $sql = "UPDATE calendarTokens SET revoked = true WHERE id = $id";
     if (mysqli_query(db(), $sql)) {
         return true;
     } else {
@@ -53,7 +53,7 @@ function calendarTokensForUser($userId)
 {
     $userId = filter_var($userId, FILTER_SANITIZE_NUMBER_INT);
 
-    $sql = "SELECT id, format, description, created, revoked FROM cr_calendarTokens WHERE userId = $userId";
+    $sql = "SELECT id, format, description, created, revoked FROM calendarTokens WHERE userId = $userId";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     while ($ob = mysqli_fetch_object($result)) {
         $calendars[] = $ob;
