@@ -322,6 +322,30 @@
     </foreign-key>
   </table>
 
+  <table name="cr_swapChanges" idMethod="native" phpName="Swap">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="swapId" phpName="EventPersonId" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="fromUserRoleId" phpName="OldUserRoleId" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="toUserRoleId" phpName="NewUserRoleId" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="actioned" phpName="Accepted" type="INTEGER" size="1" required="true" defaultValue="0"/>
+    <behavior name="timestampable">
+      <parameter name="create_column" value="created" />
+      <parameter name="update_column" value="updated" />
+    </behavior>
+    <foreign-key foreignTable="cr_eventPeople">
+      <reference local="eventPersonId" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="cr_userRoles" phpName="OldUserRole">
+      <reference local="oldUserRoleId" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="cr_userRoles" phpName="NewUserRole">
+      <reference local="newUserRoleId" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="cr_users">
+      <reference local="requestedBy" foreign="id" />
+    </foreign-key>
+  </table>
+
 
   <table name="cr_userRoles" idMethod="native" phpName="UserRole">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
