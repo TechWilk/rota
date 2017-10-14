@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\EventPerson as BaseEventPerson;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_eventPeople' table.
+ * Skeleton subclass for representing a row from the 'eventPeople' table.
  *
  *
  *

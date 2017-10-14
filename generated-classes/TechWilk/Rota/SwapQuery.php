@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\SwapQuery as BaseSwapQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cr_swaps' table.
+ * Skeleton subclass for performing query and update operations on the 'swaps' table.
  *
  *
  *

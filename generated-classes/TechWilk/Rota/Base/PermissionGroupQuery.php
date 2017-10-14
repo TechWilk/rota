@@ -16,7 +16,7 @@ use TechWilk\Rota\PermissionGroupQuery as ChildPermissionGroupQuery;
 use TechWilk\Rota\Map\PermissionGroupTableMap;
 
 /**
- * Base class that represents a query for the 'cr_permissionGroups' table.
+ * Base class that represents a query for the 'permissionGroups' table.
  *
  *
  *
@@ -174,7 +174,7 @@ abstract class PermissionGroupQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, name, description, created, updated FROM cr_permissionGroups WHERE id = :p0';
+        $sql = 'SELECT id, name, description, created, updated FROM permissionGroups WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -529,7 +529,7 @@ abstract class PermissionGroupQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_permissionGroups table.
+     * Deletes all rows from the permissionGroups table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

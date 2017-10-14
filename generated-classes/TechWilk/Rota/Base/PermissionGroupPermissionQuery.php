@@ -16,7 +16,7 @@ use TechWilk\Rota\PermissionGroupPermissionQuery as ChildPermissionGroupPermissi
 use TechWilk\Rota\Map\PermissionGroupPermissionTableMap;
 
 /**
- * Base class that represents a query for the 'cr_permissionGroupPermissions' table.
+ * Base class that represents a query for the 'permissionGroupPermissions' table.
  *
  *
  *
@@ -174,7 +174,7 @@ abstract class PermissionGroupPermissionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, permissionId, permissionGroupId FROM cr_permissionGroupPermissions WHERE id = :p0';
+        $sql = 'SELECT id, permissionId, permissionGroupId FROM permissionGroupPermissions WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -560,7 +560,7 @@ abstract class PermissionGroupPermissionQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_permissionGroupPermissions table.
+     * Deletes all rows from the permissionGroupPermissions table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

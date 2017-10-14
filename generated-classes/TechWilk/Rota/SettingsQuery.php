@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\SettingsQuery as BaseSettingsQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cr_settings' table.
+ * Skeleton subclass for performing query and update operations on the 'settings' table.
  *
  *
  *

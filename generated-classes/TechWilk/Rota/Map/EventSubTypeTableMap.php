@@ -15,7 +15,7 @@ use TechWilk\Rota\EventSubType;
 use TechWilk\Rota\EventSubTypeQuery;
 
 /**
- * This class defines the structure of the 'cr_eventSubTypes' table.
+ * This class defines the structure of the 'eventSubTypes' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class EventSubTypeTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_eventSubTypes';
+    const TABLE_NAME = 'eventSubTypes';
 
     /**
      * The related Propel class for this table
@@ -73,17 +73,17 @@ class EventSubTypeTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_eventSubTypes.id';
+    const COL_ID = 'eventSubTypes.id';
 
     /**
      * the column name for the name field
      */
-    const COL_NAME = 'cr_eventSubTypes.name';
+    const COL_NAME = 'eventSubTypes.name';
 
     /**
      * the column name for the description field
      */
-    const COL_DESCRIPTION = 'cr_eventSubTypes.description';
+    const COL_DESCRIPTION = 'eventSubTypes.description';
 
     /**
      * The default string format for model objects of the related table
@@ -128,7 +128,7 @@ class EventSubTypeTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_eventSubTypes');
+        $this->setName('eventSubTypes');
         $this->setPhpName('EventSubType');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\EventSubType');
@@ -370,7 +370,7 @@ class EventSubTypeTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_eventSubTypes table.
+     * Deletes all rows from the eventSubTypes table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\BandMemberQuery as BaseBandMemberQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cr_bandMembers' table.
+ * Skeleton subclass for performing query and update operations on the 'bandMembers' table.
  *
  *
  *

@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\LocationQuery as BaseLocationQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cr_locations' table.
+ * Skeleton subclass for performing query and update operations on the 'locations' table.
  *
  *
  *

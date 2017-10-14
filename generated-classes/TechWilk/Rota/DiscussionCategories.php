@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\DiscussionCategories as BaseDiscussionCategories;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_discussionCategories' table.
+ * Skeleton subclass for representing a row from the 'discussionCategories' table.
  *
  *
  *

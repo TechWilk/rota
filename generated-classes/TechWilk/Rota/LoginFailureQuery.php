@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\LoginFailureQuery as BaseLoginFailureQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cr_loginFailures' table.
+ * Skeleton subclass for performing query and update operations on the 'loginFailures' table.
  *
  *
  *

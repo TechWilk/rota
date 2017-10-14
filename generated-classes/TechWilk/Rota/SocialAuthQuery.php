@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\SocialAuthQuery as BaseSocialAuthQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cr_socialAuth' table.
+ * Skeleton subclass for performing query and update operations on the 'socialAuth' table.
  *
  *
  *

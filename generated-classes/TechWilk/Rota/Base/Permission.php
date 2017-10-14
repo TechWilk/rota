@@ -27,7 +27,7 @@ use TechWilk\Rota\Map\PermissionTableMap;
 use TechWilk\Rota\Map\UserPermissionTableMap;
 
 /**
- * Base class that represents a row from the 'cr_permissions' table.
+ * Base class that represents a row from the 'permissions' table.
  *
  *
  *
@@ -773,7 +773,7 @@ abstract class Permission implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_permissions (%s) VALUES (%s)',
+            'INSERT INTO permissions (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -916,7 +916,7 @@ abstract class Permission implements ActiveRecordInterface
                         $key = 'userPermissions';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_userPermissionss';
+                        $key = 'userPermissionss';
                         break;
                     default:
                         $key = 'UserPermissions';
@@ -930,7 +930,7 @@ abstract class Permission implements ActiveRecordInterface
                         $key = 'permissionGroupPermissions';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_permissionGroupPermissionss';
+                        $key = 'permissionGroupPermissionss';
                         break;
                     default:
                         $key = 'PermissionGroupPermissions';

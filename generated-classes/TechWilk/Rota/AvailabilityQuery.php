@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\AvailabilityQuery as BaseAvailabilityQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cr_availability' table.
+ * Skeleton subclass for performing query and update operations on the 'availability' table.
  *
  *
  *

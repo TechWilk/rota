@@ -53,7 +53,7 @@ use TechWilk\Rota\Map\UserRoleTableMap;
 use TechWilk\Rota\Map\UserTableMap;
 
 /**
- * Base class that represents a row from the 'cr_users' table.
+ * Base class that represents a row from the 'users' table.
  *
  *
  *
@@ -1714,7 +1714,7 @@ abstract class User implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_users (%s) VALUES (%s)',
+            'INSERT INTO users (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -1957,7 +1957,7 @@ abstract class User implements ActiveRecordInterface
                         $key = 'calendarTokens';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_calendarTokenss';
+                        $key = 'calendarTokenss';
                         break;
                     default:
                         $key = 'CalendarTokens';
@@ -1971,7 +1971,7 @@ abstract class User implements ActiveRecordInterface
                         $key = 'comments';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_commentss';
+                        $key = 'commentss';
                         break;
                     default:
                         $key = 'Comments';
@@ -1985,7 +1985,7 @@ abstract class User implements ActiveRecordInterface
                         $key = 'events';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_eventss';
+                        $key = 'eventss';
                         break;
                     default:
                         $key = 'Events';
@@ -1999,7 +1999,7 @@ abstract class User implements ActiveRecordInterface
                         $key = 'availabilities';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_availabilities';
+                        $key = 'availabilities';
                         break;
                     default:
                         $key = 'Availabilities';
@@ -2013,7 +2013,7 @@ abstract class User implements ActiveRecordInterface
                         $key = 'notifications';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_notificationss';
+                        $key = 'notificationss';
                         break;
                     default:
                         $key = 'Notifications';
@@ -2027,7 +2027,7 @@ abstract class User implements ActiveRecordInterface
                         $key = 'socialAuths';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_socialAuths';
+                        $key = 'socialAuths';
                         break;
                     default:
                         $key = 'SocialAuths';
@@ -2041,7 +2041,7 @@ abstract class User implements ActiveRecordInterface
                         $key = 'statistics';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_statisticss';
+                        $key = 'statisticss';
                         break;
                     default:
                         $key = 'Statistics';
@@ -2055,7 +2055,7 @@ abstract class User implements ActiveRecordInterface
                         $key = 'swaps';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_swapss';
+                        $key = 'swapss';
                         break;
                     default:
                         $key = 'Swaps';
@@ -2069,7 +2069,7 @@ abstract class User implements ActiveRecordInterface
                         $key = 'userRoles';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_userRoless';
+                        $key = 'userRoless';
                         break;
                     default:
                         $key = 'UserRoles';
@@ -2083,7 +2083,7 @@ abstract class User implements ActiveRecordInterface
                         $key = 'userPermissions';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_userPermissionss';
+                        $key = 'userPermissionss';
                         break;
                     default:
                         $key = 'UserPermissions';

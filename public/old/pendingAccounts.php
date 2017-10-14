@@ -56,7 +56,7 @@ if (empty($id)) {
 
 // setup page
 
-$sql = "SELECT socialId, firstName, lastName, email, approved, declined, source FROM cr_pendingUsers WHERE id = $id";
+$sql = "SELECT socialId, firstName, lastName, email, approved, declined, source FROM pendingUsers WHERE id = $id";
 $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 $user = mysqli_fetch_object($result);
 

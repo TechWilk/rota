@@ -58,7 +58,7 @@ session_start();
 //
 // If you do not want to monitor output you can use the dummy file /dev/null.
 // An example is given in the shell script:
-//   + cr_cron.sh
+//   + cron.sh
 // Before using, you need to adjust ChurchRota installation paths in that file
 //
 //--------------------------------------------------------------------------------
@@ -67,7 +67,7 @@ session_start();
 // For setting up a cron job you need to add a cron entry like this,
 // to run 'cr_daily.php' daily e.g at 5 after midnight:
 //     bash# crontab -e
-//     5 0 * * * cd <your-churchrota-directory> ; ./cr_cron.sh
+//     5 0 * * * cd <your-churchrota-directory> ; ./cron.sh
 //
 // For more details see your webserver's or provider's documentation on howto
 // configure CRON jobs - or search the web.
@@ -110,7 +110,7 @@ MESSAGE;
                         id,
                         date
                     FROM
-                        cr_events
+                        events
                     WHERE
                         date >= CURDATE()
                         AND date_format( date , "%y-%m-%d" )

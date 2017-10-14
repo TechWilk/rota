@@ -27,7 +27,7 @@ use TechWilk\Rota\Map\EventTypeTableMap;
 use TechWilk\Rota\Map\LocationTableMap;
 
 /**
- * Base class that represents a row from the 'cr_locations' table.
+ * Base class that represents a row from the 'locations' table.
  *
  *
  *
@@ -734,7 +734,7 @@ abstract class Location implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_locations (%s) VALUES (%s)',
+            'INSERT INTO locations (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -868,7 +868,7 @@ abstract class Location implements ActiveRecordInterface
                         $key = 'eventTypes';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_eventTypess';
+                        $key = 'eventTypess';
                         break;
                     default:
                         $key = 'EventTypes';
@@ -882,7 +882,7 @@ abstract class Location implements ActiveRecordInterface
                         $key = 'events';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_eventss';
+                        $key = 'eventss';
                         break;
                     default:
                         $key = 'Events';

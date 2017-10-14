@@ -15,7 +15,7 @@ use TechWilk\Rota\PermissionGroup;
 use TechWilk\Rota\PermissionGroupQuery;
 
 /**
- * This class defines the structure of the 'cr_permissionGroups' table.
+ * This class defines the structure of the 'permissionGroups' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class PermissionGroupTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_permissionGroups';
+    const TABLE_NAME = 'permissionGroups';
 
     /**
      * The related Propel class for this table
@@ -73,27 +73,27 @@ class PermissionGroupTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_permissionGroups.id';
+    const COL_ID = 'permissionGroups.id';
 
     /**
      * the column name for the name field
      */
-    const COL_NAME = 'cr_permissionGroups.name';
+    const COL_NAME = 'permissionGroups.name';
 
     /**
      * the column name for the description field
      */
-    const COL_DESCRIPTION = 'cr_permissionGroups.description';
+    const COL_DESCRIPTION = 'permissionGroups.description';
 
     /**
      * the column name for the created field
      */
-    const COL_CREATED = 'cr_permissionGroups.created';
+    const COL_CREATED = 'permissionGroups.created';
 
     /**
      * the column name for the updated field
      */
-    const COL_UPDATED = 'cr_permissionGroups.updated';
+    const COL_UPDATED = 'permissionGroups.updated';
 
     /**
      * The default string format for model objects of the related table
@@ -138,7 +138,7 @@ class PermissionGroupTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_permissionGroups');
+        $this->setName('permissionGroups');
         $this->setPhpName('PermissionGroup');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\PermissionGroup');
@@ -399,7 +399,7 @@ class PermissionGroupTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_permissionGroups table.
+     * Deletes all rows from the permissionGroups table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

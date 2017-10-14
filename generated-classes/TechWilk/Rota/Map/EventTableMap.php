@@ -15,7 +15,7 @@ use TechWilk\Rota\Event;
 use TechWilk\Rota\EventQuery;
 
 /**
- * This class defines the structure of the 'cr_events' table.
+ * This class defines the structure of the 'events' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class EventTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_events';
+    const TABLE_NAME = 'events';
 
     /**
      * The related Propel class for this table
@@ -73,82 +73,82 @@ class EventTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_events.id';
+    const COL_ID = 'events.id';
 
     /**
      * the column name for the date field
      */
-    const COL_DATE = 'cr_events.date';
+    const COL_DATE = 'events.date';
 
     /**
      * the column name for the name field
      */
-    const COL_NAME = 'cr_events.name';
+    const COL_NAME = 'events.name';
 
     /**
      * the column name for the createdBy field
      */
-    const COL_CREATEDBY = 'cr_events.createdBy';
+    const COL_CREATEDBY = 'events.createdBy';
 
     /**
      * the column name for the rehearsalDate field
      */
-    const COL_REHEARSALDATE = 'cr_events.rehearsalDate';
+    const COL_REHEARSALDATE = 'events.rehearsalDate';
 
     /**
      * the column name for the type field
      */
-    const COL_TYPE = 'cr_events.type';
+    const COL_TYPE = 'events.type';
 
     /**
      * the column name for the subType field
      */
-    const COL_SUBTYPE = 'cr_events.subType';
+    const COL_SUBTYPE = 'events.subType';
 
     /**
      * the column name for the location field
      */
-    const COL_LOCATION = 'cr_events.location';
+    const COL_LOCATION = 'events.location';
 
     /**
      * the column name for the notified field
      */
-    const COL_NOTIFIED = 'cr_events.notified';
+    const COL_NOTIFIED = 'events.notified';
 
     /**
      * the column name for the rehearsal field
      */
-    const COL_REHEARSAL = 'cr_events.rehearsal';
+    const COL_REHEARSAL = 'events.rehearsal';
 
     /**
      * the column name for the removed field
      */
-    const COL_REMOVED = 'cr_events.removed';
+    const COL_REMOVED = 'events.removed';
 
     /**
      * the column name for the eventGroup field
      */
-    const COL_EVENTGROUP = 'cr_events.eventGroup';
+    const COL_EVENTGROUP = 'events.eventGroup';
 
     /**
      * the column name for the sermonTitle field
      */
-    const COL_SERMONTITLE = 'cr_events.sermonTitle';
+    const COL_SERMONTITLE = 'events.sermonTitle';
 
     /**
      * the column name for the bibleVerse field
      */
-    const COL_BIBLEVERSE = 'cr_events.bibleVerse';
+    const COL_BIBLEVERSE = 'events.bibleVerse';
 
     /**
      * the column name for the created field
      */
-    const COL_CREATED = 'cr_events.created';
+    const COL_CREATED = 'events.created';
 
     /**
      * the column name for the updated field
      */
-    const COL_UPDATED = 'cr_events.updated';
+    const COL_UPDATED = 'events.updated';
 
     /**
      * The default string format for model objects of the related table
@@ -193,7 +193,7 @@ class EventTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_events');
+        $this->setName('events');
         $this->setPhpName('Event');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\Event');
@@ -203,15 +203,15 @@ class EventTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, 6, null);
         $this->addColumn('date', 'Date', 'TIMESTAMP', true, null, '0000-00-00 00:00:00');
         $this->addColumn('name', 'Name', 'LONGVARCHAR', true, null, null);
-        $this->addForeignKey('createdBy', 'CreatedBy', 'INTEGER', 'cr_users', 'id', true, null, 0);
+        $this->addForeignKey('createdBy', 'CreatedBy', 'INTEGER', 'users', 'id', true, null, 0);
         $this->addColumn('rehearsalDate', 'RehearsalDate', 'TIMESTAMP', true, null, '0000-00-00 00:00:00');
-        $this->addForeignKey('type', 'EventTypeId', 'INTEGER', 'cr_eventTypes', 'id', true, 30, 0);
-        $this->addForeignKey('subType', 'EventSubTypeId', 'INTEGER', 'cr_eventSubTypes', 'id', true, 30, 0);
-        $this->addForeignKey('location', 'LocationId', 'INTEGER', 'cr_locations', 'id', true, null, 0);
+        $this->addForeignKey('type', 'EventTypeId', 'INTEGER', 'eventTypes', 'id', true, 30, 0);
+        $this->addForeignKey('subType', 'EventSubTypeId', 'INTEGER', 'eventSubTypes', 'id', true, 30, 0);
+        $this->addForeignKey('location', 'LocationId', 'INTEGER', 'locations', 'id', true, null, 0);
         $this->addColumn('notified', 'Notified', 'INTEGER', true, 2, 0);
         $this->addColumn('rehearsal', 'Rehearsal', 'INTEGER', true, null, 0);
         $this->addColumn('removed', 'Removed', 'SMALLINT', false, 1, 0);
-        $this->addForeignKey('eventGroup', 'EventGroupId', 'INTEGER', 'cr_eventGroups', 'id', false, 30, null);
+        $this->addForeignKey('eventGroup', 'EventGroupId', 'INTEGER', 'eventGroups', 'id', false, 30, null);
         $this->addColumn('sermonTitle', 'SermonTitle', 'VARCHAR', false, 64, null);
         $this->addColumn('bibleVerse', 'BibleVerse', 'VARCHAR', false, 64, null);
         $this->addColumn('created', 'Created', 'TIMESTAMP', false, null, null);
@@ -536,7 +536,7 @@ class EventTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_events table.
+     * Deletes all rows from the events table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

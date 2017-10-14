@@ -16,7 +16,7 @@ use TechWilk\Rota\EventPersonQuery as ChildEventPersonQuery;
 use TechWilk\Rota\Map\EventPersonTableMap;
 
 /**
- * Base class that represents a query for the 'cr_eventPeople' table.
+ * Base class that represents a query for the 'eventPeople' table.
  *
  *
  *
@@ -194,7 +194,7 @@ abstract class EventPersonQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, eventId, userRoleId, notified, removed FROM cr_eventPeople WHERE id = :p0';
+        $sql = 'SELECT id, eventId, userRoleId, notified, removed FROM eventPeople WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -735,7 +735,7 @@ abstract class EventPersonQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_eventPeople table.
+     * Deletes all rows from the eventPeople table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

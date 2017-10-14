@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\NotificationQuery as BaseNotificationQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cr_notifications' table.
+ * Skeleton subclass for performing query and update operations on the 'notifications' table.
  *
  *
  *

@@ -15,7 +15,7 @@ use TechWilk\Rota\EventGroup;
 use TechWilk\Rota\EventGroupQuery;
 
 /**
- * This class defines the structure of the 'cr_eventGroups' table.
+ * This class defines the structure of the 'eventGroups' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class EventGroupTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_eventGroups';
+    const TABLE_NAME = 'eventGroups';
 
     /**
      * The related Propel class for this table
@@ -73,22 +73,22 @@ class EventGroupTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_eventGroups.id';
+    const COL_ID = 'eventGroups.id';
 
     /**
      * the column name for the name field
      */
-    const COL_NAME = 'cr_eventGroups.name';
+    const COL_NAME = 'eventGroups.name';
 
     /**
      * the column name for the description field
      */
-    const COL_DESCRIPTION = 'cr_eventGroups.description';
+    const COL_DESCRIPTION = 'eventGroups.description';
 
     /**
      * the column name for the archived field
      */
-    const COL_ARCHIVED = 'cr_eventGroups.archived';
+    const COL_ARCHIVED = 'eventGroups.archived';
 
     /**
      * The default string format for model objects of the related table
@@ -133,7 +133,7 @@ class EventGroupTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_eventGroups');
+        $this->setName('eventGroups');
         $this->setPhpName('EventGroup');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\EventGroup');
@@ -378,7 +378,7 @@ class EventGroupTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_eventGroups table.
+     * Deletes all rows from the eventGroups table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

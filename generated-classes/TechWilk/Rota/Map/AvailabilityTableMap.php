@@ -15,7 +15,7 @@ use TechWilk\Rota\Availability;
 use TechWilk\Rota\AvailabilityQuery;
 
 /**
- * This class defines the structure of the 'cr_availability' table.
+ * This class defines the structure of the 'availability' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class AvailabilityTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_availability';
+    const TABLE_NAME = 'availability';
 
     /**
      * The related Propel class for this table
@@ -73,27 +73,27 @@ class AvailabilityTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_availability.id';
+    const COL_ID = 'availability.id';
 
     /**
      * the column name for the eventId field
      */
-    const COL_EVENTID = 'cr_availability.eventId';
+    const COL_EVENTID = 'availability.eventId';
 
     /**
      * the column name for the userId field
      */
-    const COL_USERID = 'cr_availability.userId';
+    const COL_USERID = 'availability.userId';
 
     /**
      * the column name for the available field
      */
-    const COL_AVAILABLE = 'cr_availability.available';
+    const COL_AVAILABLE = 'availability.available';
 
     /**
      * the column name for the comment field
      */
-    const COL_COMMENT = 'cr_availability.comment';
+    const COL_COMMENT = 'availability.comment';
 
     /**
      * The default string format for model objects of the related table
@@ -138,7 +138,7 @@ class AvailabilityTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_availability');
+        $this->setName('availability');
         $this->setPhpName('Availability');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\Availability');
@@ -146,8 +146,8 @@ class AvailabilityTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('eventId', 'EventId', 'INTEGER', 'cr_events', 'id', true, null, null);
-        $this->addForeignKey('userId', 'UserId', 'INTEGER', 'cr_users', 'id', true, null, null);
+        $this->addForeignKey('eventId', 'EventId', 'INTEGER', 'events', 'id', true, null, null);
+        $this->addForeignKey('userId', 'UserId', 'INTEGER', 'users', 'id', true, null, null);
         $this->addColumn('available', 'Available', 'BOOLEAN', true, 1, true);
         $this->addColumn('comment', 'Comment', 'VARCHAR', false, 64, null);
     } // initialize()
@@ -393,7 +393,7 @@ class AvailabilityTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_availability table.
+     * Deletes all rows from the availability table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

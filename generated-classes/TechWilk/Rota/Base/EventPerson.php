@@ -28,7 +28,7 @@ use TechWilk\Rota\Map\EventPersonTableMap;
 use TechWilk\Rota\Map\SwapTableMap;
 
 /**
- * Base class that represents a row from the 'cr_eventPeople' table.
+ * Base class that represents a row from the 'eventPeople' table.
  *
  *
  *
@@ -870,7 +870,7 @@ abstract class EventPerson implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_eventPeople (%s) VALUES (%s)',
+            'INSERT INTO eventPeople (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -1018,7 +1018,7 @@ abstract class EventPerson implements ActiveRecordInterface
                         $key = 'event';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_events';
+                        $key = 'events';
                         break;
                     default:
                         $key = 'Event';
@@ -1032,7 +1032,7 @@ abstract class EventPerson implements ActiveRecordInterface
                         $key = 'userRole';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_userRoles';
+                        $key = 'userRoles';
                         break;
                     default:
                         $key = 'UserRole';
@@ -1046,7 +1046,7 @@ abstract class EventPerson implements ActiveRecordInterface
                         $key = 'swaps';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_swapss';
+                        $key = 'swapss';
                         break;
                     default:
                         $key = 'Swaps';

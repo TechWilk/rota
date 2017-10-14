@@ -16,7 +16,7 @@ use TechWilk\Rota\RoleQuery as ChildRoleQuery;
 use TechWilk\Rota\Map\RoleTableMap;
 
 /**
- * Base class that represents a query for the 'cr_roles' table.
+ * Base class that represents a query for the 'roles' table.
  *
  *
  *
@@ -189,7 +189,7 @@ abstract class RoleQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, groupId, name, description, rehersalId, allowRoleSwaps FROM cr_roles WHERE id = :p0';
+        $sql = 'SELECT id, groupId, name, description, rehersalId, allowRoleSwaps FROM roles WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -646,7 +646,7 @@ abstract class RoleQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_roles table.
+     * Deletes all rows from the roles table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

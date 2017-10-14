@@ -9,7 +9,7 @@ use TechWilk\Rota\Base\User as BaseUser;
 use TechWilk\Rota\Map\UserTableMap;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_users' table.
+ * Skeleton subclass for representing a row from the 'users' table.
  *
  *
  *

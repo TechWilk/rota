@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\StatisticsQuery as BaseStatisticsQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cr_statistics' table.
+ * Skeleton subclass for performing query and update operations on the 'statistics' table.
  *
  *
  *

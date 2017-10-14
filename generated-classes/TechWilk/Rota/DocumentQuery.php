@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\DocumentQuery as BaseDocumentQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cr_documents' table.
+ * Skeleton subclass for performing query and update operations on the 'documents' table.
  *
  *
  *

@@ -23,7 +23,7 @@ use TechWilk\Rota\UserQuery as ChildUserQuery;
 use TechWilk\Rota\Map\StatisticTableMap;
 
 /**
- * Base class that represents a row from the 'cr_statistics' table.
+ * Base class that represents a row from the 'statistics' table.
  *
  *
  *
@@ -947,7 +947,7 @@ abstract class Statistic implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_statistics (%s) VALUES (%s)',
+            'INSERT INTO statistics (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -1120,7 +1120,7 @@ abstract class Statistic implements ActiveRecordInterface
                         $key = 'user';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_users';
+                        $key = 'users';
                         break;
                     default:
                         $key = 'User';

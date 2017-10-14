@@ -16,7 +16,7 @@ use TechWilk\Rota\CalendarTokenQuery as ChildCalendarTokenQuery;
 use TechWilk\Rota\Map\CalendarTokenTableMap;
 
 /**
- * Base class that represents a query for the 'cr_calendarTokens' table.
+ * Base class that represents a query for the 'calendarTokens' table.
  *
  *
  *
@@ -199,7 +199,7 @@ abstract class CalendarTokenQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, token, userId, format, description, revoked, revokedDate, lastFetched, created, updated FROM cr_calendarTokens WHERE id = :p0';
+        $sql = 'SELECT id, token, userId, format, description, revoked, revokedDate, lastFetched, created, updated FROM calendarTokens WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -739,7 +739,7 @@ abstract class CalendarTokenQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_calendarTokens table.
+     * Deletes all rows from the calendarTokens table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

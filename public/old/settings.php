@@ -142,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $token = mysqli_real_escape_string(db(), $token);
 
     // Update the database rather than insert new values
-    $sql = "UPDATE cr_settings SET siteurl = '$siteurl', notificationemail = '$notificationemail', adminemailaddress = '$siteadminemail', norehearsalemail = '$norehearsalemail', yesrehearsal = '$yesrehearsal', newusermessage = '$newusermessage', owner = '$owner',
+    $sql = "UPDATE settings SET siteurl = '$siteurl', notificationemail = '$notificationemail', adminemailaddress = '$siteadminemail', norehearsalemail = '$norehearsalemail', yesrehearsal = '$yesrehearsal', newusermessage = '$newusermessage', owner = '$owner',
 		lang_locale='$lang_locale',
 		event_sorting_latest='$event_sorting_latest',
 		snapshot_show_two_month='$snapshot_show_two_month',
@@ -180,7 +180,7 @@ include 'includes/header.php';
 
 
 <?php
-$sql = 'SELECT * FROM cr_settings';
+$sql = 'SELECT * FROM settings';
 $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {

@@ -15,7 +15,7 @@ use TechWilk\Rota\Location;
 use TechWilk\Rota\LocationQuery;
 
 /**
- * This class defines the structure of the 'cr_locations' table.
+ * This class defines the structure of the 'locations' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class LocationTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_locations';
+    const TABLE_NAME = 'locations';
 
     /**
      * The related Propel class for this table
@@ -73,17 +73,17 @@ class LocationTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_locations.id';
+    const COL_ID = 'locations.id';
 
     /**
      * the column name for the name field
      */
-    const COL_NAME = 'cr_locations.name';
+    const COL_NAME = 'locations.name';
 
     /**
      * the column name for the address field
      */
-    const COL_ADDRESS = 'cr_locations.address';
+    const COL_ADDRESS = 'locations.address';
 
     /**
      * The default string format for model objects of the related table
@@ -128,7 +128,7 @@ class LocationTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_locations');
+        $this->setName('locations');
         $this->setPhpName('Location');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\Location');
@@ -161,7 +161,7 @@ class LocationTableMap extends TableMap
 ), null, null, 'Events', false);
     } // buildRelations()
     /**
-     * Method to invalidate the instance pool of all tables related to cr_locations     * by a foreign key with ON DELETE CASCADE
+     * Method to invalidate the instance pool of all tables related to locations     * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
     {
@@ -386,7 +386,7 @@ class LocationTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_locations table.
+     * Deletes all rows from the locations table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

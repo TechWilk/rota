@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\EventQuery as BaseEventQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cr_events' table.
+ * Skeleton subclass for performing query and update operations on the 'events' table.
  *
  *
  *

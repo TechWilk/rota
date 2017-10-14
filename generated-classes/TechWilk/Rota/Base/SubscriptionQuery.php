@@ -15,7 +15,7 @@ use TechWilk\Rota\SubscriptionQuery as ChildSubscriptionQuery;
 use TechWilk\Rota\Map\SubscriptionTableMap;
 
 /**
- * Base class that represents a query for the 'cr_subscriptions' table.
+ * Base class that represents a query for the 'subscriptions' table.
  *
  *
  *
@@ -156,7 +156,7 @@ abstract class SubscriptionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, userid, categoryid, topicid FROM cr_subscriptions WHERE id = :p0';
+        $sql = 'SELECT id, userid, categoryid, topicid FROM subscriptions WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -425,7 +425,7 @@ abstract class SubscriptionQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_subscriptions table.
+     * Deletes all rows from the subscriptions table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

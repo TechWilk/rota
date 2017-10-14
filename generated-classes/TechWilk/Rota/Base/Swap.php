@@ -28,7 +28,7 @@ use TechWilk\Rota\UserRoleQuery as ChildUserRoleQuery;
 use TechWilk\Rota\Map\SwapTableMap;
 
 /**
- * Base class that represents a row from the 'cr_swaps' table.
+ * Base class that represents a row from the 'swaps' table.
  *
  *
  *
@@ -1139,7 +1139,7 @@ abstract class Swap implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_swaps (%s) VALUES (%s)',
+            'INSERT INTO swaps (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -1330,7 +1330,7 @@ abstract class Swap implements ActiveRecordInterface
                         $key = 'eventPerson';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_eventPeople';
+                        $key = 'eventPeople';
                         break;
                     default:
                         $key = 'EventPerson';
@@ -1344,7 +1344,7 @@ abstract class Swap implements ActiveRecordInterface
                         $key = 'userRole';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_userRoles';
+                        $key = 'userRoles';
                         break;
                     default:
                         $key = 'OldUserRole';
@@ -1358,7 +1358,7 @@ abstract class Swap implements ActiveRecordInterface
                         $key = 'userRole';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_userRoles';
+                        $key = 'userRoles';
                         break;
                     default:
                         $key = 'NewUserRole';
@@ -1372,7 +1372,7 @@ abstract class Swap implements ActiveRecordInterface
                         $key = 'user';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_users';
+                        $key = 'users';
                         break;
                     default:
                         $key = 'User';

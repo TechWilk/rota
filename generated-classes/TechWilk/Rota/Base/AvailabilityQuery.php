@@ -16,7 +16,7 @@ use TechWilk\Rota\AvailabilityQuery as ChildAvailabilityQuery;
 use TechWilk\Rota\Map\AvailabilityTableMap;
 
 /**
- * Base class that represents a query for the 'cr_availability' table.
+ * Base class that represents a query for the 'availability' table.
  *
  *
  *
@@ -184,7 +184,7 @@ abstract class AvailabilityQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, eventId, userId, available, comment FROM cr_availability WHERE id = :p0';
+        $sql = 'SELECT id, eventId, userId, available, comment FROM availability WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -622,7 +622,7 @@ abstract class AvailabilityQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_availability table.
+     * Deletes all rows from the availability table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

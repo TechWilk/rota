@@ -15,7 +15,7 @@ use TechWilk\Rota\EmailQuery as ChildEmailQuery;
 use TechWilk\Rota\Map\EmailTableMap;
 
 /**
- * Base class that represents a query for the 'cr_emails' table.
+ * Base class that represents a query for the 'emails' table.
  *
  *
  *
@@ -171,7 +171,7 @@ abstract class EmailQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, emailTo, emailBcc, emailFrom, subject, message, error FROM cr_emails WHERE id = :p0';
+        $sql = 'SELECT id, emailTo, emailBcc, emailFrom, subject, message, error FROM emails WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -467,7 +467,7 @@ abstract class EmailQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_emails table.
+     * Deletes all rows from the emails table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

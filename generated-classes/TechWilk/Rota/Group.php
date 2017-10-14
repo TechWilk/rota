@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\Group as BaseGroup;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_groups' table.
+ * Skeleton subclass for representing a row from the 'groups' table.
  *
  *
  *

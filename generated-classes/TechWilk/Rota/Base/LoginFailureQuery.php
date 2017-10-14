@@ -15,7 +15,7 @@ use TechWilk\Rota\LoginFailureQuery as ChildLoginFailureQuery;
 use TechWilk\Rota\Map\LoginFailureTableMap;
 
 /**
- * Base class that represents a query for the 'cr_loginFailures' table.
+ * Base class that represents a query for the 'loginFailures' table.
  *
  *
  *
@@ -264,7 +264,7 @@ abstract class LoginFailureQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_loginFailures table.
+     * Deletes all rows from the loginFailures table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

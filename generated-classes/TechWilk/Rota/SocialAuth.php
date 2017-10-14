@@ -6,7 +6,7 @@ use TechWilk\Rota\Base\SocialAuth as BaseSocialAuth;
 use TechWilk\Rota\Map\SocialAuthTableMap;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_socialAuth' table.
+ * Skeleton subclass for representing a row from the 'socialAuth' table.
  *
  *
  *

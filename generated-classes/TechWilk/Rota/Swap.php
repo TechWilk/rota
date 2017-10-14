@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\Swap as BaseSwap;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_swaps' table.
+ * Skeleton subclass for representing a row from the 'swaps' table.
  *
  *
  *

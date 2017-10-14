@@ -16,7 +16,7 @@ use TechWilk\Rota\EventGroupQuery as ChildEventGroupQuery;
 use TechWilk\Rota\Map\EventGroupTableMap;
 
 /**
- * Base class that represents a query for the 'cr_eventGroups' table.
+ * Base class that represents a query for the 'eventGroups' table.
  *
  *
  *
@@ -169,7 +169,7 @@ abstract class EventGroupQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, name, description, archived FROM cr_eventGroups WHERE id = :p0';
+        $sql = 'SELECT id, name, description, archived FROM eventGroups WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -465,7 +465,7 @@ abstract class EventGroupQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_eventGroups table.
+     * Deletes all rows from the eventGroups table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

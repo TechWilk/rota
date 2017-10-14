@@ -26,7 +26,7 @@ use TechWilk\Rota\Map\RoleTableMap;
 use TechWilk\Rota\Map\UserRoleTableMap;
 
 /**
- * Base class that represents a row from the 'cr_roles' table.
+ * Base class that represents a row from the 'roles' table.
  *
  *
  *
@@ -903,7 +903,7 @@ abstract class Role implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_roles (%s) VALUES (%s)',
+            'INSERT INTO roles (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -1058,7 +1058,7 @@ abstract class Role implements ActiveRecordInterface
                         $key = 'group';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_groups';
+                        $key = 'groups';
                         break;
                     default:
                         $key = 'Group';
@@ -1072,7 +1072,7 @@ abstract class Role implements ActiveRecordInterface
                         $key = 'userRoles';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_userRoless';
+                        $key = 'userRoless';
                         break;
                     default:
                         $key = 'UserRoles';

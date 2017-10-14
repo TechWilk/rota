@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\LoginFailure as BaseLoginFailure;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_loginFailures' table.
+ * Skeleton subclass for representing a row from the 'loginFailures' table.
  *
  *
  *

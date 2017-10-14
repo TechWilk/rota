@@ -62,11 +62,11 @@ if ($userisEventEditor) {
 
 if ($action == 'edit' || $action == 'copy') {
     $sql = "SELECT *,
-	(SELECT name FROM cr_locations WHERE cr_locations.id = cr_events.location) AS locationname,
-	(SELECT name FROM cr_eventTypes WHERE cr_eventTypes.id = cr_events.type) AS typename,
-	(SELECT name FROM cr_eventSubTypes WHERE cr_eventSubTypes.id = cr_events.subType) AS subtypename,
-	(SELECT name FROM cr_eventGroups WHERE cr_eventGroups.id = cr_events.eventGroup) AS groupname
-	FROM cr_events WHERE id = '$eventID'";
+	(SELECT name FROM locations WHERE locations.id = events.location) AS locationname,
+	(SELECT name FROM eventTypes WHERE eventTypes.id = events.type) AS typename,
+	(SELECT name FROM eventSubTypes WHERE eventSubTypes.id = events.subType) AS subtypename,
+	(SELECT name FROM eventGroups WHERE eventGroups.id = events.eventGroup) AS groupname
+	FROM events WHERE id = '$eventID'";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
@@ -141,11 +141,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $date = mysqli_real_escape_string(db(), $date);
 
     if ($action == 'edit') {
-        $sql = "UPDATE cr_events SET date = '$date', rehearsalDate = '$rehersalDate', location = '$location',
+        $sql = "UPDATE events SET date = '$date', rehearsalDate = '$rehersalDate', location = '$location',
 		rehearsal = '$norehearsal', type = '$type', subType = '$subType', name = '$eventName', eventGroup = '$eventGroup', sermonTitle = '$sermonTitle', bibleVerse = '$bibleVerse' WHERE id = '$id'";
         mysqli_query(db(), $sql) or die(mysqli_error(db()));
     } else {
-        $sql = "INSERT INTO cr_events (date, createdBy, rehearsalDate, type, subType, location, rehearsal, name, eventGroup, sermonTitle, bibleVerse)
+        $sql = "INSERT INTO events (date, createdBy, rehearsalDate, type, subType, location, rehearsal, name, eventGroup, sermonTitle, bibleVerse)
 		VALUES ('$date', '$sessionUserID','$rehersalDate', '$type', '$subType', '$location', '$norehearsal', '$eventName', '$eventGroup', '$sermonTitle', '$bibleVerse')";
         mysqli_query(db(), $sql) or die(mysqli_error(db()));
         $id = mysqli_insert_id(db());
@@ -163,12 +163,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // If this is not the case, we need to compare two arrays. The first array is the people already there. The second array is submitted people
 
             // First array:
-            $sql = "SELECT userRoleId FROM cr_eventPeople WHERE eventID = '$eventID'";
-            //if ($userisBandAdmin) $sql = $sql . " and skillID in (select skillID from cr_skills where groupid=2)";
-            //if ($userisEventEditor) $sql = $sql . " and skillID in (select skillID from cr_skills where groupid!=2)";
+            $sql = "SELECT userRoleId FROM eventPeople WHERE eventID = '$eventID'";
+            //if ($userisBandAdmin) $sql = $sql . " and skillID in (select skillID from skills where groupid=2)";
+            //if ($userisEventEditor) $sql = $sql . " and skillID in (select skillID from skills where groupid!=2)";
 
-            //if ($userisBandAdmin) $sql = $sql . " AND userRoleId IN (SELECT id FROM cr_userRoles WHERE groupid IN (2,3,4))";
-            //if ($userisEventEditor) $sql = $sql . " AND userRoleId IN (SELECT id FROM cr_userRoles WHERE NOT (groupid IN (2,3,4)))";
+            //if ($userisBandAdmin) $sql = $sql . " AND userRoleId IN (SELECT id FROM userRoles WHERE groupid IN (2,3,4))";
+            //if ($userisEventEditor) $sql = $sql . " AND userRoleId IN (SELECT id FROM userRoles WHERE NOT (groupid IN (2,3,4)))";
 
             $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
@@ -203,14 +203,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         // Otherwise there was nothing in userRole and we should just delete all people from the event
     } else {
-        $delete_all_sql = "DELETE FROM cr_eventPeople WHERE eventID = '$eventID'";
-        //if ($userisBandAdmin) $delete_all_sql = $delete_all_sql . " and skillID in (select skillID from cr_skills where groupid=2)";
-        //if ($userisEventEditor) $delete_all_sql = $delete_all_sql . " and skillID in (select skillID from cr_skills where groupid!=2)";
+        $delete_all_sql = "DELETE FROM eventPeople WHERE eventID = '$eventID'";
+        //if ($userisBandAdmin) $delete_all_sql = $delete_all_sql . " and skillID in (select skillID from skills where groupid=2)";
+        //if ($userisEventEditor) $delete_all_sql = $delete_all_sql . " and skillID in (select skillID from skills where groupid!=2)";
         if ($userisBandAdmin) {
-            $delete_all_sql = $delete_all_sql.' and skillID in (select skillID from cr_skills where groupid in (2,3,4))';
+            $delete_all_sql = $delete_all_sql.' and skillID in (select skillID from skills where groupid in (2,3,4))';
         }
         if ($userisEventEditor) {
-            $delete_all_sql = $delete_all_sql.' and skillID in (select skillID from cr_skills where not (groupid in (2,3,4)))';
+            $delete_all_sql = $delete_all_sql.' and skillID in (select skillID from skills where not (groupid in (2,3,4)))';
         }
         mysqli_query(db(), $delete_all_sql) or die(mysqli_error(db()));
     }
@@ -292,7 +292,7 @@ include 'includes/header.php';
     echo $typename;
 } ?></option>
 										<?php
-                                        $sql = 'SELECT id, name, description, defaultTime, defaultLocationId FROM cr_eventTypes ORDER BY name';
+                                        $sql = 'SELECT id, name, description, defaultTime, defaultLocationId FROM eventTypes ORDER BY name';
                                         $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
                                         while ($ob = mysqli_fetch_object($result)) {
                                             if (!(isset($type) && $ob->id == $type)) {
@@ -317,7 +317,7 @@ include 'includes/header.php';
                                             echo $subtypename;
                                         } ?></option>
 										<?php
-                                        $sql = 'SELECT * FROM cr_eventSubTypes ORDER BY name';
+                                        $sql = 'SELECT * FROM eventSubTypes ORDER BY name';
                                         $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
                                         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
@@ -345,7 +345,7 @@ include 'includes/header.php';
                                             echo $locationname;
                                         } ?></option>
 										<?php
-                                        $sql = 'SELECT * FROM cr_locations order by name';
+                                        $sql = 'SELECT * FROM locations order by name';
                                         $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
                                         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
@@ -476,7 +476,7 @@ include 'includes/header.php';
                                         } ?>>
 									<option value="<?php echo isset($eventGroup) ? $eventGroup : '' ?>"><?php echo isset($eventGroupName) ? $eventGroupName : '' ?></option>
 									<?php
-                                    $sql = 'SELECT * FROM cr_eventGroups WHERE archived = false ORDER BY name';
+                                    $sql = 'SELECT * FROM eventGroups WHERE archived = false ORDER BY name';
                                     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
                                     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
@@ -582,12 +582,12 @@ include 'includes/header.php';
                             g.name AS `group`,
                             r.description AS `role`,
                             ur.id AS `userRoleId`,
-                            (SELECT userRoleId FROM cr_eventPeople ep WHERE ep.eventId = '$eventID' AND ep.userRoleId = ur.id	LIMIT 1) AS `inEvent`,
-                            (SELECT COUNT(ep.id) FROM cr_eventPeople ep INNER JOIN cr_events e ON e.id = ep.eventId WHERE e.date > NOW() AND ur.id = ep.userRoleId AND e.id != '$eventID') AS numberOfUpcomingEvents
-                            FROM cr_roles r
-                            INNER JOIN cr_groups g ON g.id = r.groupId
-                            INNER JOIN cr_userRoles ur ON r.id = ur.roleId
-                            INNER JOIN cr_users u ON u.id = ur.userId
+                            (SELECT userRoleId FROM eventPeople ep WHERE ep.eventId = '$eventID' AND ep.userRoleId = ur.id	LIMIT 1) AS `inEvent`,
+                            (SELECT COUNT(ep.id) FROM eventPeople ep INNER JOIN events e ON e.id = ep.eventId WHERE e.date > NOW() AND ur.id = ep.userRoleId AND e.id != '$eventID') AS numberOfUpcomingEvents
+                            FROM roles r
+                            INNER JOIN groups g ON g.id = r.groupId
+                            INNER JOIN userRoles ur ON r.id = ur.roleId
+                            INNER JOIN users u ON u.id = ur.userId
                             ORDER BY g.id, r.description, u.firstname, u.lastname";
 
                              */?>

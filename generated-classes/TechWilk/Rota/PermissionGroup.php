@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\PermissionGroup as BasePermissionGroup;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_permissionGroups' table.
+ * Skeleton subclass for representing a row from the 'permissionGroups' table.
  *
  *
  *

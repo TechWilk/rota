@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\UserRole as BaseUserRole;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_userRoles' table.
+ * Skeleton subclass for representing a row from the 'userRoles' table.
  *
  *
  *

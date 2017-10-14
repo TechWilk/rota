@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\Availability as BaseAvailability;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_availability' table.
+ * Skeleton subclass for representing a row from the 'availability' table.
  *
  *
  *

@@ -15,7 +15,7 @@ use TechWilk\Rota\EventPerson;
 use TechWilk\Rota\EventPersonQuery;
 
 /**
- * This class defines the structure of the 'cr_eventPeople' table.
+ * This class defines the structure of the 'eventPeople' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class EventPersonTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_eventPeople';
+    const TABLE_NAME = 'eventPeople';
 
     /**
      * The related Propel class for this table
@@ -73,27 +73,27 @@ class EventPersonTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_eventPeople.id';
+    const COL_ID = 'eventPeople.id';
 
     /**
      * the column name for the eventId field
      */
-    const COL_EVENTID = 'cr_eventPeople.eventId';
+    const COL_EVENTID = 'eventPeople.eventId';
 
     /**
      * the column name for the userRoleId field
      */
-    const COL_USERROLEID = 'cr_eventPeople.userRoleId';
+    const COL_USERROLEID = 'eventPeople.userRoleId';
 
     /**
      * the column name for the notified field
      */
-    const COL_NOTIFIED = 'cr_eventPeople.notified';
+    const COL_NOTIFIED = 'eventPeople.notified';
 
     /**
      * the column name for the removed field
      */
-    const COL_REMOVED = 'cr_eventPeople.removed';
+    const COL_REMOVED = 'eventPeople.removed';
 
     /**
      * The default string format for model objects of the related table
@@ -138,7 +138,7 @@ class EventPersonTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_eventPeople');
+        $this->setName('eventPeople');
         $this->setPhpName('EventPerson');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\EventPerson');
@@ -146,8 +146,8 @@ class EventPersonTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('eventId', 'EventId', 'INTEGER', 'cr_events', 'id', true, null, 0);
-        $this->addForeignKey('userRoleId', 'UserRoleId', 'INTEGER', 'cr_userRoles', 'id', true, null, 0);
+        $this->addForeignKey('eventId', 'EventId', 'INTEGER', 'events', 'id', true, null, 0);
+        $this->addForeignKey('userRoleId', 'UserRoleId', 'INTEGER', 'userRoles', 'id', true, null, 0);
         $this->addColumn('notified', 'Notified', 'SMALLINT', true, 1, 0);
         $this->addColumn('removed', 'Removed', 'SMALLINT', false, 1, 0);
     } // initialize()
@@ -400,7 +400,7 @@ class EventPersonTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_eventPeople table.
+     * Deletes all rows from the eventPeople table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

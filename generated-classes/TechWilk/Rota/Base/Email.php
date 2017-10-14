@@ -19,7 +19,7 @@ use TechWilk\Rota\EmailQuery as ChildEmailQuery;
 use TechWilk\Rota\Map\EmailTableMap;
 
 /**
- * Base class that represents a row from the 'cr_emails' table.
+ * Base class that represents a row from the 'emails' table.
  *
  *
  *
@@ -859,7 +859,7 @@ abstract class Email implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_emails (%s) VALUES (%s)',
+            'INSERT INTO emails (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );

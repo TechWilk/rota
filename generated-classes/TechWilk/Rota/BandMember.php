@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\BandMember as BaseBandMember;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_bandMembers' table.
+ * Skeleton subclass for representing a row from the 'bandMembers' table.
  *
  *
  *

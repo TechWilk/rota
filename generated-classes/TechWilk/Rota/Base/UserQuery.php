@@ -16,7 +16,7 @@ use TechWilk\Rota\UserQuery as ChildUserQuery;
 use TechWilk\Rota\Map\UserTableMap;
 
 /**
- * Base class that represents a query for the 'cr_users' table.
+ * Base class that represents a query for the 'users' table.
  *
  *
  *
@@ -319,7 +319,7 @@ abstract class UserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, firstName, lastName, username, password, isAdmin, email, mobile, isOverviewRecipient, recieveReminderEmails, isBandAdmin, isEventEditor, lastLogin, passwordChanged, created, updated FROM cr_users WHERE id = :p0';
+        $sql = 'SELECT id, firstName, lastName, username, password, isAdmin, email, mobile, isOverviewRecipient, recieveReminderEmails, isBandAdmin, isEventEditor, lastLogin, passwordChanged, created, updated FROM users WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1644,7 +1644,7 @@ abstract class UserQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_users table.
+     * Deletes all rows from the users table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

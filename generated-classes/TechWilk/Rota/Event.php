@@ -6,7 +6,7 @@ use TechWilk\Rota\Authoriser\EventAuthoriser;
 use TechWilk\Rota\Base\Event as BaseEvent;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_events' table.
+ * Skeleton subclass for representing a row from the 'events' table.
  *
  *
  *

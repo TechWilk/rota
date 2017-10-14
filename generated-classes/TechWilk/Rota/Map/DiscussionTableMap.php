@@ -15,7 +15,7 @@ use TechWilk\Rota\Discussion;
 use TechWilk\Rota\DiscussionQuery;
 
 /**
- * This class defines the structure of the 'cr_discussion' table.
+ * This class defines the structure of the 'discussion' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class DiscussionTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_discussion';
+    const TABLE_NAME = 'discussion';
 
     /**
      * The related Propel class for this table
@@ -73,37 +73,37 @@ class DiscussionTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_discussion.id';
+    const COL_ID = 'discussion.id';
 
     /**
      * the column name for the topicParent field
      */
-    const COL_TOPICPARENT = 'cr_discussion.topicParent';
+    const COL_TOPICPARENT = 'discussion.topicParent';
 
     /**
      * the column name for the CategoryParent field
      */
-    const COL_CATEGORYPARENT = 'cr_discussion.CategoryParent';
+    const COL_CATEGORYPARENT = 'discussion.CategoryParent';
 
     /**
      * the column name for the userID field
      */
-    const COL_USERID = 'cr_discussion.userID';
+    const COL_USERID = 'discussion.userID';
 
     /**
      * the column name for the topic field
      */
-    const COL_TOPIC = 'cr_discussion.topic';
+    const COL_TOPIC = 'discussion.topic';
 
     /**
      * the column name for the topicName field
      */
-    const COL_TOPICNAME = 'cr_discussion.topicName';
+    const COL_TOPICNAME = 'discussion.topicName';
 
     /**
      * the column name for the date field
      */
-    const COL_DATE = 'cr_discussion.date';
+    const COL_DATE = 'discussion.date';
 
     /**
      * The default string format for model objects of the related table
@@ -148,7 +148,7 @@ class DiscussionTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_discussion');
+        $this->setName('discussion');
         $this->setPhpName('Discussion');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\Discussion');
@@ -395,7 +395,7 @@ class DiscussionTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_discussion table.
+     * Deletes all rows from the discussion table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

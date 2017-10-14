@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\EventType as BaseEventType;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_eventTypes' table.
+ * Skeleton subclass for representing a row from the 'eventTypes' table.
  *
  *
  *
