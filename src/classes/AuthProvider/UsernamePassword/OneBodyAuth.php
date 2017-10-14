@@ -2,12 +2,11 @@
 
 namespace TechWilk\Rota\AuthProvider\UsernamePassword;
 
-use TechWilk\Rota\AuthProvider\UsernamePasswordInterface;
-use TechWilk\Rota\EmailAddress;
 use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Exception\ClientException;
 use SimpleXMLElement;
+use TechWilk\Rota\AuthProvider\UsernamePasswordInterface;
+use TechWilk\Rota\EmailAddress;
 
 class OneBodyAuth implements UsernamePasswordInterface
 {
@@ -22,7 +21,7 @@ class OneBodyAuth implements UsernamePasswordInterface
     public function __construct(Client $guzzle, EmailAddress $adminEmail, $apiKey, $enabled = true)
     {
         $this->guzzle = $guzzle;
-        $this->enabled = (bool)$enabled;
+        $this->enabled = (bool) $enabled;
         $this->adminEmail = $adminEmail;
         $this->apiKey = $apiKey;
     }
@@ -38,7 +37,7 @@ class OneBodyAuth implements UsernamePasswordInterface
             $response = $this->guzzle->post('authentications', [
                 'form_params' => [
                     'authentication' => [
-                        'email' => strval($username),
+                        'email'    => strval($username),
                         'password' => $password,
                     ],
 
@@ -47,7 +46,7 @@ class OneBodyAuth implements UsernamePasswordInterface
                     $this->adminEmail,
                     $this->apiKey,
                 ],
-                'timeout' => 2
+                'timeout' => 2,
             ]);
         } catch (ClientException $e) {
             return false;
@@ -72,8 +71,9 @@ class OneBodyAuth implements UsernamePasswordInterface
         $base_uri = $this->guzzle->getConfig()['base_uri'];
 
         if (strlen($base_uri) > 0) {
-            $url = $base_uri .'/account/new?forgot=true';
+            $url = $base_uri.'/account/new?forgot=true';
         }
+
         return $url;
     }
 
@@ -84,7 +84,7 @@ class OneBodyAuth implements UsernamePasswordInterface
 
     public function getUserId()
     {
-        return is_int((int)$this->data->id) ? (int)$this->data->id : null;
+        return is_int((int) $this->data->id) ? (int) $this->data->id : null;
     }
 
     public function getMeta()

@@ -5,8 +5,8 @@ use DateTime;
 
 session_start();
 
-include_once "includes/config.php";
-include_once "includes/functions.php";
+include_once 'includes/config.php';
+include_once 'includes/functions.php';
 
 if (!isset($_SESSION['userid'])) {
     header('Location: login.php');
@@ -51,12 +51,11 @@ $sql = "SELECT
 
 $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
-$month = "";
+$month = '';
 $userEvents = [];
 while ($ob = mysqli_fetch_object($result)) {
     $userEvents[] = $ob;
 }
-
 
 $eventsThisWeek = EventQuery::create()->filterByDate(['min' => new DateTime(), 'max' => new DateTime('1 week')])->filterByRemoved(false)->orderByDate()->find();
 
@@ -68,12 +67,11 @@ if (isAdmin()) {
 
 $remainingEventsOfType = EventTypeQuery::create()->find();
 
-
 if (isAdmin()) {
-    $sql = "SELECT COUNT(id) AS pendingSwaps FROM cr_swaps WHERE accepted = 0 AND declined = 0";
+    $sql = 'SELECT COUNT(id) AS pendingSwaps FROM cr_swaps WHERE accepted = 0 AND declined = 0';
     $results = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $ob = mysqli_fetch_object($results);
-    
+
     $pendingSwaps = $ob->pendingSwaps;
 }
 
@@ -83,14 +81,9 @@ $twoWeeks = $interval = new DateInterval('P2W');
 $dateInTwoWeeks = (new DateTime())->add($twoWeeks);
 $lastEvent = EventQuery::create()->orderByDate('desc')->findOne();
 
-
-
-
-
-
 // ~~~~~~~~~~ PRESENTATION ~~~~~~~~~~
 
-include "includes/header.php";
+include 'includes/header.php';
 
 ?>
 <!-- Content Wrapper. Contains page content -->
@@ -163,7 +156,7 @@ include "includes/header.php";
 
     
     <?php
-    if ((isAdmin()) || ($logged_in_show_snapshot_button=='1')): ?>
+    if ((isAdmin()) || ($logged_in_show_snapshot_button == '1')): ?>
 
     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
       <a href="tableView.php">
@@ -197,7 +190,7 @@ include "includes/header.php";
       <ul class="timeline" id="this-week">
         <?php foreach ($eventsThisWeek as $event): ?>
 
-        <?php # Month separators
+        <?php // Month separators
         $newMonth = $event->getDate('F Y');
         if ($month != $newMonth):
         $month = $newMonth;
@@ -229,10 +222,10 @@ include "includes/header.php";
             </div><!-- /.timeline-header -->
 
             <div class="timeline-body">
-              <p><strong><?php echo $event->getEventGroup() ? $event->getEventGroup()->getName().': ' : '' ?></strong><?php echo $event->getSermonTitle() ?> <?php echo $event->getBibleVerse() ? '('.$event->getBibleVerse().')' : "" ?></p>
+              <p><strong><?php echo $event->getEventGroup() ? $event->getEventGroup()->getName().': ' : '' ?></strong><?php echo $event->getSermonTitle() ?> <?php echo $event->getBibleVerse() ? '('.$event->getBibleVerse().')' : '' ?></p>
               <p><strong>Location:</strong> <?php echo $event->getLocation()->getName(); ?></p>
               
-              <?php if ($event->getComment() != ""): ?>
+              <?php if ($event->getComment() != ''): ?>
               <blockquote>
                 <p>
                   <?php echo $event->getComment() ?>
@@ -292,9 +285,9 @@ include "includes/header.php";
                                 ORDER BY g.name, r.name";
 
                   $resultPeople = mysqli_query(db(), $sqlPeople) or die(mysqli_error(db()));
-                  $groupName = "";
+                  $groupName = '';
                   $groupId = 0;
-                  $identifier = "1";
+                  $identifier = '1';
                   $firstTime = true;
 
                   if (mysqli_num_rows($resultPeople) > 0):
@@ -305,33 +298,33 @@ include "includes/header.php";
                             // Do nothing, because they are all in the same group
                         } else {
                             // Update the group heading
-                        $groupId = $viewPeople->group;
+                            $groupId = $viewPeople->group;
                             $groupName = $viewPeople->groupName;
                             if ($firstTime) {
                                 $firstTime = false;
                             } else {
-                                echo "</ul>";
+                                echo '</ul>';
                             }
-                            echo "<p><strong>" . $groupName . "</strong></p>";
-                            echo "<ul>";
+                            echo '<p><strong>'.$groupName.'</strong></p>';
+                            echo '<ul>';
                         }
 
-                        echo "<li>";
-                        echo (isset($viewPeople->swap)) ? "<s><a class='text-danger' href='swap.php?swap=".$viewPeople->swap."'>" : "";
+                        echo '<li>';
+                        echo (isset($viewPeople->swap)) ? "<s><a class='text-danger' href='swap.php?swap=".$viewPeople->swap."'>" : '';
                         echo $viewPeople->name;
 
-                        if ($viewPeople->rolename != "") {
-                            echo " - <em>" . $viewPeople->rolename . "</em>";
+                        if ($viewPeople->rolename != '') {
+                            echo ' - <em>'.$viewPeople->rolename.'</em>';
                         } else {
                             // If there is no skill, we don't need to mention this.
                         }
-                        echo (isset($viewPeople->swap)) ? "</a></s>" : "";
-                      
-                        echo "</li>";
+                        echo (isset($viewPeople->swap)) ? '</a></s>' : '';
+
+                        echo '</li>';
                     }
-                    echo "</ul>";
+                    echo '</ul>';
                   else:
-                    echo "<p>No roles assigned to this event.";
+                    echo '<p>No roles assigned to this event.';
                   endif;
                 ?>
                 </div>
@@ -379,8 +372,8 @@ include "includes/header.php";
       <ul class="timeline" id="my-events">
         <?php foreach ($userEvents as $event): ?>
 
-        <?php # Month separators
-        $newMonth = strftime("%B %Y", strtotime($event->date));
+        <?php // Month separators
+        $newMonth = strftime('%B %Y', strtotime($event->date));
         if ($month != $newMonth):
         $month = $newMonth;
         ?>
@@ -403,10 +396,10 @@ include "includes/header.php";
             </div><!-- /.timeline-header -->
 
             <div class="timeline-body">
-              <p><strong><?php echo $event->eventGroup ? $event->eventGroup.': ' : '' ?></strong><?php echo $event->sermonTitle ?> <?php echo $event->bibleVerse ? '('.$event->bibleVerse.')' : "" ?></p>
+              <p><strong><?php echo $event->eventGroup ? $event->eventGroup.': ' : '' ?></strong><?php echo $event->sermonTitle ?> <?php echo $event->bibleVerse ? '('.$event->bibleVerse.')' : '' ?></p>
               <p><strong>Location:</strong> <?php echo $event->eventLocation; ?></p>
               
-              <?php if ($event->comment != ""): ?>
+              <?php if ($event->comment != ''): ?>
               <blockquote>
                 <p>
                   <?php echo $event->comment ?>
@@ -469,9 +462,9 @@ include "includes/header.php";
                                 ORDER BY g.name, r.name";
 
                   $resultPeople = mysqli_query(db(), $sqlPeople) or die(mysqli_error(db()));
-                  $groupName = "";
+                  $groupName = '';
                   $groupId = 0;
-                  $identifier = "1";
+                  $identifier = '1';
                   $firstTime = true;
 
                   if (mysqli_num_rows($resultPeople) > 0):
@@ -482,33 +475,33 @@ include "includes/header.php";
                             // Do nothing, because they are all in the same group
                         } else {
                             // Update the group heading
-                        $groupId = $viewPeople->group;
+                            $groupId = $viewPeople->group;
                             $groupName = $viewPeople->groupName;
                             if ($firstTime) {
                                 $firstTime = false;
                             } else {
-                                echo "</ul>";
+                                echo '</ul>';
                             }
-                            echo "<p><strong>" . $groupName . "</strong></p>";
-                            echo "<ul>";
+                            echo '<p><strong>'.$groupName.'</strong></p>';
+                            echo '<ul>';
                         }
 
-                        echo "<li>";
-                        echo (isset($viewPeople->swap)) ? "<s><a class='text-danger' href='swap.php?swap=".$viewPeople->swap."'>" : "";
+                        echo '<li>';
+                        echo (isset($viewPeople->swap)) ? "<s><a class='text-danger' href='swap.php?swap=".$viewPeople->swap."'>" : '';
                         echo $viewPeople->name;
 
-                        if ($viewPeople->rolename != "") {
-                            echo " - <em>" . $viewPeople->rolename . "</em>";
+                        if ($viewPeople->rolename != '') {
+                            echo ' - <em>'.$viewPeople->rolename.'</em>';
                         } else {
                             // If there is no skill, we don't need to mention this.
                         }
-                        echo (isset($viewPeople->swap)) ? "</a></s>" : "";
-                      
-                        echo "</li>";
+                        echo (isset($viewPeople->swap)) ? '</a></s>' : '';
+
+                        echo '</li>';
                     }
-                    echo "</ul>";
+                    echo '</ul>';
                   else:
-                    echo "<p>No roles assigned to this event.";
+                    echo '<p>No roles assigned to this event.';
                   endif;
                 ?>
                 </div>
@@ -631,11 +624,11 @@ include "includes/header.php";
       <div class="box box-widget widget-user-2">
         <div class="widget-user-header bg-yellow">
           <div class="widget-user-image">
-            <img class="img-circle" src="<?php echo getProfileImageUrl($_SESSION["userid"], 'large') ?>" alt="User Avatar">
+            <img class="img-circle" src="<?php echo getProfileImageUrl($_SESSION['userid'], 'large') ?>" alt="User Avatar">
           </div>
           <!-- /.widget-user-image -->
           <h3 class="widget-user-username"><?php echo $user->getFirstName().' '.$user->getLastName() ?></h3>
-          <h5 class="widget-user-desc">Account created <?php echo $user->getCreated("M. Y") ?></h5>
+          <h5 class="widget-user-desc">Account created <?php echo $user->getCreated('M. Y') ?></h5>
         </div>
         <div class="box-footer no-padding">
           <ul class="nav nav-stacked">
@@ -678,5 +671,5 @@ include "includes/header.php";
 
     
 <?php
-include "includes/footer.php";
+include 'includes/footer.php';
 ?>

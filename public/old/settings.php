@@ -1,8 +1,5 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 /*
     This file is part of Church Rota.
 
@@ -23,8 +20,8 @@ use DateTime;
 */
 
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -62,35 +59,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $lang_locale = mysqli_real_escape_string(db(), $lang_locale);
     //$event_sorting_latest = $_POST['event_sorting_latest'];
     //$event_sorting_latest = mysqli_real_escape_string(db(),$event_sorting_latest);
-        if (isset($_POST['event_sorting_latest'])) {
-            $event_sorting_latest = '1';
-        } else {
-            $event_sorting_latest = '0';
-        }
+    if (isset($_POST['event_sorting_latest'])) {
+        $event_sorting_latest = '1';
+    } else {
+        $event_sorting_latest = '0';
+    }
 
     //$snapshot_show_two_month = $_POST['snapshot_show_two_month'];
     //$snapshot_show_two_month = mysqli_real_escape_string(db(),$snapshot_show_two_month);
-        if (isset($_POST['snapshot_show_two_month'])) {
-            $snapshot_show_two_month = '1';
-        } else {
-            $snapshot_show_two_month = '0';
-        }
+    if (isset($_POST['snapshot_show_two_month'])) {
+        $snapshot_show_two_month = '1';
+    } else {
+        $snapshot_show_two_month = '0';
+    }
 
     //$snapshot_reduce_skills_by_group = $_POST['snapshot_reduce_skills_by_group'];
     //$snapshot_reduce_skills_by_group = mysqli_real_escape_string(db(),$snapshot_reduce_skills_by_group);
-        if (isset($_POST['snapshot_reduce_skills_by_group'])) {
-            $snapshot_reduce_skills_by_group = '1';
-        } else {
-            $snapshot_reduce_skills_by_group = '0';
-        }
+    if (isset($_POST['snapshot_reduce_skills_by_group'])) {
+        $snapshot_reduce_skills_by_group = '1';
+    } else {
+        $snapshot_reduce_skills_by_group = '0';
+    }
 
     //$logged_in_show_snapshot_button = $_POST['logged_in_show_snapshot_button'];
     //$logged_in_show_snapshot_button = mysqli_real_escape_string(db(),$logged_in_show_snapshot_button);
-        if (isset($_POST['logged_in_show_snapshot_button'])) {
-            $logged_in_show_snapshot_button = '1';
-        } else {
-            $logged_in_show_snapshot_button = '0';
-        }
+    if (isset($_POST['logged_in_show_snapshot_button'])) {
+        $logged_in_show_snapshot_button = '1';
+    } else {
+        $logged_in_show_snapshot_button = '0';
+    }
 
     if (isset($_POST['users_start_with_myevents'])) {
         $users_start_with_myevents = '1';
@@ -144,8 +141,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $token = $_POST['token'];
     $token = mysqli_real_escape_string(db(), $token);
 
-        // Update the database rather than insert new values
-        $sql = "UPDATE cr_settings SET siteurl = '$siteurl', notificationemail = '$notificationemail', adminemailaddress = '$siteadminemail', norehearsalemail = '$norehearsalemail', yesrehearsal = '$yesrehearsal', newusermessage = '$newusermessage', owner = '$owner',
+    // Update the database rather than insert new values
+    $sql = "UPDATE cr_settings SET siteurl = '$siteurl', notificationemail = '$notificationemail', adminemailaddress = '$siteadminemail', norehearsalemail = '$norehearsalemail', yesrehearsal = '$yesrehearsal', newusermessage = '$newusermessage', owner = '$owner',
 		lang_locale='$lang_locale',
 		event_sorting_latest='$event_sorting_latest',
 		snapshot_show_two_month='$snapshot_show_two_month',
@@ -165,17 +162,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		token='$token',
 		days_to_alert='$days_to_alert',
 		group_sorting_name='$group_sorting_name',
-		skin='$skin'"
-        ;
-
+		skin='$skin'";
 
     if (!mysqli_query(db(), $sql)) {
-        die('Error: ' . mysqli_error(db()));
+        die('Error: '.mysqli_error(db()));
     }
     header('Location: settings.php');
 }
 
-include('includes/header.php');
+include 'includes/header.php';
 ?>
 
 
@@ -185,7 +180,7 @@ include('includes/header.php');
 
 
 <?php
-$sql = "SELECT * FROM cr_settings";
+$sql = 'SELECT * FROM cr_settings';
 $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
@@ -197,7 +192,7 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>Settings
-			<?php echo "<small>v".$row['version']."</small>"; ?>
+			<?php echo '<small>v'.$row['version'].'</small>'; ?>
 		</h1>
 		<ol class="breadcrumb">
 			<li><a href="<?php echo siteSettings()->getSiteUrl() ?>"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -344,19 +339,19 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 				<div class="form-group">
 					<label for="skin">Application skin:</label>
 					<select name="skin" id="skin" class="form-control">
-						<?php $skinOptions = ['skin-blue-light' => 'Blue &amp; Light',
-                                                                    'skin-blue' => 'Blue &amp; Dark',
+						<?php $skinOptions = ['skin-blue-light'                                           => 'Blue &amp; Light',
+                                                                    'skin-blue'         => 'Blue &amp; Dark',
                                                                     'skin-yellow-light' => 'Yellow &amp; Light',
-                                                                    'skin-yellow' => 'Yellow &amp; Dark',
-                                                                    'skin-green-light' => 'Green &amp; Light',
-                                                                    'skin-green' => 'Green &amp; Dark',
+                                                                    'skin-yellow'       => 'Yellow &amp; Dark',
+                                                                    'skin-green-light'  => 'Green &amp; Light',
+                                                                    'skin-green'        => 'Green &amp; Dark',
                                                                     'skin-purple-light' => 'Purple &amp; Light',
-                                                                    'skin-purple' => 'Purple &amp; Dark',
-                                                                    'skin-red-light' => 'Red &amp; Light',
-                                                                    'skin-red' => 'Red &amp; Dark',
-                                                                    'skin-black-light' => 'Black &amp; Light',
-                                                                    'skin-black' => 'Black &amp; Dark'];
-                                                                    
+                                                                    'skin-purple'       => 'Purple &amp; Dark',
+                                                                    'skin-red-light'    => 'Red &amp; Light',
+                                                                    'skin-red'          => 'Red &amp; Dark',
+                                                                    'skin-black-light'  => 'Black &amp; Light',
+                                                                    'skin-black'        => 'Black &amp; Dark', ];
+
     foreach ($skinOptions as $skinName => $skinDescription): ?>
 						<option value="<?php echo $skinName ?>" <?php echo ($skinName == $row['skin']) ? 'selected' : '' ?>><?php echo $skinDescription ?></option>
 						<?php endforeach ?>
@@ -365,7 +360,7 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 
 				<div class="checkbox">
 					<label class="form-content" for="event_sorting_latest">
-						<input class="checkbox" name="event_sorting_latest" id="event_sorting_latest" type="checkbox" value="1" <?php if ($row['event_sorting_latest']=='1') {
+						<input class="checkbox" name="event_sorting_latest" id="event_sorting_latest" type="checkbox" value="1" <?php if ($row['event_sorting_latest'] == '1') {
         echo 'checked="checked"';
     } elseif ($row['event_sorting_latest'] == '0') {
     } ?>  />Event overview - show latest events first:
@@ -374,7 +369,7 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 
 				<div class="checkbox">
 					<label class="form-content" for="snapshot_show_two_month">
-						<input class="checkbox" name="snapshot_show_two_month" id="snapshot_show_two_month" type="checkbox" value="1" <?php if ($row['snapshot_show_two_month']=='1') {
+						<input class="checkbox" name="snapshot_show_two_month" id="snapshot_show_two_month" type="checkbox" value="1" <?php if ($row['snapshot_show_two_month'] == '1') {
         echo 'checked="checked"';
     } elseif ($row['snapshot_show_two_month'] == '0') {
     } ?>  />Snapshot - show only current month (and following if current day>20):
@@ -383,7 +378,7 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 
 				<div class="checkbox">
 					<label class="form-content" for="snapshot_reduce_skills_by_group">
-						<input class="checkbox" name="snapshot_reduce_skills_by_group" id="snapshot_reduce_skills_by_group" type="checkbox" value="1" <?php if ($row['snapshot_reduce_skills_by_group']=='1') {
+						<input class="checkbox" name="snapshot_reduce_skills_by_group" id="snapshot_reduce_skills_by_group" type="checkbox" value="1" <?php if ($row['snapshot_reduce_skills_by_group'] == '1') {
         echo 'checked="checked"';
     } elseif ($row['snapshot_reduce_skills_by_group'] == '0') {
     } ?>  />
@@ -393,7 +388,7 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 
 				<div class="checkbox">
 					<label class="form-content" for="group_sorting_name">
-						<input class="checkbox" name="group_sorting_name" id="group_sorting_name" type="checkbox" value="1" <?php if ($row['group_sorting_name']=='1') {
+						<input class="checkbox" name="group_sorting_name" id="group_sorting_name" type="checkbox" value="1" <?php if ($row['group_sorting_name'] == '1') {
         echo 'checked="checked"';
     } elseif ($row['group_sorting_name'] == '0') {
     } ?>  />
@@ -403,7 +398,7 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 
 				<div class="checkbox">
 					<label class="form-content" for="logged_in_show_snapshot_button">
-						<input class="checkbox" name="logged_in_show_snapshot_button" id="logged_in_show_snapshot_button" type="checkbox" value="1" <?php if ($row['logged_in_show_snapshot_button']=='1') {
+						<input class="checkbox" name="logged_in_show_snapshot_button" id="logged_in_show_snapshot_button" type="checkbox" value="1" <?php if ($row['logged_in_show_snapshot_button'] == '1') {
         echo 'checked="checked"';
     } elseif ($row['logged_in_show_snapshot_button'] == '0') {
     } ?>  />
@@ -413,7 +408,7 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 
 				<div class="checkbox">
 					<label class="form-content" for="users_start_with_myevents">
-						<input class="checkbox" name="users_start_with_myevents" id="users_start_with_myevents" type="checkbox" value="1" <?php if ($row['users_start_with_myevents']=='1') {
+						<input class="checkbox" name="users_start_with_myevents" id="users_start_with_myevents" type="checkbox" value="1" <?php if ($row['users_start_with_myevents'] == '1') {
         echo 'checked="checked"';
     } elseif ($row['users_start_with_myevents'] == '0') {
     } ?>  />
@@ -423,7 +418,7 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 
 				<div class="checkbox">
 					<label class="form-content" for="debug_mode">
-						<input class="checkbox" name="debug_mode" id="debug_mode" type="checkbox" value="1" <?php if ($row['debug_mode']=='1') {
+						<input class="checkbox" name="debug_mode" id="debug_mode" type="checkbox" value="1" <?php if ($row['debug_mode'] == '1') {
         echo 'checked="checked"';
     } elseif ($row['debug_mode'] == '0') {
     } ?>  />
@@ -476,4 +471,4 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 
 </div>
 
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

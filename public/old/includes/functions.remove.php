@@ -1,7 +1,6 @@
-<?php namespace TechWilk\Rota;
+<?php
 
-use DateInterval;
-use DateTime;
+namespace TechWilk\Rota;
 
 /*
     This file is part of Church Rota.
@@ -38,7 +37,7 @@ function removeCategory($areaid)
 {
     $query = "DELETE FROM cr_discussionCategories WHERE id = '$areaid'";
     mysqli_query(db(), $query) or die(mysqli_error(db()));
-    header("Location: discussion.php");
+    header('Location: discussion.php');
 }
 
 function removeDiscussion($areaid)
@@ -47,21 +46,21 @@ function removeDiscussion($areaid)
     mysqli_query(db(), $query) or die(mysqli_error(db()));
     $query = "DELETE FROM cr_discussion WHERE topicParent = '$areaid'";
     mysqli_query(db(), $query) or die(mysqli_error(db()));
-    header("Location: discussion.php");
+    header('Location: discussion.php');
 }
 
 function removeeventtype($eventtypeid)
 {
     $query = "DELETE FROM cr_eventTypes WHERE id = '$eventtypeid'";
     mysqli_query(db(), $query) or die(mysqli_error(db()));
-    header("Location: editeventtype.php");
+    header('Location: editeventtype.php');
 }
 
 function removelocation($location)
 {
     $query = "DELETE FROM cr_locations WHERE id = '$location'";
     mysqli_query(db(), $query) or die(mysqli_error(db()));
-    header("Location: locations.php");
+    header('Location: locations.php');
 }
 
 function removeGroup($groupId)
@@ -71,16 +70,15 @@ function removeGroup($groupId)
 
     $query = "DELETE FROM cr_roles WHERE groupId = '$groupId'";
     mysqli_query(db(), $query) or die(mysqli_error(db()));
-    header("Location: roles.php");
+    header('Location: roles.php');
 }
 
 function removeRole($roleId)
 {
     $query = "DELETE FROM cr_roles WHERE id = '$roleId'";
     mysqli_query(db(), $query) or die(mysqli_error(db()));
-    header("Location: roles.php");
+    header('Location: roles.php');
 }
-
 
 function removeBandMembers($bandMembersID)
 {
@@ -110,5 +108,5 @@ function removeBandSkill($bandskillid)
 {
     $query = "DELETE FROM cr_instruments WHERE id = '$bandskillid'";
     mysqli_query(db(), $query) or die(mysqli_error(db()));
-    header("Location: bandskills.php");
+    header('Location: bandskills.php');
 }

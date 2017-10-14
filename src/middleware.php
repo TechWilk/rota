@@ -1,16 +1,12 @@
 <?php
 
-use Slim\App;
 use Slim\Exception\NotFoundException;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use TechWilk\Rota\AuthProvider\UsernamePassword\UsernamePasswordAuth;
-use TechWilk\Rota\Authentication;
 
 // Application middleware
 
 // e.g: $app->add(new \Slim\Csrf\Guard);
-
 
 // add route information to twig
 
@@ -27,6 +23,5 @@ $app->add(function (Request $request, Response $response, callable $next) {
 
     return $next($request, $response);
 });
-
 
 $app->add($app->getContainer()['auth']);

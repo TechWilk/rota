@@ -2,17 +2,16 @@
 
 namespace TechWilk\Rota;
 
-use Aptoma\Twig\Extension\MarkdownExtension;
 use Aptoma\Twig\Extension\MarkdownEngine;
-use Slim\Views\TwigExtension;
-use Slim\Views\Twig;
+use Aptoma\Twig\Extension\MarkdownExtension;
 use DPolac\TwigLambda\LambdaExtension;
+use GuzzleHttp;
+use Monolog;
+use Slim\Views\Twig;
+use Slim\Views\TwigExtension;
+use TechWilk\Twig\Extension\LineWrap;
 use Twig_Extensions_Extension_Date;
 use Twig_Extensions_Extension_Text;
-use TechWilk\Rota\AuthProvider;
-use TechWilk\Twig\Extension\LineWrap;
-use Monolog;
-use GuzzleHttp;
 
 // DIC configuration
 
@@ -39,7 +38,7 @@ $container['view'] = function ($c) {
     $view->addExtension(new LineWrap());
 
     $env = $view->getEnvironment();
-    $env->addGlobal('site', new Site);
+    $env->addGlobal('site', new Site());
     $env->addGlobal('currenturl', $c->get('request')->getUri());
     $env->addGlobal('currentpath', $c->get('request')->getUri()->getBasePath().'/'.$c->get('request')->getUri()->getPath());
 
@@ -59,6 +58,7 @@ $container['logger'] = function ($c) {
     $logger = new Monolog\Logger($settings['name']);
     $logger->pushProcessor(new Monolog\Processor\UidProcessor());
     $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
+
     return $logger;
 };
 
@@ -71,7 +71,7 @@ $container['auth'] = function ($c) {
             break;
 
         case 'onebody':
-            $url = $authConfig['onebody']['url'] .'/';
+            $url = $authConfig['onebody']['url'].'/';
             $email = new EmailAddress($authConfig['onebody']['email']);
             $apiKey = $authConfig['onebody']['apiKey'];
 

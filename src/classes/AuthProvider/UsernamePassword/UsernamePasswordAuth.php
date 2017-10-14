@@ -3,12 +3,8 @@
 namespace TechWilk\Rota\AuthProvider\UsernamePassword;
 
 use TechWilk\Rota\AuthProvider\UsernamePasswordInterface;
-use TechWilk\Rota\UserQuery;
-use TechWilk\Rota\LoginFailureQuery;
-use TechWilk\Rota\LoginFailure;
 use TechWilk\Rota\EmailAddress;
-use DateTime;
-use Exception;
+use TechWilk\Rota\UserQuery;
 
 class UsernamePasswordAuth implements UsernamePasswordInterface
 {
@@ -16,7 +12,7 @@ class UsernamePasswordAuth implements UsernamePasswordInterface
 
     public function __construct($enabled = true)
     {
-        $this->enabled = (bool)$enabled;
+        $this->enabled = (bool) $enabled;
     }
 
     public function isEnabled()
@@ -34,12 +30,12 @@ class UsernamePasswordAuth implements UsernamePasswordInterface
                 return true;
             }
         }
+
         return false;
     }
 
     public function getResetPasswordUrl()
     {
-        return null;
     }
 
     public function getAuthProviderSlug()

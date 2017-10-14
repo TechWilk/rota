@@ -1,11 +1,8 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -25,7 +22,7 @@ if (!isAdmin()) {
 $eventTypeId = getQueryStringForKey('id');
 $method = getQueryStringForKey('method');
 
-if ($method == "remove" && isset($eventTypeId)) {
+if ($method == 'remove' && isset($eventTypeId)) {
     removeEventType($eventTypeId);
 }
 
@@ -55,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if (strlen($defaultLocation) > 0) {
             $eventType->setDefaultLocationId($defaultLocation);
-            echo "added";
+            echo 'added';
         } else {
             $eventType->setDefaultLocationId(null);
         }
@@ -70,18 +67,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     exit;
 }
 
-
 $eventTypes = EventTypeQuery::create()->find();
-
-
-
-
-
 
 // ~~~~~~~~~~ PRESENTATION ~~~~~~~~~~
 
-
-include('includes/header.php');
+include 'includes/header.php';
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -114,7 +104,7 @@ include('includes/header.php');
 					<p>Defaults:
 						<ul>
 							<li><strong>Day</strong>: <?php echo $eventType->getDefaultDay() ?></li>
-							<li><strong>Time</strong>: <?php echo $eventType->getDefaultTime("H:i") ?></li>
+							<li><strong>Time</strong>: <?php echo $eventType->getDefaultTime('H:i') ?></li>
 							<li><strong>Location</strong>: <?php echo $eventType->getLocation() ? $eventType->getLocation()->getName() : '' ?></li>
 						</ul>
 					</p>
@@ -184,4 +174,4 @@ if (isAdmin()) {
 </div>
 <?php
                             } ?>
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

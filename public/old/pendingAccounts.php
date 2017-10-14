@@ -1,11 +1,8 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -22,34 +19,33 @@ if (!isAdmin()) {
 }
 
 // Get the query string
-$id = $_GET["id"];
+$id = $_GET['id'];
 $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-
 
 // Approve or decline
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id = $_POST["id"];
+    $id = $_POST['id'];
     $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
 
     switch ($_POST['action']) {
     case 'approve':
       $userId = approvePendingUser($id);
       mailNewUser($userId);
-      header('Location: addUser.php?action=edit&user=' . $userId);
+      header('Location: addUser.php?action=edit&user='.$userId);
       break;
     case 'merge':
-      $existingUserId = $_POST["existingUser"];
+      $existingUserId = $_POST['existingUser'];
       $existingUserId = filter_var($existingUserId, FILTER_SANITIZE_NUMBER_INT);
       mergePendingUserWithUserId($id, $existingUserId);
       mailNewUser($existingUserId);
-      header('Location: addUser.php?action=edit&user=' . $existingUserId);
+      header('Location: addUser.php?action=edit&user='.$existingUserId);
       break;
     case 'decline':
       declinePendingUser($id);
       break;
 
     default:
-      # code...
+      // code...
       break;
   }
 }
@@ -57,7 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 if (empty($id)) {
     header('Location: index.php');
 }
-
 
 // setup page
 
@@ -69,14 +64,9 @@ if (!($user->approved == true || $user->declined == true)) {
     $buttonsVisible = true;
 }
 
-
-
-
-
 // ~~~~~~~~~~~~ Presentation ~~~~~~~~~~~~
 
-
-include('includes/header.php');
+include 'includes/header.php';
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -100,7 +90,7 @@ include('includes/header.php');
 <div class="box box-primary">
   <div class="box-header">
     <h2 class="box-title">
-      <?php echo $user->approved ? 'Approved' : ($user->declined ? 'Declined' : 'Pending') ?>: <?php echo $user->firstName . " " . $user->lastName ?>
+      <?php echo $user->approved ? 'Approved' : ($user->declined ? 'Declined' : 'Pending') ?>: <?php echo $user->firstName.' '.$user->lastName ?>
     </h2>
   </div>
   <div class="box-body">
@@ -141,7 +131,7 @@ include('includes/header.php');
             <?php
             $users = allUsersNames();
             foreach ($users as $existingUser): ?>
-            <option value="<?php echo $existingUser->id?>" <?php echo($existingUser->firstName == $user->firstName) && ($existingUser->lastName == $user->lastName) ? "selected='selected'" : "" ?>><?php echo $existingUser->firstName . " " . $existingUser->lastName ?></option>
+            <option value="<?php echo $existingUser->id?>" <?php echo($existingUser->firstName == $user->firstName) && ($existingUser->lastName == $user->lastName) ? "selected='selected'" : '' ?>><?php echo $existingUser->firstName.' '.$existingUser->lastName ?></option>
             <?php endforeach; ?>
           </select>
         </div>
@@ -153,4 +143,4 @@ include('includes/header.php');
   </div>
 <?php endif; ?>
 
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

@@ -1,11 +1,8 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -29,33 +26,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($method == 'truncate') {
         $sql = "CREATE TABLE tmp_system_statistics as SELECT * from cr_statistics WHERE type='system'";
         if (!mysqli_query(db(), $sql)) {
-            die('Error: ' . mysqli_error(db()));
+            die('Error: '.mysqli_error(db()));
         }
 
-        $sql = ("TRUNCATE TABLE cr_statistics");
+        $sql = ('TRUNCATE TABLE cr_statistics');
         if (!mysqli_query(db(), $sql)) {
-            die('Error: ' . mysqli_error(db()));
+            die('Error: '.mysqli_error(db()));
         }
 
-        $sql = ("ALTER TABLE cr_statistics  AUTO_INCREMENT = 50");
+        $sql = ('ALTER TABLE cr_statistics  AUTO_INCREMENT = 50');
         if (!mysqli_query(db(), $sql)) {
-            die('Error: ' . mysqli_error(db()));
+            die('Error: '.mysqli_error(db()));
         }
 
-        $sql = "INSERT INTO cr_statistics (userid,date,type,detail1,detail2,detail3,script) ";
-        $sql = $sql . "SELECT userid,date,type,detail1,detail2,detail3,script from tmp_system_statistics order by date";
+        $sql = 'INSERT INTO cr_statistics (userid,date,type,detail1,detail2,detail3,script) ';
+        $sql = $sql.'SELECT userid,date,type,detail1,detail2,detail3,script from tmp_system_statistics order by date';
         if (!mysqli_query(db(), $sql)) {
-            die('Error: ' . mysqli_error(db()));
+            die('Error: '.mysqli_error(db()));
         }
 
-        $sql = "DROP TABLE tmp_system_statistics";
+        $sql = 'DROP TABLE tmp_system_statistics';
         if (!mysqli_query(db(), $sql)) {
-            die('Error: ' . mysqli_error(db()));
+            die('Error: '.mysqli_error(db()));
         }
 
-        insertStatistics("system", __FILE__, "statistics deleted");
-
-
+        insertStatistics('system', __FILE__, 'statistics deleted');
 
         // After we have truncated the data, we want to reload the page
         header('Location: statistics.php'); // Move to the home page of the admin section
@@ -65,23 +60,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 if ($method == 'showall') {
-    $limit=" ";
-    $browserLimit=" ";
+    $limit = ' ';
+    $browserLimit = ' ';
 } else {
-    $limit="LIMIT 10";
-    $browserLimit="LIMIT 5";
+    $limit = 'LIMIT 10';
+    $browserLimit = 'LIMIT 5';
 }
-
-
-
 
 // ~~~~~~~~~~ Presentation ~~~~~~~~~~
 
-
-
-
-
-include('includes/header.php');
+include 'includes/header.php';
 ?>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -114,8 +102,8 @@ include('includes/header.php');
 
               <?php
 
-                        $sql = "SELECT VERSION( ) AS mysqli_version";
-            $result = mysqli_query(db(), $sql) or die("MySQL-Error: ".mysqli_error(db()));
+                        $sql = 'SELECT VERSION( ) AS mysqli_version';
+            $result = mysqli_query(db(), $sql) or die('MySQL-Error: '.mysqli_error(db()));
             $dbv = mysqli_fetch_array($result, MYSQLI_ASSOC);
             $mysqli_version = $dbv['mysqli_version'];
 
@@ -128,10 +116,10 @@ include('includes/header.php');
             $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
             while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                 extract($row);
-                echo "<tr>";
-                echo "<td>".$browser."</td>";
-                echo "<td>".$count."</td>";
-                echo "</tr>";
+                echo '<tr>';
+                echo '<td>'.$browser.'</td>';
+                echo '<td>'.$count.'</td>';
+                echo '</tr>';
             } ?>
 
     				</tbody>
@@ -151,24 +139,24 @@ include('includes/header.php');
     		<tbody>
     		<?php
                 $sql = "SELECT s.date,s.detail1,s.detail2,s.detail3,s.type,trim(concat(u.firstName,' ',u.lastName)) AS name FROM cr_statistics s INNER JOIN cr_users u ON u.id = s.userid";
-          if (! isAdmin()) {
-              $sql .= "WHERE u.ID=s.userID";
-              if (! $debug) {
+          if (!isAdmin()) {
+              $sql .= 'WHERE u.ID=s.userID';
+              if (!$debug) {
                   $sql .= " AND s.type = 'system'";
               }
           }
-                $sql .= " ORDER BY date desc " . $limit;
+                $sql .= ' ORDER BY date desc '.$limit;
                 $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
                 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                     extract($row);
-                    echo "<tr>";
-                    echo "<td>".$date."</td>";
-                    echo "<td>".$name."</td>";
-                    echo "<td>".$type."</td>";
-                    echo "<td>".$detail1."</td>";
-                    echo "<td>".$detail2."</td>";
+                    echo '<tr>';
+                    echo '<td>'.$date.'</td>';
+                    echo '<td>'.$name.'</td>';
+                    echo '<td>'.$type.'</td>';
+                    echo '<td>'.$detail1.'</td>';
+                    echo '<td>'.$detail2.'</td>';
                     //echo "<td>".$detail3."</td>";
-                    echo "</tr>";
+                    echo '</tr>';
                 }
             ?>
     		</tbody>
@@ -205,7 +193,7 @@ if (isAdmin()) {
                 ?>
 <div class="callout callout-info">
 		<div class="item"><a href="settings.php">Back to settings</a></div>
-		<?php	if ($method != "showall") {
+		<?php	if ($method != 'showall') {
                     ?>
 		<div class="item"><a href="statistics.php?method=showall">Show all statistics</a></div>
 		<?php
@@ -218,4 +206,4 @@ if (isAdmin()) {
 <?php
             } ?>
 
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

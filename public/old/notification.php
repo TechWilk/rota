@@ -1,8 +1,5 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 /*
     This file is part of Church Rota.
 
@@ -23,9 +20,8 @@ use DateTime;
 */
 
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
-
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -38,16 +34,16 @@ if (isset($_SESSION['is_logged_in']) || $_SESSION['db_is_logged_in'] == true) {
     $notificationId = getQueryStringForKey('id');
     $referer = getQueryStringForKey('click');
     $_SESSION['redirectUrl'] = siteSettings()->getSiteUrl().'/notification.php?id='.$notificationId.'&click='.$referer;
-    header("Location: login.php");
+    header('Location: login.php');
     exit;
 }
 
 // Dismiss notification on POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if ($_POST["action"] == "dismiss") {
-        $notificationId = $_POST["id"];
+    if ($_POST['action'] == 'dismiss') {
+        $notificationId = $_POST['id'];
         dismissNotification($notificationId);
-        header("Location: index.php");
+        header('Location: index.php');
         exit;
     }
 }
@@ -60,28 +56,21 @@ $notificationId = filter_var($notificationId, FILTER_SANITIZE_NUMBER_INT);
 
 if (!empty($notificationId)) {
     seenNotification($notificationId, $referer);
-  
-  // redir if notification has URL
-  $redir = notificationLink($notificationId);
+
+    // redir if notification has URL
+    $redir = notificationLink($notificationId);
     if (!empty($redir)) {
-        header("Location: ".$redir);
+        header('Location: '.$redir);
     }
-  
-  // find notification
-  $notification = notificationWithId($notificationId);
+
+    // find notification
+    $notification = notificationWithId($notificationId);
 }
 
+    // ------ Presentation --------
 
-
-
-
-    # ------ Presentation --------
-
-
-
-
-$formatting = "light";
-include('includes/header.php');
+$formatting = 'light';
+include 'includes/header.php';
 $Parsedown = new Parsedown();
 ?>
 
@@ -119,4 +108,4 @@ $Parsedown = new Parsedown();
       </div>
     </div>
       
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

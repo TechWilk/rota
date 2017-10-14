@@ -1,12 +1,9 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 session_start();
 
-include_once "includes/config.php";
-include_once "includes/functions.php";
+include_once 'includes/config.php';
+include_once 'includes/functions.php';
 
 $eventId = getQueryStringForKey('id');
 $eventId = filter_var($eventId, FILTER_SANITIZE_NUMBER_INT);
@@ -15,10 +12,9 @@ if (isset($_SESSION['is_logged_in']) || $_SESSION['db_is_logged_in'] == true) {
     // Just continue the code
 } else {
     $_SESSION['redirectUrl'] = siteSettings()->getSiteUrl().'/event.php?id='.$eventId;
-    header("Location: login.php");
+    header('Location: login.php');
     exit;
 }
-
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // remove event
@@ -26,23 +22,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $remove = $_POST['id'];
         $remove = filter_var($remove, FILTER_SANITIZE_NUMBER_INT);
         removeEvent($remove);
-        header("Location: index.php");
+        header('Location: index.php');
         exit;
     }
 }
 
-
 $event = EventQuery::create()->findPK($eventId);
-
-
-
-
-
-
 
 // ~~~~~~~~~~ PRESENTATION ~~~~~~~~~~
 
-include "includes/header.php";
+include 'includes/header.php';
 
 ?>
 <!-- Content Wrapper. Contains page content -->
@@ -50,13 +39,13 @@ include "includes/header.php";
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-    <?php echo empty($event->getName()) ? "Event" : $event->getName() ?>
+    <?php echo empty($event->getName()) ? 'Event' : $event->getName() ?>
     <small>Events</small>
   </h1>
   <ol class="breadcrumb">
     <li><a href="<?php echo siteSettings()->getSiteUrl() ?>"><i class="fa fa-dashboard"></i> Home</a></li>
     <li><a href="events.php">Events</a></li>
-    <li class="active"><?php echo empty($event->getName()) ? "Event" : $event->getName() ?></li>
+    <li class="active"><?php echo empty($event->getName()) ? 'Event' : $event->getName() ?></li>
   </ol>
 </section>
 
@@ -71,7 +60,7 @@ include "includes/header.php";
 					<h2 class="box-title">Event Details</h2>
 				</div>
 				<div class="box-body">
-					<?php echo !empty($event->getName()) ? "<p><strong>Name:</strong> ".$event->getName()."</p>" : "" ?>
+					<?php echo !empty($event->getName()) ? '<p><strong>Name:</strong> '.$event->getName().'</p>' : '' ?>
 					<p><strong>Date:</strong> <?php echo $event->getDate('d/m/y'); ?></p>
 					<p><strong>Location:</strong> <?php echo $event->getLocation()->getName() ?></p>
 					<p><strong>Type:</strong> <?php echo $event->getEventType()->getName() ?></p>
@@ -153,9 +142,9 @@ include "includes/header.php";
 														ORDER BY g.name, r.name";
 
                             $resultPeople = mysqli_query(db(), $sqlPeople) or die(mysqli_error(db()));
-                            $groupName = "";
+                            $groupName = '';
                             $groupId = 0;
-                            $identifier = "1";
+                            $identifier = '1';
                             $firstTime = true;
 
                         ?>
@@ -169,26 +158,26 @@ include "includes/header.php";
                                 if ($firstTime) {
                                     $firstTime = false;
                                 } else {
-                                    echo "</ul>";
+                                    echo '</ul>';
                                 }
-                                echo "<p><strong>" . $groupName . "</strong></p>";
-                                echo "<ul>";
+                                echo '<p><strong>'.$groupName.'</strong></p>';
+                                echo '<ul>';
                             }
 
-                            echo "<li>";
-                            echo (isset($viewPeople->swap)) ? "<s><a class='text-danger' href='swap.php?swap=".$viewPeople->swap."'>" : "";
+                            echo '<li>';
+                            echo (isset($viewPeople->swap)) ? "<s><a class='text-danger' href='swap.php?swap=".$viewPeople->swap."'>" : '';
                             echo $viewPeople->name;
 
-                            if ($viewPeople->rolename != "") {
-                                echo " - <em>" . $viewPeople->rolename . "</em>";
+                            if ($viewPeople->rolename != '') {
+                                echo ' - <em>'.$viewPeople->rolename.'</em>';
                             } else {
                                 // If there is no skill, we don't need to mention this.
                             }
-                            echo (isset($viewPeople->swap)) ? "</a></s>" : "";
-                            
-                            echo "</li>";
+                            echo (isset($viewPeople->swap)) ? '</a></s>' : '';
+
+                            echo '</li>';
                         }
-                        echo "</ul>";
+                        echo '</ul>';
                         ?>
 					</div>
 					<div class="box-footer">
@@ -221,5 +210,5 @@ include "includes/header.php";
 	</div><!-- /.row -->
     
 <?php
-include "includes/footer.php";
+include 'includes/footer.php';
 ?>

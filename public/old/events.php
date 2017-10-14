@@ -1,8 +1,5 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 /*
     This file is part of Church Rota.
 
@@ -23,8 +20,8 @@ use DateTime;
 */
 
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -36,7 +33,7 @@ $userisEventEditor = isEventEditor($sessionUserID);
 if (isset($_SESSION['is_logged_in']) || $_SESSION['db_is_logged_in'] == true) {
     // continue code
 } else {
-    header("Location: login.php");
+    header('Location: login.php');
 }
 
 // Handle details from the header
@@ -51,33 +48,32 @@ if (isset($filter) && $filter != $_SESSION['lastEventsFilter']) {
 } else {
     $urlFilters = '';
     if (isset($_SESSION['lastEventsFilter'])) {
-        $urlFilters = "&filter=" . $_SESSION['lastEventsFilter'];
+        $urlFilters = '&filter='.$_SESSION['lastEventsFilter'];
     }
-    header("Location: events.php?view=all" . $urlFilters);
+    header('Location: events.php?view=all'.$urlFilters);
     exit;
 }
 
 // setup view
 switch ($view) {
-    case "user":
+    case 'user':
         $_SESSION['onlyShowUserEvents'] = '1';
         break;
-    case "all":
+    case 'all':
         $_SESSION['onlyShowUserEvents'] = '0';
         break;
 }
 
-if (($_SESSION['onlyShowUserEvents'] == '1') && ($view == "user" || $view == "all") || empty($view)) {
-    if ($sessionUserID == "" || !($sessionUserID > 0) || empty($sessionUserID)) {
+if (($_SESSION['onlyShowUserEvents'] == '1') && ($view == 'user' || $view == 'all') || empty($view)) {
+    if ($sessionUserID == '' || !($sessionUserID > 0) || empty($sessionUserID)) {
         session_unset();
         session_destroy();
-        header("Location: login.php");
+        header('Location: login.php');
     } else {
-        header("Location: events.php?view=".$sessionUserID);
+        header('Location: events.php?view='.$sessionUserID);
         exit;
     }
 }
-
 
 if (isAdmin()) {
     // Method to remove someone from the band
@@ -109,18 +105,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $editskillID = $_POST['name'];
     $editbandID = $_POST['band'];
 
-    if ($editskillID != "") {
+    if ($editskillID != '') {
         $sql = ("INSERT INTO cr_eventPeople (eventId, userRoleId) VALUES ('$editeventID', '$editskillID')");
         if (!mysqli_query(db(), $sql)) {
-            die('Error: ' . mysqli_error(db()));
+            die('Error: '.mysqli_error(db()));
         }
 
         // After we have inserted the data, we want to head back to the main page
-        header("Location: index.php#section" . $editeventID);
+        header('Location: index.php#section'.$editeventID);
         exit;
     }
 
-    if ($editbandID != "") {
+    if ($editbandID != '') {
         $sqlbandMembers = "SELECT * FROM cr_bandMembers WHERE bandID = '$editbandID'";
         $resultbandMembers = mysqli_query(db(), $sqlbandMembers) or die(mysqli_error(db()));
 
@@ -129,48 +125,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $sql = ("INSERT INTO cr_eventPeople (eventId, userRoleId) VALUES ('$editeventID', '$editskillID')");
             if (!mysqli_query(db(), $sql)) {
-                die('Error: ' . mysqli_error(db()));
+                die('Error: '.mysqli_error(db()));
             }
         }
 
         // After we have inserted the data, we want to head back to the main page
-        header("Location: index.php#section" . $editeventID);
+        header('Location: index.php#section'.$editeventID);
         exit;
     }
 }
 ?>
 
-<?php $formatting = "light";
+<?php $formatting = 'light';
 
+// ------ Presentation --------
 
-
-
-# ------ Presentation --------
-
-
-
-
-include('includes/header.php');
-
+include 'includes/header.php';
 
 if (siteSettings()->getEventSortingLatest() == 1) {
-    $dateOrderBy = "date desc";
+    $dateOrderBy = 'date desc';
 } else {
-    $dateOrderBy = "date asc";
+    $dateOrderBy = 'date asc';
 }
 
 if (siteSettings()->getLoggedInShowSnapshotButton() == 1) {
-    $logged_in_show_snapshot_button = "1";
+    $logged_in_show_snapshot_button = '1';
 } else {
-    $logged_in_show_snapshot_button = "0";
+    $logged_in_show_snapshot_button = '0';
 }
 
-
 if (isAdmin()) {
-    $sql = "SELECT COUNT(id) AS pendingSwaps FROM cr_swaps WHERE accepted = 0 AND declined = 0";
+    $sql = 'SELECT COUNT(id) AS pendingSwaps FROM cr_swaps WHERE accepted = 0 AND declined = 0';
     $results = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $ob = mysqli_fetch_object($results);
-    
+
     $pendingSwaps = $ob->pendingSwaps;
 }
 ?>
@@ -181,18 +169,18 @@ if (isAdmin()) {
 		<section class="content-header">
 			<h1>
 				<?php // Vary page title depending on content showing
-                if ($_SESSION['onlyShowUserEvents'] == '0' && $filter == "") {
-                    echo "All Events";
-                } elseif ($filter != "") {
+                if ($_SESSION['onlyShowUserEvents'] == '0' && $filter == '') {
+                    echo 'All Events';
+                } elseif ($filter != '') {
                     $mysqli_query = "SELECT DISTINCT name FROM cr_eventTypes WHERE id = $filter";
                     $result = mysqli_query(db(), $mysqli_query) or die(mysqli_error(db()));
                     $row = mysqli_fetch_object($result);
 
-                    echo $row->name . "s";
+                    echo $row->name.'s';
                 } elseif ($_SESSION['onlyShowUserEvents'] == '1') {
-                    echo "My Events";
+                    echo 'My Events';
                 } else {
-                    echo "Events";
+                    echo 'Events';
                 } ?>
 				<small>Rotas</small>
 			</h1>
@@ -214,14 +202,14 @@ if (isAdmin()) {
 			
 			<?php if (!empty($pendingSwaps) && $pendingSwaps > 0):
                 if ($pendingSwaps > 1) {
-                    $swapsMessage = $pendingSwaps . " swaps are pending approval. Emails have been sent to the people covering to approve the swaps.";
+                    $swapsMessage = $pendingSwaps.' swaps are pending approval. Emails have been sent to the people covering to approve the swaps.';
                 } else {
-                    $swapsMessage = "A swap is pending approval. An email has been sent to the person covering to approve the swap.";
+                    $swapsMessage = 'A swap is pending approval. An email has been sent to the person covering to approve the swap.';
                 } ?>
 				<div class="alert alert-info alert-dismissable">
 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 					<h4><i class="icon fa fa-info"></i> Swaps pending approval</h4>
-					<p><?php echo $swapsMessage; ?> <a href="swaps.php">view <?php echo $pendingSwaps > 1 ? "swaps" : "swap" ?></a></p>
+					<p><?php echo $swapsMessage; ?> <a href="swaps.php">view <?php echo $pendingSwaps > 1 ? 'swaps' : 'swap' ?></a></p>
 				</div>
 			<?php endif; ?>
 
@@ -240,7 +228,7 @@ if (isAdmin()) {
 
     // fetch events from database, depending on filters
 
-    if ($_SESSION['onlyShowUserEvents'] == '0' && $filter == "") {
+    if ($_SESSION['onlyShowUserEvents'] == '0' && $filter == '') {
         $sql = "SELECT
 							e.id AS id,
 							e.name AS eventName,
@@ -260,8 +248,8 @@ if (isAdmin()) {
 							LEFT JOIN cr_locations l ON e.location = l.id
 							WHERE e.date >= DATE(NOW())
 							AND e.removed = 0
-							ORDER BY " . $dateOrderBy;
-    } elseif ($filter != "") {
+							ORDER BY ".$dateOrderBy;
+    } elseif ($filter != '') {
         $sql = "SELECT
 							e.id AS id,
 							e.name AS eventName,
@@ -282,7 +270,7 @@ if (isAdmin()) {
 							WHERE e.type = '$filter'
 							AND e.date >= DATE(NOW())
 							AND e.removed = 0
-							ORDER BY " . $dateOrderBy;
+							ORDER BY ".$dateOrderBy;
     } else {
         $sql = "SELECT
 							DISTINCT e.id AS id,
@@ -310,11 +298,11 @@ if (isAdmin()) {
 							WHERE e.date >= DATE(NOW())
 							AND ur.userId = '$view'
 							AND e.removed = 0
-							ORDER BY " . $dateOrderBy;
+							ORDER BY ".$dateOrderBy;
     }
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
-    $month = ""; ?>
+    $month = ''; ?>
 	<ul class="timeline">
 <?php
     while ($row = mysqli_fetch_object($result)) {
@@ -325,16 +313,13 @@ if (isAdmin()) {
 
         // Month name
         setlocale(LC_TIME, siteSettings()->getLangLocale());
-        $newMonth = strftime("%B %Y", strtotime($row->sundayDate));
+        $newMonth = strftime('%B %Y', strtotime($row->sundayDate));
         if ($month != $newMonth) {
             $month = $newMonth;
-            echo "<li class=\"time-label\"><span class=\"bg-green\">".$month."</span></li>";
+            echo '<li class="time-label"><span class="bg-green">'.$month.'</span></li>';
         }
 
-
-        // Event details
-
-        ?>
+        // Event details ?>
 		<li>
 			<i class="fa fa-bell bg-blue"></i>
 			<div class="timeline-item" id="event<?php echo $eventID; ?>">
@@ -344,10 +329,10 @@ if (isAdmin()) {
 					<a href="event.php?id=<?php echo $eventID ?>">
 						<h4><?php
                             echo date('jS: ', strtotime($row->sundayDate));
-        if ($eventName != "") {
-            echo "<strong>".$eventName."</strong><br />".$subType." - <em>".$type."</em>";
+        if ($eventName != '') {
+            echo '<strong>'.$eventName.'</strong><br />'.$subType.' - <em>'.$type.'</em>';
         } else {
-            echo $subType." - <em>".$type."</em>";
+            echo $subType.' - <em>'.$type.'</em>';
         } ?>
 						</h4>
 					</a>
@@ -359,15 +344,15 @@ if (isAdmin()) {
 				<?php //<p><strong>Rehearsal:</strong> <?php
                 //echo ($row->rehearsalDateFormatted = "0000-00-00 00:00:00") ? "none" : strftime(siteSettings()->time_format_normal,strtotime($row->rehearsalDateFormatted));</p>?>
 					
-				<p><strong><?php echo $row->eventGroup ? $row->eventGroup.': ' : '' ?></strong><?php echo $row->sermonTitle ?> <?php echo $row->bibleVerse ? '('.$row->bibleVerse.')' : "" ?></p>
+				<p><strong><?php echo $row->eventGroup ? $row->eventGroup.': ' : '' ?></strong><?php echo $row->sermonTitle ?> <?php echo $row->bibleVerse ? '('.$row->bibleVerse.')' : '' ?></p>
 				
 				<p><strong>Location:</strong> <?php echo $row->eventLocation; ?></p>
 				
-				<?php if ($row->comment != "") {
-                    echo "<blockquote>";
-                    echo "<p>";
+				<?php if ($row->comment != '') {
+                    echo '<blockquote>';
+                    echo '<p>';
                     echo $row->comment;
-                    echo "</p><small>Comments</small></blockquote>";
+                    echo '</p><small>Comments</small></blockquote>';
                 } ?>
 				<div id="deleteModal<?php echo $eventID; ?>" class="modal modal-danger fade" role="dialogue">
 					<div class="modal-dialog">
@@ -411,9 +396,9 @@ if (isAdmin()) {
 												ORDER BY g.name, r.name";
 
         $resultPeople = mysqli_query(db(), $sqlPeople) or die(mysqli_error(db()));
-        $groupName = "";
+        $groupName = '';
         $groupId = 0;
-        $identifier = "1";
+        $identifier = '1';
         $firstTime = true;
 
         if (mysqli_num_rows($resultPeople) > 0):
@@ -429,27 +414,27 @@ if (isAdmin()) {
                                 if ($firstTime) {
                                     $firstTime = false;
                                 } else {
-                                    echo "</ul>";
+                                    echo '</ul>';
                                 }
-                                echo "<p><strong>" . $groupName . "</strong></p>";
-                                echo "<ul>";
+                                echo '<p><strong>'.$groupName.'</strong></p>';
+                                echo '<ul>';
                             }
 
-                            echo "<li>";
-                            echo (isset($viewPeople->swap)) ? "<s><a class='text-danger' href='swap.php?swap=".$viewPeople->swap."'>" : "";
+                            echo '<li>';
+                            echo (isset($viewPeople->swap)) ? "<s><a class='text-danger' href='swap.php?swap=".$viewPeople->swap."'>" : '';
                             echo $viewPeople->name;
 
-                            if ($viewPeople->rolename != "") {
-                                echo " - <em>" . $viewPeople->rolename . "</em>";
+                            if ($viewPeople->rolename != '') {
+                                echo ' - <em>'.$viewPeople->rolename.'</em>';
                             } else {
                                 // If there is no skill, we don't need to mention this.
                             }
-                            echo (isset($viewPeople->swap)) ? "</a></s>" : "";
-                            
-                            echo "</li>";
+                            echo (isset($viewPeople->swap)) ? '</a></s>' : '';
+
+                            echo '</li>';
                         }
-        echo "</ul>"; else:
-                        echo "<p>No roles assigned to this event.";
+        echo '</ul>'; else:
+                        echo '<p>No roles assigned to this event.';
         endif; ?>
 			</div><!-- /.user-roles -->
 		</div><!-- /.box-body -->
@@ -465,21 +450,21 @@ if (isAdmin()) {
 				</a>
 
 				<?php
-                if (isAdmin()||$userisBandAdmin||$userisEventEditor) {
-                    echo " <a class ='btn btn-primary' href='createEvent.php?action=edit&id=" . $eventID . "'><i class='fa fa-pencil'></i><span> &nbsp;Edit</span></a> "; /* Edit event */
-                    echo " <a class ='btn btn-primary' href='createEvent.php?action=copy&id=" . $eventID . "'><i class='fa fa-pencil'></i><span> &nbsp;Copy</span></a> "; /* Edit event */
-                    echo " <a class ='btn btn-primary' href='emailEvent.php?event=" . $eventID . "'><i class='fa fa-envelope-o'></i><span> &nbsp;Send email</span></a> "; /* Send email */
+                if (isAdmin() || $userisBandAdmin || $userisEventEditor) {
+                    echo " <a class ='btn btn-primary' href='createEvent.php?action=edit&id=".$eventID."'><i class='fa fa-pencil'></i><span> &nbsp;Edit</span></a> "; /* Edit event */
+                    echo " <a class ='btn btn-primary' href='createEvent.php?action=copy&id=".$eventID."'><i class='fa fa-pencil'></i><span> &nbsp;Copy</span></a> "; /* Edit event */
+                    echo " <a class ='btn btn-primary' href='emailEvent.php?event=".$eventID."'><i class='fa fa-envelope-o'></i><span> &nbsp;Send email</span></a> "; /* Send email */
                 }
         if (isAdmin()) {
             //echo "<a class='btn btn-primary' href='index.php?notifyEveryone=true&eventID=$eventID'><i class='fa fa-envelope-o'></i><span> &nbsp;Send email</span></a> "; /* Send email */
-                    
-                    echo "<button type='button' class='btn btn-primary dropdown-toggle' data-toggle='dropdown' aria-expanded='true'><span class='caret'></span></button>"; /* Menu dropdown */
 
-                    echo "<ul class='dropdown-menu'>";
+            echo "<button type='button' class='btn btn-primary dropdown-toggle' data-toggle='dropdown' aria-expanded='true'><span class='caret'></span></button>"; /* Menu dropdown */
+
+            echo "<ul class='dropdown-menu'>";
 
             echo "<li><button type='button' class='btn btn-danger btn-block' data-toggle='modal' data-target='#deleteModal".$eventID."'>Delete</button></li>"; /* Delete Event */
 
-                    echo "</ul>";
+            echo '</ul>';
         } ?>
 			</div><!-- /.btn-group -->
 		</div>
@@ -521,9 +506,8 @@ if (isAdmin()) {
 	      </div><!-- /.col -->
 
 				<?php endif; /* END isAdmin() */
-                
-                
-                if ((isAdmin()) || ($logged_in_show_snapshot_button=='1')): ?>
+
+                if ((isAdmin()) || ($logged_in_show_snapshot_button == '1')): ?>
 
 					<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
 						<a href="tableView.php">
@@ -546,4 +530,4 @@ if (isAdmin()) {
 			<div class="row">
 
 
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

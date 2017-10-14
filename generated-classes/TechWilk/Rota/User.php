@@ -1,9 +1,10 @@
-<?php  namespace TechWilk\Rota;
+<?php
+namespace TechWilk\Rota;
 
+use DateTime;
 use Propel\Runtime\ActiveQuery\Criteria;
 use TechWilk\Rota\Base\User as BaseUser;
 use TechWilk\Rota\Map\UserTableMap;
-use DateTime;
 
 /**
  * Skeleton subclass for representing a row from the 'cr_users' table.
@@ -13,41 +14,43 @@ use DateTime;
  * You should add additional methods to this class to meet the
  * application requirements.  This class will only be generated as
  * long as it does not already exist in the output directory.
- *
  */
 class User extends BaseUser
 {
     /**
-  * Set the value of [password] column.
-  *
-  * @param string $v new value
-  * @return $this|\User The current object (for fluent API support)
-  */
-  public function setPassword($v)
-  {
-      if ($v !== null) {
-          $v = (string) $v;
-      }
+     * Set the value of [password] column.
+     *
+     * @param string $v new value
+     *
+     * @return $this|\User The current object (for fluent API support)
+     */
+    public function setPassword($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
 
-      if (!password_verify($v, $this->password)) {
-          $bcrypt_options = [
+        if (!password_verify($v, $this->password)) {
+            $bcrypt_options = [
         'cost' => 12,
       ];
-          $this->password = password_hash($v, PASSWORD_BCRYPT, $bcrypt_options);
-          ;
-          $this->modifiedColumns[UserTableMap::COL_PASSWORD] = true;
-      }
+            $this->password = password_hash($v, PASSWORD_BCRYPT, $bcrypt_options);
 
-      return $this;
-  } // setPassword()
+            $this->modifiedColumns[UserTableMap::COL_PASSWORD] = true;
+        }
 
+        return $this;
+    }
+
+    // setPassword()
 
     /**
-    * Check a plain text password against the value of [password] column.
-    *
-    * @param string $v plain text password
-    * @return $this|\User The current object (for fluent API support)
-    */
+     * Check a plain text password against the value of [password] column.
+     *
+     * @param string $v plain text password
+     *
+     * @return $this|\User The current object (for fluent API support)
+     */
     public function checkPassword($v)
     {
         if ($v !== null) {
@@ -57,31 +60,32 @@ class User extends BaseUser
         }
 
         return password_verify($v, $this->password);
-    } // checkPassword()
+    }
 
+    // checkPassword()
 
     public function isAdmin()
     {
         return $this->isadmin;
     }
 
-
     /**
-    * Get the [firstname] and [lastname] column value concatenated with a space.
-    *
-    * @return string
-    */
+     * Get the [firstname] and [lastname] column value concatenated with a space.
+     *
+     * @return string
+     */
     public function getName()
     {
-        return $this->firstname . ' ' . $this->lastname;
+        return $this->firstname.' '.$this->lastname;
     }
 
     /**
-    * Get the URL for the user's profile image.
-    *
-    * @param string $size either 'small' or 'large'
-    * @return string
-    */
+     * Get the URL for the user's profile image.
+     *
+     * @param string $size either 'small' or 'large'
+     *
+     * @return string
+     */
     public function getProfileImage($size)
     {
         $socialAuths = $this->getSocialAuths();
@@ -91,16 +95,16 @@ class User extends BaseUser
                 if ($socialAuth->getPlatform() == 'facebook') {
                     switch ($size) {
                         case 'small': // 50px x 50px
-                            return '//graph.facebook.com/' . $socialAuth->getSocialId() . '/picture?type=square';
+                            return '//graph.facebook.com/'.$socialAuth->getSocialId().'/picture?type=square';
                             break;
                         case 'medium': // 200px x 200px
-                            return '//graph.facebook.com/' . $socialAuth->getSocialId() . '/picture?type=large';
+                            return '//graph.facebook.com/'.$socialAuth->getSocialId().'/picture?type=large';
                             break;
                         case 'large': // 200px x 200px
-                            return '//graph.facebook.com/' . $socialAuth->getSocialId() . '/picture?type=large';
+                            return '//graph.facebook.com/'.$socialAuth->getSocialId().'/picture?type=large';
                             break;
                         default:
-                            return '//graph.facebook.com/' . $socialAuth->getSocialId() . '/picture';
+                            return '//graph.facebook.com/'.$socialAuth->getSocialId().'/picture';
                             break;
                     }
                 } elseif ($socialAuth->getPlatform() == 'onebody') {
@@ -109,16 +113,16 @@ class User extends BaseUser
                     $extension = pathinfo($socialAuth->getMeta()['photo-file-name'], PATHINFO_EXTENSION);
                     switch ($size) {
                         case 'small': // 50px x 50px
-                            return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/tn/' . $photoFingerprint . '.' . $extension;
+                            return $baseUrl.'/system/production/people/photos/'.$socialAuth->getSocialId().'/tn/'.$photoFingerprint.'.'.$extension;
                             break;
                         case 'medium': // 150px x 150px
-                            return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/small/' . $photoFingerprint . '.' . $extension;
+                            return $baseUrl.'/system/production/people/photos/'.$socialAuth->getSocialId().'/small/'.$photoFingerprint.'.'.$extension;
                             break;
                         case 'large': // 500px x 500px
-                            return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/medium/' . $photoFingerprint . '.' . $extension;
+                            return $baseUrl.'/system/production/people/photos/'.$socialAuth->getSocialId().'/medium/'.$photoFingerprint.'.'.$extension;
                             break;
                         default:
-                            return $baseUrl . '/system/production/people/photos/' . $socialAuth->getSocialId() . '/tn/' . $photoFingerprint . '.' . $extension;
+                            return $baseUrl.'/system/production/people/photos/'.$socialAuth->getSocialId().'/tn/'.$photoFingerprint.'.'.$extension;
                         break;
                     }
                 }
@@ -127,25 +131,25 @@ class User extends BaseUser
 
         switch ($size) {
             case 'small': // 50px x 50px
-                return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email))) . '?s=50&d=mm';
+                return '//www.gravatar.com/avatar/'.md5(strtolower(trim($this->email))).'?s=50&d=mm';
                 break;
             case 'medium': // 200px x 200px
-                return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email)))  . '?s=200&d=mm';
+                return '//www.gravatar.com/avatar/'.md5(strtolower(trim($this->email))).'?s=200&d=mm';
                 break;
             case 'large': // 500px x 500px
-                return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email)))  . '?s=500&d=mm';
+                return '//www.gravatar.com/avatar/'.md5(strtolower(trim($this->email))).'?s=500&d=mm';
                 break;
             default:
-                return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email))) . '?s=50&d=mm';
+                return '//www.gravatar.com/avatar/'.md5(strtolower(trim($this->email))).'?s=50&d=mm';
             break;
         }
     }
 
     /**
-    * Get array of roles currently assigned to the user.
-    *
-    * @return array of Role() objects
-    */
+     * Get array of roles currently assigned to the user.
+     *
+     * @return array of Role() objects
+     */
     public function getCurrentRoles()
     {
         $userRoles = $this->getUserRoles();
@@ -159,20 +163,20 @@ class User extends BaseUser
     }
 
     /**
-    * Get object of upcoming events currently assigned to the user.
-    *
-    * @return array of Event() objects
-    */
+     * Get object of upcoming events currently assigned to the user.
+     *
+     * @return array of Event() objects
+     */
     public function getUpcomingEvents()
     {
         return EventQuery::create()->filterByDate(['min' => new DateTime()])->useEventPersonQuery()->useUserRoleQuery()->filterByUser($this)->endUse()->endUse()->distinct()->find();
     }
 
     /**
-    * Get object of upcoming events currently assigned to the user.
-    *
-    * @return array of Event() objects
-    */
+     * Get object of upcoming events currently assigned to the user.
+     *
+     * @return array of Event() objects
+     */
     public function getRolesInEvent(Event $event)
     {
         return RoleQuery::create()->useUserRoleQuery()->filterByUser($this)->useEventPersonQuery()->filterByEvent($event)->endUse()->endUse()->orderByName()->find();
@@ -189,10 +193,10 @@ class User extends BaseUser
     }
 
     /**
-    * Determine if the user is marked as available for an event.
-    *
-    * @return bool if user is available
-    */
+     * Determine if the user is marked as available for an event.
+     *
+     * @return bool if user is available
+     */
     public function isAvailableForEvent(Event $event)
     {
         $availability = AvailabilityQuery::create()
@@ -204,14 +208,14 @@ class User extends BaseUser
             return true; // todo: add setting for default availability
         }
 
-        return (bool)$availability->getAvailable();
+        return (bool) $availability->getAvailable();
     }
 
     /**
-    * Determine if the user is marked as available for an event.
-    *
-    * @return \TechWilk\Rota\Availability
-    */
+     * Determine if the user is marked as available for an event.
+     *
+     * @return \TechWilk\Rota\Availability
+     */
     public function getAvailabilityForEvent(Event $event)
     {
         return AvailabilityQuery::create()
@@ -220,7 +224,6 @@ class User extends BaseUser
             ->findOne();
     }
 
-
     public function getActiveCalendarTokens()
     {
         return CalendarTokenQuery::create()
@@ -228,8 +231,6 @@ class User extends BaseUser
             ->filterByRevoked(false)
             ->find();
     }
-
-
 
     public function upcomingEventsAvailable()
     {

@@ -1,11 +1,8 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -22,28 +19,28 @@ if (!isAdmin()) {
 }
 
 // Get the query string
-$seriesId = getQueryStringForKey("series");
+$seriesId = getQueryStringForKey('series');
 $method = getQueryStringForKey('method');
 
-if ($method == "remove") {
+if ($method == 'remove') {
     removeSeries($seriesId);
     header('Location: series.php'); // Remove query string from URL
- exit;
+    exit;
 }
 
 // If the form has been submitted, then we need to handle the data.
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if ($method == "edit") {
+    if ($method == 'edit') {
         $editid = $_POST['id'];
         $type = $_POST['type'];
         $name = $_POST['seriesName'];
         $description = $_POST['seriesDescription'];
-        $editid = str_replace("title", "", $editid);
-        if ($type == "title") {
+        $editid = str_replace('title', '', $editid);
+        if ($type == 'title') {
             $sql = "UPDATE cr_eventGroups SET name = '$name', description = '$description' WHERE id = '$editid'";
         }
         if (!mysqli_query(db(), $sql)) {
-            die('Error: ' . mysqli_error(db()));
+            die('Error: '.mysqli_error(db()));
         }
     } else {
         $name = $_POST['seriesName'];
@@ -53,11 +50,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $description = mysqli_real_escape_string(db(), trim($description));
 
         if (empty($name) || empty($description)) {
-            $message = "Please enter both name and description.";
+            $message = 'Please enter both name and description.';
         } else {
             $sql = ("INSERT INTO cr_eventGroups (name, description) VALUES ('$name', '$description')");
             if (!mysqli_query(db(), $sql)) {
-                die('Error: ' . mysqli_error(db()));
+                die('Error: '.mysqli_error(db()));
             }
 
             // After we have inserted the data, we want to head back to the main users page
@@ -66,9 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
-$formatting = "true";
-$sendurl = "locations.php";
-include('includes/header.php');
+$formatting = 'true';
+$sendurl = 'locations.php';
+include 'includes/header.php';
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -95,15 +92,15 @@ include('includes/header.php');
   </div>
   <div class="box-body">
 		<p>
-		<?php $sql = "SELECT * FROM cr_eventGroups WHERE archived = false ORDER BY name";
+		<?php $sql = 'SELECT * FROM cr_eventGroups WHERE archived = false ORDER BY name';
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $seriesId = $row['id'];
-        echo "<span id='" . $seriesId . "' class='edit'><strong>" . $row['name'] . "</strong></span>";
-        echo " <a href='series.php?method=remove&series=" . $seriesId . "'><i class='fa fa-close'></i></a><br />";
-        echo "<p id='" . $seriesId . "' class='edit'>" . $row['description'] . "</p>";
-        echo "<hr />";
+        echo "<span id='".$seriesId."' class='edit'><strong>".$row['name'].'</strong></span>';
+        echo " <a href='series.php?method=remove&series=".$seriesId."'><i class='fa fa-close'></i></a><br />";
+        echo "<p id='".$seriesId."' class='edit'>".$row['description'].'</p>';
+        echo '<hr />';
     } ?>
  </div><!-- /.box-body -->
 </div><!-- /.box -->
@@ -151,4 +148,4 @@ include('includes/header.php');
   		<div class="item"><a href="settings.php">Back to settings</a></div>
 <?php
   } ?>
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

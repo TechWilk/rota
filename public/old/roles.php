@@ -1,11 +1,8 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -33,12 +30,11 @@ $method = mysqli_real_escape_string(db(), $method);
 $group = filter_var($group, FILTER_SANITIZE_NUMBER_INT);
 $assignTo = filter_var($assignTo, FILTER_SANITIZE_NUMBER_INT);
 
-
 // move roles between groups
 if ($role && $assignTo) {
     $sql = "UPDATE cr_roles r SET r.groupId = '$assignTo' WHERE r.id = '$role'";
     if (!mysqli_query(db(), $sql)) {
-        die('Error: ' . mysqli_error(db()));
+        die('Error: '.mysqli_error(db()));
     }
     header('Location: roles.php');
     exit;
@@ -54,7 +50,6 @@ if ($method == 'delete' && $role) {
     removeRole($role);
 }
 
-
 // If the form has been submitted, then we need to handle the data.
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($method == 'newrole') {
@@ -63,11 +58,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $newrole = $_POST['newrole'];
         $newrole = mysqli_real_escape_string(db(), stripslashes($newrole));
-    // reject imput if name not present
-    if (empty($newrole)) {
-        header('Location: roles.php');
-        exit;
-    }
+        // reject imput if name not present
+        if (empty($newrole)) {
+            header('Location: roles.php');
+            exit;
+        }
 
         $rehersal = 0; // TODO: this needs completely redoing to accept multiple rehersals
         $rehersal = filter_var($rehersal, FILTER_SANITIZE_NUMBER_INT);
@@ -75,23 +70,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sql = "INSERT INTO cr_roles (name, description, rehersalId, groupId)
             VALUES ('$newrole', '$newrole', $rehersal, $groupId)";
         if (!mysqli_query(db(), $sql)) {
-            die('Error: ' . mysqli_error(db()));
+            die('Error: '.mysqli_error(db()));
         }
     } elseif ($method == 'newgroup') {
         $groupId = $_POST['groups'];
 
         $newgroup = $_POST['newgroup'];
         $newgroup = mysqli_real_escape_string(db(), stripslashes($newgroup));
-    // reject imput if name not present
-    if (empty($newgroup)) {
-        header('Location: roles.php');
-        exit;
-    }
+        // reject imput if name not present
+        if (empty($newgroup)) {
+            header('Location: roles.php');
+            exit;
+        }
 
         $sql = "INSERT INTO cr_groups (name, description)
             VALUES ('$newgroup', '$newgroup')";
         if (!mysqli_query(db(), $sql)) {
-            die('Error: ' . mysqli_error(db()));
+            die('Error: '.mysqli_error(db()));
         }
     } else {
         // Handle renaming of the roles
@@ -100,54 +95,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $formArray = array_combine($roleId, $roleName);
 
-
         while (list($id, $name) = each($formArray)) {
             updateRole($id, $name, $name);
         }
     }
-        // After we have inserted the data, we want to head back to the main roles page
+    // After we have inserted the data, we want to head back to the main roles page
         header('Location: roles.php'); // Move to the home page of the admin section
     exit;
 }
 
-
-
-
-# --------- Functions ----------
-
-
+// --------- Functions ----------
 
 // provide list of role groups in presentation
 function listOfGroups($type = 'option', $roleId = '0')
 {
-    $sql = "SELECT *
+    $sql = 'SELECT *
           FROM cr_groups g
-          ORDER BY g.id";
+          ORDER BY g.id';
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
-    $list = "";
+    $list = '';
 
     $i = 1;
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         if ($type == 'option') {
-            $list = $list . "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+            $list = $list."<option value='".$row['id']."'>".$row['name'].'</option>';
         } elseif ($type == 'li') {
-            $list = $list . "<li>" . $row['name'] . "</li>";
+            $list = $list.'<li>'.$row['name'].'</li>';
         } elseif ($type == 'li-a') {
-            $list = $list . "<li><a href='roles.php?role=" . $roleId . "&assignto=" . $row['id'] . "'>" . $row['name'] . "</a></li>";
+            $list = $list."<li><a href='roles.php?role=".$roleId.'&assignto='.$row['id']."'>".$row['name'].'</a></li>';
         }
         $i++;
     }
+
     return $list;
 }
 
+// ------- Presentation --------
 
-
-# ------- Presentation --------
-
-
-
-include('includes/header.php');
+include 'includes/header.php';
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -177,7 +163,7 @@ include('includes/header.php');
           <form action="roles.php" method="post">
           <fieldset>
   		<?php
-        $sql = "SELECT *,
+        $sql = 'SELECT *,
                 r.name AS roleName,
                 r.description AS roleDescription,
                 r.id AS roleId,
@@ -185,11 +171,11 @@ include('includes/header.php');
                 g.id as groupId
                 FROM cr_groups g
                 LEFT JOIN cr_roles r ON g.id = r.groupId
-                ORDER BY g.id, r.name";
+                ORDER BY g.id, r.name';
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
     $group = 0;
-    echo "<div>";
+    echo '<div>';
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $roleId = $row['roleId'];
         if ($row['groupId'] == $group) {
@@ -197,18 +183,18 @@ include('includes/header.php');
             $down = $group + 1;
             $up = $group - 1;
         } else {
-            echo "</div>";
+            echo '</div>';
             // Update the group heading
-        $groupname = $row['groupName'];
+            $groupname = $row['groupName'];
             $group = $row['groupId'];
             $down = $group + 1;
             $up = $group - 1;
-            echo "<div><strong>" . $groupname . "</strong><br />";
+            echo '<div><strong>'.$groupname.'</strong><br />';
         }
-      // Print text input box if a role exists for the group.
-      // Allows user to update role names and move roles between groups
-      if ($roleId) {
-          ?>
+        // Print text input box if a role exists for the group.
+        // Allows user to update role names and move roles between groups
+        if ($roleId) {
+            ?>
         <div class='input-group'>
     		  <input type="hidden" name="roleId[<?php echo $row['roleId'] ?>]" value="<?php echo $row['roleId'] ?>" />
           <input class='form-control' name='roleName[]' value="<?php echo $row['roleName'] ?>" maxlength="15" />
@@ -223,9 +209,9 @@ include('includes/header.php');
           </div>
         </div><!-- /.input-group -->
         <?php
-      } else {
-          echo "<p>No roles (<a href='roles.php?method=delete&group=$group'>Delete group</a>)</p>";
-      }
+        } else {
+            echo "<p>No roles (<a href='roles.php?method=delete&group=$group'>Delete group</a>)</p>";
+        }
     } ?>
     </div>
        </fieldset>
@@ -299,4 +285,4 @@ if (isAdmin()) {
 </div>
 <?php
     } ?>
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

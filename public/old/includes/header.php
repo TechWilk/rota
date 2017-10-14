@@ -1,8 +1,5 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 ?><!DOCTYPE html>
 <!--
 	This file is part of Church Rota.
@@ -77,7 +74,7 @@ use DateTime;
   })();
 */
 </script>
-	<?php if (isset($formatting) && $formatting == "true") {
+	<?php if (isset($formatting) && $formatting == 'true') {
     ?>
 	<script src="includes/churchrota.js" language="javascript" type="text/javascript"></script>
     <script src="includes/jquery.jeditable.js" language="javascript" type="text/javascript"></script>
@@ -297,17 +294,17 @@ use DateTime;
 							<!-- Menu toggle button -->
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 								<i class="fa fa-bell-o"></i>
-								<?php echo $unseen >= 1 ? "<span class=\"label label-warning\">".$unseen."</span>" : "" ?>
+								<?php echo $unseen >= 1 ? '<span class="label label-warning">'.$unseen.'</span>' : '' ?>
 							</a>
 							<ul class="dropdown-menu">
-								<li class="header">You have <?php echo $unseen >= 1 ? $unseen : "no" ?> new notifications</li>
+								<li class="header">You have <?php echo $unseen >= 1 ? $unseen : 'no' ?> new notifications</li>
 								<li>
 									<!-- Inner Menu: contains the notifications -->
 									<ul class="menu">
 									<?php foreach ($notifications as $n): ?>
 										<li><!-- start notification -->
 											<a href="notification.php?click=notifications-panel&id=<?php echo $n->id ?>">
-												<i class="fa fa-users text-aqua"></i> <?php echo $n->seen ? $n->summary : "<strong>".$n->summary."</strong>" ?>
+												<i class="fa fa-users text-aqua"></i> <?php echo $n->seen ? $n->summary : '<strong>'.$n->summary.'</strong>' ?>
 												<small><?php echo timeAgoInWords($n->timestamp) ?></small>
 											</a>
 										</li><!-- end notification -->
@@ -362,24 +359,24 @@ use DateTime;
 						<!-- User Account Menu -->
 						<li class="dropdown user user-menu">
 							<?php
-                            $sql = "SELECT u.created FROM cr_users u WHERE id = ".$_SESSION["userid"];
+                            $sql = 'SELECT u.created FROM cr_users u WHERE id = '.$_SESSION['userid'];
                                             $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
                                             $currentUser = mysqli_fetch_object($result);
                             ?>
 							<!-- Menu Toggle Button -->
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 								<!-- The user image in the navbar-->
-								<img src="<?php echo getProfileImageUrl($_SESSION["userid"], 'small') ?>" class="user-image" alt="User Image">
+								<img src="<?php echo getProfileImageUrl($_SESSION['userid'], 'small') ?>" class="user-image" alt="User Image">
 								<!-- hidden-xs hides the username on small devices so only the image appears. -->
 								<span class="hidden-xs"><?php echo $_SESSION['name']; ?></span>
 							</a>
 							<ul class="dropdown-menu">
 								<!-- The user image in the menu -->
 								<li class="user-header">
-									<img src="<?php echo getProfileImageUrl($_SESSION["userid"], 'large') ?>" class="img-circle" alt="User Image">
+									<img src="<?php echo getProfileImageUrl($_SESSION['userid'], 'large') ?>" class="img-circle" alt="User Image">
 									<p>
 										<?php echo $_SESSION['name']; ?>
-										<small>Account created <?php echo strftime("%b. %Y", strtotime($currentUser->created));
+										<small>Account created <?php echo strftime('%b. %Y', strtotime($currentUser->created));
                                         ?></small>
 									</p>
 								</li>
@@ -425,7 +422,7 @@ use DateTime;
 				<!-- Sidebar user panel (optional) -->
 				<div class="user-panel">
 					<div class="pull-left image">
-						<img src="<?php echo getProfileImageUrl($_SESSION["userid"], 'large') ?>" class="img-circle" alt="User Image">
+						<img src="<?php echo getProfileImageUrl($_SESSION['userid'], 'large') ?>" class="img-circle" alt="User Image">
 					</div>
 					<div class="pull-left info">
 						<p><?php echo $_SESSION['name']; ?></p>
@@ -451,26 +448,26 @@ use DateTime;
 				<!-- Sidebar Menu -->
 				<ul class="sidebar-menu">
 					<li class="header">ROTAS</li>
-					<li <?php echo(basename($_SERVER['SCRIPT_FILENAME'])=='index.php'? 'class="active"' : '');?>>
+					<li <?php echo basename($_SERVER['SCRIPT_FILENAME']) == 'index.php' ? 'class="active"' : ''; ?>>
             <a href="index.php">
               <i class="fa fa-tachometer"></i> <span>Dashboard</span>
             </a>
           </li>
 					<?php if (isLoggedIn()) {
                                             ?>
-					<li class="treeview <?php echo(basename($_SERVER['SCRIPT_FILENAME'])=='events.php' || basename($_SERVER['SCRIPT_FILENAME'])=='createEvent.php' ? ' active' : ''); ?>">
+					<li class="treeview <?php echo basename($_SERVER['SCRIPT_FILENAME']) == 'events.php' || basename($_SERVER['SCRIPT_FILENAME']) == 'createEvent.php' ? ' active' : ''; ?>">
 						<a  href="events.php"><i class="fa fa-calendar"></i> <span>Services</span><i class="fa fa-angle-left pull-right"></i></a>
 						<ul class="treeview-menu">
 							<?php /*<li><a href="events.php?view=user">My Events</a></li>*/ ?>
 							<?php
-                                $filter_sql = "SELECT id, name
+                                $filter_sql = 'SELECT id, name
 								FROM cr_eventTypes
 								WHERE id IN
 									(SELECT `cr_events`.`type`
 									FROM cr_events
 									WHERE date >= DATE(NOW())
 									AND cr_events.removed = 0)
-								ORDER BY name";
+								ORDER BY name';
                                             $result = mysqli_query(db(), $filter_sql) or die(mysqli_error(db()));
 
                                             while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
@@ -487,22 +484,22 @@ use DateTime;
 								<li <?php echo empty($filter) && isset($view) && $view == 'all' ? 'class="active"' : '' ?>>
 									<a href="events.php?view=all">View All</a>
 								</li>
-								<?php if (isAdmin()): ?>
-								<li <?php echo(basename($_SERVER['SCRIPT_FILENAME'])=='createEvent.php' && is_null(getQueryStringForKey('id')) ? 'class="active"' : '') ?>>
+								<?php if (isAdmin()) : ?>
+								<li <?php echo basename($_SERVER['SCRIPT_FILENAME']) == 'createEvent.php' && is_null(getQueryStringForKey('id')) ? 'class="active"' : '' ?>>
 									<a href="createEvent.php">Add Event</a>
 								</li>
 								<?php endif ?>
 						</ul>
 					</li>
 
-					<li <?php echo(basename($_SERVER['SCRIPT_FILENAME'])=='resources.php'? 'class="active"' : ''); ?>>
+					<li <?php echo basename($_SERVER['SCRIPT_FILENAME']) == 'resources.php' ? 'class="active"' : ''; ?>>
             <a href="resources.php">
               <i class="fa fa-folder-o"></i> <span>Resources</span>
             </a>
           </li>
 					<?php if (!isAdmin()) {
                                                 ?>
-            <li <?php echo(basename($_SERVER['SCRIPT_FILENAME'])=='addUser.php'? 'class="active"' : ''); ?>>
+            <li <?php echo basename($_SERVER['SCRIPT_FILENAME']) == 'addUser.php' ? 'class="active"' : ''; ?>>
               <a href="addUser.php?action=edit">
                 <i class="fa fa-user"></i> <span>My account</span>
               </a>
@@ -513,20 +510,20 @@ use DateTime;
                                         }
                     if (isAdmin()) {
                         ?>
-  					<li <?php echo(basename($_SERVER['SCRIPT_FILENAME'])=='users.php'? 'class="active"' : '');
-                        echo(basename($_SERVER['SCRIPT_FILENAME'])=='addUser.php'? 'class="active"' : ''); ?>>
+  					<li <?php echo basename($_SERVER['SCRIPT_FILENAME']) == 'users.php' ? 'class="active"' : '';
+                        echo basename($_SERVER['SCRIPT_FILENAME']) == 'addUser.php' ? 'class="active"' : ''; ?>>
           <a href="users.php">
             <i class="fa fa-users"></i> <span>Users</span>
           </a>
         </li>
-					<li <?php echo(basename($_SERVER['SCRIPT_FILENAME'])=='settings.php'? 'class="active"' : '');
-                        echo(basename($_SERVER['SCRIPT_FILENAME'])=='editeventtype.php'? 'class="active"' : '');
-                        echo(basename($_SERVER['SCRIPT_FILENAME'])=='editSkills.php'? 'class="active"' : '');
-                        echo(basename($_SERVER['SCRIPT_FILENAME'])=='locations.php'? 'class="active"' : ''); ?>><a href="settings.php"><i class="fa fa-gears"></i> <span>Settings</span></a></li>
+					<li <?php echo basename($_SERVER['SCRIPT_FILENAME']) == 'settings.php' ? 'class="active"' : '';
+                        echo basename($_SERVER['SCRIPT_FILENAME']) == 'editeventtype.php' ? 'class="active"' : '';
+                        echo basename($_SERVER['SCRIPT_FILENAME']) == 'editSkills.php' ? 'class="active"' : '';
+                        echo basename($_SERVER['SCRIPT_FILENAME']) == 'locations.php' ? 'class="active"' : ''; ?>><a href="settings.php"><i class="fa fa-gears"></i> <span>Settings</span></a></li>
 					<?php
                     }  ?>
-					<?php if (!isLoggedIn()): ?>
-          <li <?php echo(basename($_SERVER['SCRIPT_FILENAME'])=='login.php'? 'class="active"' : '');?>><a href="login.php">Login</a></li>
+					<?php if (!isLoggedIn()) : ?>
+          <li <?php echo basename($_SERVER['SCRIPT_FILENAME']) == 'login.php' ? 'class="active"' : ''; ?>><a href="login.php">Login</a></li>
           <?php endif; ?>
 				</ul>
       </section>

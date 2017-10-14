@@ -1,27 +1,26 @@
 <?php
+
 class User
 {
     private $id;
     private $person;
     private $passwordHash;
-  
-  
+
     public function setPerson(Person $person)
     {
         $this->person = $person;
     }
-  
+
     public function resetPassword($oldPassword, $newPassword)
     {
         // make this work
     }
-  
+
     public function forceResetPassword($newPassword)
     {
         // make this work
     }
-  
-  
+
     public function createInDb(Database $db)
     {
         if (empty($this->name) || empty($this->datetime) || empty($this->series) || empty($this->type) || empty($this->sub_type) || empty($this->location)) {
@@ -32,29 +31,30 @@ class User
             $message .= ' or sub_type ('.$this->sub_type.')';
             $message .= ' or location ('.$this->location.')';
             $message .= ' cannot be empty.';
+
             throw new Exception($message);
         }
-    
-        $currentTimestamp = $date = strftime("%F %T", time());
-    
+
+        $currentTimestamp = $date = strftime('%F %T', time());
+
         $data = [
-      [ "field" => "name", "type" => "string", "value" => $this->name ],
-      [ "field" => "date", "type" => "string", "value" => $this->datetime ],
-      [ "field" => "eventGroup", "type" => "int", "value" => $this->series->getId() ],
-      [ "field" => "type", "type" => "int", "value" => $this->type->getId() ],
-      [ "field" => "subType", "type" => "int", "value" => $this->sub_type->getId() ],
-      [ "field" => "location", "type" => "int", "value" => $this->location->getId() ],
-      [ "field" => "created", "type" => "datetime", "value" => $currentTimestamp ],
+      ['field' => 'name', 'type' => 'string', 'value' => $this->name],
+      ['field' => 'date', 'type' => 'string', 'value' => $this->datetime],
+      ['field' => 'eventGroup', 'type' => 'int', 'value' => $this->series->getId()],
+      ['field' => 'type', 'type' => 'int', 'value' => $this->type->getId()],
+      ['field' => 'subType', 'type' => 'int', 'value' => $this->sub_type->getId()],
+      ['field' => 'location', 'type' => 'int', 'value' => $this->location->getId()],
+      ['field' => 'created', 'type' => 'datetime', 'value' => $currentTimestamp],
     ];
 
         if (isset($this->notes)) {
-            $data[] = ["field" => "comment", "type" => "string", "value" => $this->note];
+            $data[] = ['field' => 'comment', 'type' => 'string', 'value' => $this->note];
         }
 
         if (isset($this->bible_verse)) {
-            $data[] = ["bibleVerse" => "notes", "type" => "string", "value" => $this->bible_verse];
+            $data[] = ['bibleVerse' => 'notes', 'type' => 'string', 'value' => $this->bible_verse];
         }
-    
+
         $db->insert($this->db_table, $data);
 
         $this->id = $db->lastInsertId();

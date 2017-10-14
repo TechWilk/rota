@@ -1,11 +1,8 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -17,29 +14,14 @@ if (isset($_SESSION['is_logged_in']) || $_SESSION['db_is_logged_in'] == true) {
     exit;
 }
 
-if (! (isEventEditor() || isAdmin())) {
-    header("HTTP/1.0 404 Not Found");
+if (!(isEventEditor() || isAdmin())) {
+    header('HTTP/1.0 404 Not Found');
     exit;
 }
 
-
-
-
-
-
-
-
 // ~~~~~~~~~~ PRESENTATION ~~~~~~~~~~
 
-
-
-
-
-
-
-
-
-include('includes/header.php');
+include 'includes/header.php';
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -75,13 +57,13 @@ include('includes/header.php');
 							<div class="col-md-6">
 
 								<div class="form-group">
-									<label for="eventName">Service name: <strong><?php if (isset($eventName)&&(($hiddenForBandAdmin)||($hiddenForEventEditor))) {
+									<label for="eventName">Service name: <strong><?php if (isset($eventName) && (($hiddenForBandAdmin) || ($hiddenForEventEditor))) {
     echo $eventName;
 } ?></strong></label>
-									<input name="eventName" id="eventName" class="form-control" type="<?php if (($hiddenForBandAdmin)||($hiddenForEventEditor)) {
-    echo "hidden";
+									<input name="eventName" id="eventName" class="form-control" type="<?php if (($hiddenForBandAdmin) || ($hiddenForEventEditor)) {
+    echo 'hidden';
 } else {
-    echo "text";
+    echo 'text';
 }?>" value="<?php if (isset($eventName)) {
     echo $eventName;
 } ?>" placeholder="Enter service name" />
@@ -89,11 +71,11 @@ include('includes/header.php');
 								<!-- /.form-group -->
 								
 								<div class="form-group">
-									<label for="type">Type: <strong><?php if (isset($typename)&&($hiddenForBandAdmin)) {
+									<label for="type">Type: <strong><?php if (isset($typename) && ($hiddenForBandAdmin)) {
     echo $typename;
 } ?></strong></label>
 									<select name="type" id="type" class="form-control" <?php if ($hiddenForBandAdmin) {
-    echo "hidden";
+    echo 'hidden';
 } ?>>
 										<option value="<?php if (isset($type)) {
     echo $type;
@@ -101,12 +83,12 @@ include('includes/header.php');
     echo $typename;
 } ?></option>
 										<?php
-                                        $sql = "SELECT id, name, description, defaultTime, defaultLocationId FROM cr_eventTypes ORDER BY name";
+                                        $sql = 'SELECT id, name, description, defaultTime, defaultLocationId FROM cr_eventTypes ORDER BY name';
                                         $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
                                         while ($ob = mysqli_fetch_object($result)) {
                                             if (!(isset($type) && $ob->id == $type)) {
-                                                $defaultTime = strftime("%H:%M", strtotime($ob->defaultTime));
-                                                echo "<option value='" . $ob->id . "' title='" . $ob->description . "' data-time='".($defaultTime == "00:00" ? "" : $defaultTime)."' data-location='".(is_null($ob->defaultLocationId) ? "" : $ob->defaultLocationId)."'>" . $ob->name . "</option>";
+                                                $defaultTime = strftime('%H:%M', strtotime($ob->defaultTime));
+                                                echo "<option value='".$ob->id."' title='".$ob->description."' data-time='".($defaultTime == '00:00' ? '' : $defaultTime)."' data-location='".(is_null($ob->defaultLocationId) ? '' : $ob->defaultLocationId)."'>".$ob->name.'</option>';
                                             }
                                         } ?>
 									</select>
@@ -114,11 +96,11 @@ include('includes/header.php');
 								<!-- /.form-group -->
 
 								<div class="form-group">
-									<label for="subType">Sub-type: <strong><?php if (isset($subtypename)&&($hiddenForBandAdmin)) {
+									<label for="subType">Sub-type: <strong><?php if (isset($subtypename) && ($hiddenForBandAdmin)) {
                                             echo $subtypename;
                                         } ?></strong></label>
 									<select name="subType" id="subType" class="form-control" <?php if ($hiddenForBandAdmin) {
-                                            echo "hidden";
+                                            echo 'hidden';
                                         } ?>>
 										<option value="<?php if (isset($subtype)) {
                                             echo $subtype;
@@ -126,13 +108,13 @@ include('includes/header.php');
                                             echo $subtypename;
                                         } ?></option>
 										<?php
-                                        $sql = "SELECT * FROM cr_eventSubTypes ORDER BY name";
+                                        $sql = 'SELECT * FROM cr_eventSubTypes ORDER BY name';
                                         $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
                                         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                                             if (isset($subtype) && $row['id'] == $subtype) {
                                             } else {
-                                                echo "<option value='" . $row['id'] . "' title='" . $row['description'] . "'>" . $row['name'] . "</option>";
+                                                echo "<option value='".$row['id']."' title='".$row['description']."'>".$row['name'].'</option>';
                                             }
                                         } ?>
 									</select>
@@ -142,11 +124,11 @@ include('includes/header.php');
 							<div class="col-md-6">
 
 								<div class="form-group">
-									<label for="location">Location: <strong><?php if (isset($locationname)&&($hiddenForBandAdmin)) {
+									<label for="location">Location: <strong><?php if (isset($locationname) && ($hiddenForBandAdmin)) {
                                             echo $locationname;
                                         } ?></strong></label>
 									<select  class="form-control" name="location" id="location" <?php if ($hiddenForBandAdmin) {
-                                            echo "hidden";
+                                            echo 'hidden';
                                         } ?>>
 										<option value="<?php if (isset($location)) {
                                             echo $location;
@@ -154,13 +136,13 @@ include('includes/header.php');
                                             echo $locationname;
                                         } ?></option>
 										<?php
-                                        $sql = "SELECT * FROM cr_locations order by name";
+                                        $sql = 'SELECT * FROM cr_locations order by name';
                                         $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
                                         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                                             if (isset($location) && $row['id'] == $location) {
                                             } else {
-                                                echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                                                echo "<option value='".$row['id']."'>".$row['name'].'</option>';
                                             }
                                         } ?>
 									</select>
@@ -168,17 +150,17 @@ include('includes/header.php');
 								<!-- /.form-group -->
 
 								<div class="form-group">
-									<label for="date">Date: <strong><?php if (isset($date)&&(($hiddenForBandAdmin)||($hiddenForEventEditor))) {
+									<label for="date">Date: <strong><?php if (isset($date) && (($hiddenForBandAdmin) || ($hiddenForEventEditor))) {
                                             echo $date;
                                         } ?></strong></label>
 									<div class="input-group">
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-									<input name="date" id="date" class="form-control" type="<?php if (($hiddenForBandAdmin)||($hiddenForEventEditor)) {
-                                            echo "hidden";
+									<input name="date" id="date" class="form-control" type="<?php if (($hiddenForBandAdmin) || ($hiddenForEventEditor)) {
+                                            echo 'hidden';
                                         } else {
-                                            echo "text";
+                                            echo 'text';
                                         }?>" value="<?php if (isset($date)) {
                                             echo $date;
                                         } ?>" placeholder="dd/mm/yyyy" />
@@ -188,17 +170,17 @@ include('includes/header.php');
 								<!-- /.form-group -->
 								
 									<div class="form-group">
-									<label for="time">Time (24h): <strong><?php if (isset($time)&&(($hiddenForBandAdmin)||($hiddenForEventEditor))) {
+									<label for="time">Time (24h): <strong><?php if (isset($time) && (($hiddenForBandAdmin) || ($hiddenForEventEditor))) {
                                             echo $time;
                                         } ?></strong></label>
 									<div class="input-group">
 										<div class="input-group-addon">
 											<i class="fa fa-clock-o"></i>
 										</div>
-									<input name="time" id="time" class="form-control" type="<?php if (($hiddenForBandAdmin)||($hiddenForEventEditor)) {
-                                            echo "hidden";
+									<input name="time" id="time" class="form-control" type="<?php if (($hiddenForBandAdmin) || ($hiddenForEventEditor)) {
+                                            echo 'hidden';
                                         } else {
-                                            echo "text";
+                                            echo 'text';
                                         }?>" value="<?php if (isset($time)) {
                                             echo $time;
                                         } ?>" placeholder="hh:mm" />
@@ -209,11 +191,11 @@ include('includes/header.php');
 							</div><!-- /.col -->
 
 							<div class="form-group">
-								<label for="comment">Notes: <?php if (isset($comment)&&($hiddenForBandAdmin)) {
+								<label for="comment">Notes: <?php if (isset($comment) && ($hiddenForBandAdmin)) {
                                             echo $comment;
                                         } ?></label>
 								<textarea name="comment" class="mceNoEditor form-control" rows="3" <?php if ($hiddenForBandAdmin) {
-                                            echo "hidden";
+                                            echo 'hidden';
                                         } ?>><?php if (isset($comment)) {
                                             echo $comment;
                                         } ?></textarea>
@@ -234,15 +216,15 @@ include('includes/header.php');
 								<div class="form-group">
 									<div class="checkbox">
 										<label><input name="norehearsal" id="norehearsal" type="<?php if ($hiddenForEventEditor) {
-                                            echo "hidden";
+                                            echo 'hidden';
                                         } else {
-                                            echo "checkbox";
+                                            echo 'checkbox';
                                         }?>" value="1"  <?php if (isset($norehearsal) && $norehearsal != 0) {
                                             echo 'checked="checked"';
                                         } else {
                                         } ?>  />
-											Have this event without a rehearsal: <strong><?php if (isset($norehearsal)&&($hiddenForEventEditor)) {
-                                            echo($norehearsal ? "yes" : "no") ;
+											Have this event without a rehearsal: <strong><?php if (isset($norehearsal) && ($hiddenForEventEditor)) {
+                                            echo $norehearsal ? 'yes' : 'no';
                                         } ?></strong>
 										</label>
 									</div>
@@ -250,13 +232,13 @@ include('includes/header.php');
 								<!-- /.form-group -->
 
 								<div class="form-group">
-									<label for="rehearsalDate">Rehearsal Date: <strong><?php if (isset($rehearsalDate)&&($hiddenForEventEditor)) {
-                                            echo $rehearsalDate ;
+									<label for="rehearsalDate">Rehearsal Date: <strong><?php if (isset($rehearsalDate) && ($hiddenForEventEditor)) {
+                                            echo $rehearsalDate;
                                         } ?></strong></label>
 									<input name="rehearsalDate" id="rehearsalDate" class="form-control" type="<?php if ($hiddenForEventEditor) {
-                                            echo "hidden";
+                                            echo 'hidden';
                                         } else {
-                                            echo "text";
+                                            echo 'text';
                                         }?>" value="<?php if (isset($rehearsalDate)) {
                                             echo $rehearsalDate;
                                         } ?>" placeholder="yyyy-mm-dd hh:mm:ss" />
@@ -275,13 +257,13 @@ include('includes/header.php');
 							<div class="box-body">
 
 							<div class="form-group">
-								<label for="sermonTitle">Sermon title: <strong><?php if (isset($sermonTitle)&&(($hiddenForBandAdmin)||($hiddenForEventEditor))) {
+								<label for="sermonTitle">Sermon title: <strong><?php if (isset($sermonTitle) && (($hiddenForBandAdmin) || ($hiddenForEventEditor))) {
                                             echo $sermonTitle;
                                         } ?></strong></label>
-								<input name="sermonTitle" id="sermonTitle" class="form-control" type="<?php if (($hiddenForBandAdmin)||($hiddenForEventEditor)) {
-                                            echo "hidden";
+								<input name="sermonTitle" id="sermonTitle" class="form-control" type="<?php if (($hiddenForBandAdmin) || ($hiddenForEventEditor)) {
+                                            echo 'hidden';
                                         } else {
-                                            echo "text";
+                                            echo 'text';
                                         }?>" value="<?php if (isset($sermonTitle)) {
                                             echo $sermonTitle;
                                         } ?>" placeholder="Enter sermon title" />
@@ -289,21 +271,21 @@ include('includes/header.php');
 							<!-- /.form-group -->
 
 							<div class="form-group">
-								<label for="eventGroup">Sermon series: <strong><?php if (isset($eventGroupName)&&($hiddenForBandAdmin)) {
+								<label for="eventGroup">Sermon series: <strong><?php if (isset($eventGroupName) && ($hiddenForBandAdmin)) {
                                             echo $eventGroupName;
                                         } ?></strong></label>
 								<select name="eventGroup" id="eventGroup" class="form-control" <?php if ($hiddenForBandAdmin) {
-                                            echo "hidden";
+                                            echo 'hidden';
                                         } ?>>
-									<option value="<?php echo isset($eventGroup) ? $eventGroup : "" ?>"><?php echo isset($eventGroupName) ? $eventGroupName : "" ?></option>
+									<option value="<?php echo isset($eventGroup) ? $eventGroup : '' ?>"><?php echo isset($eventGroupName) ? $eventGroupName : '' ?></option>
 									<?php
-                                    $sql = "SELECT * FROM cr_eventGroups WHERE archived = false ORDER BY name";
+                                    $sql = 'SELECT * FROM cr_eventGroups WHERE archived = false ORDER BY name';
                                     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
                                     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                                         if (isset($type) && $row['id'] == $type) {
                                         } else {
-                                            echo "<option value='" . $row['id'] . "' title='" . $row['description'] . "'>" . $row['name'] . "</option>";
+                                            echo "<option value='".$row['id']."' title='".$row['description']."'>".$row['name'].'</option>';
                                         }
                                     } ?>
 								</select>
@@ -313,13 +295,13 @@ include('includes/header.php');
 							<!-- /.form-group -->
 
 							<div class="form-group">
-								<label for="bibleVerse">Reading: <strong><?php if (isset($bibleVerse)&&(($hiddenForBandAdmin)||($hiddenForEventEditor))) {
+								<label for="bibleVerse">Reading: <strong><?php if (isset($bibleVerse) && (($hiddenForBandAdmin) || ($hiddenForEventEditor))) {
                                         echo $bibleVerse;
                                     } ?></strong></label>
-								<input name="bibleVerse" id="bibleVerse" class="form-control" type="<?php if (($hiddenForBandAdmin)||($hiddenForEventEditor)) {
-                                        echo "hidden";
+								<input name="bibleVerse" id="bibleVerse" class="form-control" type="<?php if (($hiddenForBandAdmin) || ($hiddenForEventEditor)) {
+                                        echo 'hidden';
                                     } else {
-                                        echo "text";
+                                        echo 'text';
                                     }?>" value="<?php if (isset($bibleVerse)) {
                                         echo $bibleVerse;
                                     } ?>" placeholder="Enter in format: Ephesians 1:1-15" />
@@ -370,4 +352,4 @@ include('includes/header.php');
   </div><!-- /.createSeries -->
 
 
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

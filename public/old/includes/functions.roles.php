@@ -1,7 +1,6 @@
-<?php namespace TechWilk\Rota;
+<?php
 
-use DateInterval;
-use DateTime;
+namespace TechWilk\Rota;
 
 /*
     This file is part of Church Rota.
@@ -31,39 +30,33 @@ function updateRole($id, $name, $description)
     $sql = "UPDATE cr_roles SET name = '$name', description = '$description' WHERE id = '$id'";
 
     if (!mysqli_query(db(), $sql)) {
-        die('Error: ' . mysqli_error(db()));
+        die('Error: '.mysqli_error(db()));
     }
 }
-
-
 
 function updateGroup($key, $name, $description)
 {
     $sql = "UPDATE cr_groups SET name = '$name' WHERE groupId = '$key'";
 
     if (!mysqli_query(db(), $sql)) {
-        die('Error: ' . mysqli_error(db()));
+        die('Error: '.mysqli_error(db()));
     }
 
     $sql = "UPDATE cr_groups SET description = '$description' WHERE groupId = '$key'";
 
     if (!mysqli_query(db(), $sql)) {
-        die('Error: ' . mysqli_error(db()));
+        die('Error: '.mysqli_error(db()));
     }
 }
-
-
 
 function moveRoleGroups($roleID, $value)
 {
     $sql = "UPDATE cr_roles SET groupId = '$value' WHERE id = '$roleID'";
 
     if (!mysqli_query(db(), $sql)) {
-        die('Error: ' . mysqli_error(db()));
+        die('Error: '.mysqli_error(db()));
     }
 }
-
-
 
 function addUserRole($userId, $roleId)
 {
@@ -80,15 +73,11 @@ function addUserRole($userId, $roleId)
     }
 }
 
-
-
 function removeUserRoleWithId($userRoleId)
 {
     $query = "DELETE FROM cr_userRoles WHERE id = '$userRoleId'";
     mysqli_query(db(), $query) or die(mysqli_error(db()));
 }
-
-
 
 function removeUserRole($userId, $roleId)
 {
@@ -96,78 +85,67 @@ function removeUserRole($userId, $roleId)
     mysqli_query(db(), $query) or die(mysqli_error(db()));
 }
 
-
-
 function setUserRoleReserveWithId($userRoleId)
 {
     $userRole = UserRoleQuery::create()->findPk($userRoleId);
     $userRole->setReserve(true);
     $userRole->save();
+
     return true;
 }
-
-
 
 function setUserRoleRegularWithId($userRoleId)
 {
     $userRole = UserRoleQuery::create()->findPk($userRoleId);
     $userRole->setReserve(false);
     $userRole->save();
+
     return true;
 }
-
-
 
 function groupIdWithRole($roleId)
 {
     $sql = "SELECT groupId FROM cr_roles WHERE id = '$roleId'";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $ob = mysqli_fetch_object($result);
-    
+
     return $ob->groupId;
 }
-
-
 
 function roleNameFromId($roleId)
 {
     $sql = "SELECT name FROM cr_roles WHERE id = '$roleId'";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $ob = mysqli_fetch_object($result);
-    
+
     return $ob->name;
 }
-
-
 
 function roleCanSwapToOtherRoleInGroup($roleId)
 {
     $sql = "SELECT allowRoleSwaps, groupId FROM cr_roles WHERE id = '$roleId'";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $ob = mysqli_fetch_object($result);
-    
+
     if ($ob->allowRoleSwaps != null) {
         return $ob->allowRoleSwaps;
     }
-    
-    $sql = "SELECT allowRoleSwaps FROM cr_groups WHERE id = '" . $ob->groupId . "'";
+
+    $sql = "SELECT allowRoleSwaps FROM cr_groups WHERE id = '".$ob->groupId."'";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $ob = mysqli_fetch_object($result);
-    
+
     return $ob->allowRoleSwaps;
 }
-
-
-
-
 
 if (!function_exists('array_combine')) {
     function array_combine($arr1, $arr2)
     {
-        $out = array();
+        $out = [];
         foreach ($arr1 as $key1 => $value1) {
             $out[$value1] = $arr2[$key1];
         }
+
         return $out;
     }
 }

@@ -1,8 +1,5 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 /*
     This file is part of Church Rota.
 
@@ -23,12 +20,12 @@ use DateTime;
 */
 
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
- 
+
 if (isset($_SESSION['is_logged_in']) || $_SESSION['db_is_logged_in'] == true) {
     // Just continue the code
 } else {
@@ -47,37 +44,37 @@ $formAction = $_GET['formAction'];
 $action = $_GET['action'];
 
 // Method to remove  someone from the band
-if ($bandMembersID != "") {
+if ($bandMembersID != '') {
     removeBandMembers($bandMembersID);
-} elseif ($bandid != "") {
+} elseif ($bandid != '') {
     removeBand($bandid);
 }
 
 // If the form has been sent, we need to handle the data.
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if ($formAction == "newBand") {
-        $bandName  = $_POST['bandname'];
+    if ($formAction == 'newBand') {
+        $bandName = $_POST['bandname'];
         $sql = ("INSERT INTO cr_bands (bandLeader) VALUES ('$bandName')");
         if (!mysqli_query(db(), $sql)) {
-            die('Error: ' . mysqli_error(db()));
+            die('Error: '.mysqli_error(db()));
         }
     } else {
         $editbandID = $_GET['band'];
         $editskillID = $_POST['name'];
-        
+
         $sql = ("INSERT INTO cr_bandMembers (bandID, skillID) VALUES ('$editbandID', '$editskillID')");
         if (!mysqli_query(db(), $sql)) {
-            die('Error: ' . mysqli_error(db()));
+            die('Error: '.mysqli_error(db()));
         }
     }
     // After we have inserted the data, we want to head back to the main page
-     header('Location: viewBands.php');
+    header('Location: viewBands.php');
     exit;
 }
 
-    include('includes/header.php');
-    
-    if ($action == "newBand") {
+    include 'includes/header.php';
+
+    if ($action == 'newBand') {
         ?>
 <div class="elementBackground">
 	<h2><a name="addBand">Add a new band:</a></h2>
@@ -94,41 +91,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		</div>
 <?php
     } else {
-        $sql = "SELECT * FROM cr_bands ORDER BY bandLeader";
+        $sql = 'SELECT * FROM cr_bands ORDER BY bandLeader';
         $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
-    
+
         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
             $bandid = $row['bandID']; ?>
 		<div class="elementBackground">
 			<h2><a name="section<?php echo $row['bandID']; ?>"><?php echo $row['bandLeader']; ?></a> <?php if (isAdmin()) {
                 echo "
-			<a href='editBand.php?id=" . $bandid ."'><img src='graphics/tool.png' /></a>
-			<a href='viewBands.php?skillremove=true&bandid=" . $bandid . "'><img src='graphics/close.png' /></a>";
+			<a href='editBand.php?id=".$bandid."'><img src='graphics/tool.png' /></a>
+			<a href='viewBands.php?skillremove=true&bandid=".$bandid."'><img src='graphics/close.png' /></a>";
             } ?></h2>
 			
 				<?php
                 $bandID = $row['bandID'];
-                
-                // Selects band members from database and concatanates a username onto them.
-                $sqlbandMembers = "SELECT * FROM cr_bandMembers WHERE bandID = $bandID";
+
+            // Selects band members from database and concatanates a username onto them.
+            $sqlbandMembers = "SELECT * FROM cr_bandMembers WHERE bandID = $bandID";
             $resultbandMembers = mysqli_query(db(), $sqlbandMembers) or die(mysqli_error(db()));
-            echo "<p>";
+            echo '<p>';
             while ($bandMember = mysqli_fetch_array($resultbandMembers, MYSQLI_ASSOC)) {
                 if ($bandMember['bandID'] == $bandID) {
                     $sqlskills = "SELECT *,
 						(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM cr_users WHERE `cr_users`.id = `cr_skills`.`userID`) AS `name` 
 						FROM cr_skills WHERE skillID = '$bandMember[skillID]' ORDER BY name";
                     $resultskills = mysqli_query(db(), $sqlskills) or die(mysqli_error(db()));
-                        
+
                     while ($rowskills = mysqli_fetch_array($resultskills, MYSQLI_ASSOC)) {
                         $bandMembersID = $bandMember['bandMembersID'];
-                        $sqlusers = "";
-                        echo "<strong>" . $rowskills['name'] . "</strong> ";
-                        echo "<em> " . $rowskills['skill'] . "</em>" . " <a href='viewBands.php?skillremove=true&bandMembersID=" . $bandMembersID ."'><img src='graphics/close.png' /></a><br />";
+                        $sqlusers = '';
+                        echo '<strong>'.$rowskills['name'].'</strong> ';
+                        echo '<em> '.$rowskills['skill'].'</em>'." <a href='viewBands.php?skillremove=true&bandMembersID=".$bandMembersID."'><img src='graphics/close.png' /></a><br />";
                     }
                 }
             }
-            echo "</p>";
+            echo '</p>';
             $sqladdMembers = "SELECT *,
 				(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM cr_users WHERE `cr_users`.id = `cr_skills`.`userID` ORDER BY `cr_users`.firstname) AS `name`
 				FROM cr_skills WHERE groupID = 2 ORDER BY name";
@@ -139,9 +136,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					<label for="name">Add members:</label>
 					<select name="name" id="name">
 						<?php while ($addMember = mysqli_fetch_array($resultaddMembers, MYSQLI_ASSOC)) {
-                echo "<option value='" . $addMember['skillID'] . "'>";
-                echo $addMember['name'] . " - " . $addMember['skill'];
-                echo "</option>";
+                echo "<option value='".$addMember['skillID']."'>";
+                echo $addMember['name'].' - '.$addMember['skill'];
+                echo '</option>';
             } ?>
 					</select>
 					<input type="submit" value="Add member" />
@@ -156,4 +153,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 ?>
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>
