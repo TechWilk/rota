@@ -2,30 +2,31 @@
 
 namespace TechWilk\Rota\Controller;
 
-use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TechWilk\Rota\Site;
+use TechWilk\Rota\SettingsQuery;
+use TechWilk\Rota\Job\SendReminders;
 
 class JobController extends BaseController
 {
     public function getDaily(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->info("Fetch event GET '/jobs/daily'");
+
+        // check the token
+        $token = $args['token'];
+
         $site = new Site();
         $actualToken = $site->getSettings()->getToken();
-        if ($args['token'] !== $actualToken) {
-            return $response;
+
+        if ($actualToken->getToken() !== $token) {
+            return $response->withStatus(404);
         }
 
-        $client = new Client();
-        $url = $site->getUrl()['base'].$this->router->pathFor('home').'old/cr_daily.php';
-        $response = $client->get($url, [
-            'query' => [
-                'token' => $args['token'],
-            ],
-        ]);
+        $job = new SendReminders($this->sender);
+        $job->sendReminders();
 
-        return $response;
+        return $this->view->render($response, 'job.twig');
     }
 }
