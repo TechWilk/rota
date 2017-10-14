@@ -1,11 +1,8 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
@@ -19,65 +16,55 @@ if (isset($_SESSION['is_logged_in']) || $_SESSION['db_is_logged_in'] == true) {
 
 $action = $_GET['action'];
 
-if (isAdmin() && isset($_GET["id"])) {
+if (isAdmin() && isset($_GET['id'])) {
     $id = $_GET['id'];
     $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
 } else {
     $id = $_SESSION['userid'];
 }
 
-
-
 // If the form has been submitted, then we need to handle the data.
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $requiredPasswordLength = 5;
-    
+
     $oldPassword = $_POST['oldpassword'];
     $newPassword = $_POST['newpassword'];
     $checkPassword = $_POST['checkpassword'];
 
     if ($newPassword != $checkPassword) {
-        $status = "new_passwords_not_match";
+        $status = 'new_passwords_not_match';
     }
     if (strlen($newPassword) < $requiredPasswordLength) {
-        $status = "password_length_too_short";
+        $status = 'password_length_too_short';
     } else {
         if (isAdmin()) {
             forceChangePassword($id, $newPassword);
         } elseif (!isPasswordCorrectWithId($id, $oldPassword)) {
-            $status = "old_password_incorrect";
+            $status = 'old_password_incorrect';
         } else {
             changePassword($id, $newPassword, $oldPassword);
         }
     }
 
     if (isPasswordCorrectWithId($id, $newPassword)) {
-        $status = "success";
+        $status = 'success';
     }
 
     if ($debug) {
-        insertStatistics("user", __FILE__, "pwd_change", $status);
+        insertStatistics('user', __FILE__, 'pwd_change', $status);
     }
 } else {
     //no POST -> we are in edit mode
-        $sql = "SELECT * FROM cr_users WHERE id = '$id'";
+    $sql = "SELECT * FROM cr_users WHERE id = '$id'";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
     $firstname = $row['firstName'];
     $lastname = $row['lastName'];
 }
 
+// ----------- Presentation ------------
 
-
-
-
-# ----------- Presentation ------------
-
-
-
-
-
-include('includes/header.php');
+include 'includes/header.php';
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -132,7 +119,7 @@ include('includes/header.php');
 
 <div class="box box-primary">
   <div class="box-header">
-    <h2 class="box-title">Change password - <?php echo $firstname . " " . $lastname . "<br>"; ?></h2>
+    <h2 class="box-title">Change password - <?php echo $firstname.' '.$lastname.'<br>'; ?></h2>
   </div><!-- /.box-header -->
   <div class="box-body">
 
@@ -168,4 +155,4 @@ include('includes/header.php');
 <div id="right">
 		<div class="item"><a href="addUser.php?action=edit&user=<?php echo $_SESSION['userid']; ?>">Edit my account</a></div>
 </div>
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

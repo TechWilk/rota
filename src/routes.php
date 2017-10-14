@@ -3,8 +3,8 @@
 namespace TechWilk\Rota;
 
 use DateTime;
-use InvalidArgumentException;
 use Exception;
+use InvalidArgumentException;
 
 // Routes
 
@@ -18,9 +18,8 @@ $app->group('/user', function () {
         $users = UserQuery::create()->orderByLastName()->orderByFirstName()->find();
         $roles = RoleQuery::create()->orderByName()->find();
 
-        return $this->view->render($response, 'users.twig', [ "users" => $users, "roles" => $roles ]);
+        return $this->view->render($response, 'users.twig', ['users' => $users, 'roles' => $roles]);
     })->setName('users');
-
 
     $this->post('[/{id}]', function ($request, $response, $args) {
         $this->logger->info("Create user POST '/user'");
@@ -31,7 +30,6 @@ $app->group('/user', function () {
         $data['lastname'] = filter_var(trim($data['lastname']), FILTER_SANITIZE_STRING);
         $data['email'] = new EmailAddress($data['email']);
         $data['mobile'] = filter_var(trim($data['mobile']), FILTER_SANITIZE_STRING);
-
 
         $u = new User();
 
@@ -56,9 +54,8 @@ $app->group('/user', function () {
 
         $u->save();
 
-        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('user', [ 'id' => $u->getId() ]));
+        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('user', ['id' => $u->getId()]));
     })->setName('user-post');
-
 
     $this->get('/me', function ($request, $response, $args) {
         $this->logger->info("Fetch user GET '/user/me'");
@@ -67,12 +64,11 @@ $app->group('/user', function () {
         $u = $auth->currentUser();
 
         if (!is_null($u)) {
-            return $this->view->render($response, 'user.twig', [ "user" => $u ]);
+            return $this->view->render($response, 'user.twig', ['user' => $u]);
         } else {
             return $this->view->render($response, 'error.twig');
         }
     })->setName('user-me');
-
 
     $this->get('/new', function ($request, $response, $args) {
         $this->logger->info("Fetch user GET '/user/new'");
@@ -80,55 +76,49 @@ $app->group('/user', function () {
         return $this->view->render($response, 'user-edit.twig');
     })->setName('user-new');
 
-
     $this->get('/{id}', function ($request, $response, $args) {
         $this->logger->info("Fetch user GET '/user/".$args['id']."'");
         $u = UserQuery::create()->findPK($args['id']);
 
         if (!is_null($u)) {
-            return $this->view->render($response, 'user.twig', [ "user" => $u ]);
+            return $this->view->render($response, 'user.twig', ['user' => $u]);
         } else {
             return $this->view->render($response, 'error.twig');
         }
     })->setName('user');
-
 
     $this->get('/{id}/widget-only', function ($request, $response, $args) {
         $this->logger->info("Fetch user GET '/user/".$args['id']."'");
         $u = UserQuery::create()->findPK($args['id']);
 
         if (!is_null($u)) {
-            return $this->view->render($response, 'user-widget.twig', [ "user" => $u ]);
+            return $this->view->render($response, 'user-widget.twig', ['user' => $u]);
         } else {
             return $this->view->render($response, 'error.twig');
         }
     })->setName('user-widget-only');
-
 
     $this->get('/{id}/edit', function ($request, $response, $args) {
         $this->logger->info("Fetch user GET '/user/".$args['id']."/edit'");
         $u = UserQuery::create()->findPK($args['id']);
 
         if (!is_null($u)) {
-            return $this->view->render($response, 'user-edit.twig', [ "user" => $u ]);
+            return $this->view->render($response, 'user-edit.twig', ['user' => $u]);
         } else {
             return $this->view->render($response, 'error.twig');
         }
     })->setName('user-edit');
-
-
 
     $this->get('/{id}/password', function ($request, $response, $args) {
         $this->logger->info("Fetch user GET '/user/".$args['id']."/password'");
         $u = UserQuery::create()->findPK($args['id']);
 
         if (!is_null($u)) {
-            return $this->view->render($response, 'user-password.twig', [ "user" => $u ]);
+            return $this->view->render($response, 'user-password.twig', ['user' => $u]);
         } else {
             return $this->view->render($response, 'error.twig');
         }
     })->setName('user-password');
-
 
     $this->post('/{id}/password', function ($request, $response, $args) {
         $this->logger->info("Create user POST '/user/".$args['id']."/password'");
@@ -141,22 +131,23 @@ $app->group('/user', function () {
 
         $u = UserQuery::create()->findPK($args['id']);
 
-        if ($new == "" || $new != $confirm) {
-            $message = "New passwords did not match.";
-            return $this->view->render($response, 'user-password.twig', [ "user" => $u, "message" => $message ]);
+        if ($new == '' || $new != $confirm) {
+            $message = 'New passwords did not match.';
+
+            return $this->view->render($response, 'user-password.twig', ['user' => $u, 'message' => $message]);
         }
 
         if (!$u->checkPassword($existing)) {
-            $message = "Existing password not correct.";
-            return $this->view->render($response, 'user-password.twig', [ "user" => $u, "message" => $message ]);
+            $message = 'Existing password not correct.';
+
+            return $this->view->render($response, 'user-password.twig', ['user' => $u, 'message' => $message]);
         }
 
         $u->setPassword($new);
         $u->save();
 
-        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('user', [ 'id' => $u->getId() ]));
+        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('user', ['id' => $u->getId()]));
     })->setName('user-password-post');
-
 
     $this->get('/{id}/roles', function ($request, $response, $args) {
         $this->logger->info("Fetch user GET '/user/".$args['id']."/roles'");
@@ -164,12 +155,11 @@ $app->group('/user', function () {
         $u = UserQuery::create()->findPK($args['id']);
 
         if (!is_null($u)) {
-            return $this->view->render($response, 'user-roles-assign.twig', [ "user" => $u, "roles" => $r ]);
+            return $this->view->render($response, 'user-roles-assign.twig', ['user' => $u, 'roles' => $r]);
         } else {
             return $this->view->render($response, 'error.twig');
         }
     })->setName('user-roles');
-
 
     $this->post('/{id}/assign', function ($request, $response, $args) {
         $this->logger->info("Create user people POST '/user/".$args['id']."/assign'");
@@ -213,11 +203,9 @@ $app->group('/user', function () {
             }
         }
 
-        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('user', [ 'id' => $userId ]));
+        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('user', ['id' => $userId]));
     })->setName('user-assign-post');
 });
-
-
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // EVENT
@@ -228,9 +216,8 @@ $app->group('/event', function () {
         $this->logger->info("Fetch event GET '/events'");
         $events = EventQuery::create()->filterByDate(['min' => new DateTime()])->filterByRemoved(false)->orderByDate('asc')->find();
 
-        return $this->view->render($response, 'events.twig', [ "events" => $events ]);
+        return $this->view->render($response, 'events.twig', ['events' => $events]);
     })->setName('events');
-
 
     $this->get('s/type/{id}', function ($request, $response, $args) {
         $this->logger->info("Fetch event GET '/events/type/".$args['id']."'");
@@ -239,9 +226,8 @@ $app->group('/event', function () {
 
         $events = EventQuery::create()->filterByDate(['min' => new DateTime()])->filterByRemoved(false)->filterByEventType($eventType)->orderByDate('asc')->find();
 
-        return $this->view->render($response, 'events.twig', [ "events" => $events ]);
+        return $this->view->render($response, 'events.twig', ['events' => $events]);
     })->setName('events-eventtype');
-
 
     $this->get('s/subtype/{id}', function ($request, $response, $args) {
         $this->logger->info("Fetch event GET '/events/type/".$args['id']."'");
@@ -250,9 +236,8 @@ $app->group('/event', function () {
 
         $events = EventQuery::create()->filterByDate(['min' => new DateTime()])->filterByRemoved(false)->filterByEventSubType($eventType)->orderByDate('asc')->find();
 
-        return $this->view->render($response, 'events.twig', [ "events" => $events ]);
+        return $this->view->render($response, 'events.twig', ['events' => $events]);
     })->setName('events-eventsubtype');
-
 
     $this->post('[/{id}]', function ($request, $response, $args) {
         $this->logger->info("Create event POST '/event'");
@@ -276,9 +261,8 @@ $app->group('/event', function () {
         $e->setComment($data['comment']);
         $e->save();
 
-        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('event', [ 'id' => $e->getId() ]));
+        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('event', ['id' => $e->getId()]));
     })->setName('event-post');
-
 
     $this->get('/new', function ($request, $response, $args) {
         $this->logger->info("Fetch event GET '/event/new'");
@@ -286,21 +270,19 @@ $app->group('/event', function () {
         $et = EventTypeQuery::create()->orderByName()->find();
         $est = EventSubTypeQuery::create()->orderByName()->find();
 
-        return $this->view->render($response, 'event-edit.twig', [ "locations" => $l, "eventtypes" => $et, "eventsubtypes" => $est ]);
+        return $this->view->render($response, 'event-edit.twig', ['locations' => $l, 'eventtypes' => $et, 'eventsubtypes' => $est]);
     })->setName('event-new');
-
 
     $this->get('/{id}', function ($request, $response, $args) {
         $this->logger->info("Fetch event GET '/event/".$args['id']."'");
         $e = EventQuery::create()->findPK($args['id']);
 
         if (!is_null($e)) {
-            return $this->view->render($response, 'event.twig', [ "event" => $e ]);
+            return $this->view->render($response, 'event.twig', ['event' => $e]);
         } else {
             return $this->view->render($response, 'error.twig');
         }
     })->setName('event');
-
 
     $this->get('/{id}/edit', function ($request, $response, $args) {
         $this->logger->info("Fetch event GET '/event/".$args['id']."/edit'");
@@ -310,7 +292,7 @@ $app->group('/event', function () {
         $est = EventSubTypeQuery::create()->orderByName()->find();
 
         if (!is_null($e)) {
-            return $this->view->render($response, 'event-edit.twig', [ "event" => $e, "locations" => $l, "eventtypes" => $et, "eventsubtypes" => $est ]);
+            return $this->view->render($response, 'event-edit.twig', ['event' => $e, 'locations' => $l, 'eventtypes' => $et, 'eventsubtypes' => $est]);
         } else {
             return $this->view->render($response, 'error.twig');
         }
@@ -324,12 +306,11 @@ $app->group('/event', function () {
         $est = EventSubTypeQuery::create()->orderByName()->find();
 
         if (!is_null($e)) {
-            return $this->view->render($response, 'event-edit.twig', [ "copy" => true, "event" => $e, "locations" => $l, "eventtypes" => $et, "eventsubtypes" => $est ]);
+            return $this->view->render($response, 'event-edit.twig', ['copy' => true, 'event' => $e, 'locations' => $l, 'eventtypes' => $et, 'eventsubtypes' => $est]);
         } else {
             return $this->view->render($response, 'error.twig');
         }
     })->setName('event-copy');
-
 
     $this->get('/{id}/assign', function ($request, $response, $args) {
         $this->logger->info("Fetch event GET '/event/".$args['id']."/assign'");
@@ -337,12 +318,11 @@ $app->group('/event', function () {
         $ur = UserRoleQuery::create()->find();
 
         if (!is_null($e)) {
-            return $this->view->render($response, 'event-assign.twig', [ "event" => $e, "userroles" => $ur ]);
+            return $this->view->render($response, 'event-assign.twig', ['event' => $e, 'userroles' => $ur]);
         } else {
             return $this->view->render($response, 'error.twig');
         }
     })->setName('event-assign');
-
 
     $this->post('/{id}/assign', function ($request, $response, $args) {
         $this->logger->info("Create event people POST '/event".$args['id']."/assign'");
@@ -386,11 +366,9 @@ $app->group('/event', function () {
             }
         }
 
-        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('event', [ 'id' => $eventId ]));
+        return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('event', ['id' => $eventId]));
     })->setName('event-assign-post');
 });
-
-
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // RESOURCE
@@ -400,9 +378,8 @@ $app->get('/resources', function ($request, $response, $args) {
     $this->logger->info("Fetch resource GET '/resources'");
     $resources = DocumentQuery::create()->orderByTitle()->find();
 
-    return $this->view->render($response, 'resources.twig', [ "resources" => $resources ]);
+    return $this->view->render($response, 'resources.twig', ['resources' => $resources]);
 })->setName('resources');
-
 
 $app->post('/resource[/{id}]', function ($request, $response, $args) {
     $this->logger->info("Create resource POST '/resource'");
@@ -436,27 +413,22 @@ $app->post('/resource[/{id}]', function ($request, $response, $args) {
     return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('resources'));
 })->setName('resource-post');
 
-
 $app->get('/resource[/new]', function ($request, $response, $args) {
     $this->logger->info("Fetch resource GET '/resource/new'");
 
     return $this->view->render($response, 'resource-edit.twig');
 })->setName('resource-new');
 
-
-
 $app->get('/resource/{id}/edit', function ($request, $response, $args) {
     $this->logger->info("Fetch resource GET '/resource/".$args['id']."/edit'");
     $d = DocumentQuery::create()->findPK($args['id']);
 
     if (!is_null($d)) {
-        return $this->view->render($response, 'resource-edit.twig', [ "resource" => $d ]);
+        return $this->view->render($response, 'resource-edit.twig', ['resource' => $d]);
     } else {
         return $this->view->render($response, 'error.twig');
     }
 })->setName('resource-edit');
-
-
 
 $app->get('/resource/{id}', function ($request, $response, $args) {
     $this->logger->info("Fetch resource GET '/resource/".$args['id']."'");
@@ -480,7 +452,7 @@ $app->get('/resource/{id}', function ($request, $response, $args) {
                         ->withHeader('Content-Type', 'application/download')
                         ->withHeader('Content-Description', 'File Transfer')
                         ->withHeader('Content-Transfer-Encoding', 'binary')
-                        ->withHeader('Content-Disposition', 'attachment; filename="' . $resource->getUrl() . '"')
+                        ->withHeader('Content-Disposition', 'attachment; filename="'.$resource->getUrl().'"')
                         ->withHeader('Expires', '0')
                         ->withHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0')
                         ->withHeader('Pragma', 'public')
@@ -490,13 +462,9 @@ $app->get('/resource/{id}', function ($request, $response, $args) {
     }
 })->setName('resource');
 
-
-
-
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // AUTH
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 
 $app->get('/login', function ($request, $response, $args) {
     $this->logger->info("Fetch login GET '/login'");
@@ -507,14 +475,13 @@ $app->get('/login', function ($request, $response, $args) {
     $auth = $this['auth'];
     $resetPasswordUrl = $auth->getResetPasswordUrl();
 
-    return $this->view->render($response->withStatus(401), 'login.twig', [ 'reset_password_url' => $resetPasswordUrl ]);
+    return $this->view->render($response->withStatus(401), 'login.twig', ['reset_password_url' => $resetPasswordUrl]);
 })->setName('login');
-
 
 $app->post('/login', function ($request, $response, $args) {
     $this->logger->info("Login POST '/login'");
 
-    $message = "Username or password incorrect.";
+    $message = 'Username or password incorrect.';
 
     $data = $request->getParsedBody();
 
@@ -528,27 +495,30 @@ $app->post('/login', function ($request, $response, $args) {
     }
     $password = filter_var($data['password'], FILTER_SANITIZE_STRING);
 
-    if ($email == "" || $password == "") {
+    if ($email == '' || $password == '') {
         return $this->view->render($response->withStatus(401), 'login.twig', ['message' => $message, 'reset_password_url' => $resetPasswordUrl]);
     }
 
     // login
     $auth = $this['auth'];
+
     try {
         if ($auth->loginAttempt($email, $password)) {
             if (isset($_SESSION['urlRedirect'])) {
                 $url = $_SESSION['urlRedirect'];
                 unset($_SESSION['urlRedirect']);
+
                 return $response->withStatus(303)->withHeader('Location', $url);
             }
+
             return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('home'));
         }
     } catch (Exception $e) {
-        $message = "Too many failed login attempts. Please try again in 15 minutes.";
+        $message = 'Too many failed login attempts. Please try again in 15 minutes.';
     }
-    return $this->view->render($response->withStatus(401), 'login.twig', ['username' => $email, 'message' => $message, 'reset_password_url' => $resetPasswordUrl ]);
-})->setName('login-post');
 
+    return $this->view->render($response->withStatus(401), 'login.twig', ['username' => $email, 'message' => $message, 'reset_password_url' => $resetPasswordUrl]);
+})->setName('login-post');
 
 $app->get('/logout', function ($request, $response, $args) {
     $this->logger->info("Fetch logout GET '/logout'");
@@ -557,8 +527,6 @@ $app->get('/logout', function ($request, $response, $args) {
 
     return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('login'));
 })->setName('logout');
-
-
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // OTHER
@@ -583,14 +551,15 @@ $app->get('/notification/{id}[/{referrer}]', function ($request, $response, $arg
     if ($n->getLink()) {
         if (json_decode($n->getLink())) {
             $link = json_decode($n->getLink());
+
             return $response->withStatus(302)->withHeader('Location', $this->router->pathFor($link['route'], $link['attributes']));
         } else {
             return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('home').$n->getLink());
         }
     }
-    return $this->view->render($response, 'notification.twig', ["notification" => $n ]);
-})->setName('notification');
 
+    return $this->view->render($response, 'notification.twig', ['notification' => $n]);
+})->setName('notification');
 
 $app->get('/user/me/calendars', function ($request, $response, $args) {
     // Sample log message
@@ -605,9 +574,8 @@ $app->get('/user/me/calendars', function ($request, $response, $args) {
 
     $cals = CalendarTokenQuery::create()->filterByUser($u)->find();
 
-    return $this->view->render($response, 'user-calendars.twig', [ "user" => $u, 'calendars' => $cals ]);
+    return $this->view->render($response, 'user-calendars.twig', ['user' => $u, 'calendars' => $cals]);
 })->setName('user-calendars');
-
 
 $app->get('/user/me/calendar/new', function ($request, $response, $args) {
     // Sample log message
@@ -622,9 +590,8 @@ $app->get('/user/me/calendar/new', function ($request, $response, $args) {
 
     $cals = CalendarTokenQuery::create()->filterByUser($u)->find();
 
-    return $this->view->render($response, 'user-calendars.twig', [ "user" => $u, 'calendars' => $cals ]);
+    return $this->view->render($response, 'user-calendars.twig', ['user' => $u, 'calendars' => $cals]);
 })->setName('user-calendars');
-
 
 $app->post('/user/me/calendar/new', function ($request, $response, $args) {
     // Sample log message
@@ -651,9 +618,8 @@ $app->post('/user/me/calendar/new', function ($request, $response, $args) {
 
     $cals = CalendarTokenQuery::create()->filterByUser($u)->find();
 
-    return $this->view->render($response, 'user-calendars.twig', [ "user" => $u, 'calendars' => $cals, 'new' => $calendar ]);
+    return $this->view->render($response, 'user-calendars.twig', ['user' => $u, 'calendars' => $cals, 'new' => $calendar]);
 })->setName('user-calendar-new-post');
-
 
 $app->get('/user/me/calendar/{id}/revoke', function ($request, $response, $args) {
     // Sample log message
@@ -678,10 +644,9 @@ $app->get('/user/me/calendar/{id}/revoke', function ($request, $response, $args)
     return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('user-calendars'));
 })->setName('user-calendar-revoke');
 
-
 $app->get('/calendar/{token}.{format}', function ($request, $response, $args) {
     // Sample log message
-    $this->logger->info("Fetch calendar GET '/calendar/".$args['token'].".".$args['format']."'");
+    $this->logger->info("Fetch calendar GET '/calendar/".$args['token'].'.'.$args['format']."'");
 
     $c = CalendarTokenQuery::create()->filterByToken($args['token'])->findOne();
 
@@ -714,7 +679,6 @@ $app->get('/calendar/{token}.{format}', function ($request, $response, $args) {
     }
 })->setName('user-calendar');
 
-
 $app->get('/user/{id}/availability', function ($request, $response, $args) {
     // Sample log message
     $this->logger->info("Fetch user availability GET '/user/".$args['id']."/availability'");
@@ -733,7 +697,6 @@ $app->get('/user/{id}/availability', function ($request, $response, $args) {
 
     return $this->view->render($response, 'user-availability.twig', ['user' => $u, 'events' => $e]);
 })->setName('user-availability');
-
 
 $app->post('/user/{id}/availability', function ($request, $response, $args) {
     // Sample log message
@@ -774,22 +737,19 @@ $app->post('/user/{id}/availability', function ($request, $response, $args) {
         $a->save();
     }
 
-    return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('user', [ 'id' => $u->getId() ]));
+    return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('user', ['id' => $u->getId()]));
 })->setName('user-availability-post');
-
 
 $app->get('/settings', function ($request, $response, $args) {
     // Sample log message
     $this->logger->info("Fetch settings GET '/settings'");
 
-    return $this->view->render($response, 'settings.twig', [ ]);
+    return $this->view->render($response, 'settings.twig', []);
 })->setName('settings');
-
 
 $app->get('/token', function ($request, $response, $args) {
     return $response->getBody()->write(Crypt::generateToken(30));
 })->setName('token');
-
 
 $app->get('/', function ($request, $response, $args) {
     // Sample log message
@@ -800,12 +760,8 @@ $app->get('/', function ($request, $response, $args) {
     $remainingEventsInGroups = GroupQuery::create()->find();
 
     // Render index view
-    return $this->view->render($response, 'home.twig', ['eventsthisweek' => $eventsThisWeek, 'remainingeventsingroups' => $remainingEventsInGroups, ]);
+    return $this->view->render($response, 'home.twig', ['eventsthisweek' => $eventsThisWeek, 'remainingeventsingroups' => $remainingEventsInGroups]);
 })->setName('home');
-
-
-
-
 
 // LEGACY
 
@@ -814,13 +770,13 @@ $app->get('/calendar.php', function ($request, $response, $args) {
 
     $getParameters = $request->getQueryParams();
 
-    $this->logger->info("Fetch -LEGACY- calendar GET '/calendar.php?user=".$getParameters['user']."&token=".$getParameters['token']."&format=".$getParameters['format']."'");
+    $this->logger->info("Fetch -LEGACY- calendar GET '/calendar.php?user=".$getParameters['user'].'&token='.$getParameters['token'].'&format='.$getParameters['format']."'");
 
     $getParameters = $request->getQueryParams();
 
-    $userId = filter_var($getParameters["user"], FILTER_VALIDATE_INT);
-    $token = $getParameters["token"];
-    $format = $getParameters["format"];
+    $userId = filter_var($getParameters['user'], FILTER_VALIDATE_INT);
+    $token = $getParameters['token'];
+    $format = $getParameters['format'];
 
     $c = CalendarTokenQuery::create()->filterByToken($token)->filterByUserId($userId)->findOne();
 

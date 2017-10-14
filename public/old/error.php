@@ -1,5 +1,5 @@
-<?php include('includes/config.php');
-include('includes/functions.php');
+<?php include 'includes/config.php';
+include 'includes/functions.php';
 /*
     This file is part of Church Rota.
 
@@ -20,10 +20,10 @@ include('includes/functions.php');
 */
 
 // Get the query string
-$no = (isset($_GET["no"]) ? $_GET["no"] : ' ');
-$page = (isset($_GET["page"]) ? $_GET["page"] : 'unknown');
+$no = (isset($_GET['no']) ? $_GET['no'] : ' ');
+$page = (isset($_GET['page']) ? $_GET['page'] : 'unknown');
 
-include('includes/header.php'); ?>
+include 'includes/header.php'; ?>
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -43,23 +43,24 @@ include('includes/header.php'); ?>
 <h2>Error <?php echo $no; ?></h2>
 <br>
 The following error has occurred
-<?php namespace TechWilk\Rota; use DateInterval; use DateTime;
-    echo " on page '".$page."':<br><br>";
-    echo "<strong>";
+<?php namespace TechWilk\Rota;
+
+echo " on page '".$page."':<br><br>";
+    echo '<strong>';
 
     switch ($no) {
-        case "100":
-            echo "No sufficient user rights to view that page!";
+        case '100':
+            echo 'No sufficient user rights to view that page!';
             break;
         default:
-            echo "No additional information were given.";
+            echo 'No additional information were given.';
     }
 
-    echo "</strong>";
+    echo '</strong>';
 ?>
 
 <a href="index.php" class="button">Back to main page</a>
 </div>
 
 
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

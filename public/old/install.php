@@ -1,8 +1,5 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 /*
     This file is part of Church Rota.
 
@@ -23,11 +20,9 @@ use DateTime;
 */
 
 // Include files, including the database connection
-include('includes/config.php');
+include 'includes/config.php';
 $holdQuery = true;
-include('includes/functions.php');
-
-
+include 'includes/functions.php';
 
 // only run install method if no users found in database
 try {
@@ -39,24 +34,21 @@ try {
 } catch (\Exception $e) {
 }
 
-$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http') . '://' .$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http').'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 $url = substr($url, 0, -12); // remove "/install.php" from url
-
-
-
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $sql = file_get_contents('generated-sql/default.sql');
     //$sql = trim(preg_replace('/\s\s+/', ' ', $sql));
 
     $conn = Propel\Runtime\Propel::getConnection();
-    
+
     try {
         //echo $sql;
         //exit;
         $conn->exec($sql);
     } catch (\Exception $e) {
-        echo "Error (code: ".$e->getCode().") adding tables to database: ".$e->getMessage();
+        echo 'Error (code: '.$e->getCode().') adding tables to database: '.$e->getMessage();
         exit;
     }
 
@@ -66,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $lastname = $_POST['lastname'];
     $lastname = trim(strip_tags($lastname));
 
-    $username = strtolower($firstname).".".strtolower($lastname);
+    $username = strtolower($firstname).'.'.strtolower($lastname);
 
     $password = $_POST['password'];
 
@@ -76,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mobile = $_POST['mobile'];
     $mobile = trim(strip_tags($mobile));
 
-    $user = new User;
+    $user = new User();
 
     $user->setFirstName($firstname);
     $user->setLastName($lastname);
@@ -90,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
         $user->save();
     } catch (\Exception $e) {
-        echo "Error (code: ".$e->getCode().") adding user to database: ".$e->getMessage();
+        echo 'Error (code: '.$e->getCode().') adding user to database: '.$e->getMessage();
         exit;
     }
 
@@ -103,13 +95,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $url = $_POST['url'];
     $url = trim(strip_tags($url));
 
-
-    $settings = new Settings;
+    $settings = new Settings();
     $settings->setOwner($owner);
     $settings->setSiteUrl($url);
     $settings->setAdminEmailAddress($siteEmail);
     $settings->setSkin('skin-blue-light');
-
 
     // load default settings into the database
     if ($_POST['loadDefaults'] == 'yes') {
@@ -128,18 +118,15 @@ Many thanks for your continued service!
 MSG;
         $settings->setNotificationEmail($msg);
 
-
         $msg = <<<'MSG'
 There will be no rehearsal. Please come at 9.30 on Sunday morning for setup and soundcheck.
 MSG;
         $settings->setNoRehearsalEmail($msg);
 
-
         $msg = <<<'MSG'
 There will be a rehearsal for this service
 MSG;
         $settings->setYesRehearsal($msg);
-
 
         // not quoted 'MSG' as we are passing in the variable $owner
         $msg = <<<MSG
@@ -164,7 +151,6 @@ $owner teams
 MSG;
         $settings->setNewUserMessage($msg);
 
-
         $msg = <<<'MSG'
 Dear [NAME],
 
@@ -176,22 +162,20 @@ Please request a swap online, or inform us as soon as possible, if you are not a
 MSG;
         $settings->setOverviewEmail($msg);
 
-        $settings->setLangLocale("en_GB");
-        $settings->setTimeFormatLong("%A, %B %e @ %I:%M %p");
-        $settings->setTimeFormatNormal("%d/%m/%y %I:%M %p");
-        $settings->setTimeFormatShort("%a, <strong>%b %e</strong>, %I:%M %p");
-        $settings->setTimeOnlyFormat("%l %M %p");
-        $settings->setDateOnlyFormat("");
-        $settings->setDayOnlyFormat("%A, %B %e");
-        $settings->setTimeZone("Europe/London");
+        $settings->setLangLocale('en_GB');
+        $settings->setTimeFormatLong('%A, %B %e @ %I:%M %p');
+        $settings->setTimeFormatNormal('%d/%m/%y %I:%M %p');
+        $settings->setTimeFormatShort('%a, <strong>%b %e</strong>, %I:%M %p');
+        $settings->setTimeOnlyFormat('%l %M %p');
+        $settings->setDateOnlyFormat('');
+        $settings->setDayOnlyFormat('%A, %B %e');
+        $settings->setTimeZone('Europe/London');
 
         $settings->setLoggedInShowSnapshotButton(true);
         $settings->setUsersStartWithMyEvents(true);
 
         $settings->setDaysToAlert(6);
     } // end if ($loadDefaults)
-    
-
 
     $settings->save();
 
@@ -199,16 +183,9 @@ MSG;
     exit;
 }
 
-
-
-
-
-
 // ~~~~~~~~~~ PRESENTATION ~~~~~~~~~~
 
-
-
-$formatting = "light";
+$formatting = 'light';
 //include('includes/header.php');
 ?>
 
@@ -312,6 +289,6 @@ $formatting = "light";
 </div>
 
 <?php
-$owner='A Church';
-$version='0.0.0';
+$owner = 'A Church';
+$version = '0.0.0';
 //include('includes/footer.php');

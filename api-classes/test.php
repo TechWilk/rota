@@ -1,7 +1,6 @@
 <?php
 
 
-
 //exit;
 
 /*
@@ -39,15 +38,14 @@ $id = 56;
 
 $id = urlencode($id);
 
-$url = "http://localhost/api/v1/series/" . $id;
+$url = 'http://localhost/api/v1/series/'.$id;
 $response = file_get_contents($url);
 
-echo "URL: " . $url;
+echo 'URL: '.$url;
 
 $responseData = json_decode($response, true);
-$data = $responseData["data"];
+$data = $responseData['data'];
 
 echo var_dump($responseData);
 
-
-echo "series " . $id . ": id = " . $data["id"] . ", name = " . $data["name"] . ", description = " . $data["description"];
+echo 'series '.$id.': id = '.$data['id'].', name = '.$data['name'].', description = '.$data['description'];

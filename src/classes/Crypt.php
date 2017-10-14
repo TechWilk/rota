@@ -9,22 +9,23 @@ class Crypt
     public static function generateToken($length)
     {
         $token = '';
-        for ($i=0; $i < $length; $i++) {
-            $l = Crypt::generateInt(0, 63);
+        for ($i = 0; $i < $length; $i++) {
+            $l = self::generateInt(0, 63);
             if ($l < 10) { // number
-        $token .= $l;
+                $token .= $l;
             } elseif ($l < 10 + 26) { // lowercase
-        $lowercase = range('a', 'z');
+                $lowercase = range('a', 'z');
                 $token .= $lowercase[$l - 10];
             } elseif ($l < 10 + 26 + 26) { // uppercase
-        $uppercase = range('A', 'Z');
+                $uppercase = range('A', 'Z');
                 $token .= $uppercase[$l - 10 - 26];
             } elseif ($l < 10 + 26 + 26 + 1) { // underscore
-        $token .= '_';
+                $token .= '_';
             } else { // hyphen
-        $token .= '-';
+                $token .= '-';
             }
         }
+
         return $token;
     }
 

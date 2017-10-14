@@ -1,8 +1,5 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 /*
     This file is part of Church Rota.
 
@@ -23,12 +20,12 @@ use DateTime;
 */
 
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 // Start the session. This checks whether someone is logged in and if not redirects them
 session_start();
- 
+
 if (isset($_SESSION['is_logged_in']) || $_SESSION['db_is_logged_in'] == true) {
     // Just continue the code
 } else {
@@ -48,64 +45,60 @@ $subscription = $_GET['subscription'];
 $redirect = $_GET['redirect'];
 
 // Method to remove  someone from the band
-if ($postremove == "true") {
+if ($postremove == 'true') {
     removePost($postid);
-    if ($redirect == "true") {
-        header("Location: discussion.php?categoryid=" . $parentid);
+    if ($redirect == 'true') {
+        header('Location: discussion.php?categoryid='.$parentid);
     } else {
-        header("Location: discussiontopic.php?id=" . $id . "&parentid=" . $parentid);
+        header('Location: discussiontopic.php?id='.$id.'&parentid='.$parentid);
     }
 }
 
-if ($subscribe == "true") {
+if ($subscribe == 'true') {
     subscribeto($userID, 0, $id);
-    header("Location: discussiontopic.php?id=" . $id . "&parentid=" . $parentid);
-} elseif ($subscribe == "false") {
+    header('Location: discussiontopic.php?id='.$id.'&parentid='.$parentid);
+} elseif ($subscribe == 'false') {
     unsubscribefrom($subscription);
-    header("Location: discussiontopic.php?id=" . $id . "&parentid=" . $parentid);
+    header('Location: discussiontopic.php?id='.$id.'&parentid='.$parentid);
 }
 
 // If the form has been sent, we need to handle the data.
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $discussiontopic = $_POST['discussiontopic'];
     $discussiontopic = mysqli_real_escape_string(db(), $discussiontopic);
-    
+
     $discussion = $_POST['discussion'];
     $discussion = cleanUpTextarea($discussion);
-    
-      
-    
 
-    if ($id == "") {
+    if ($id == '') {
         // If we are starting a new discussion
         $sql = ("INSERT INTO cr_discussion (CategoryParent, userID, topic, topicName, date) VALUES ('$parentid', '$userID', '$discussion', '$discussiontopic', NOW())");
         if (!mysqli_query(db(), $sql)) {
-            die('Error: ' . mysqli_error(db()));
+            die('Error: '.mysqli_error(db()));
         }
-        $type = "category";
+        $type = 'category';
         notifySubscribers($parentid, $type, $userID);
-        header('Location: discussion.php?categoryid=' . $parentid);
+        header('Location: discussion.php?categoryid='.$parentid);
         exit;
     } else {
         // Otherwise we reply in thread
         $sql = ("INSERT INTO cr_discussion (topicParent, CategoryParent, userID, topic, date) 
 		VALUES ('$id', '$parentid', '$userID', '$discussion', NOW())");
         if (!mysqli_query(db(), $sql)) {
-            die('Error: ' . mysqli_error(db()));
+            die('Error: '.mysqli_error(db()));
         }
-        if ($subscribestatus == "false") {
+        if ($subscribestatus == 'false') {
             subscribeto($userID, 0, $id);
         }
-        $type = "post";
+        $type = 'post';
         notifySubscribers($id, $type, $userID);
     }
 }
-    $formatting = "true";
-    include('includes/header.php');
-    
-    if ($id == "") {
-        // If there is no topic, we want to create one
-    ?>
+    $formatting = 'true';
+    include 'includes/header.php';
+
+    if ($id == '') {
+        // If there is no topic, we want to create one ?>
 	
 	<div class="elementBackground">
 	<h2>New post</h2>
@@ -127,13 +120,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	<?php
     } else {
         // Otherwise we want to display the requested topic
-    
+
     // First we get the heading post for the topic . . .
-    $sql = "SELECT *, (SELECT CONCAT(`firstname`, ' ', `lastname`) FROM cr_users WHERE `cr_users`.id = `cr_discussion`.`userID` ) AS `name`,
+        $sql = "SELECT *, (SELECT CONCAT(`firstname`, ' ', `lastname`) FROM cr_users WHERE `cr_users`.id = `cr_discussion`.`userID` ) AS `name`,
 	DATE_FORMAT(date,'%W, %M %e @ %h:%i %p') AS dateFormatted	
 	FROM cr_discussion WHERE id = '$id'";
         $result = mysqli_query(db(), $sql) or die();
-    
+
         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
             $topic = $row['topic']; ?>
 	<div class="elementBackground highlight">
@@ -144,51 +137,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	<div class="elementBackground">
 	<h2><a name="addcategory"><?php echo $row['name']; ?></a> - <span class="postdate"><em><?php echo $row['dateFormatted']; ?></em></span> 
 	<?php if (isAdmin()) {
-                echo "<a href='discussiontopic.php?redirect=true&postremove=true&postid=" . $row['id'] . "&parentid=" . $parentid . "'><img src='graphics/close.png' /></a><br />";
+                echo "<a href='discussiontopic.php?redirect=true&postremove=true&postid=".$row['id'].'&parentid='.$parentid."'><img src='graphics/close.png' /></a><br />";
             } ?>
 	</h2>
 	<p><?php echo stripslashes($topic); ?></p>
 	</div>
 	<?php
         }
-    
-    // Then we get all the posts that go in the topic
-    $sql = "SELECT *, (SELECT CONCAT(`firstname`, ' ', `lastname`) FROM cr_users WHERE `cr_users`.id = `cr_discussion`.`userID` ) AS `name`,
+
+        // Then we get all the posts that go in the topic
+        $sql = "SELECT *, (SELECT CONCAT(`firstname`, ' ', `lastname`) FROM cr_users WHERE `cr_users`.id = `cr_discussion`.`userID` ) AS `name`,
 	DATE_FORMAT(date,'%W, %M %e @ %h:%i %p') AS dateFormatted	
 	FROM cr_discussion WHERE topicParent = '$id' ORDER BY id";
-    
+
         $result = mysqli_query(db(), $sql) or die();
-    
+
         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
             $topic = $row['topic']; ?>
 	<div class="elementBackground">
 	<h2><a name="addcategory"><?php echo $row['name']; ?></a> - <span class="postdate"><em><?php echo $row['dateFormatted']; ?></em></span>
 	<?php if (isAdmin()) {
-                echo "<a href='discussiontopic.php?postremove=true&postid=" . $row['id'] . "&parentid=" . $parentid . "&id=" . $id . "'><img src='graphics/close.png' /></a>";
+                echo "<a href='discussiontopic.php?postremove=true&postid=".$row['id'].'&parentid='.$parentid.'&id='.$id."'><img src='graphics/close.png' /></a>";
             } ?></h2>
 	<p><?php echo stripslashes($topic); ?></p>
 	</div>
 	
 	<?php
 
-    
+
     // At the end of the stream of posts, we want to have the possibility of replying
     $sql2 = "SELECT id FROM cr_subscriptions WHERE `cr_subscriptions`.userid = $userID AND `cr_subscriptions`.`topicid` = '$id'";
             $result2 = mysqli_query(db(), $sql2) or die(mysqli_error(db()));
-        
+
             while ($row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC)) {
                 // Check to see if we're subscribed or not. If yes, give the option to unsubscribe. If not, allow them to subscribe
-            $isSubscribed = $row2['id'];
+                $isSubscribed = $row2['id'];
             }
-        
-            if ($isSubscribed != "") {
-                $subscribe =  '<div class="item"><a href="discussiontopic.php?subscribe=false&subscription=' . $isSubscribed. '&id=' .
-                    $id . '&parentid=' . $parentid . '">Unsubscribe from this post</a></div>';
-                $subscribestatus = "true";
+
+            if ($isSubscribed != '') {
+                $subscribe = '<div class="item"><a href="discussiontopic.php?subscribe=false&subscription='.$isSubscribed.'&id='.
+                    $id.'&parentid='.$parentid.'">Unsubscribe from this post</a></div>';
+                $subscribestatus = 'true';
             } else {
-                $subscribe = '<div class="item"><a href="discussiontopic.php?subscribe=true&id=' . $id . '&parentid=' . $parentid . '">
+                $subscribe = '<div class="item"><a href="discussiontopic.php?subscribe=true&id='.$id.'&parentid='.$parentid.'">
 				Subscribe to this post</a></div>';
-                $subscribestatus = "false";
+                $subscribestatus = 'false';
             }
         } ?>
 	
@@ -215,4 +208,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		<?php echo $subscribe; ?>
 		
 </div>
-<?php include('includes/footer.php'); ?>
+<?php include 'includes/footer.php'; ?>

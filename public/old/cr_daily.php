@@ -1,11 +1,8 @@
 <?php namespace TechWilk\Rota;
 
-use DateInterval;
-use DateTime;
-
 // Include files, including the database connection
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 session_start();
 
 //--------------------------------------------------------------------------------
@@ -73,45 +70,44 @@ session_start();
 // configure CRON jobs - or search the web.
 //--------------------------------------------------------------------------------
 
-
 // Start the session. This checks whether someone is logged in and if not redirects them
 //session_start();
 
 $daysAlert = siteSettings()->getDaysToAlert(); //  0 => disable automatic notifications
 $token = siteSettings()->getToken();
 
-if ((isset($_GET['token'])) && ($_GET['token']==$token)) {
-    $out = "";
+if ((isset($_GET['token'])) && ($_GET['token'] == $token)) {
+    $out = '';
     if ($daysAlert > 0) {
-        $sqlEvents = "SELECT
+        $sqlEvents = 'SELECT
 										id,
 										date
 									FROM
 										cr_events
 									WHERE
 										date >= CURDATE()
-										AND date_format( date , \"%y-%m-%d\" )
-												<= date_format( DATE_ADD(now(), INTERVAL ".$daysAlert." DAY ) , \"%y-%m-%d\" )";
+										AND date_format( date , "%y-%m-%d" )
+												<= date_format( DATE_ADD(now(), INTERVAL '.$daysAlert.' DAY ) , "%y-%m-%d" )';
         $resultEvents = mysqli_query(db(), $sqlEvents) or die(mysqli_error(db()));
         $i = 0;
         while ($rowEvents = mysqli_fetch_array($resultEvents, MYSQLI_ASSOC)) {
-            $usersNotified = notifyEveryoneForEvent($rowEvents["id"]);
+            $usersNotified = notifyEveryoneForEvent($rowEvents['id']);
             if (count($usersNotified) > 0) {
-                $out = $out . "Automatic notifications sent to users (".implode(', ', $usersNotified).") for event ".$rowEvents["id"]." on ".$rowEvents["date"].".<br>\r\n";
+                $out = $out.'Automatic notifications sent to users ('.implode(', ', $usersNotified).') for event '.$rowEvents['id'].' on '.$rowEvents['date'].".<br>\r\n";
             } else {
-                $out = $out . "No notifications sent for event ".$rowEvents["id"]." on ".$rowEvents["date"].".<br>\r\n";
+                $out = $out.'No notifications sent for event '.$rowEvents['id'].' on '.$rowEvents['date'].".<br>\r\n";
             }
-            $i=$i+1;
+            $i = $i + 1;
         }
-        if ($i==0) {
-            $out = $out . "No events found to automatically notify for.";
+        if ($i == 0) {
+            $out = $out.'No events found to automatically notify for.';
         }
     } else {
-        $out = $out . "Automatic notifications are disabled.";
+        $out = $out.'Automatic notifications are disabled.';
     } ?>
 <html>
 	<body>
-		ChurchRota <?php echo date("Y-m-d H:i:s") ?>
+		ChurchRota <?php echo date('Y-m-d H:i:s') ?>
 		<div>
 			<?php echo $out ?>
 		</div>
@@ -120,6 +116,6 @@ if ((isset($_GET['token'])) && ($_GET['token']==$token)) {
 	<?php
 } else {
         //redirect to start page
-    header("Location: index.php");
+        header('Location: index.php');
     }
 ?>

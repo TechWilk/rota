@@ -1,7 +1,6 @@
-<?php namespace TechWilk\Rota;
+<?php
 
-use DateInterval;
-use DateTime;
+namespace TechWilk\Rota;
 
 // *****************************************************************************
 // File: random_password.php
@@ -31,30 +30,31 @@ use DateTime;
 function make_seed()    //Function make_seed from http://www.php.net/manual/en/function.srand.php
 {
     list($usec, $sec) = explode(' ', microtime());
+
     return (float) $sec + ((float) $usec * 100000);
 }
- 
+
 function RandomPassword($length, $upper = true, $numbers = true, $lower = true)
 {
     if (!$upper && !$lower && !$numbers) {
-        return "";
+        return '';
     }
- 
-    $ret = "";
- 
+
+    $ret = '';
+
     $chars = 26 * 2 + 10;   //26 (a-z) + 26 (A-Z) + 10 (0-9)
-        //a-z = 97-122
-        //A-Z = 65-90
-        //0-9 = 48-57
- 
+    //a-z = 97-122
+    //A-Z = 65-90
+    //0-9 = 48-57
+
     srand(make_seed());     //Seed with microseconds
-                            //if you don't need this, you can just use srand(time());
- 
+    //if you don't need this, you can just use srand(time());
+
     for ($i = 1; $i <= $length; $i++) {
         $repeat = false;
- 
-        $num = floor(rand(0, $chars-1));
- 
+
+        $num = floor(rand(0, $chars - 1));
+
         if ($num < 26) {
             if ($lower) {
                 $ret .= chr($num + 97);
@@ -74,11 +74,11 @@ function RandomPassword($length, $upper = true, $numbers = true, $lower = true)
                 $repeat = true;
             }
         }
- 
+
         if ($repeat) {
             $i--;
         }
     }
- 
+
     return $ret;
 }

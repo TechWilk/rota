@@ -1,11 +1,11 @@
-<?php namespace TechWilk\Rota;
+<?php
 
-use DateInterval;
-use DateTime;
+namespace TechWilk\Rota;
+
 use Facebook;
 
-include('includes/config.php');
-include('includes/functions.php');
+include 'includes/config.php';
+include 'includes/functions.php';
 
 if ($config['auth']['facebook']['enabled'] != true) {
     header('Location: index.php');
@@ -14,10 +14,9 @@ if ($config['auth']['facebook']['enabled'] != true) {
 
 session_start();
 
-
 $fb = new Facebook\Facebook([
-  'app_id' => $config['auth']['facebook']['appId'],
-  'app_secret' => $config['auth']['facebook']['appSecret'],
+  'app_id'                => $config['auth']['facebook']['appId'],
+  'app_secret'            => $config['auth']['facebook']['appSecret'],
   'default_graph_version' => 'v2.2',
   ]);
 
@@ -27,28 +26,27 @@ try {
     $accessToken = $helper->getAccessToken();
 } catch (Facebook\Exceptions\FacebookResponseException $e) {
     // When Graph returns an error
-  echo 'Graph returned an error: ' . $e->getMessage();
+    echo 'Graph returned an error: '.$e->getMessage();
     exit;
 } catch (Facebook\Exceptions\FacebookSDKException $e) {
     // When validation fails or other local issues
-  echo 'Facebook SDK returned an error: ' . $e->getMessage();
+    echo 'Facebook SDK returned an error: '.$e->getMessage();
     exit;
 }
 
-if (! isset($accessToken)) {
+if (!isset($accessToken)) {
     if ($helper->getError()) {
         header('HTTP/1.0 401 Unauthorized');
-        echo "Error: " . $helper->getError() . "\n";
-        echo "Error Code: " . $helper->getErrorCode() . "\n";
-        echo "Error Reason: " . $helper->getErrorReason() . "\n";
-        echo "Error Description: " . $helper->getErrorDescription() . "\n";
+        echo 'Error: '.$helper->getError()."\n";
+        echo 'Error Code: '.$helper->getErrorCode()."\n";
+        echo 'Error Reason: '.$helper->getErrorReason()."\n";
+        echo 'Error Description: '.$helper->getErrorDescription()."\n";
     } else {
         header('HTTP/1.0 400 Bad Request');
         echo 'Bad request';
     }
     exit;
 }
-
 
 // The OAuth 2.0 client handler helps us manage access tokens
 $oAuth2Client = $fb->getOAuth2Client();
@@ -62,18 +60,17 @@ $tokenMetadata->validateAppId($config['auth']['facebook']['appId']); // Replace 
 //$tokenMetadata->validateUserId('123');
 $tokenMetadata->validateExpiration();
 
-if (! $accessToken->isLongLived()) {
+if (!$accessToken->isLongLived()) {
     // Exchanges a short-lived access token for a long-lived one
-  try {
-      $accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
-  } catch (Facebook\Exceptions\FacebookSDKException $e) {
-      echo "<p>Error getting long-lived access token: " . $helper->getMessage() . "</p>\n\n";
-      exit;
-  }
+    try {
+        $accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
+    } catch (Facebook\Exceptions\FacebookSDKException $e) {
+        echo '<p>Error getting long-lived access token: '.$helper->getMessage()."</p>\n\n";
+        exit;
+    }
 }
 
 $_SESSION['fb_access_token'] = (string) $accessToken;
-
 
 if (isset($_SESSION['fb-callback-url'])) {
     $redirUrl = $_SESSION['fb-callback-url'];
@@ -81,7 +78,7 @@ if (isset($_SESSION['fb-callback-url'])) {
 } else {
     $redirUrl = 'fb-signup.php';
 }
-header('Location: ' . $redirUrl);
+header('Location: '.$redirUrl);
 
 // User is logged in with a long-lived access token.
 // You can redirect them to a members-only page.
