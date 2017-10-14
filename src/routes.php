@@ -13,6 +13,7 @@ use TechWilk\Rota\Controller\PendingUserController;
 use TechWilk\Rota\Controller\ResourceController;
 use TechWilk\Rota\Controller\RoleController;
 use TechWilk\Rota\Controller\UserController;
+use TechWilk\Rota\Controller\JobController;
 
 // Routes
 
@@ -167,3 +168,11 @@ $app->get('/', function ($request, $response, $args) {
     // Render index view
     return $this->view->render($response, 'home.twig', ['eventsthisweek' => $eventsThisWeek, 'remainingeventsingroups' => $remainingEventsInGroups]);
 })->setName('home');
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// JOBS
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+$app->group('/job', function () {
+    $this->get('/daily/{token}', JobController::class.':getDaily')->setName('job-daily');
+});
