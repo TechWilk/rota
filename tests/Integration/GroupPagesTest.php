@@ -5,7 +5,6 @@ namespace Tests\Integration;
 use TechWilk\Rota\Group;
 use TechWilk\Rota\Role;
 use TechWilk\Rota\User;
-use TechWilk\Rota\UserQuery;
 use TechWilk\Rota\UserRole;
 
 class GroupPagesTest extends BaseTestCase
@@ -66,5 +65,4 @@ class GroupPagesTest extends BaseTestCase
         $this->assertContains('Sound', (string) $response->getBody());
         $this->assertContains('Save', (string) $response->getBody());
     }
-
 }
