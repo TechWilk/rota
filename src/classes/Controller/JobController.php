@@ -2,7 +2,6 @@
 
 namespace TechWilk\Rota\Controller;
 
-use DateTime;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,7 +19,7 @@ class JobController extends BaseController
         }
 
         $client = new Client();
-        $url = $site->getUrl()['base'] . $this->router->pathFor('home').'old/cr_daily.php';
+        $url = $site->getUrl()['base'].$this->router->pathFor('home').'old/cr_daily.php';
         $response = $client->get($url, [
             'query' => [
                 'token' => $args['token'],
