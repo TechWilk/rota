@@ -1,4 +1,5 @@
 <?php
+
 namespace TechWilk\Rota;
 
 use TechWilk\Rota\Base\SubscriptionQuery as BaseSubscriptionQuery;
