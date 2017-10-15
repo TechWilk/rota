@@ -16,7 +16,7 @@ use TechWilk\Rota\CommentQuery as ChildCommentQuery;
 use TechWilk\Rota\Map\CommentTableMap;
 
 /**
- * Base class that represents a query for the 'cr_comments' table.
+ * Base class that represents a query for the 'comments' table.
  *
  *
  *
@@ -194,7 +194,7 @@ abstract class CommentQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, eventId, userId, text, removed, created, updated FROM cr_comments WHERE id = :p0';
+        $sql = 'SELECT id, eventId, userId, text, removed, created, updated FROM comments WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -718,7 +718,7 @@ abstract class CommentQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_comments table.
+     * Deletes all rows from the comments table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
