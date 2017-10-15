@@ -15,7 +15,7 @@ use TechWilk\Rota\DocumentQuery as ChildDocumentQuery;
 use TechWilk\Rota\Map\DocumentTableMap;
 
 /**
- * Base class that represents a query for the 'cr_documents' table.
+ * Base class that represents a query for the 'documents' table.
  *
  *
  *
@@ -161,7 +161,7 @@ abstract class DocumentQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, title, description, url, link FROM cr_documents WHERE id = :p0';
+        $sql = 'SELECT id, title, description, url, link FROM documents WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -407,7 +407,7 @@ abstract class DocumentQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_documents table.
+     * Deletes all rows from the documents table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

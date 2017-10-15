@@ -28,7 +28,7 @@ use TechWilk\Rota\Map\NotificationClickTableMap;
 use TechWilk\Rota\Map\NotificationTableMap;
 
 /**
- * Base class that represents a row from the 'cr_notifications' table.
+ * Base class that represents a row from the 'notifications' table.
  *
  *
  *
@@ -1127,7 +1127,7 @@ abstract class Notification implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_notifications (%s) VALUES (%s)',
+            'INSERT INTO notifications (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -1314,7 +1314,7 @@ abstract class Notification implements ActiveRecordInterface
                         $key = 'user';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_users';
+                        $key = 'users';
                         break;
                     default:
                         $key = 'User';
@@ -1328,7 +1328,7 @@ abstract class Notification implements ActiveRecordInterface
                         $key = 'notificationClicks';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_notificationClickss';
+                        $key = 'notificationClickss';
                         break;
                     default:
                         $key = 'NotificationClicks';

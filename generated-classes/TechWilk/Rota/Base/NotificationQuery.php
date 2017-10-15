@@ -16,7 +16,7 @@ use TechWilk\Rota\NotificationQuery as ChildNotificationQuery;
 use TechWilk\Rota\Map\NotificationTableMap;
 
 /**
- * Base class that represents a query for the 'cr_notifications' table.
+ * Base class that represents a query for the 'notifications' table.
  *
  *
  *
@@ -209,7 +209,7 @@ abstract class NotificationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, timestamp, userId, summary, body, link, type, seen, dismissed, archived FROM cr_notifications WHERE id = :p0';
+        $sql = 'SELECT id, timestamp, userId, summary, body, link, type, seen, dismissed, archived FROM notifications WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -788,7 +788,7 @@ abstract class NotificationQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_notifications table.
+     * Deletes all rows from the notifications table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

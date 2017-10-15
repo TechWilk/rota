@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\GroupQuery as BaseGroupQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cr_groups' table.
+ * Skeleton subclass for performing query and update operations on the 'groups' table.
  *
  *
  *

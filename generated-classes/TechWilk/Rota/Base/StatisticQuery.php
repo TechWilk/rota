@@ -16,7 +16,7 @@ use TechWilk\Rota\StatisticQuery as ChildStatisticQuery;
 use TechWilk\Rota\Map\StatisticTableMap;
 
 /**
- * Base class that represents a query for the 'cr_statistics' table.
+ * Base class that represents a query for the 'statistics' table.
  *
  *
  *
@@ -189,7 +189,7 @@ abstract class StatisticQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, userid, date, type, detail1, detail2, detail3, script FROM cr_statistics WHERE id = :p0';
+        $sql = 'SELECT id, userid, date, type, detail1, detail2, detail3, script FROM statistics WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -623,7 +623,7 @@ abstract class StatisticQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_statistics table.
+     * Deletes all rows from the statistics table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

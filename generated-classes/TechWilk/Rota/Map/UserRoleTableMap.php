@@ -15,7 +15,7 @@ use TechWilk\Rota\UserRole;
 use TechWilk\Rota\UserRoleQuery;
 
 /**
- * This class defines the structure of the 'cr_userRoles' table.
+ * This class defines the structure of the 'userRoles' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class UserRoleTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_userRoles';
+    const TABLE_NAME = 'userRoles';
 
     /**
      * The related Propel class for this table
@@ -73,22 +73,22 @@ class UserRoleTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_userRoles.id';
+    const COL_ID = 'userRoles.id';
 
     /**
      * the column name for the userId field
      */
-    const COL_USERID = 'cr_userRoles.userId';
+    const COL_USERID = 'userRoles.userId';
 
     /**
      * the column name for the roleId field
      */
-    const COL_ROLEID = 'cr_userRoles.roleId';
+    const COL_ROLEID = 'userRoles.roleId';
 
     /**
      * the column name for the reserve field
      */
-    const COL_RESERVE = 'cr_userRoles.reserve';
+    const COL_RESERVE = 'userRoles.reserve';
 
     /**
      * The default string format for model objects of the related table
@@ -133,7 +133,7 @@ class UserRoleTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_userRoles');
+        $this->setName('userRoles');
         $this->setPhpName('UserRole');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\UserRole');
@@ -141,8 +141,8 @@ class UserRoleTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('userId', 'UserId', 'INTEGER', 'cr_users', 'id', true, 30, 0);
-        $this->addForeignKey('roleId', 'RoleId', 'INTEGER', 'cr_roles', 'id', true, null, 0);
+        $this->addForeignKey('userId', 'UserId', 'INTEGER', 'users', 'id', true, 30, 0);
+        $this->addForeignKey('roleId', 'RoleId', 'INTEGER', 'roles', 'id', true, null, 0);
         $this->addColumn('reserve', 'Reserve', 'BOOLEAN', true, 1, false);
     } // initialize()
 
@@ -406,7 +406,7 @@ class UserRoleTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_userRoles table.
+     * Deletes all rows from the userRoles table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

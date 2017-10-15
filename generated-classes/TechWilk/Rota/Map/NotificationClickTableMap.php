@@ -15,7 +15,7 @@ use TechWilk\Rota\NotificationClick;
 use TechWilk\Rota\NotificationClickQuery;
 
 /**
- * This class defines the structure of the 'cr_notificationClicks' table.
+ * This class defines the structure of the 'notificationClicks' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class NotificationClickTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_notificationClicks';
+    const TABLE_NAME = 'notificationClicks';
 
     /**
      * The related Propel class for this table
@@ -73,22 +73,22 @@ class NotificationClickTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_notificationClicks.id';
+    const COL_ID = 'notificationClicks.id';
 
     /**
      * the column name for the notificationId field
      */
-    const COL_NOTIFICATIONID = 'cr_notificationClicks.notificationId';
+    const COL_NOTIFICATIONID = 'notificationClicks.notificationId';
 
     /**
      * the column name for the referer field
      */
-    const COL_REFERER = 'cr_notificationClicks.referer';
+    const COL_REFERER = 'notificationClicks.referer';
 
     /**
      * the column name for the timestamp field
      */
-    const COL_TIMESTAMP = 'cr_notificationClicks.timestamp';
+    const COL_TIMESTAMP = 'notificationClicks.timestamp';
 
     /**
      * The default string format for model objects of the related table
@@ -133,7 +133,7 @@ class NotificationClickTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_notificationClicks');
+        $this->setName('notificationClicks');
         $this->setPhpName('NotificationClick');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\NotificationClick');
@@ -141,7 +141,7 @@ class NotificationClickTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, 30, null);
-        $this->addForeignKey('notificationId', 'NotificationId', 'INTEGER', 'cr_notifications', 'id', true, 30, null);
+        $this->addForeignKey('notificationId', 'NotificationId', 'INTEGER', 'notifications', 'id', true, 30, null);
         $this->addColumn('referer', 'Referer', 'VARCHAR', true, 50, null);
         $this->addColumn('timestamp', 'Timestamp', 'TIMESTAMP', false, null, null);
     } // initialize()
@@ -391,7 +391,7 @@ class NotificationClickTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_notificationClicks table.
+     * Deletes all rows from the notificationClicks table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

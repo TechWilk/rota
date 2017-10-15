@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 $overviewArr = notifyOverview('', '');
-$queryRcpt = 'SELECT COUNT(email) AS count FROM cr_users WHERE isOverviewRecipient = 1';
+$queryRcpt = 'SELECT COUNT(email) AS count FROM users WHERE isOverviewRecipient = 1';
 $resultRcpt = mysqli_query(db(), $queryRcpt) or die(mysqli_error(db()));
 $rowRcpt = mysqli_fetch_array($resultRcpt, MYSQLI_ASSOC);
 $rowRcptCnt = $rowRcpt['count'];

@@ -15,7 +15,7 @@ use TechWilk\Rota\EventType;
 use TechWilk\Rota\EventTypeQuery;
 
 /**
- * This class defines the structure of the 'cr_eventTypes' table.
+ * This class defines the structure of the 'eventTypes' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class EventTypeTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_eventTypes';
+    const TABLE_NAME = 'eventTypes';
 
     /**
      * The related Propel class for this table
@@ -73,47 +73,47 @@ class EventTypeTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_eventTypes.id';
+    const COL_ID = 'eventTypes.id';
 
     /**
      * the column name for the name field
      */
-    const COL_NAME = 'cr_eventTypes.name';
+    const COL_NAME = 'eventTypes.name';
 
     /**
      * the column name for the description field
      */
-    const COL_DESCRIPTION = 'cr_eventTypes.description';
+    const COL_DESCRIPTION = 'eventTypes.description';
 
     /**
      * the column name for the defaultDay field
      */
-    const COL_DEFAULTDAY = 'cr_eventTypes.defaultDay';
+    const COL_DEFAULTDAY = 'eventTypes.defaultDay';
 
     /**
      * the column name for the defaultTime field
      */
-    const COL_DEFAULTTIME = 'cr_eventTypes.defaultTime';
+    const COL_DEFAULTTIME = 'eventTypes.defaultTime';
 
     /**
      * the column name for the defaultRepitition field
      */
-    const COL_DEFAULTREPITITION = 'cr_eventTypes.defaultRepitition';
+    const COL_DEFAULTREPITITION = 'eventTypes.defaultRepitition';
 
     /**
      * the column name for the defaultLocationId field
      */
-    const COL_DEFAULTLOCATIONID = 'cr_eventTypes.defaultLocationId';
+    const COL_DEFAULTLOCATIONID = 'eventTypes.defaultLocationId';
 
     /**
      * the column name for the rehearsal field
      */
-    const COL_REHEARSAL = 'cr_eventTypes.rehearsal';
+    const COL_REHEARSAL = 'eventTypes.rehearsal';
 
     /**
      * the column name for the groupformat field
      */
-    const COL_GROUPFORMAT = 'cr_eventTypes.groupformat';
+    const COL_GROUPFORMAT = 'eventTypes.groupformat';
 
     /**
      * The default string format for model objects of the related table
@@ -158,7 +158,7 @@ class EventTypeTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_eventTypes');
+        $this->setName('eventTypes');
         $this->setPhpName('EventType');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\EventType');
@@ -171,7 +171,7 @@ class EventTypeTableMap extends TableMap
         $this->addColumn('defaultDay', 'DefaultDay', 'INTEGER', false, 1, null);
         $this->addColumn('defaultTime', 'DefaultTime', 'TIME', false, null, null);
         $this->addColumn('defaultRepitition', 'DefaultRepitition', 'INTEGER', false, 3, null);
-        $this->addForeignKey('defaultLocationId', 'DefaultLocationId', 'INTEGER', 'cr_locations', 'id', false, 30, null);
+        $this->addForeignKey('defaultLocationId', 'DefaultLocationId', 'INTEGER', 'locations', 'id', false, 30, null);
         $this->addColumn('rehearsal', 'Rehearsal', 'INTEGER', true, 2, 0);
         $this->addColumn('groupformat', 'GroupFormat', 'INTEGER', true, 1, 0);
     } // initialize()
@@ -425,7 +425,7 @@ class EventTypeTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_eventTypes table.
+     * Deletes all rows from the eventTypes table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

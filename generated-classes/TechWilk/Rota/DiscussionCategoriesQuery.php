@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\DiscussionCategoriesQuery as BaseDiscussionCategoriesQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cr_discussionCategories' table.
+ * Skeleton subclass for performing query and update operations on the 'discussionCategories' table.
  *
  *
  *

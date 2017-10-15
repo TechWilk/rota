@@ -16,7 +16,7 @@ use TechWilk\Rota\SwapQuery as ChildSwapQuery;
 use TechWilk\Rota\Map\SwapTableMap;
 
 /**
- * Base class that represents a query for the 'cr_swaps' table.
+ * Base class that represents a query for the 'swaps' table.
  *
  *
  *
@@ -229,7 +229,7 @@ abstract class SwapQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, eventPersonId, oldUserRoleId, newUserRoleId, accepted, declined, requestedBy, verificationCode, created, updated FROM cr_swaps WHERE id = :p0';
+        $sql = 'SELECT id, eventPersonId, oldUserRoleId, newUserRoleId, accepted, declined, requestedBy, verificationCode, created, updated FROM swaps WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1048,7 +1048,7 @@ abstract class SwapQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_swaps table.
+     * Deletes all rows from the swaps table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

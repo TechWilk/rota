@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\CalendarTokenQuery as BaseCalendarTokenQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cr_calendarTokens' table.
+ * Skeleton subclass for performing query and update operations on the 'calendarTokens' table.
  *
  *
  *

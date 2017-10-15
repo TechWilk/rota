@@ -15,7 +15,7 @@ use TechWilk\Rota\Group;
 use TechWilk\Rota\GroupQuery;
 
 /**
- * This class defines the structure of the 'cr_groups' table.
+ * This class defines the structure of the 'groups' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class GroupTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_groups';
+    const TABLE_NAME = 'groups';
 
     /**
      * The related Propel class for this table
@@ -73,32 +73,32 @@ class GroupTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_groups.id';
+    const COL_ID = 'groups.id';
 
     /**
      * the column name for the name field
      */
-    const COL_NAME = 'cr_groups.name';
+    const COL_NAME = 'groups.name';
 
     /**
      * the column name for the rehearsal field
      */
-    const COL_REHEARSAL = 'cr_groups.rehearsal';
+    const COL_REHEARSAL = 'groups.rehearsal';
 
     /**
      * the column name for the formatgroup field
      */
-    const COL_FORMATGROUP = 'cr_groups.formatgroup';
+    const COL_FORMATGROUP = 'groups.formatgroup';
 
     /**
      * the column name for the description field
      */
-    const COL_DESCRIPTION = 'cr_groups.description';
+    const COL_DESCRIPTION = 'groups.description';
 
     /**
      * the column name for the allowRoleSwaps field
      */
-    const COL_ALLOWROLESWAPS = 'cr_groups.allowRoleSwaps';
+    const COL_ALLOWROLESWAPS = 'groups.allowRoleSwaps';
 
     /**
      * The default string format for model objects of the related table
@@ -143,7 +143,7 @@ class GroupTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_groups');
+        $this->setName('groups');
         $this->setPhpName('Group');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\Group');
@@ -394,7 +394,7 @@ class GroupTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_groups table.
+     * Deletes all rows from the groups table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

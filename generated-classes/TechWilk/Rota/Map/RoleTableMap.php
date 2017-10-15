@@ -15,7 +15,7 @@ use TechWilk\Rota\Role;
 use TechWilk\Rota\RoleQuery;
 
 /**
- * This class defines the structure of the 'cr_roles' table.
+ * This class defines the structure of the 'roles' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class RoleTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_roles';
+    const TABLE_NAME = 'roles';
 
     /**
      * The related Propel class for this table
@@ -73,32 +73,32 @@ class RoleTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_roles.id';
+    const COL_ID = 'roles.id';
 
     /**
      * the column name for the groupId field
      */
-    const COL_GROUPID = 'cr_roles.groupId';
+    const COL_GROUPID = 'roles.groupId';
 
     /**
      * the column name for the name field
      */
-    const COL_NAME = 'cr_roles.name';
+    const COL_NAME = 'roles.name';
 
     /**
      * the column name for the description field
      */
-    const COL_DESCRIPTION = 'cr_roles.description';
+    const COL_DESCRIPTION = 'roles.description';
 
     /**
      * the column name for the rehersalId field
      */
-    const COL_REHERSALID = 'cr_roles.rehersalId';
+    const COL_REHERSALID = 'roles.rehersalId';
 
     /**
      * the column name for the allowRoleSwaps field
      */
-    const COL_ALLOWROLESWAPS = 'cr_roles.allowRoleSwaps';
+    const COL_ALLOWROLESWAPS = 'roles.allowRoleSwaps';
 
     /**
      * The default string format for model objects of the related table
@@ -143,7 +143,7 @@ class RoleTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_roles');
+        $this->setName('roles');
         $this->setPhpName('Role');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\Role');
@@ -151,7 +151,7 @@ class RoleTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('groupId', 'GroupId', 'INTEGER', 'cr_groups', 'id', true, 6, 0);
+        $this->addForeignKey('groupId', 'GroupId', 'INTEGER', 'groups', 'id', true, 6, 0);
         $this->addColumn('name', 'Name', 'VARCHAR', true, 15, '');
         $this->addColumn('description', 'Description', 'LONGVARCHAR', true, null, null);
         $this->addColumn('rehersalId', 'RehersalId', 'INTEGER', true, 6, 0);
@@ -401,7 +401,7 @@ class RoleTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_roles table.
+     * Deletes all rows from the roles table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

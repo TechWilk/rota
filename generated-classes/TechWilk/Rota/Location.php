@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\Location as BaseLocation;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_locations' table.
+ * Skeleton subclass for representing a row from the 'locations' table.
  *
  *
  *

@@ -19,7 +19,7 @@ use TechWilk\Rota\DiscussionCategoriesQuery as ChildDiscussionCategoriesQuery;
 use TechWilk\Rota\Map\DiscussionCategoriesTableMap;
 
 /**
- * Base class that represents a row from the 'cr_discussionCategories' table.
+ * Base class that represents a row from the 'discussionCategories' table.
  *
  *
  *
@@ -730,7 +730,7 @@ abstract class DiscussionCategories implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_discussionCategories (%s) VALUES (%s)',
+            'INSERT INTO discussionCategories (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );

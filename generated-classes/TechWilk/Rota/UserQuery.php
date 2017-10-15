@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\UserQuery as BaseUserQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cr_users' table.
+ * Skeleton subclass for performing query and update operations on the 'users' table.
  *
  *
  *

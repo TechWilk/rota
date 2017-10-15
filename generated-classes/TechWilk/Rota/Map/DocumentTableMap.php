@@ -15,7 +15,7 @@ use TechWilk\Rota\Document;
 use TechWilk\Rota\DocumentQuery;
 
 /**
- * This class defines the structure of the 'cr_documents' table.
+ * This class defines the structure of the 'documents' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class DocumentTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_documents';
+    const TABLE_NAME = 'documents';
 
     /**
      * The related Propel class for this table
@@ -73,27 +73,27 @@ class DocumentTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_documents.id';
+    const COL_ID = 'documents.id';
 
     /**
      * the column name for the title field
      */
-    const COL_TITLE = 'cr_documents.title';
+    const COL_TITLE = 'documents.title';
 
     /**
      * the column name for the description field
      */
-    const COL_DESCRIPTION = 'cr_documents.description';
+    const COL_DESCRIPTION = 'documents.description';
 
     /**
      * the column name for the url field
      */
-    const COL_URL = 'cr_documents.url';
+    const COL_URL = 'documents.url';
 
     /**
      * the column name for the link field
      */
-    const COL_LINK = 'cr_documents.link';
+    const COL_LINK = 'documents.link';
 
     /**
      * The default string format for model objects of the related table
@@ -138,7 +138,7 @@ class DocumentTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_documents');
+        $this->setName('documents');
         $this->setPhpName('Document');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\Document');
@@ -379,7 +379,7 @@ class DocumentTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_documents table.
+     * Deletes all rows from the documents table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

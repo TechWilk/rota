@@ -15,7 +15,7 @@ use TechWilk\Rota\PendingUser;
 use TechWilk\Rota\PendingUserQuery;
 
 /**
- * This class defines the structure of the 'cr_pendingUsers' table.
+ * This class defines the structure of the 'pendingUsers' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class PendingUserTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_pendingUsers';
+    const TABLE_NAME = 'pendingUsers';
 
     /**
      * The related Propel class for this table
@@ -73,42 +73,42 @@ class PendingUserTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_pendingUsers.id';
+    const COL_ID = 'pendingUsers.id';
 
     /**
      * the column name for the socialId field
      */
-    const COL_SOCIALID = 'cr_pendingUsers.socialId';
+    const COL_SOCIALID = 'pendingUsers.socialId';
 
     /**
      * the column name for the firstName field
      */
-    const COL_FIRSTNAME = 'cr_pendingUsers.firstName';
+    const COL_FIRSTNAME = 'pendingUsers.firstName';
 
     /**
      * the column name for the lastName field
      */
-    const COL_LASTNAME = 'cr_pendingUsers.lastName';
+    const COL_LASTNAME = 'pendingUsers.lastName';
 
     /**
      * the column name for the email field
      */
-    const COL_EMAIL = 'cr_pendingUsers.email';
+    const COL_EMAIL = 'pendingUsers.email';
 
     /**
      * the column name for the approved field
      */
-    const COL_APPROVED = 'cr_pendingUsers.approved';
+    const COL_APPROVED = 'pendingUsers.approved';
 
     /**
      * the column name for the declined field
      */
-    const COL_DECLINED = 'cr_pendingUsers.declined';
+    const COL_DECLINED = 'pendingUsers.declined';
 
     /**
      * the column name for the source field
      */
-    const COL_SOURCE = 'cr_pendingUsers.source';
+    const COL_SOURCE = 'pendingUsers.source';
 
     /**
      * The default string format for model objects of the related table
@@ -153,7 +153,7 @@ class PendingUserTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_pendingUsers');
+        $this->setName('pendingUsers');
         $this->setPhpName('PendingUser');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\PendingUser');
@@ -403,7 +403,7 @@ class PendingUserTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_pendingUsers table.
+     * Deletes all rows from the pendingUsers table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

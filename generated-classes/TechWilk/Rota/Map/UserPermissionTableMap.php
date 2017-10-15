@@ -15,7 +15,7 @@ use TechWilk\Rota\UserPermission;
 use TechWilk\Rota\UserPermissionQuery;
 
 /**
- * This class defines the structure of the 'cr_userPermissions' table.
+ * This class defines the structure of the 'userPermissions' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class UserPermissionTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_userPermissions';
+    const TABLE_NAME = 'userPermissions';
 
     /**
      * The related Propel class for this table
@@ -73,27 +73,27 @@ class UserPermissionTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_userPermissions.id';
+    const COL_ID = 'userPermissions.id';
 
     /**
      * the column name for the userId field
      */
-    const COL_USERID = 'cr_userPermissions.userId';
+    const COL_USERID = 'userPermissions.userId';
 
     /**
      * the column name for the permissionId field
      */
-    const COL_PERMISSIONID = 'cr_userPermissions.permissionId';
+    const COL_PERMISSIONID = 'userPermissions.permissionId';
 
     /**
      * the column name for the created field
      */
-    const COL_CREATED = 'cr_userPermissions.created';
+    const COL_CREATED = 'userPermissions.created';
 
     /**
      * the column name for the updated field
      */
-    const COL_UPDATED = 'cr_userPermissions.updated';
+    const COL_UPDATED = 'userPermissions.updated';
 
     /**
      * The default string format for model objects of the related table
@@ -138,7 +138,7 @@ class UserPermissionTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_userPermissions');
+        $this->setName('userPermissions');
         $this->setPhpName('UserPermission');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\UserPermission');
@@ -146,8 +146,8 @@ class UserPermissionTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('userId', 'UserId', 'INTEGER', 'cr_users', 'id', true, 30, 0);
-        $this->addForeignKey('permissionId', 'PermissionId', 'INTEGER', 'cr_permissions', 'id', true, null, 0);
+        $this->addForeignKey('userId', 'UserId', 'INTEGER', 'users', 'id', true, 30, 0);
+        $this->addForeignKey('permissionId', 'PermissionId', 'INTEGER', 'permissions', 'id', true, null, 0);
         $this->addColumn('created', 'Created', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated', 'Updated', 'TIMESTAMP', false, null, null);
     } // initialize()
@@ -406,7 +406,7 @@ class UserPermissionTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_userPermissions table.
+     * Deletes all rows from the userPermissions table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

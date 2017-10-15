@@ -16,7 +16,7 @@ use TechWilk\Rota\EventQuery as ChildEventQuery;
 use TechWilk\Rota\Map\EventTableMap;
 
 /**
- * Base class that represents a query for the 'cr_events' table.
+ * Base class that represents a query for the 'events' table.
  *
  *
  *
@@ -299,7 +299,7 @@ abstract class EventQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, date, name, createdBy, rehearsalDate, type, subType, location, notified, rehearsal, removed, eventGroup, sermonTitle, bibleVerse, created, updated FROM cr_events WHERE id = :p0';
+        $sql = 'SELECT id, date, name, createdBy, rehearsalDate, type, subType, location, notified, rehearsal, removed, eventGroup, sermonTitle, bibleVerse, created, updated FROM events WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1634,7 +1634,7 @@ abstract class EventQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_events table.
+     * Deletes all rows from the events table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

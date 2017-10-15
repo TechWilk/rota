@@ -16,7 +16,7 @@ use TechWilk\Rota\GroupQuery as ChildGroupQuery;
 use TechWilk\Rota\Map\GroupTableMap;
 
 /**
- * Base class that represents a query for the 'cr_groups' table.
+ * Base class that represents a query for the 'groups' table.
  *
  *
  *
@@ -179,7 +179,7 @@ abstract class GroupQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, name, rehearsal, formatgroup, description, allowRoleSwaps FROM cr_groups WHERE id = :p0';
+        $sql = 'SELECT id, name, rehearsal, formatgroup, description, allowRoleSwaps FROM groups WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -557,7 +557,7 @@ abstract class GroupQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_groups table.
+     * Deletes all rows from the groups table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

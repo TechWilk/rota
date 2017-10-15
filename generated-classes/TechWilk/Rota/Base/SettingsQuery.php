@@ -15,7 +15,7 @@ use TechWilk\Rota\SettingsQuery as ChildSettingsQuery;
 use TechWilk\Rota\Map\SettingsTableMap;
 
 /**
- * Base class that represents a query for the 'cr_settings' table.
+ * Base class that represents a query for the 'settings' table.
  *
  *
  *
@@ -1124,7 +1124,7 @@ abstract class SettingsQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_settings table.
+     * Deletes all rows from the settings table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

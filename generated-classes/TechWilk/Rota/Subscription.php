@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\Subscription as BaseSubscription;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_subscriptions' table.
+ * Skeleton subclass for representing a row from the 'subscriptions' table.
  *
  *
  *

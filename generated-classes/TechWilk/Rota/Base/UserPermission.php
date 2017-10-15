@@ -26,7 +26,7 @@ use TechWilk\Rota\UserQuery as ChildUserQuery;
 use TechWilk\Rota\Map\UserPermissionTableMap;
 
 /**
- * Base class that represents a row from the 'cr_userPermissions' table.
+ * Base class that represents a row from the 'userPermissions' table.
  *
  *
  *
@@ -864,7 +864,7 @@ abstract class UserPermission implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_userPermissions (%s) VALUES (%s)',
+            'INSERT INTO userPermissions (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -1020,7 +1020,7 @@ abstract class UserPermission implements ActiveRecordInterface
                         $key = 'user';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_users';
+                        $key = 'users';
                         break;
                     default:
                         $key = 'User';
@@ -1034,7 +1034,7 @@ abstract class UserPermission implements ActiveRecordInterface
                         $key = 'permission';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_permissions';
+                        $key = 'permissions';
                         break;
                     default:
                         $key = 'Permission';

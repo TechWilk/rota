@@ -19,7 +19,7 @@ use TechWilk\Rota\SettingsQuery as ChildSettingsQuery;
 use TechWilk\Rota\Map\SettingsTableMap;
 
 /**
- * Base class that represents a row from the 'cr_settings' table.
+ * Base class that represents a row from the 'settings' table.
  *
  *
  *
@@ -1770,7 +1770,7 @@ abstract class Settings implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_settings (%s) VALUES (%s)',
+            'INSERT INTO settings (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );

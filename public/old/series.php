@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $description = $_POST['seriesDescription'];
         $editid = str_replace('title', '', $editid);
         if ($type == 'title') {
-            $sql = "UPDATE cr_eventGroups SET name = '$name', description = '$description' WHERE id = '$editid'";
+            $sql = "UPDATE eventGroups SET name = '$name', description = '$description' WHERE id = '$editid'";
         }
         if (!mysqli_query(db(), $sql)) {
             die('Error: '.mysqli_error(db()));
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (empty($name) || empty($description)) {
             $message = 'Please enter both name and description.';
         } else {
-            $sql = ("INSERT INTO cr_eventGroups (name, description) VALUES ('$name', '$description')");
+            $sql = ("INSERT INTO eventGroups (name, description) VALUES ('$name', '$description')");
             if (!mysqli_query(db(), $sql)) {
                 die('Error: '.mysqli_error(db()));
             }
@@ -92,7 +92,7 @@ include 'includes/header.php';
   </div>
   <div class="box-body">
 		<p>
-		<?php $sql = 'SELECT * FROM cr_eventGroups WHERE archived = false ORDER BY name';
+		<?php $sql = 'SELECT * FROM eventGroups WHERE archived = false ORDER BY name';
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {

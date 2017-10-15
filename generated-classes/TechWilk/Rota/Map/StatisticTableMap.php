@@ -15,7 +15,7 @@ use TechWilk\Rota\Statistic;
 use TechWilk\Rota\StatisticQuery;
 
 /**
- * This class defines the structure of the 'cr_statistics' table.
+ * This class defines the structure of the 'statistics' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class StatisticTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_statistics';
+    const TABLE_NAME = 'statistics';
 
     /**
      * The related Propel class for this table
@@ -73,42 +73,42 @@ class StatisticTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_statistics.id';
+    const COL_ID = 'statistics.id';
 
     /**
      * the column name for the userid field
      */
-    const COL_USERID = 'cr_statistics.userid';
+    const COL_USERID = 'statistics.userid';
 
     /**
      * the column name for the date field
      */
-    const COL_DATE = 'cr_statistics.date';
+    const COL_DATE = 'statistics.date';
 
     /**
      * the column name for the type field
      */
-    const COL_TYPE = 'cr_statistics.type';
+    const COL_TYPE = 'statistics.type';
 
     /**
      * the column name for the detail1 field
      */
-    const COL_DETAIL1 = 'cr_statistics.detail1';
+    const COL_DETAIL1 = 'statistics.detail1';
 
     /**
      * the column name for the detail2 field
      */
-    const COL_DETAIL2 = 'cr_statistics.detail2';
+    const COL_DETAIL2 = 'statistics.detail2';
 
     /**
      * the column name for the detail3 field
      */
-    const COL_DETAIL3 = 'cr_statistics.detail3';
+    const COL_DETAIL3 = 'statistics.detail3';
 
     /**
      * the column name for the script field
      */
-    const COL_SCRIPT = 'cr_statistics.script';
+    const COL_SCRIPT = 'statistics.script';
 
     /**
      * The default string format for model objects of the related table
@@ -153,7 +153,7 @@ class StatisticTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_statistics');
+        $this->setName('statistics');
         $this->setPhpName('Statistic');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\Statistic');
@@ -161,7 +161,7 @@ class StatisticTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('userid', 'UserId', 'INTEGER', 'cr_users', 'id', false, 6, 0);
+        $this->addForeignKey('userid', 'UserId', 'INTEGER', 'users', 'id', false, 6, 0);
         $this->addColumn('date', 'Date', 'TIMESTAMP', true, null, '0000-00-00 00:00:00');
         $this->addColumn('type', 'Type', 'LONGVARCHAR', true, null, null);
         $this->addColumn('detail1', 'Detail1', 'LONGVARCHAR', true, null, null);
@@ -410,7 +410,7 @@ class StatisticTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_statistics table.
+     * Deletes all rows from the statistics table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

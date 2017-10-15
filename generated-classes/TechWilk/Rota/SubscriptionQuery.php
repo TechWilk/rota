@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\SubscriptionQuery as BaseSubscriptionQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cr_subscriptions' table.
+ * Skeleton subclass for performing query and update operations on the 'subscriptions' table.
  *
  *
  *

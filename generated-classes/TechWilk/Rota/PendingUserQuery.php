@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\PendingUserQuery as BasePendingUserQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cr_pendingUsers' table.
+ * Skeleton subclass for performing query and update operations on the 'pendingUsers' table.
  *
  *
  *

@@ -15,7 +15,7 @@ use TechWilk\Rota\DiscussionQuery as ChildDiscussionQuery;
 use TechWilk\Rota\Map\DiscussionTableMap;
 
 /**
- * Base class that represents a query for the 'cr_discussion' table.
+ * Base class that represents a query for the 'discussion' table.
  *
  *
  *
@@ -171,7 +171,7 @@ abstract class DiscussionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, topicParent, CategoryParent, userID, topic, topicName, date FROM cr_discussion WHERE id = :p0';
+        $sql = 'SELECT id, topicParent, CategoryParent, userID, topic, topicName, date FROM discussion WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -533,7 +533,7 @@ abstract class DiscussionQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_discussion table.
+     * Deletes all rows from the discussion table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

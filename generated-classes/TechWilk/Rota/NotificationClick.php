@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\NotificationClick as BaseNotificationClick;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_notificationClicks' table.
+ * Skeleton subclass for representing a row from the 'notificationClicks' table.
  *
  *
  *

@@ -16,7 +16,7 @@ use TechWilk\Rota\SocialAuthQuery as ChildSocialAuthQuery;
 use TechWilk\Rota\Map\SocialAuthTableMap;
 
 /**
- * Base class that represents a query for the 'cr_socialAuth' table.
+ * Base class that represents a query for the 'socialAuth' table.
  *
  *
  *
@@ -174,7 +174,7 @@ abstract class SocialAuthQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT userId, platform, socialId, meta, revoked FROM cr_socialAuth WHERE userId = :p0 AND platform = :p1 AND socialId = :p2';
+        $sql = 'SELECT userId, platform, socialId, meta, revoked FROM socialAuth WHERE userId = :p0 AND platform = :p1 AND socialId = :p2';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
@@ -538,7 +538,7 @@ abstract class SocialAuthQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the cr_socialAuth table.
+     * Deletes all rows from the socialAuth table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

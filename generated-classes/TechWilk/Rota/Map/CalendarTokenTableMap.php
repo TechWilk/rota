@@ -15,7 +15,7 @@ use TechWilk\Rota\CalendarToken;
 use TechWilk\Rota\CalendarTokenQuery;
 
 /**
- * This class defines the structure of the 'cr_calendarTokens' table.
+ * This class defines the structure of the 'calendarTokens' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class CalendarTokenTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_calendarTokens';
+    const TABLE_NAME = 'calendarTokens';
 
     /**
      * The related Propel class for this table
@@ -73,52 +73,52 @@ class CalendarTokenTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_calendarTokens.id';
+    const COL_ID = 'calendarTokens.id';
 
     /**
      * the column name for the token field
      */
-    const COL_TOKEN = 'cr_calendarTokens.token';
+    const COL_TOKEN = 'calendarTokens.token';
 
     /**
      * the column name for the userId field
      */
-    const COL_USERID = 'cr_calendarTokens.userId';
+    const COL_USERID = 'calendarTokens.userId';
 
     /**
      * the column name for the format field
      */
-    const COL_FORMAT = 'cr_calendarTokens.format';
+    const COL_FORMAT = 'calendarTokens.format';
 
     /**
      * the column name for the description field
      */
-    const COL_DESCRIPTION = 'cr_calendarTokens.description';
+    const COL_DESCRIPTION = 'calendarTokens.description';
 
     /**
      * the column name for the revoked field
      */
-    const COL_REVOKED = 'cr_calendarTokens.revoked';
+    const COL_REVOKED = 'calendarTokens.revoked';
 
     /**
      * the column name for the revokedDate field
      */
-    const COL_REVOKEDDATE = 'cr_calendarTokens.revokedDate';
+    const COL_REVOKEDDATE = 'calendarTokens.revokedDate';
 
     /**
      * the column name for the lastFetched field
      */
-    const COL_LASTFETCHED = 'cr_calendarTokens.lastFetched';
+    const COL_LASTFETCHED = 'calendarTokens.lastFetched';
 
     /**
      * the column name for the created field
      */
-    const COL_CREATED = 'cr_calendarTokens.created';
+    const COL_CREATED = 'calendarTokens.created';
 
     /**
      * the column name for the updated field
      */
-    const COL_UPDATED = 'cr_calendarTokens.updated';
+    const COL_UPDATED = 'calendarTokens.updated';
 
     /**
      * The default string format for model objects of the related table
@@ -163,7 +163,7 @@ class CalendarTokenTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_calendarTokens');
+        $this->setName('calendarTokens');
         $this->setPhpName('CalendarToken');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\CalendarToken');
@@ -172,7 +172,7 @@ class CalendarTokenTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('token', 'Token', 'VARCHAR', true, 30, null);
-        $this->addForeignKey('userId', 'Userid', 'INTEGER', 'cr_users', 'id', true, 30, null);
+        $this->addForeignKey('userId', 'Userid', 'INTEGER', 'users', 'id', true, 30, null);
         $this->addColumn('format', 'Format', 'VARCHAR', true, 5, null);
         $this->addColumn('description', 'Description', 'VARCHAR', false, 100, null);
         $this->addColumn('revoked', 'Revoked', 'BOOLEAN', true, 1, false);
@@ -439,7 +439,7 @@ class CalendarTokenTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_calendarTokens table.
+     * Deletes all rows from the calendarTokens table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

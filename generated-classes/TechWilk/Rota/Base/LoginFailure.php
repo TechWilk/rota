@@ -21,7 +21,7 @@ use TechWilk\Rota\LoginFailureQuery as ChildLoginFailureQuery;
 use TechWilk\Rota\Map\LoginFailureTableMap;
 
 /**
- * Base class that represents a row from the 'cr_loginFailures' table.
+ * Base class that represents a row from the 'loginFailures' table.
  *
  *
  *
@@ -687,7 +687,7 @@ abstract class LoginFailure implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_loginFailures (%s) VALUES (%s)',
+            'INSERT INTO loginFailures (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );

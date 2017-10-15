@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $description = $_POST['description'];
         $description = mysqli_real_escape_string(db(), $description);
 
-        $sql = ("INSERT INTO cr_eventSubTypes (name, description) VALUES ('$name', '$description')");
+        $sql = ("INSERT INTO eventSubTypes (name, description) VALUES ('$name', '$description')");
         if (!mysqli_query(db(), $sql)) {
             die('Error: '.mysqli_error(db()));
         }
@@ -84,7 +84,7 @@ include 'includes/header.php';
         <form action="editeventtype.php" method="post">
         <fieldset>
 
-		<?php $sql = 'SELECT * FROM cr_eventSubTypes ORDER BY name';
+		<?php $sql = 'SELECT * FROM eventSubTypes ORDER BY name';
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {

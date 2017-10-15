@@ -45,41 +45,41 @@ class PropelMigration_1494860053
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-DROP TABLE IF EXISTS `cr_bandMembers`;
+DROP TABLE IF EXISTS `bandMembers`;
 
-DROP TABLE IF EXISTS `cr_bands`;
+DROP TABLE IF EXISTS `bands`;
 
-RENAME TABLE `cr_pendingusers` TO `cr_pendingUser`;
-RENAME TABLE `cr_pendingUser` TO `cr_pendingUsers`;
+RENAME TABLE `pendingusers` TO `pendingUser`;
+RENAME TABLE `pendingUser` TO `pendingUsers`;
 
-ALTER TABLE `cr_calendarTokens`
+ALTER TABLE `calendarTokens`
 
   CHANGE `created` `created` DATETIME,
 
   ADD `updated` DATETIME AFTER `created`;
 
-ALTER TABLE `cr_calendarTokens` ADD CONSTRAINT `cr_calendarTokens_fk_c9d9b8`
+ALTER TABLE `calendarTokens` ADD CONSTRAINT `calendarTokens_fk_c9d9b8`
     FOREIGN KEY (`userId`)
-    REFERENCES `cr_users` (`id`);
+    REFERENCES `users` (`id`);
 
-ALTER TABLE `cr_eventPeople`
+ALTER TABLE `eventPeople`
 
   CHANGE `removed` `removed` SMALLINT(1) DEFAULT 0;
 
-ALTER TABLE `cr_eventPeople` ADD CONSTRAINT `cr_eventPeople_fk_d8e156`
+ALTER TABLE `eventPeople` ADD CONSTRAINT `eventPeople_fk_d8e156`
     FOREIGN KEY (`eventId`)
-    REFERENCES `cr_events` (`id`);
+    REFERENCES `events` (`id`);
 
-ALTER TABLE `cr_eventPeople` ADD CONSTRAINT `cr_eventPeople_fk_a9059a`
+ALTER TABLE `eventPeople` ADD CONSTRAINT `eventPeople_fk_a9059a`
     FOREIGN KEY (`userRoleId`)
-    REFERENCES `cr_userRoles` (`id`);
+    REFERENCES `userRoles` (`id`);
 
-ALTER TABLE `cr_eventTypes` ADD CONSTRAINT `cr_eventTypes_fk_021bda`
+ALTER TABLE `eventTypes` ADD CONSTRAINT `eventTypes_fk_021bda`
     FOREIGN KEY (`defaultLocationId`)
-    REFERENCES `cr_locations` (`id`)
+    REFERENCES `locations` (`id`)
     ON DELETE SET NULL;
 
-ALTER TABLE `cr_events`
+ALTER TABLE `events`
 
   CHANGE `removed` `removed` SMALLINT(1) DEFAULT 0,
 
@@ -87,71 +87,71 @@ ALTER TABLE `cr_events`
 
   CHANGE `created` `created` DATETIME;
 
-ALTER TABLE `cr_events` ADD CONSTRAINT `cr_events_fk_90b554`
+ALTER TABLE `events` ADD CONSTRAINT `events_fk_90b554`
     FOREIGN KEY (`createdBy`)
-    REFERENCES `cr_users` (`id`);
+    REFERENCES `users` (`id`);
 
-ALTER TABLE `cr_events` ADD CONSTRAINT `cr_events_fk_a77353`
+ALTER TABLE `events` ADD CONSTRAINT `events_fk_a77353`
     FOREIGN KEY (`type`)
-    REFERENCES `cr_eventTypes` (`id`);
+    REFERENCES `eventTypes` (`id`);
 
-ALTER TABLE `cr_events` ADD CONSTRAINT `cr_events_fk_722b0a`
+ALTER TABLE `events` ADD CONSTRAINT `events_fk_722b0a`
     FOREIGN KEY (`subType`)
-    REFERENCES `cr_eventSubTypes` (`id`);
+    REFERENCES `eventSubTypes` (`id`);
 
-ALTER TABLE `cr_events` ADD CONSTRAINT `cr_events_fk_4ae72a`
+ALTER TABLE `events` ADD CONSTRAINT `events_fk_4ae72a`
     FOREIGN KEY (`location`)
-    REFERENCES `cr_locations` (`id`);
+    REFERENCES `locations` (`id`);
 
-ALTER TABLE `cr_events` ADD CONSTRAINT `cr_events_fk_b0dbef`
+ALTER TABLE `events` ADD CONSTRAINT `events_fk_b0dbef`
     FOREIGN KEY (`eventGroup`)
-    REFERENCES `cr_eventGroups` (`id`);
+    REFERENCES `eventGroups` (`id`);
 
-ALTER TABLE `cr_notificationClicks`
+ALTER TABLE `notificationClicks`
 
   CHANGE `timestamp` `timestamp` DATETIME;
 
-ALTER TABLE `cr_notificationClicks` ADD CONSTRAINT `cr_notificationClicks_fk_ec64f2`
+ALTER TABLE `notificationClicks` ADD CONSTRAINT `notificationClicks_fk_ec64f2`
     FOREIGN KEY (`notificationId`)
-    REFERENCES `cr_notifications` (`id`);
+    REFERENCES `notifications` (`id`);
 
-ALTER TABLE `cr_notifications` ADD CONSTRAINT `cr_notifications_fk_c9d9b8`
+ALTER TABLE `notifications` ADD CONSTRAINT `notifications_fk_c9d9b8`
     FOREIGN KEY (`userId`)
-    REFERENCES `cr_users` (`id`);
+    REFERENCES `users` (`id`);
 
-ALTER TABLE `cr_roles` ADD CONSTRAINT `cr_roles_fk_ebefa2`
+ALTER TABLE `roles` ADD CONSTRAINT `roles_fk_ebefa2`
     FOREIGN KEY (`groupId`)
-    REFERENCES `cr_groups` (`id`);
+    REFERENCES `groups` (`id`);
 
-ALTER TABLE `cr_socialAuth` ADD CONSTRAINT `cr_socialAuth_fk_c9d9b8`
+ALTER TABLE `socialAuth` ADD CONSTRAINT `socialAuth_fk_c9d9b8`
     FOREIGN KEY (`userId`)
-    REFERENCES `cr_users` (`id`);
+    REFERENCES `users` (`id`);
 
-ALTER TABLE `cr_statistics`
+ALTER TABLE `statistics`
 
   CHANGE `detail2` `detail2` TEXT NOT NULL,
 
   CHANGE `detail3` `detail3` TEXT NOT NULL;
 
-ALTER TABLE `cr_statistics` ADD CONSTRAINT `cr_statistics_fk_c9d9b8`
+ALTER TABLE `statistics` ADD CONSTRAINT `statistics_fk_c9d9b8`
     FOREIGN KEY (`userid`)
-    REFERENCES `cr_users` (`id`);
+    REFERENCES `users` (`id`);
 
-ALTER TABLE `cr_swaps`
+ALTER TABLE `swaps`
 
   CHANGE `created` `created` DATETIME,
 
   CHANGE `updated` `updated` DATETIME;
 
-ALTER TABLE `cr_userRoles` ADD CONSTRAINT `cr_userRoles_fk_c9d9b8`
+ALTER TABLE `userRoles` ADD CONSTRAINT `userRoles_fk_c9d9b8`
     FOREIGN KEY (`userId`)
-    REFERENCES `cr_users` (`id`);
+    REFERENCES `users` (`id`);
 
-ALTER TABLE `cr_userRoles` ADD CONSTRAINT `cr_userRoles_fk_733299`
+ALTER TABLE `userRoles` ADD CONSTRAINT `userRoles_fk_733299`
     FOREIGN KEY (`roleId`)
-    REFERENCES `cr_roles` (`id`);
+    REFERENCES `roles` (`id`);
 
-ALTER TABLE `cr_users`
+ALTER TABLE `users`
 
   CHANGE `created` `created` DATETIME,
 
@@ -177,38 +177,38 @@ SET FOREIGN_KEY_CHECKS = 1;
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-RENAME TABLE `cr_pendingUsers` TO `cr_pendingUser`;
-RENAME TABLE `cr_pendingUser` TO `cr_pendingusers`;
+RENAME TABLE `pendingUsers` TO `pendingUser`;
+RENAME TABLE `pendingUser` TO `pendingusers`;
 
-ALTER TABLE `cr_calendarTokens` DROP FOREIGN KEY `cr_calendarTokens_fk_c9d9b8`;
+ALTER TABLE `calendarTokens` DROP FOREIGN KEY `calendarTokens_fk_c9d9b8`;
 
-ALTER TABLE `cr_calendarTokens`
+ALTER TABLE `calendarTokens`
 
   CHANGE `created` `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
   DROP `updated`;
 
-ALTER TABLE `cr_eventPeople` DROP FOREIGN KEY `cr_eventPeople_fk_d8e156`;
+ALTER TABLE `eventPeople` DROP FOREIGN KEY `eventPeople_fk_d8e156`;
 
-ALTER TABLE `cr_eventPeople` DROP FOREIGN KEY `cr_eventPeople_fk_a9059a`;
+ALTER TABLE `eventPeople` DROP FOREIGN KEY `eventPeople_fk_a9059a`;
 
-ALTER TABLE `cr_eventPeople`
+ALTER TABLE `eventPeople`
 
   CHANGE `removed` `removed` VARCHAR(2) DEFAULT \'0\';
 
-ALTER TABLE `cr_eventTypes` DROP FOREIGN KEY `cr_eventTypes_fk_021bda`;
+ALTER TABLE `eventTypes` DROP FOREIGN KEY `eventTypes_fk_021bda`;
 
-ALTER TABLE `cr_events` DROP FOREIGN KEY `cr_events_fk_90b554`;
+ALTER TABLE `events` DROP FOREIGN KEY `events_fk_90b554`;
 
-ALTER TABLE `cr_events` DROP FOREIGN KEY `cr_events_fk_a77353`;
+ALTER TABLE `events` DROP FOREIGN KEY `events_fk_a77353`;
 
-ALTER TABLE `cr_events` DROP FOREIGN KEY `cr_events_fk_722b0a`;
+ALTER TABLE `events` DROP FOREIGN KEY `events_fk_722b0a`;
 
-ALTER TABLE `cr_events` DROP FOREIGN KEY `cr_events_fk_4ae72a`;
+ALTER TABLE `events` DROP FOREIGN KEY `events_fk_4ae72a`;
 
-ALTER TABLE `cr_events` DROP FOREIGN KEY `cr_events_fk_b0dbef`;
+ALTER TABLE `events` DROP FOREIGN KEY `events_fk_b0dbef`;
 
-ALTER TABLE `cr_events`
+ALTER TABLE `events`
 
   CHANGE `removed` `removed` VARCHAR(2) DEFAULT \'0\',
 
@@ -216,43 +216,43 @@ ALTER TABLE `cr_events`
 
   CHANGE `created` `created` DATETIME DEFAULT \'0000-00-00 00:00:00\' NOT NULL;
 
-ALTER TABLE `cr_notificationClicks` DROP FOREIGN KEY `cr_notificationClicks_fk_ec64f2`;
+ALTER TABLE `notificationClicks` DROP FOREIGN KEY `notificationClicks_fk_ec64f2`;
 
-ALTER TABLE `cr_notificationClicks`
+ALTER TABLE `notificationClicks`
 
   CHANGE `timestamp` `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
 
-ALTER TABLE `cr_notifications` DROP FOREIGN KEY `cr_notifications_fk_c9d9b8`;
+ALTER TABLE `notifications` DROP FOREIGN KEY `notifications_fk_c9d9b8`;
 
-ALTER TABLE `cr_roles` DROP FOREIGN KEY `cr_roles_fk_ebefa2`;
+ALTER TABLE `roles` DROP FOREIGN KEY `roles_fk_ebefa2`;
 
-ALTER TABLE `cr_socialAuth` DROP FOREIGN KEY `cr_socialAuth_fk_c9d9b8`;
+ALTER TABLE `socialAuth` DROP FOREIGN KEY `socialAuth_fk_c9d9b8`;
 
-ALTER TABLE `cr_statistics` DROP FOREIGN KEY `cr_statistics_fk_c9d9b8`;
+ALTER TABLE `statistics` DROP FOREIGN KEY `statistics_fk_c9d9b8`;
 
-ALTER TABLE `cr_statistics`
+ALTER TABLE `statistics`
 
   CHANGE `detail2` `detail2` TEXT,
 
   CHANGE `detail3` `detail3` TEXT;
 
-ALTER TABLE `cr_swaps`
+ALTER TABLE `swaps`
 
   CHANGE `created` `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
   CHANGE `updated` `updated` DATETIME NOT NULL;
 
-ALTER TABLE `cr_userRoles` DROP FOREIGN KEY `cr_userRoles_fk_c9d9b8`;
+ALTER TABLE `userRoles` DROP FOREIGN KEY `userRoles_fk_c9d9b8`;
 
-ALTER TABLE `cr_userRoles` DROP FOREIGN KEY `cr_userRoles_fk_733299`;
+ALTER TABLE `userRoles` DROP FOREIGN KEY `userRoles_fk_733299`;
 
-ALTER TABLE `cr_users`
+ALTER TABLE `users`
 
   CHANGE `created` `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
   CHANGE `updated` `updated` DATETIME NOT NULL;
 
-CREATE TABLE `cr_bandMembers`
+CREATE TABLE `bandMembers`
 (
     `bandMembersID` INTEGER NOT NULL AUTO_INCREMENT,
     `bandID` INTEGER(4) DEFAULT 0 NOT NULL,
@@ -260,7 +260,7 @@ CREATE TABLE `cr_bandMembers`
     PRIMARY KEY (`bandMembersID`)
 ) ENGINE=InnoDB;
 
-CREATE TABLE `cr_bands`
+CREATE TABLE `bands`
 (
     `bandID` INTEGER NOT NULL AUTO_INCREMENT,
     `bandLeader` VARCHAR(30) DEFAULT \'\' NOT NULL,

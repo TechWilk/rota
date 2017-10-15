@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\Statistics as BaseStatistics;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_statistics' table.
+ * Skeleton subclass for representing a row from the 'statistics' table.
  *
  *
  *

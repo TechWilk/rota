@@ -16,7 +16,7 @@ use TechWilk\Rota\Settings;
 use TechWilk\Rota\SettingsQuery;
 
 /**
- * This class defines the structure of the 'cr_settings' table.
+ * This class defines the structure of the 'settings' table.
  *
  *
  *
@@ -44,7 +44,7 @@ class SettingsTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_settings';
+    const TABLE_NAME = 'settings';
 
     /**
      * The related Propel class for this table
@@ -74,142 +74,142 @@ class SettingsTableMap extends TableMap
     /**
      * the column name for the siteurl field
      */
-    const COL_SITEURL = 'cr_settings.siteurl';
+    const COL_SITEURL = 'settings.siteurl';
 
     /**
      * the column name for the owner field
      */
-    const COL_OWNER = 'cr_settings.owner';
+    const COL_OWNER = 'settings.owner';
 
     /**
      * the column name for the notificationemail field
      */
-    const COL_NOTIFICATIONEMAIL = 'cr_settings.notificationemail';
+    const COL_NOTIFICATIONEMAIL = 'settings.notificationemail';
 
     /**
      * the column name for the adminemailaddress field
      */
-    const COL_ADMINEMAILADDRESS = 'cr_settings.adminemailaddress';
+    const COL_ADMINEMAILADDRESS = 'settings.adminemailaddress';
 
     /**
      * the column name for the norehearsalemail field
      */
-    const COL_NOREHEARSALEMAIL = 'cr_settings.norehearsalemail';
+    const COL_NOREHEARSALEMAIL = 'settings.norehearsalemail';
 
     /**
      * the column name for the yesrehearsal field
      */
-    const COL_YESREHEARSAL = 'cr_settings.yesrehearsal';
+    const COL_YESREHEARSAL = 'settings.yesrehearsal';
 
     /**
      * the column name for the newusermessage field
      */
-    const COL_NEWUSERMESSAGE = 'cr_settings.newusermessage';
+    const COL_NEWUSERMESSAGE = 'settings.newusermessage';
 
     /**
      * the column name for the version field
      */
-    const COL_VERSION = 'cr_settings.version';
+    const COL_VERSION = 'settings.version';
 
     /**
      * the column name for the lang_locale field
      */
-    const COL_LANG_LOCALE = 'cr_settings.lang_locale';
+    const COL_LANG_LOCALE = 'settings.lang_locale';
 
     /**
      * the column name for the event_sorting_latest field
      */
-    const COL_EVENT_SORTING_LATEST = 'cr_settings.event_sorting_latest';
+    const COL_EVENT_SORTING_LATEST = 'settings.event_sorting_latest';
 
     /**
      * the column name for the snapshot_show_two_month field
      */
-    const COL_SNAPSHOT_SHOW_TWO_MONTH = 'cr_settings.snapshot_show_two_month';
+    const COL_SNAPSHOT_SHOW_TWO_MONTH = 'settings.snapshot_show_two_month';
 
     /**
      * the column name for the snapshot_reduce_skills_by_group field
      */
-    const COL_SNAPSHOT_REDUCE_SKILLS_BY_GROUP = 'cr_settings.snapshot_reduce_skills_by_group';
+    const COL_SNAPSHOT_REDUCE_SKILLS_BY_GROUP = 'settings.snapshot_reduce_skills_by_group';
 
     /**
      * the column name for the logged_in_show_snapshot_button field
      */
-    const COL_LOGGED_IN_SHOW_SNAPSHOT_BUTTON = 'cr_settings.logged_in_show_snapshot_button';
+    const COL_LOGGED_IN_SHOW_SNAPSHOT_BUTTON = 'settings.logged_in_show_snapshot_button';
 
     /**
      * the column name for the time_format_long field
      */
-    const COL_TIME_FORMAT_LONG = 'cr_settings.time_format_long';
+    const COL_TIME_FORMAT_LONG = 'settings.time_format_long';
 
     /**
      * the column name for the time_format_normal field
      */
-    const COL_TIME_FORMAT_NORMAL = 'cr_settings.time_format_normal';
+    const COL_TIME_FORMAT_NORMAL = 'settings.time_format_normal';
 
     /**
      * the column name for the time_format_short field
      */
-    const COL_TIME_FORMAT_SHORT = 'cr_settings.time_format_short';
+    const COL_TIME_FORMAT_SHORT = 'settings.time_format_short';
 
     /**
      * the column name for the time_only_format field
      */
-    const COL_TIME_ONLY_FORMAT = 'cr_settings.time_only_format';
+    const COL_TIME_ONLY_FORMAT = 'settings.time_only_format';
 
     /**
      * the column name for the date_only_format field
      */
-    const COL_DATE_ONLY_FORMAT = 'cr_settings.date_only_format';
+    const COL_DATE_ONLY_FORMAT = 'settings.date_only_format';
 
     /**
      * the column name for the day_only_format field
      */
-    const COL_DAY_ONLY_FORMAT = 'cr_settings.day_only_format';
+    const COL_DAY_ONLY_FORMAT = 'settings.day_only_format';
 
     /**
      * the column name for the users_start_with_myevents field
      */
-    const COL_USERS_START_WITH_MYEVENTS = 'cr_settings.users_start_with_myevents';
+    const COL_USERS_START_WITH_MYEVENTS = 'settings.users_start_with_myevents';
 
     /**
      * the column name for the time_zone field
      */
-    const COL_TIME_ZONE = 'cr_settings.time_zone';
+    const COL_TIME_ZONE = 'settings.time_zone';
 
     /**
      * the column name for the google_group_calendar field
      */
-    const COL_GOOGLE_GROUP_CALENDAR = 'cr_settings.google_group_calendar';
+    const COL_GOOGLE_GROUP_CALENDAR = 'settings.google_group_calendar';
 
     /**
      * the column name for the overviewemail field
      */
-    const COL_OVERVIEWEMAIL = 'cr_settings.overviewemail';
+    const COL_OVERVIEWEMAIL = 'settings.overviewemail';
 
     /**
      * the column name for the group_sorting_name field
      */
-    const COL_GROUP_SORTING_NAME = 'cr_settings.group_sorting_name';
+    const COL_GROUP_SORTING_NAME = 'settings.group_sorting_name';
 
     /**
      * the column name for the debug_mode field
      */
-    const COL_DEBUG_MODE = 'cr_settings.debug_mode';
+    const COL_DEBUG_MODE = 'settings.debug_mode';
 
     /**
      * the column name for the days_to_alert field
      */
-    const COL_DAYS_TO_ALERT = 'cr_settings.days_to_alert';
+    const COL_DAYS_TO_ALERT = 'settings.days_to_alert';
 
     /**
      * the column name for the token field
      */
-    const COL_TOKEN = 'cr_settings.token';
+    const COL_TOKEN = 'settings.token';
 
     /**
      * the column name for the skin field
      */
-    const COL_SKIN = 'cr_settings.skin';
+    const COL_SKIN = 'settings.skin';
 
     /**
      * The default string format for model objects of the related table
@@ -254,7 +254,7 @@ class SettingsTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_settings');
+        $this->setName('settings');
         $this->setPhpName('Settings');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\Settings');
@@ -554,7 +554,7 @@ class SettingsTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_settings table.
+     * Deletes all rows from the settings table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

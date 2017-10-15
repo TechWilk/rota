@@ -21,7 +21,7 @@ use TechWilk\Rota\DiscussionQuery as ChildDiscussionQuery;
 use TechWilk\Rota\Map\DiscussionTableMap;
 
 /**
- * Base class that represents a row from the 'cr_discussion' table.
+ * Base class that represents a row from the 'discussion' table.
  *
  *
  *
@@ -888,7 +888,7 @@ abstract class Discussion implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_discussion (%s) VALUES (%s)',
+            'INSERT INTO discussion (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );

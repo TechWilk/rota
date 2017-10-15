@@ -27,7 +27,7 @@ function updateRole($id, $name, $description)
     $name = mysqli_real_escape_string(db(), $name);
     $description = mysqli_real_escape_string(db(), $description);
 
-    $sql = "UPDATE cr_roles SET name = '$name', description = '$description' WHERE id = '$id'";
+    $sql = "UPDATE roles SET name = '$name', description = '$description' WHERE id = '$id'";
 
     if (!mysqli_query(db(), $sql)) {
         die('Error: '.mysqli_error(db()));
@@ -36,13 +36,13 @@ function updateRole($id, $name, $description)
 
 function updateGroup($key, $name, $description)
 {
-    $sql = "UPDATE cr_groups SET name = '$name' WHERE groupId = '$key'";
+    $sql = "UPDATE groups SET name = '$name' WHERE groupId = '$key'";
 
     if (!mysqli_query(db(), $sql)) {
         die('Error: '.mysqli_error(db()));
     }
 
-    $sql = "UPDATE cr_groups SET description = '$description' WHERE groupId = '$key'";
+    $sql = "UPDATE groups SET description = '$description' WHERE groupId = '$key'";
 
     if (!mysqli_query(db(), $sql)) {
         die('Error: '.mysqli_error(db()));
@@ -51,7 +51,7 @@ function updateGroup($key, $name, $description)
 
 function moveRoleGroups($roleID, $value)
 {
-    $sql = "UPDATE cr_roles SET groupId = '$value' WHERE id = '$roleID'";
+    $sql = "UPDATE roles SET groupId = '$value' WHERE id = '$roleID'";
 
     if (!mysqli_query(db(), $sql)) {
         die('Error: '.mysqli_error(db()));
@@ -64,24 +64,24 @@ function addUserRole($userId, $roleId)
     $roleId = filter_var($roleId, FILTER_SANITIZE_NUMBER_INT);
 
     // prevent duplicate roles
-    $sql = "SELECT COUNT(*) AS count FROM cr_userRoles WHERE roleId = '$roleId' AND userId = '$userId'";
+    $sql = "SELECT COUNT(*) AS count FROM userRoles WHERE roleId = '$roleId' AND userId = '$userId'";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $ob = mysqli_fetch_object($result);
     if ($ob->count < 1) {
-        $query = "INSERT INTO cr_userRoles (userId, roleId) VALUES ('$userId', '$roleId')";
+        $query = "INSERT INTO userRoles (userId, roleId) VALUES ('$userId', '$roleId')";
         mysqli_query(db(), $query) or die(mysqli_error(db()));
     }
 }
 
 function removeUserRoleWithId($userRoleId)
 {
-    $query = "DELETE FROM cr_userRoles WHERE id = '$userRoleId'";
+    $query = "DELETE FROM userRoles WHERE id = '$userRoleId'";
     mysqli_query(db(), $query) or die(mysqli_error(db()));
 }
 
 function removeUserRole($userId, $roleId)
 {
-    $query = "DELETE FROM cr_userRoles WHERE userId = '$userId' AND roleId = '$roleId'";
+    $query = "DELETE FROM userRoles WHERE userId = '$userId' AND roleId = '$roleId'";
     mysqli_query(db(), $query) or die(mysqli_error(db()));
 }
 
@@ -105,7 +105,7 @@ function setUserRoleRegularWithId($userRoleId)
 
 function groupIdWithRole($roleId)
 {
-    $sql = "SELECT groupId FROM cr_roles WHERE id = '$roleId'";
+    $sql = "SELECT groupId FROM roles WHERE id = '$roleId'";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $ob = mysqli_fetch_object($result);
 
@@ -114,7 +114,7 @@ function groupIdWithRole($roleId)
 
 function roleNameFromId($roleId)
 {
-    $sql = "SELECT name FROM cr_roles WHERE id = '$roleId'";
+    $sql = "SELECT name FROM roles WHERE id = '$roleId'";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $ob = mysqli_fetch_object($result);
 
@@ -123,7 +123,7 @@ function roleNameFromId($roleId)
 
 function roleCanSwapToOtherRoleInGroup($roleId)
 {
-    $sql = "SELECT allowRoleSwaps, groupId FROM cr_roles WHERE id = '$roleId'";
+    $sql = "SELECT allowRoleSwaps, groupId FROM roles WHERE id = '$roleId'";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $ob = mysqli_fetch_object($result);
 
@@ -131,7 +131,7 @@ function roleCanSwapToOtherRoleInGroup($roleId)
         return $ob->allowRoleSwaps;
     }
 
-    $sql = "SELECT allowRoleSwaps FROM cr_groups WHERE id = '".$ob->groupId."'";
+    $sql = "SELECT allowRoleSwaps FROM groups WHERE id = '".$ob->groupId."'";
     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
     $ob = mysqli_fetch_object($result);
 

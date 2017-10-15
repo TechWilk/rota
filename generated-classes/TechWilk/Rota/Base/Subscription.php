@@ -19,7 +19,7 @@ use TechWilk\Rota\SubscriptionQuery as ChildSubscriptionQuery;
 use TechWilk\Rota\Map\SubscriptionTableMap;
 
 /**
- * Base class that represents a row from the 'cr_subscriptions' table.
+ * Base class that represents a row from the 'subscriptions' table.
  *
  *
  *
@@ -736,7 +736,7 @@ abstract class Subscription implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_subscriptions (%s) VALUES (%s)',
+            'INSERT INTO subscriptions (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );

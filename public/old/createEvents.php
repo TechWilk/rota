@@ -83,7 +83,7 @@ include 'includes/header.php';
     echo $typename;
 } ?></option>
 										<?php
-                                        $sql = 'SELECT id, name, description, defaultTime, defaultLocationId FROM cr_eventTypes ORDER BY name';
+                                        $sql = 'SELECT id, name, description, defaultTime, defaultLocationId FROM eventTypes ORDER BY name';
                                         $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
                                         while ($ob = mysqli_fetch_object($result)) {
                                             if (!(isset($type) && $ob->id == $type)) {
@@ -108,7 +108,7 @@ include 'includes/header.php';
                                             echo $subtypename;
                                         } ?></option>
 										<?php
-                                        $sql = 'SELECT * FROM cr_eventSubTypes ORDER BY name';
+                                        $sql = 'SELECT * FROM eventSubTypes ORDER BY name';
                                         $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
                                         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
@@ -136,7 +136,7 @@ include 'includes/header.php';
                                             echo $locationname;
                                         } ?></option>
 										<?php
-                                        $sql = 'SELECT * FROM cr_locations order by name';
+                                        $sql = 'SELECT * FROM locations order by name';
                                         $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
                                         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
@@ -279,7 +279,7 @@ include 'includes/header.php';
                                         } ?>>
 									<option value="<?php echo isset($eventGroup) ? $eventGroup : '' ?>"><?php echo isset($eventGroupName) ? $eventGroupName : '' ?></option>
 									<?php
-                                    $sql = 'SELECT * FROM cr_eventGroups WHERE archived = false ORDER BY name';
+                                    $sql = 'SELECT * FROM eventGroups WHERE archived = false ORDER BY name';
                                     $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
 
                                     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
