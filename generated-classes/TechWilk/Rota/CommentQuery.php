@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\CommentQuery as BaseCommentQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cr_comments' table.
+ * Skeleton subclass for performing query and update operations on the 'comments' table.
  *
  *
  *

@@ -15,7 +15,7 @@ use TechWilk\Rota\Comment;
 use TechWilk\Rota\CommentQuery;
 
 /**
- * This class defines the structure of the 'cr_comments' table.
+ * This class defines the structure of the 'comments' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class CommentTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'cr_comments';
+    const TABLE_NAME = 'comments';
 
     /**
      * The related Propel class for this table
@@ -73,37 +73,37 @@ class CommentTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'cr_comments.id';
+    const COL_ID = 'comments.id';
 
     /**
      * the column name for the eventId field
      */
-    const COL_EVENTID = 'cr_comments.eventId';
+    const COL_EVENTID = 'comments.eventId';
 
     /**
      * the column name for the userId field
      */
-    const COL_USERID = 'cr_comments.userId';
+    const COL_USERID = 'comments.userId';
 
     /**
      * the column name for the text field
      */
-    const COL_TEXT = 'cr_comments.text';
+    const COL_TEXT = 'comments.text';
 
     /**
      * the column name for the removed field
      */
-    const COL_REMOVED = 'cr_comments.removed';
+    const COL_REMOVED = 'comments.removed';
 
     /**
      * the column name for the created field
      */
-    const COL_CREATED = 'cr_comments.created';
+    const COL_CREATED = 'comments.created';
 
     /**
      * the column name for the updated field
      */
-    const COL_UPDATED = 'cr_comments.updated';
+    const COL_UPDATED = 'comments.updated';
 
     /**
      * The default string format for model objects of the related table
@@ -148,7 +148,7 @@ class CommentTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('cr_comments');
+        $this->setName('comments');
         $this->setPhpName('Comment');
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\TechWilk\\Rota\\Comment');
@@ -156,8 +156,8 @@ class CommentTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('eventId', 'EventId', 'INTEGER', 'cr_events', 'id', true, null, 0);
-        $this->addForeignKey('userId', 'UserId', 'INTEGER', 'cr_users', 'id', true, null, 0);
+        $this->addForeignKey('eventId', 'EventId', 'INTEGER', 'events', 'id', true, null, 0);
+        $this->addForeignKey('userId', 'UserId', 'INTEGER', 'users', 'id', true, null, 0);
         $this->addColumn('text', 'Text', 'VARCHAR', false, 255, null);
         $this->addColumn('removed', 'Removed', 'BOOLEAN', false, 1, false);
         $this->addColumn('created', 'Created', 'TIMESTAMP', false, null, null);
@@ -422,7 +422,7 @@ class CommentTableMap extends TableMap
      }
 
     /**
-     * Deletes all rows from the cr_comments table.
+     * Deletes all rows from the comments table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
