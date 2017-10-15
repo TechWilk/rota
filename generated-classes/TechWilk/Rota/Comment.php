@@ -5,7 +5,7 @@ namespace TechWilk\Rota;
 use TechWilk\Rota\Base\Comment as BaseComment;
 
 /**
- * Skeleton subclass for representing a row from the 'cr_comments' table.
+ * Skeleton subclass for representing a row from the 'comments' table.
  *
  *
  *

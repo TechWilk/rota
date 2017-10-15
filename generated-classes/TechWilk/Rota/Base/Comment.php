@@ -26,7 +26,7 @@ use TechWilk\Rota\UserQuery as ChildUserQuery;
 use TechWilk\Rota\Map\CommentTableMap;
 
 /**
- * Base class that represents a row from the 'cr_comments' table.
+ * Base class that represents a row from the 'comments' table.
  *
  *
  *
@@ -974,7 +974,7 @@ abstract class Comment implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO cr_comments (%s) VALUES (%s)',
+            'INSERT INTO comments (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -1144,7 +1144,7 @@ abstract class Comment implements ActiveRecordInterface
                         $key = 'event';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_events';
+                        $key = 'events';
                         break;
                     default:
                         $key = 'Event';
@@ -1158,7 +1158,7 @@ abstract class Comment implements ActiveRecordInterface
                         $key = 'user';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'cr_users';
+                        $key = 'users';
                         break;
                     default:
                         $key = 'User';
