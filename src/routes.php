@@ -14,6 +14,7 @@ use TechWilk\Rota\Controller\PendingUserController;
 use TechWilk\Rota\Controller\ResourceController;
 use TechWilk\Rota\Controller\RoleController;
 use TechWilk\Rota\Controller\UserController;
+use TechWilk\Rota\Controller\InstallController;
 
 // Routes
 
@@ -168,6 +169,15 @@ $app->get('/', function ($request, $response, $args) {
     // Render index view
     return $this->view->render($response, 'home.twig', ['eventsthisweek' => $eventsThisWeek, 'remainingeventsingroups' => $remainingEventsInGroups]);
 })->setName('home');
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// INSTALL
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+$app->group('/install', function () {
+    $this->get('/user', InstallController::class.':getFirstUserForm')->setName('install-user');
+    $this->post('/user', InstallController::class.':postFirstUserForm')->setName('install-user-post');
+});
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // JOBS
