@@ -20,6 +20,42 @@ use TechWilk\Rota\Map\UserTableMap;
 class User extends BaseUser
 {
     /**
+     * Set the value of [firstname] column.
+     *
+     * @param string $v new value
+     *
+     * @return $this|\TechWilk\Rota\User The current object (for fluent API support)
+     */
+    public function setFirstName($v)
+    {
+        if ($v !== null) {
+            $v = (string) trim($v);
+        }
+
+        return parent::setFirstName($v);
+    }
+
+    // setFirstName()
+
+    /**
+     * Set the value of [lastname] column.
+     *
+     * @param string $v new value
+     *
+     * @return $this|\TechWilk\Rota\User The current object (for fluent API support)
+     */
+    public function setLastName($v)
+    {
+        if ($v !== null) {
+            $v = (string) trim($v);
+        }
+
+        return parent::setLastName($v);
+    }
+
+    // setLastName()
+
+    /**
      * Set the value of [password] column.
      *
      * @param string $v new value

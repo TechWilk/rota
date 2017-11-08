@@ -8,6 +8,7 @@ use TechWilk\Rota\Controller\AvailabilityController;
 use TechWilk\Rota\Controller\CalendarController;
 use TechWilk\Rota\Controller\EventController;
 use TechWilk\Rota\Controller\GroupController;
+use TechWilk\Rota\Controller\InstallController;
 use TechWilk\Rota\Controller\JobController;
 use TechWilk\Rota\Controller\NotificationController;
 use TechWilk\Rota\Controller\PendingUserController;
@@ -168,6 +169,15 @@ $app->get('/', function ($request, $response, $args) {
     // Render index view
     return $this->view->render($response, 'home.twig', ['eventsthisweek' => $eventsThisWeek, 'remainingeventsingroups' => $remainingEventsInGroups]);
 })->setName('home');
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// INSTALL
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+$app->group('/install', function () {
+    $this->get('/user', InstallController::class.':getFirstUserForm')->setName('install-user');
+    $this->post('/user', InstallController::class.':postFirstUserForm')->setName('install-user-post');
+});
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // JOBS
