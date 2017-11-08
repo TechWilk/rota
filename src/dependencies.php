@@ -94,7 +94,19 @@ $container['auth'] = function ($c) {
             break;
     }
 
-    $allowedRoutes = ['login', 'login-post', 'login-auth', 'login-callback', 'sign-up', 'sign-up-post', 'sign-up-cancel', 'user-calendar', 'job-daily'];
+    $allowedRoutes = [
+        'login',
+        'login-post',
+        'login-auth',
+        'login-callback',
+        'sign-up',
+        'sign-up-post',
+        'sign-up-cancel',
+        'user-calendar',
+        'job-daily',
+        'install-user',
+        'install-user-post',
+    ];
 
     return new Authentication($c, $authProvider, $allowedRoutes);
 };
