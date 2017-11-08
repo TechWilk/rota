@@ -1,4 +1,6 @@
-<?php namespace TechWilk\Rota;
+<?php
+
+namespace TechWilk\Rota;
 
 /*
     This file is part of Church Rota.
