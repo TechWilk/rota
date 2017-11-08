@@ -5,11 +5,11 @@ namespace TechWilk\Rota\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TechWilk\Rota\Crypt;
-use TechWilk\Rota\UserQuery;
-use TechWilk\Rota\User;
-use TechWilk\Rota\Site;
 use TechWilk\Rota\Settings;
 use TechWilk\Rota\SettingsQuery;
+use TechWilk\Rota\Site;
+use TechWilk\Rota\User;
+use TechWilk\Rota\UserQuery;
 
 class InstallController extends BaseController
 {
@@ -59,7 +59,7 @@ class InstallController extends BaseController
 
         return $this->view->render($response, 'login-credentials.twig', [
             'username' => $user->getEmail(),
-            'message' => 'Your password is: '.$password.' Copy it somewhere safe and you can change it once you\'ve logged in.',
+            'message'  => 'Your password is: '.$password.' Copy it somewhere safe and you can change it once you\'ve logged in.',
         ]);
     }
 
@@ -74,7 +74,7 @@ class InstallController extends BaseController
         $settings = new Settings();
 
         $site = new Site();
-        $url = $site->getUrl()['base'] . $this->router->pathFor('home');
+        $url = $site->getUrl()['base'].$this->router->pathFor('home');
         $settings->setSiteUrl($url);
 
         $settings->setOwner('Rota');
