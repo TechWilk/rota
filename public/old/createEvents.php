@@ -1,4 +1,6 @@
-<?php namespace TechWilk\Rota;
+<?php
+
+namespace TechWilk\Rota;
 
 // Include files, including the database connection
 include 'includes/config.php';

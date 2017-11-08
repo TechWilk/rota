@@ -1,4 +1,6 @@
-<?php namespace TechWilk\Rota;
+<?php
+
+namespace TechWilk\Rota;
 
 use DateInterval;
 use DateTime;
