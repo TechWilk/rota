@@ -19,7 +19,9 @@
     <input name="email" id="email" type="text" class="form__input" placeholder="Email address" value="{{ email }}" required>
   </div>
   {% if message %}
-  {{ message }}
+  <p class="text--center">
+    {{ message }}
+  </p>
   {% endif %}
   <div class="form__field">
     <input type="submit" value="Request access">
