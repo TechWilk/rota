@@ -23,6 +23,7 @@ class User extends BaseUser
      * Set the value of [firstname] column.
      *
      * @param string $v new value
+     *
      * @return $this|\TechWilk\Rota\User The current object (for fluent API support)
      */
     public function setFirstName($v)
@@ -32,12 +33,15 @@ class User extends BaseUser
         }
 
         return parent::setFirstName($v);
-    } // setFirstName()
+    }
+
+    // setFirstName()
 
     /**
      * Set the value of [lastname] column.
      *
      * @param string $v new value
+     *
      * @return $this|\TechWilk\Rota\User The current object (for fluent API support)
      */
     public function setLastName($v)
@@ -47,7 +51,9 @@ class User extends BaseUser
         }
 
         return parent::setLastName($v);
-    } // setLastName()
+    }
+
+    // setLastName()
 
     /**
      * Set the value of [password] column.
