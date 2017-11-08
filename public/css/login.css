@@ -85,6 +85,8 @@ input {
   color: #eee;
   font-weight: bold;
   text-transform: uppercase;
+  text-align: center;
+  width: 100;
 }
 .form--login input[type="submit"]:focus,
 .form--login input[type="submit"]:hover,

@@ -18,7 +18,7 @@ class EmailAddress
         return $this->address;
     }
 
-    public function equals(EmailAddress $address)
+    public function equals(self $address)
     {
         return strtolower((string) $this) === strtolower((string) $address);
     }

@@ -29,7 +29,7 @@ $client = new Client([
     // Base URI is used with relative requests
     'base_uri' => siteConfig()['recording']['locomotivecms']['url'].'/locomotive/api/',
     // You can set any number of default request options.
-    'timeout'  => 2.0,
+    'timeout' => 2.0,
 ]);
 
 // get token
