@@ -204,7 +204,7 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 
 	<!-- Main content -->
 	<section class="content">
-	
+
 	<div class='box'>
 		<div class="box-body">
 			<a class="btn" href="series.php">Edit sermon series</a>
@@ -318,7 +318,7 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 				</div>
 
 				<div class="form-group">
-					<label class="form-content" for="day_only_format">Date only (pattern see <a href="http://www.php.net/manual/en/function.strftime.php#refsect1-function.strftime-parameters" target="_blank">php strftime</a>):</label>
+					<label class="form-content" for="day_only_format">Day only (pattern see <a href="http://www.php.net/manual/en/function.strftime.php#refsect1-function.strftime-parameters" target="_blank">php strftime</a>):</label>
 					<input class="form-control" name="day_only_format" id="day_only_format" type="text" value="<?php echo $row['day_only_format']; ?>"  />
 				</div>
 
@@ -337,7 +337,7 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         </div>
 			</div>
 			<div class="box-body" >
-				
+
 				<div class="form-group">
 					<label for="skin">Application skin:</label>
 					<select name="skin" id="skin" class="form-control">
