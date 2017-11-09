@@ -40,7 +40,7 @@ class InstallController extends BaseController
                     'mysql:host='.$config['db']['host'].';dbname='.$config['db']['dbname'],
                     'username' => $config['db']['user'],
                     'password' => $config['db']['pass`'],
-                    'adapter' => 'mysql',
+                    'adapter'  => 'mysql',
                 ],
             ]
         );

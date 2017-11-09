@@ -2,9 +2,9 @@
 
 namespace Tests\Integration;
 
+use TechWilk\Rota\SettingsQuery;
 use TechWilk\Rota\User;
 use TechWilk\Rota\UserQuery;
-use TechWilk\Rota\SettingsQuery;
 
 class InstallationTest extends BaseTestCase
 {
@@ -58,7 +58,6 @@ class InstallationTest extends BaseTestCase
         $userCount = UserQuery::create()->count();
         $this->assertEquals(0, $userCount);
 
-
         $response = $this->runApp('GET', '/install/user');
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -74,8 +73,8 @@ class InstallationTest extends BaseTestCase
     {
         $response = $this->runApp('POST', '/install/user', [
             'firstName' => 'Test',
-            'lastName' => 'User',
-            'email' => 'test@example.com'
+            'lastName'  => 'User',
+            'email'     => 'test@example.com',
         ]);
 
         $this->assertEquals(200, $response->getStatusCode());
