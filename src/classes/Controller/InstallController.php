@@ -3,6 +3,7 @@
 namespace TechWilk\Rota\Controller;
 
 use Locale;
+use Propel\Generator\Manager\SqlManager;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TechWilk\Rota\Crypt;
@@ -11,7 +12,6 @@ use TechWilk\Rota\SettingsQuery;
 use TechWilk\Rota\Site;
 use TechWilk\Rota\User;
 use TechWilk\Rota\UserQuery;
-use Propel\Generator\Manager\SqlManager;
 
 class InstallController extends BaseController
 {
@@ -39,7 +39,6 @@ class InstallController extends BaseController
 
         $site = new Site();
         $config = $site->getConfig();
-
 
         $input = \Symfony\Component\Console\Input\ArrayInput([
            'command' => 'swiftmailer:spool:send',
@@ -74,7 +73,6 @@ class InstallController extends BaseController
         return $response->setBody($output);
 
         return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('install-user'));
-
     }
 
     public function getFirstUserForm(ServerRequestInterface $request, ResponseInterface $response, $args)
