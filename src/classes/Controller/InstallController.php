@@ -16,7 +16,44 @@ class InstallController extends BaseController
 {
     public function getInstall(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
-        return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('install-user');
+        $this->logger->info("Fetch install GET '/install'");
+
+        return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('install-database'));
+    }
+
+    public function getInstallDatabase(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+        $this->logger->info("Fetch database install GET '/install/database'");
+
+        // don't run if we're already installed
+        $existingUserCount = UserQuery::create()->count();
+        if ($existingUserCount > 0) {
+            return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('login'));
+        }
+
+        $site = new Site();
+        $config = $site->getConfig();
+
+        $sqlManager = new SqlManager();
+        $sqlManager->setConnections(
+            ['default' => [
+                    'mysql:host='.$config['db']['host'].';dbname='.$config['db']['dbname'],
+                    'username' => $config['db']['user'],
+                    'password' => $config['db']['pass`'],
+                    'adapter'  => 'mysql',
+                ],
+            ]
+        );
+        $sqlManager->setWorkingDirectory(__DIR__.'/../../../generated-sql');
+        $sqlManager->insertSql();
+
+        try {
+            return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('install-user'));
+        } catch (\PDOException $e) {
+            if ($e->getCode() === '42S02') {
+                return $response;
+            }
+        }
     }
 
     public function getFirstUserForm(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -86,7 +123,7 @@ class InstallController extends BaseController
         $settings->setOwner('Rota');
 
         $settings->setTimeZone(date_default_timezone_get());
-        $settings->setLangLocale(Locale::getDefault());
+        $settings->setLangLocale(class_exists('Locale') ? Locale::getDefault() : 'en_GB');
 
         $settings->setTimeFormatLong('%A, %B %e @ %I:%M %p');
         $settings->setTimeFormatNormal('%d/%m/%y %I:%M %p');
