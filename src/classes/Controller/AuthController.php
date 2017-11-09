@@ -29,6 +29,7 @@ class AuthController extends BaseController
         }
 
         $auth = $this->auth;
+
         try {
             if ($auth->isCredential()) {
                 $resetPasswordUrl = $auth->getResetPasswordUrl();
