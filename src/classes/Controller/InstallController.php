@@ -14,6 +14,11 @@ use TechWilk\Rota\UserQuery;
 
 class InstallController extends BaseController
 {
+    public function getInstall(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+        return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('install-user'));
+    }
+
     public function getFirstUserForm(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->info("Fetch first user form GET '/install/user'");

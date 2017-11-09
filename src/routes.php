@@ -175,6 +175,8 @@ $app->get('/', function ($request, $response, $args) {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 $app->group('/install', function () {
+    $this->get('', InstallController::class.':getInstall')->setName('install-user');
+
     $this->get('/user', InstallController::class.':getFirstUserForm')->setName('install-user');
     $this->post('/user', InstallController::class.':postFirstUserForm')->setName('install-user-post');
 });
