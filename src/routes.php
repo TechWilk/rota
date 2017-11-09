@@ -175,7 +175,7 @@ $app->get('/', function ($request, $response, $args) {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 $app->group('/install', function () {
-    $this->get('', InstallController::class.':getInstall')->setName('install-user');
+    $this->get('', InstallController::class.':getInstall')->setName('install');
 
     $this->get('/database', InstallController::class.':getInstallDatabase')->setName('install-database');
 

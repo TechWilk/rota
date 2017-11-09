@@ -11,6 +11,7 @@ use TechWilk\Rota\SettingsQuery;
 use TechWilk\Rota\Site;
 use TechWilk\Rota\User;
 use TechWilk\Rota\UserQuery;
+use Propel\Generator\Manager\SqlManager;
 
 class InstallController extends BaseController
 {
@@ -25,15 +26,35 @@ class InstallController extends BaseController
     {
         $this->logger->info("Fetch database install GET '/install/database'");
 
-        // don't run if we're already installed
-        $existingUserCount = UserQuery::create()->count();
-        if ($existingUserCount > 0) {
-            return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('login'));
+        try {
+            $existingUserCount = UserQuery::create()->count();
+            if ($existingUserCount > 0) {
+                return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('login'));
+            }
+        } catch (\Propel\Runtime\Exception\PropelException $e) {
+            if ($e->getPrevious()->getCode() !== '42S02') {
+                return $response;
+            }
         }
 
         $site = new Site();
         $config = $site->getConfig();
 
+
+        $input = \Symfony\Component\Console\Input\ArrayInput([
+           'command' => 'swiftmailer:spool:send',
+           // (optional) define the value of command arguments
+           'fooArgument' => 'barValue',
+           // (optional) pass options to the command
+           '--message-limit' => $messages,
+        ]);
+
+        $output = new \Symfony\Component\Console\Output\BufferedOutput();
+
+        $sqlBuilder = new \Propel\Generator\Command\SqlBuildCommand();
+        $sqlBuilder->execute($input, $output);
+
+        /*
         $sqlManager = new SqlManager();
         $sqlManager->setConnections(
             ['default' => [
@@ -45,15 +66,15 @@ class InstallController extends BaseController
             ]
         );
         $sqlManager->setWorkingDirectory(__DIR__.'/../../../generated-sql');
+        $manager->buildSql();
         $sqlManager->insertSql();
+        */
+        ///
 
-        try {
-            return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('install-user'));
-        } catch (\PDOException $e) {
-            if ($e->getCode() === '42S02') {
-                return $response;
-            }
-        }
+        return $response->setBody($output);
+
+        return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('install-user'));
+
     }
 
     public function getFirstUserForm(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -73,7 +94,7 @@ class InstallController extends BaseController
 
     public function postFirstUserForm(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
-        $this->logger->info("Fetch first user form GET '/install/user'");
+        $this->logger->info("Create first user POST '/install/user'");
 
         // don't run if we're already installed
         $existingUserCount = UserQuery::create()->count();
@@ -154,5 +175,39 @@ EMAIL
         $settings->setDebugMode(false);
 
         $settings->save();
+    }
+
+    protected function unusedFunction()
+    {
+        $manager = new SqlManager();
+
+        $connections = [];
+        $optionConnections = $input->getOption('connection');
+        if (!$optionConnections) {
+            $connections = $generatorConfig->getBuildConnections();
+        } else {
+            foreach ($optionConnections as $connection) {
+                list($name, $dsn, $infos) = $this->parseConnection($connection);
+                $connections[$name] = array_merge(['dsn' => $dsn], $infos);
+            }
+        }
+        $manager->setOverwriteSqlMap($input->getOption('overwrite'));
+        $manager->setConnections($connections);
+
+        $manager->setValidate($input->getOption('validate'));
+        $manager->setGeneratorConfig($generatorConfig);
+        $manager->setSchemas($this->getSchemas($generatorConfig->getSection('paths')['schemaDir'], $generatorConfig->getSection('generator')['recursive']));
+        $manager->setLoggerClosure(function ($message) use ($input, $output) {
+            if ($input->getOption('verbose')) {
+                $output->writeln($message);
+            }
+        });
+        $manager->setWorkingDirectory($generatorConfig->getSection('paths')['sqlDir']);
+
+        if (!$manager->isOverwriteSqlMap() && $manager->existSqlMap()) {
+            $output->writeln("<info>sqldb.map won't be saved because it already exists. Remove it to generate a new map. Use --overwrite to force a overwrite.</info>");
+        }
+
+        $manager->buildSql();
     }
 }

@@ -150,6 +150,7 @@ class BaseTestCase extends TestCase
             ]
         );
         $sqlManager->setWorkingDirectory(__DIR__.'/../../generated-sql');
+        //$sqlManager->buildSql();
         $sqlManager->insertSql();
     }
 }
