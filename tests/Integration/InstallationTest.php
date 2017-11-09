@@ -2,16 +2,13 @@
 
 namespace Tests\Integration;
 
-use TechWilk\Rota\Group;
-use TechWilk\Rota\Role;
 use TechWilk\Rota\User;
 use TechWilk\Rota\UserQuery;
-use TechWilk\Rota\UserRole;
 
 class InstallationTest extends BaseTestCase
 {
     /**
-     * Test that the installation page will load when we have no users in the database
+     * Test that the installation page will load when we have no users in the database.
      */
     public function testGetInstallFirstUserPage()
     {
