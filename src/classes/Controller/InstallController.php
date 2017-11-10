@@ -3,8 +3,8 @@
 namespace TechWilk\Rota\Controller;
 
 use Locale;
-use Propel\Runtime\Propel;
 use Propel\Generator\Application;
+use Propel\Runtime\Propel;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Console\Input\ArrayInput;
