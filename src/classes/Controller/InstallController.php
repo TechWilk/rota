@@ -3,7 +3,9 @@
 namespace TechWilk\Rota\Controller;
 
 use Locale;
-use Propel\Generator\Manager\SqlManager;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Propel\Generator\Application;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TechWilk\Rota\Crypt;
@@ -40,35 +42,15 @@ class InstallController extends BaseController
         $site = new Site();
         $config = $site->getConfig();
 
-        $input = \Symfony\Component\Console\Input\ArrayInput([
-           'command' => 'swiftmailer:spool:send',
-           // (optional) define the value of command arguments
-           'fooArgument' => 'barValue',
-           // (optional) pass options to the command
-           '--message-limit' => $messages,
-        ]);
+        
+        $propelGenerator = new Application();
+        $output = new BufferedOutput();
+        
+        $input = new ArrayInput(['command' => 'sql:build']);
+        $propelGenerator->run($input, $output);
 
-        $output = new \Symfony\Component\Console\Output\BufferedOutput();
-
-        $sqlBuilder = new \Propel\Generator\Command\SqlBuildCommand();
-        $sqlBuilder->execute($input, $output);
-
-        /*
-        $sqlManager = new SqlManager();
-        $sqlManager->setConnections(
-            ['default' => [
-                    'mysql:host='.$config['db']['host'].';dbname='.$config['db']['dbname'],
-                    'username' => $config['db']['user'],
-                    'password' => $config['db']['pass`'],
-                    'adapter'  => 'mysql',
-                ],
-            ]
-        );
-        $sqlManager->setWorkingDirectory(__DIR__.'/../../../generated-sql');
-        $manager->buildSql();
-        $sqlManager->insertSql();
-        */
-        ///
+        $input = new ArrayInput(['command' => 'sql:insert']);
+        $propelGenerator->run($input, $output);
 
         return $response->setBody($output);
 
