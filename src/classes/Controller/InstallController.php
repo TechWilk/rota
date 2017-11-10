@@ -3,11 +3,11 @@
 namespace TechWilk\Rota\Controller;
 
 use Locale;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
 use Propel\Generator\Application;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use TechWilk\Rota\Crypt;
 use TechWilk\Rota\Settings;
 use TechWilk\Rota\SettingsQuery;
@@ -42,10 +42,9 @@ class InstallController extends BaseController
         $site = new Site();
         $config = $site->getConfig();
 
-        
         $propelGenerator = new Application();
         $output = new BufferedOutput();
-        
+
         $input = new ArrayInput(['command' => 'sql:build']);
         $propelGenerator->run($input, $output);
 
