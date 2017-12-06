@@ -8,9 +8,11 @@ use DPolac\TwigLambda\LambdaExtension;
 use Facebook;
 use GuzzleHttp;
 use Monolog;
+use Slim\Csrf\Guard;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
 use TechWilk\Twig\Extension\LineWrap;
+use TechWilk\Twig\Extension\SlimCsrf;
 use Twig_Extensions_Extension_Date;
 use Twig_Extensions_Extension_Text;
 
@@ -37,6 +39,9 @@ $container['view'] = function ($c) {
     $view->addExtension(new Twig_Extensions_Extension_Text());
 
     $view->addExtension(new LineWrap());
+
+    $slimCsrf = new SlimCsrf($c->get('csrf'));
+    $view->addExtension($slimCsrf);
 
     $env = $view->getEnvironment();
     $env->addGlobal('site', new Site());
@@ -109,4 +114,8 @@ $container['auth'] = function ($c) {
     ];
 
     return new Authentication($c, $authProvider, $allowedRoutes);
+};
+
+$container['csrf'] = function ($c) {
+    return new Guard();
 };
