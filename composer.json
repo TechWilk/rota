@@ -1,63 +1,63 @@
 {
-  "name": "techwilk/rota",
-  "description": "AdminLTE - admin control panel and dashboard that's based on Bootstrap 3",
-  "homepage": "https://github.com/TechWilk/rota",
-  "keywords": [
-    "rota",
-    "church",
-    "email",
-    "reminders",
-    "ical",
-    "calendar"
-  ],
-  "authors": [
-    {
-      "name": "Christopher Wilkinson",
-      "email": "c@wilk.tech"
+    "name": "techwilk/rota",
+    "description": "AdminLTE - admin control panel and dashboard that's based on Bootstrap 3",
+    "homepage": "https://github.com/TechWilk/rota",
+    "keywords": [
+        "rota",
+        "church",
+        "email",
+        "reminders",
+        "ical",
+        "calendar"
+    ],
+    "authors": [
+        {
+            "name": "Christopher Wilkinson",
+            "email": "c@wilk.tech"
+        }
+    ],
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/TechWilk/rota/issues"
+    },
+    "require": {
+        "slim/slim": "^3.9",
+        "facebook/graph-sdk": "~5.0",
+        "propel/propel": "~2.0@dev",
+        "monolog/monolog": "^1.17",
+        "mailgun/mailgun-php": "^2.1",
+        "php-http/curl-client": "^1.6",
+        "guzzlehttp/psr7": "^1.3",
+        "erusev/parsedown": "^1.6",
+        "guzzlehttp/guzzle": "~6.0",
+        "slim/twig-view": "^2.2",
+        "aptoma/twig-markdown": "^2.0",
+        "michelf/php-markdown": "~1.3",
+        "dpolac/twig-lambda": "^0.5.0",
+        "twig/extensions": "^1.4",
+        "techwilk/twig-linewrap": "^1.0",
+        "oscarotero/psr7-middlewares": "^3.20"
+    },
+    "autoload": {
+        "psr-4": {
+            "TechWilk\\Rota\\": [
+                "src/classes/",
+                "generated-classes/TechWilk/Rota/"
+            ]
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=4.8 < 6.0",
+        "satooshi/php-coveralls": "^1.0"
+    },
+    "scripts": {
+        "start": "php -S 0.0.0.0:8080 -t public public/index.php",
+        "test": "phpunit --coverage-clover build/logs/clover.xml",
+        "format": "php-cs-fixer fix ."
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
     }
-  ],
-  "license": "MIT",
-  "support": {
-    "issues": "https://github.com/TechWilk/rota/issues"
-  },
-  "require": {
-    "slim/slim": "^3.0",
-    "facebook/graph-sdk": "~5.0",
-    "propel/propel": "~2.0@dev",
-    "monolog/monolog": "^1.17",
-    "mailgun/mailgun-php": "^2.1",
-    "php-http/curl-client": "^1.6",
-    "guzzlehttp/psr7": "^1.3",
-    "erusev/parsedown": "^1.6",
-    "guzzlehttp/guzzle": "~6.0",
-    "slim/twig-view": "^2.2",
-    "aptoma/twig-markdown": "^2.0",
-    "michelf/php-markdown": "~1.3",
-    "dpolac/twig-lambda": "^0.5.0",
-    "twig/extensions": "^1.4",
-    "techwilk/twig-linewrap": "^1.0",
-    "oscarotero/psr7-middlewares": "^3.20"
-  },
-  "autoload": {
-    "psr-4": {
-      "TechWilk\\Rota\\": [
-        "src/classes/",
-        "generated-classes/TechWilk/Rota/"
-      ]
-    }
-  },
-  "require-dev": {
-    "phpunit/phpunit": ">=4.8 < 6.0",
-    "satooshi/php-coveralls": "^1.0"
-  },
-  "scripts": {
-    "start": "php -S 0.0.0.0:8080 -t public public/index.php",
-    "test": "phpunit --coverage-clover build/logs/clover.xml",
-    "format": "php-cs-fixer fix ."
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Tests\\": "tests/"
-    }
-  }
 }
