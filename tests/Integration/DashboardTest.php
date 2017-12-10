@@ -50,6 +50,6 @@ class DashboardTest extends BaseTestCase
         $response = $this->runApp('POST', '/', ['test']);
 
         $this->assertEquals(400, $response->getStatusCode());
-        $this->assertContains('CSRF', (string)$response->getBody());
+        $this->assertContains('CSRF', (string) $response->getBody());
     }
 }

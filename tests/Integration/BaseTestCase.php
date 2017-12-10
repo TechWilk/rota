@@ -2,6 +2,8 @@
 
 namespace Tests\Integration;
 
+use DOMDocument;
+use DOMXPath;
 use PHPUnit\Framework\TestCase;
 use Propel\Generator\Manager\SqlManager;
 use Propel\Runtime\Connection\ConnectionManagerSingle;
@@ -10,8 +12,6 @@ use Slim\App;
 use Slim\Http\Environment;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use DOMDocument;
-use DOMXPath;
 
 error_reporting(-1);
 ini_set('display_errors', 1);
