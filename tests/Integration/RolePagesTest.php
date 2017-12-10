@@ -68,7 +68,10 @@ class RolePagesTest extends BaseTestCase
 
     public function testPostUserRemoveAllAssignedRoles()
     {
-        $response = $this->runApp('POST', '/user/'.$_SESSION['userId'].'/roles', []);
+        $url = '/user/'.$_SESSION['userId'].'/roles';
+
+        $tokens = $this->getCsrfTokensForUri($url);
+        $response = $this->runApp('POST', $url, $tokens);
 
         $this->assertEquals(303, $response->getStatusCode());
 
@@ -80,7 +83,15 @@ class RolePagesTest extends BaseTestCase
 
     public function testPostUserAddAssignedProjectionRole()
     {
-        $response = $this->runApp('POST', '/user/'.$_SESSION['userId'].'/roles', ['role' => [1, 2]]);
+        $url = '/user/'.$_SESSION['userId'].'/roles';
+
+        $tokens = $this->getCsrfTokensForUri($url);
+        $params = [
+            'role' => [1, 2],
+        ];
+        $params = array_merge($params, $tokens);
+
+        $response = $this->runApp('POST', $url, $params);
 
         $this->assertEquals(303, $response->getStatusCode());
 
