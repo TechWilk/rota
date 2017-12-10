@@ -75,10 +75,20 @@ class UserPagesTest extends BaseTestCase
      */
     public function testPostCurrentUser()
     {
-        $response = $this->runApp('POST', '/user/'.$_SESSION['userId'], ['firstname' => 'Test', 'lastname' => 'User', 'email' => 'test@example.com', 'mobile' => '01234567890']);
+        $url = '/user/'.$_SESSION['userId'];
+
+        $tokens = $this->getCsrfTokensForUri($url.'/edit');
+        $params = [
+            'firstname' => 'Test',
+            'lastname' => 'User',
+            'email' => 'test@example.com',
+            'mobile' => '01234567890',
+        ];
+        $params = array_merge($params, $tokens);
+
+        $response = $this->runApp('POST', $url, $params);
 
         $this->assertEquals(303, $response->getStatusCode());
-        //$this->assertContains('Method not allowed', (string)$response->getBody());
     }
 
     /**
@@ -91,7 +101,6 @@ class UserPagesTest extends BaseTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertContains('Test User', (string) $response->getBody());
         $this->assertContains('test@example.com', (string) $response->getBody());
-        //$this->assertContains('Method not allowed', (string)$response->getBody());
     }
 
     /**
@@ -101,8 +110,7 @@ class UserPagesTest extends BaseTestCase
     {
         $response = $this->runApp('POST', '/users', ['test']);
 
-        $this->assertEquals(404, $response->getStatusCode());
-        //$this->assertContains('Method not allowed', (string)$response->getBody());
+        $this->assertEquals(400, $response->getStatusCode());
     }
 
     public function testGetNewUserForm()
@@ -115,19 +123,32 @@ class UserPagesTest extends BaseTestCase
 
     public function testPostNewUser()
     {
-        $response = $this->runApp('POST', '/user', ['firstname' => 'Bob', 'lastname' => 'Jones', 'email' => 'bob.jones@example.com', 'mobile' => '01234098765']);
+        $tokens = $this->getCsrfTokensForUri('/user/new');
+        $params = [
+            'firstname' => 'Bob',
+            'lastname' => 'Jones',
+            'email' => 'bob.jones@example.com',
+            'mobile' => '01234098765',
+        ];
+        $params = array_merge($params, $tokens);
+
+        $response = $this->runApp('POST', '/user', $params);
 
         $this->assertEquals(303, $response->getStatusCode());
     }
 
     public function testGetUserEditForm()
     {
+        $user = UserQuery::create()->findPk($_SESSION['userId']);
+        $user->setMobile('01234567890');
+        $user->save();
+
         $response = $this->runApp('GET', '/user/'.$_SESSION['userId'].'/edit');
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertContains('Test', (string) $response->getBody());
         $this->assertContains('User', (string) $response->getBody());
-        $this->assertContains('01234567890', (string) $response->getBody()); // set in testPostCurrentUser()
+        $this->assertContains('01234567890', (string) $response->getBody());
         $this->assertContains('test@example.com', (string) $response->getBody());
         $this->assertContains('Save', (string) $response->getBody());
     }
@@ -157,7 +178,16 @@ class UserPagesTest extends BaseTestCase
 
     public function testChangeUserPasswordIncorrectExistingPassword()
     {
-        $response = $this->runApp('POST', '/user/'.$_SESSION['userId'].'/password', ['existing' => 'this-is-wrong', 'new' => 'newPassword123', 'confirm' => 'newPassword123']);
+        $url = '/user/'.$_SESSION['userId'].'/password';
+        $tokens = $this->getCsrfTokensForUri($url);
+        $params = [
+            'existing' => 'this-is-wrong',
+            'new' => 'newPassword123',
+            'confirm' => 'newPassword123',
+        ];
+        $params = array_merge($params, $tokens);
+
+        $response = $this->runApp('POST', $url, $params);
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertContains('Existing password not correct', (string) $response->getBody());
@@ -169,7 +199,16 @@ class UserPagesTest extends BaseTestCase
 
     public function testChangeUserPasswordNewPasswordsDoNotMatch()
     {
-        $response = $this->runApp('POST', '/user/'.$_SESSION['userId'].'/password', ['existing' => 'this-is-testPassword123wrong', 'new' => 'does-not-match', 'confirm' => 'newPassword123']);
+        $url = '/user/'.$_SESSION['userId'].'/password';
+        $tokens = $this->getCsrfTokensForUri($url);
+        $params = [
+            'existing' => 'testPassword123',
+            'new' => 'does-not-match',
+            'confirm' => 'newPassword123',
+        ];
+        $params = array_merge($params, $tokens);
+
+        $response = $this->runApp('POST', $url, $params);
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertNotContains('Existing password not correct', (string) $response->getBody());
@@ -181,7 +220,16 @@ class UserPagesTest extends BaseTestCase
 
     public function testChangeUserPassword()
     {
-        $response = $this->runApp('POST', '/user/'.$_SESSION['userId'].'/password', ['existing' => 'testPassword123', 'new' => 'newPassword123', 'confirm' => 'newPassword123']);
+        $url = '/user/'.$_SESSION['userId'].'/password';
+        $tokens = $this->getCsrfTokensForUri($url);
+        $params = [
+            'existing' => 'testPassword123',
+            'new' => 'newPassword123',
+            'confirm' => 'newPassword123',
+        ];
+        $params = array_merge($params, $tokens);
+
+        $response = $this->runApp('POST', $url, $params);
 
         $this->assertEquals(303, $response->getStatusCode());
 

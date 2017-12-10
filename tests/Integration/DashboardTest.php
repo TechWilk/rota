@@ -49,7 +49,7 @@ class DashboardTest extends BaseTestCase
     {
         $response = $this->runApp('POST', '/', ['test']);
 
-        $this->assertEquals(404, $response->getStatusCode());
-        //$this->assertContains('Method not allowed', (string)$response->getBody());
+        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertContains('CSRF', (string)$response->getBody());
     }
 }

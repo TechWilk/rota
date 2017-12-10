@@ -39,7 +39,14 @@ class LoginLogoutTest extends BaseTestCase
      */
     public function testPostLoginInvalidCredentials($username, $password)
     {
-        $response = $this->runApp('POST', '/login', ['username' => $username, 'password' => $password]);
+        $tokens = $this->getCsrfTokensForUri('/login');
+        $params = [
+            'username' => $username,
+            'password' => $password,
+        ];
+        $params = array_merge($params, $tokens);
+
+        $response = $this->runApp('POST', '/login', $params);
 
         $this->assertEquals(401, $response->getStatusCode());
         $this->assertContains('Username or password incorrect.', (string) $response->getBody());
@@ -49,7 +56,14 @@ class LoginLogoutTest extends BaseTestCase
     {
         $i = 0;
         while ($i < 15) {
-            $response = $this->runApp('POST', '/login', ['username' => 'spam@example.com', 'password' => 'this-is-not-correct']);
+            $tokens = $this->getCsrfTokensForUri('/login');
+            $params = [
+                'username' => 'spam@example.com',
+                'password' => 'this-is-not-correct',
+            ];
+            $params = array_merge($params, $tokens);
+
+            $response = $this->runApp('POST', '/login', $params);
             $i += 1;
         }
         $this->assertEquals($i, 15);
@@ -71,7 +85,14 @@ class LoginLogoutTest extends BaseTestCase
 
     public function testPostLoginSuccessful()
     {
-        $response = $this->runApp('POST', '/login', ['username' => 'test@example.com', 'password' => 'this-is-correct']);
+        $tokens = $this->getCsrfTokensForUri('/login');
+        $params = [
+            'username' => 'test@example.com',
+            'password' => 'this-is-correct',
+        ];
+        $params = array_merge($params, $tokens);
+
+        $response = $this->runApp('POST', '/login', $params);
 
         $this->assertEquals(303, $response->getStatusCode());
         $this->assertTrue(isset($_SESSION['userId']));
@@ -86,7 +107,14 @@ class LoginLogoutTest extends BaseTestCase
      */
     public function testGetLoginAfterSuccessfulAuth()
     {
-        $response = $this->runApp('POST', '/login', ['username' => 'test@example.com', 'password' => 'this-is-correct']);
+        $tokens = $this->getCsrfTokensForUri('/login');
+        $params = [
+            'username' => 'test@example.com',
+            'password' => 'this-is-correct',
+        ];
+        $params = array_merge($params, $tokens);
+
+        $response = $this->runApp('POST', '/login', $params);
         $this->assertTrue(isset($_SESSION['userId']));
 
         // ensure page now redirects
