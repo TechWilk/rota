@@ -53,7 +53,7 @@ $( document ).ready(function() {
         $.ajax({
           type: 'POST',
           contentType: 'application/json',
-          url: "api/v1/series",
+          url: "../api/v1/series",
           dataType: "json",
           data: postData,
           success: function(data, textStatus, jqXHR){
