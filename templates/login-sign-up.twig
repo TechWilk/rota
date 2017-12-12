@@ -26,6 +26,7 @@
   <div class="form__field">
     <input type="submit" value="Request access">
   </div>
+  {% include 'csrf.twig' %}
 </form>
 <p class="text--center">
   <a href="{{ path_for('sign-up-cancel') }}">Cancel</a>
