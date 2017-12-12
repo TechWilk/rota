@@ -20,6 +20,11 @@
   "support": {
     "issues": "https://github.com/TechWilk/rota/issues"
   },
+  "config": {
+    "platform": {
+      "php": "5.6.0"
+    }
+  },
   "require": {
     "aptoma/twig-markdown": "^2.0",
     "dpolac/twig-lambda": "^0.5.0",
