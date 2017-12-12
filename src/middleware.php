@@ -5,7 +5,6 @@ use Slim\Exception\NotFoundException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-
 // Application middleware
 
 // 4) add route information to twig
