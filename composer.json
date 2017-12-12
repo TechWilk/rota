@@ -20,6 +20,9 @@
   "support": {
     "issues": "https://github.com/TechWilk/rota/issues"
   },
+  "platform": {
+    "php": "^5.5.9 || ^7.0"
+  },
   "require": {
     "aptoma/twig-markdown": "^2.0",
     "dpolac/twig-lambda": "^0.5.0",
@@ -32,7 +35,7 @@
     "monolog/monolog": "^1.17",
     "oscarotero/psr7-middlewares": "^3.20",
     "php-http/curl-client": "^1.6",
-    "propel/propel": "~2.0@dev",
+    "propel/propel": "2.0.0-alpha6",
     "slim/csrf": "^0.8.2",
     "slim/slim": "^3.0",
     "slim/twig-view": "^2.2",

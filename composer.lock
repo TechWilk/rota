@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "405276d4f70f4eddfe90f2d491ea93a2",
-    "content-hash": "ad981bd845ce3a0eb8fd1e91a7a2a61c",
+    "hash": "0d6dd013c9fd083c730051915d049f9c",
+    "content-hash": "b5dda03edee66899033b8cb3b54e40f9",
     "packages": [
         {
             "name": "aptoma/twig-markdown",
@@ -1411,16 +1411,16 @@
         },
         {
             "name": "propel/propel",
-            "version": "dev-master",
+            "version": "2.0.0-alpha6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/propelorm/Propel2.git",
-                "reference": "315fd0927872c20b27bc80b1e57f6ca3bd290826"
+                "reference": "58d57adc9509e47af757b00458d83c24b273fbfa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/propelorm/Propel2/zipball/315fd0927872c20b27bc80b1e57f6ca3bd290826",
-                "reference": "315fd0927872c20b27bc80b1e57f6ca3bd290826",
+                "url": "https://api.github.com/repos/propelorm/Propel2/zipball/58d57adc9509e47af757b00458d83c24b273fbfa",
+                "reference": "58d57adc9509e47af757b00458d83c24b273fbfa",
                 "shasum": ""
             },
             "require": {
@@ -1430,7 +1430,7 @@
                 "symfony/console": "~2.3||~3.0",
                 "symfony/filesystem": "~2.3||~3.0",
                 "symfony/finder": "~2.3||~3.0",
-                "symfony/validator": "~2.3||~3.0.0||~3.1.0||^3.2.4",
+                "symfony/validator": "~2.3||~3.0",
                 "symfony/yaml": "~2.3||~3.0"
             },
             "require-dev": {
@@ -1472,7 +1472,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2017-10-02 12:20:33"
+            "time": "2016-10-15 23:21:13"
         },
         {
             "name": "psr/container",
@@ -4148,7 +4148,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "propel/propel": 20
+        "propel/propel": 15
     },
     "prefer-stable": false,
     "prefer-lowest": false,
