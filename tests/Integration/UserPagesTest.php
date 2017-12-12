@@ -80,9 +80,9 @@ class UserPagesTest extends BaseTestCase
         $tokens = $this->getCsrfTokensForUri($url.'/edit');
         $params = [
             'firstname' => 'Test',
-            'lastname' => 'User',
-            'email' => 'test@example.com',
-            'mobile' => '01234567890',
+            'lastname'  => 'User',
+            'email'     => 'test@example.com',
+            'mobile'    => '01234567890',
         ];
         $params = array_merge($params, $tokens);
 
@@ -126,9 +126,9 @@ class UserPagesTest extends BaseTestCase
         $tokens = $this->getCsrfTokensForUri('/user/new');
         $params = [
             'firstname' => 'Bob',
-            'lastname' => 'Jones',
-            'email' => 'bob.jones@example.com',
-            'mobile' => '01234098765',
+            'lastname'  => 'Jones',
+            'email'     => 'bob.jones@example.com',
+            'mobile'    => '01234098765',
         ];
         $params = array_merge($params, $tokens);
 
@@ -182,8 +182,8 @@ class UserPagesTest extends BaseTestCase
         $tokens = $this->getCsrfTokensForUri($url);
         $params = [
             'existing' => 'this-is-wrong',
-            'new' => 'newPassword123',
-            'confirm' => 'newPassword123',
+            'new'      => 'newPassword123',
+            'confirm'  => 'newPassword123',
         ];
         $params = array_merge($params, $tokens);
 
@@ -203,8 +203,8 @@ class UserPagesTest extends BaseTestCase
         $tokens = $this->getCsrfTokensForUri($url);
         $params = [
             'existing' => 'testPassword123',
-            'new' => 'does-not-match',
-            'confirm' => 'newPassword123',
+            'new'      => 'does-not-match',
+            'confirm'  => 'newPassword123',
         ];
         $params = array_merge($params, $tokens);
 
@@ -224,8 +224,8 @@ class UserPagesTest extends BaseTestCase
         $tokens = $this->getCsrfTokensForUri($url);
         $params = [
             'existing' => 'testPassword123',
-            'new' => 'newPassword123',
-            'confirm' => 'newPassword123',
+            'new'      => 'newPassword123',
+            'confirm'  => 'newPassword123',
         ];
         $params = array_merge($params, $tokens);
 
