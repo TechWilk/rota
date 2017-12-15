@@ -54,7 +54,15 @@
                     <em>{{ event.eventGroup.name }}:</em>
                     {{ event.sermontitle }}
                     {{ event.bibleVerse is empty ? '' : '(' ~ event.bibleVerse ~ ')' }}
-                    {{ event.comment is empty ? '' : '(' ~ event.comment ~ ')' }}</td>
+                    {% if event.comments is not empty %}
+                    (
+                        {% for comment in event.comments %}
+                        {{ loop.first ? '' : '-' }}
+                        {{ comment.text }}
+                        {% endfor %}
+                    )
+                    {% endif %}
+                </td>
                 <td>
                     {% for user in users if user.isavailableforevent(event) == true or user.isavailableforevent(event) is null %}
                     <span>
