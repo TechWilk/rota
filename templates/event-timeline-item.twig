@@ -1,7 +1,7 @@
 <li>
   <i class="fa fa-bell bg-blue"></i>
   <div class="timeline-item" id="event{{ event.id }}">
-    <span class="time"><i class="fa fa-calendar-o"></i> {{ event.date | date('l, nS M') }} <i class="fa fa-clock-o"></i> {{ event.date | date('g:i a') }}</span>
+    <span class="time"><i class="fa fa-calendar-o"></i> {{ event.date | date('l, jS M') }} <i class="fa fa-clock-o"></i> {{ event.date | date('g:i a') }}</span>
     <div class="timeline-header">
       <a href="{{ path_for('event', { 'id': event.id }) }}" class="js-no-link" data-toggle='modal' data-target="#event{{ event.id }}_modal">
           <h4>
