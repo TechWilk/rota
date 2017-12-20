@@ -1,6 +1,6 @@
 <?php
 
-include __DIR__.'/../config/database.php';
+require __DIR__.'/../config/database.php';
 $serviceContainer = \Propel\Runtime\Propel::getServiceContainer();
 $serviceContainer->checkVersion('2.0.0-dev');
 

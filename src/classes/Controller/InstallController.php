@@ -3,8 +3,12 @@
 namespace TechWilk\Rota\Controller;
 
 use Locale;
+use Propel\Generator\Application;
+use Propel\Runtime\Propel;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use TechWilk\Rota\Crypt;
 use TechWilk\Rota\Settings;
 use TechWilk\Rota\SettingsQuery;
@@ -16,7 +20,57 @@ class InstallController extends BaseController
 {
     public function getInstall(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
-        return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('install-user');
+        $this->logger->info("Fetch install GET '/install'");
+
+        return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('install-database'));
+    }
+
+    public function getInstallDatabase(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+        $this->logger->info("Fetch database install GET '/install/database'");
+
+        try {
+            $existingUserCount = UserQuery::create()->count();
+            if ($existingUserCount > 0) {
+                return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('login'));
+            }
+        } catch (\Propel\Runtime\Exception\PropelException $e) {
+            if ($e->getPrevious()->getCode() !== '42S02') {
+                return $response;
+            }
+        }
+
+        $site = new Site();
+        $config = $site->getConfig();
+
+        $propelGenerator = new Application('Propel', Propel::VERSION);
+        $propelGenerator->setAutoExit(false);
+        $propelGenerator->add(new \Propel\Generator\Command\SqlBuildCommand());
+        $propelGenerator->add(new \Propel\Generator\Command\SqlInsertCommand());
+
+        $output = new BufferedOutput();
+
+        $input = new ArrayInput([
+            'command'      => 'sql:build',
+            '-vvv'         => true,
+            '--overwrite'  => true,
+            '--config-dir' => __DIR__.'/../../../generated-conf',
+            '--schema-dir' => __DIR__.'/../../../',
+            '--output-dir' => __DIR__.'/../../../build/sql',
+        ]);
+        $propelGenerator->run($input, $output);
+
+        $input = new ArrayInput([
+            'command'      => 'sql:insert',
+            '-vvv'         => true,
+            '--config-dir' => __DIR__.'/../../../generated-conf',
+            '--sql-dir'    => __DIR__.'/../../../build/sql',
+        ]);
+        $propelGenerator->run($input, $output);
+
+        $this->logger->info($output->fetch());
+
+        return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('install-user'));
     }
 
     public function getFirstUserForm(ServerRequestInterface $request, ResponseInterface $response, $args)

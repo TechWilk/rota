@@ -8,3 +8,4 @@ documents/*
 coverage/*
 .php_cs*
 .vagrant/*
+build/sql/*

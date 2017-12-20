@@ -105,6 +105,7 @@ $container['auth'] = function ($c) {
         'user-calendar',
         'job-daily',
         'install',
+        'install-database',
         'install-user',
         'install-user-post',
     ];
