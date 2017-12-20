@@ -36,7 +36,7 @@ class InstallController extends BaseController
 
     public function postFirstUserForm(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
-        $this->logger->info("Fetch first user form GET '/install/user'");
+        $this->logger->info("Create first user POST '/install/user'");
 
         // don't run if we're already installed
         $existingUserCount = UserQuery::create()->count();
@@ -65,7 +65,7 @@ class InstallController extends BaseController
 
         return $this->view->render($response, 'login-credentials.twig', [
             'username' => $user->getEmail(),
-            'message'  => 'Your password is: '.$password.' Copy it somewhere safe and you can change it once you\'ve logged in.',
+            'message'  => 'Your password is: '.$password.' Copy it somewhere safe as it will not be displayed again. You can change it once you\'ve logged in.',
         ]);
     }
 
@@ -86,7 +86,7 @@ class InstallController extends BaseController
         $settings->setOwner('Rota');
 
         $settings->setTimeZone(date_default_timezone_get());
-        $settings->setLangLocale(Locale::getDefault());
+        $settings->setLangLocale(class_exists('Locale') ? Locale::getDefault() : 'en_GB');
 
         $settings->setTimeFormatLong('%A, %B %e @ %I:%M %p');
         $settings->setTimeFormatNormal('%d/%m/%y %I:%M %p');

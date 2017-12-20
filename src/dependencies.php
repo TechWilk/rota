@@ -104,6 +104,7 @@ $container['auth'] = function ($c) {
         'sign-up-cancel',
         'user-calendar',
         'job-daily',
+        'install',
         'install-user',
         'install-user-post',
     ];
