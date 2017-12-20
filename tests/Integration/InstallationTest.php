@@ -84,11 +84,15 @@ class InstallationTest extends BaseTestCase
         $userCount = UserQuery::create()->count();
         $this->assertEquals(0, $userCount);
 
-        $response = $this->runApp('POST', '/install/user', [
+        $tokens = $this->getCsrfTokensForUri('/install/user');
+        $params = [
             'firstName' => 'Test',
             'lastName'  => 'User',
             'email'     => 'test@example.com',
-        ]);
+        ];
+        $params = array_merge($params, $tokens);
+
+        $response = $this->runApp('POST', '/install/user', $params);
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertContains('Your password is:', (string) $response->getBody());

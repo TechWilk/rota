@@ -81,7 +81,8 @@
         <a href="{{ path_for('user', { 'id': user.id }) }}" class="btn btn-outline text-red">Cancel</a>
         <input class="btn btn-primary" type="submit" value="Save" />
         </div>
-        </div>
+    </div>
+    {% include 'csrf.twig' %}
 </form>
 
 {% endblock %}

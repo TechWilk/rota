@@ -7,9 +7,7 @@ use Slim\Http\Response;
 
 // Application middleware
 
-// e.g: $app->add(new \Slim\Csrf\Guard);
-
-// 3) add route information to twig
+// 4) add route information to twig
 $app->add(function (Request $request, Response $response, callable $next) {
     $route = $request->getAttribute('route');
 
@@ -23,6 +21,9 @@ $app->add(function (Request $request, Response $response, callable $next) {
 
     return $next($request, $response);
 });
+
+// 3) CSRF protection
+$app->add($app->getContainer()['csrf']);
 
 // 2) Ensure user is authenticated
 $app->add($app->getContainer()['auth']);

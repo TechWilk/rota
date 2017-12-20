@@ -2,6 +2,8 @@
 
 namespace Tests\Integration;
 
+use DOMDocument;
+use DOMXPath;
 use PHPUnit\Framework\TestCase;
 use Propel\Generator\Manager\SqlManager;
 use Propel\Runtime\Connection\ConnectionManagerSingle;
@@ -48,6 +50,11 @@ class BaseTestCase extends TestCase
         }
         parent::__construct($name, $data, $dataName);
     }
+
+    protected $csrfTokenFields = [
+        'csrf_name',
+        'csrf_value',
+    ];
 
     /**
      * Process the application given a request method and URI.
@@ -151,5 +158,35 @@ class BaseTestCase extends TestCase
         );
         $sqlManager->setWorkingDirectory(__DIR__.'/../../generated-sql');
         $sqlManager->insertSql();
+    }
+
+    public function getCsrfTokensForUri($requestUri)
+    {
+        $response = $this->runApp('GET', $requestUri);
+
+        $html = (string) $response->getBody();
+
+        $dom = new DOMDocument();
+        $dom->validateOnParse = false;
+        $dom->recover = true;
+        $dom->formatOutput = false;
+
+        // strip html5 tags which break DOMDocument
+        $html = strip_tags($html, '<input>');
+        $dom->loadHTML($html);
+
+        $xpath = new DOMXPath($dom);
+        foreach ($this->csrfTokenFields as $field) {
+            $col = $xpath->query('//input[@name="'.$field.'"]');
+            foreach ($col as $node) {
+                $csrfTokens[$field] = $node->getAttribute('value');
+            }
+        }
+
+        if (empty($csrfTokens)) {
+            return [];
+        }
+
+        return $csrfTokens;
     }
 }
