@@ -134,7 +134,9 @@ class InstallController extends BaseController
         $settings = new Settings();
 
         $site = new Site();
-        $url = $site->getUrl()['base'].$this->router->pathFor('home');
+        $path = $this->router->pathFor('home');
+        $url = $site->getUrl()['base'];
+        $url .= $path === '/' ? '' : $path;
         $settings->setSiteUrl($url);
 
         $settings->setOwner('Rota');
