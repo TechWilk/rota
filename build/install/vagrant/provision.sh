@@ -19,7 +19,9 @@ add-apt-repository ppa:certbot/certbot
 
 apt-get update -qq
 apt-get upgrade -qy
-apt-get install -q -y nginx php-mysql php-fpm python-certbot-nginx php-curl php-xml
+apt-get install -q -y nginx php-mysql php-fpm python-certbot-nginx php-curl php-xml php-mbstring zip unzip
+
+sudo phpenmod pdo_mysql
 
 curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
 
