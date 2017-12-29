@@ -24,12 +24,12 @@ class InstallController extends BaseController
 
         $stage = 1;
 
-        $configPath = __DIR__ . '/../../../config';
+        $configPath = __DIR__.'/../../../config';
         if (
-            file_exists($configPath . '/auth.php')
-            && file_exists($configPath . '/database.php')
-            && file_exists($configPath . '/email.php')
-            && file_exists($configPath . '/recording.php')
+            file_exists($configPath.'/auth.php')
+            && file_exists($configPath.'/database.php')
+            && file_exists($configPath.'/email.php')
+            && file_exists($configPath.'/recording.php')
         ) {
             $stage = 2;
         }
@@ -44,7 +44,6 @@ class InstallController extends BaseController
         }
 
         return $this->view->render($response, 'install.twig', ['stage' => $stage]);
-
 
         //return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('install-database'));
     }
@@ -97,13 +96,12 @@ class InstallController extends BaseController
 
         // check it was a success
         try {
-        $existingUserCount = UserQuery::create()->count();
+            $existingUserCount = UserQuery::create()->count();
         } catch (\Propel\Runtime\Exception\PropelException $e) {
             if ($e->getPrevious()->getCode() === '42S02') {
-                return $response->getBody()->write('Error installing database:' . "\n" . $outputString);
+                return $response->getBody()->write('Error installing database:'."\n".$outputString);
             }
         }
-
 
         return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('install'));
     }
