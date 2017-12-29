@@ -22,7 +22,31 @@ class InstallController extends BaseController
     {
         $this->logger->info("Fetch install GET '/install'");
 
-        return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('install-database'));
+        $stage = 1;
+
+        $configPath = __DIR__ . '/../../../config';
+        if (
+            file_exists($configPath . '/auth.php')
+            && file_exists($configPath . '/database.php')
+            && file_exists($configPath . '/email.php')
+            && file_exists($configPath . '/recording.php')
+        ) {
+            $stage = 2;
+        }
+
+        try {
+            $existingUserCount = UserQuery::create()->count();
+            if ($existingUserCount > 0) {
+                return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('login'));
+            }
+            $stage = 3;
+        } catch (\Propel\Runtime\Exception\PropelException $e) {
+        }
+
+        return $this->view->render($response, 'install.twig', ['stage' => $stage]);
+
+
+        //return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('install-database'));
     }
 
     public function getInstallDatabase(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -68,9 +92,20 @@ class InstallController extends BaseController
         ]);
         $propelGenerator->run($input, $output);
 
-        $this->logger->info($output->fetch());
+        $outputString = $output->fetch();
+        $this->logger->info($outputString);
 
-        return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('install-user'));
+        // check it was a success
+        try {
+        $existingUserCount = UserQuery::create()->count();
+        } catch (\Propel\Runtime\Exception\PropelException $e) {
+            if ($e->getPrevious()->getCode() === '42S02') {
+                return $response->getBody()->write('Error installing database:' . "\n" . $outputString);
+            }
+        }
+
+
+        return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('install'));
     }
 
     public function getFirstUserForm(ServerRequestInterface $request, ResponseInterface $response, $args)

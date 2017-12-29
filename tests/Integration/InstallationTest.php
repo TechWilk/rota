@@ -37,7 +37,9 @@ class InstallationTest extends BaseTestCase
     {
         $response = $this->runApp('GET', '/install');
 
-        $this->assertEquals(302, $response->getStatusCode());
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertContains('Install database', (string) $response->getBody());
+        $this->assertContains('Create first user', (string) $response->getBody());
     }
 
     /**
@@ -53,7 +55,7 @@ class InstallationTest extends BaseTestCase
         $response = $this->runApp('GET', '/install/database');
 
         $this->assertEquals(302, $response->getStatusCode());
-        $this->assertEquals(true, file_exists($schemaFilePath));
+        $this->assertEquals(true, file_exists($schemaFilePath), 'Schema file does not exist');
 
         $schema = file_get_contents($schemaFilePath);
 
