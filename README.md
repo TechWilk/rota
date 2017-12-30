@@ -27,14 +27,7 @@ Rota can be installed on almost any PHP web host, possibly even on the one your 
 
 ### Installation
 
-There are a couple of methods to use
-
-COMING SOON...
-
-
-
-
-
+There are a couple of methods to use - check out the [Wiki articles](https://github.com/TechWilk/rota/wiki) for the latest guides.
 
 ***
 
