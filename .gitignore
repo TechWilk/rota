@@ -7,3 +7,5 @@ documents/*
 !documents/.gitkeep
 coverage/*
 .php_cs*
+.vagrant/*
+build/sql/*

@@ -1,0 +1,42 @@
+<h1>Installation</h1>
+<p>Follow the steps below to complete the installation for Rota.</p>
+
+<ol>
+    <li>
+        {% if stage > 1 %}
+        <del>
+        {% endif %}
+        Rename &amp; edit files from <code>config/</code> folder.
+        {% if stage > 1 %}
+        </del>
+        {% endif %}
+    </li>
+
+    <li>
+        {% if stage > 2 %}
+        <del>
+        {% elseif stage == 2 %}
+        <a href="{{ path_for('install-database') }}">
+        {% endif %}
+        Install database
+        {% if stage > 2 %}
+        </del>
+        {% elseif stage == 2 %}
+        </a>
+        {% endif %}
+    </li>
+    
+    <li>
+        {% if stage > 3 %}
+        <del>
+        {% elseif stage == 3 %}
+        <a href="{{ path_for('install-user') }}">
+        {% endif %}
+        Create first user
+        {% if stage > 3 %}
+        <del> (Get a pen and paper out to write down the generated password. - you'll thank us later.)
+        {% elseif stage == 3 %}
+        </a>
+        {% endif %}
+    </li>
+</ol>

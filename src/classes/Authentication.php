@@ -34,13 +34,22 @@ class Authentication
             return $response;
         }
 
-        if ($this->isUserLoggedIn()) {
-            $response = $next($request, $response);
-        } else {
-            $_SESSION['urlRedirect'] = strval($request->getUri());
-            $router = $this->container->get('router');
+        // catch empty database
+        try {
+            if ($this->isUserLoggedIn()) {
+                $response = $next($request, $response);
+            } else {
+                $_SESSION['urlRedirect'] = strval($request->getUri());
+                $router = $this->container->get('router');
 
-            return $response->withStatus(302)->withHeader('Location', $router->pathFor('login'));
+                return $response->withStatus(302)->withHeader('Location', $router->pathFor('login'));
+            }
+        } catch (\Propel\Runtime\Exception\PropelException $e) {
+            while ($previous = $e->getPrevious()) {
+                if ($previous->getCode() === '42S02') {
+                    return $response->withStatus(302)->withHeader('Location', $this->container->router->pathFor('install'));
+                }
+            }
         }
 
         return $response;

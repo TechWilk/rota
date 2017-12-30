@@ -21,45 +21,6 @@ date_default_timezone_set('Europe/London');
 session_start();
 
 /**
- * Propel ORM config.
- */
-$serviceContainer = Propel::getServiceContainer();
-$serviceContainer->checkVersion('2.0.0-dev');
-$serviceContainer->setAdapterClass('default', 'sqlite');
-$manager = new ConnectionManagerSingle();
-$manager->setConfiguration([
-  'classname'  => 'Propel\\Runtime\\Connection\\ConnectionWrapper',
-  'dsn'        => 'sqlite:/var/tmp/test.db',
-  'attributes' => [
-    'ATTR_EMULATE_PREPARES' => false,
-    'ATTR_TIMEOUT'          => 30,
-  ],
-  'model_paths' => [
-    0 => 'src',
-    1 => 'vendor',
-  ],
-]);
-$manager->setName('default');
-$serviceContainer->setConnectionManager('default', $manager);
-$serviceContainer->setDefaultDatasource('default');
-
-// delete test db (if exists) and create a new one
-if (file_exists('/var/tmp/test.db')) {
-    unlink('/var/tmp/test.db');
-}
-
-$sqlManager = new SqlManager();
-$sqlManager->setConnections(
-    ['default' => [
-            'dsn'     => 'sqlite:/var/tmp/test.db',
-            'adapter' => 'sqlite',
-        ],
-    ]
-);
-$sqlManager->setWorkingDirectory(__DIR__.'/../../generated-sql');
-$sqlManager->insertSql();
-
-/**
  * This is an example class that shows how you could set up a method that
  * runs the application. Note that it doesn't cover all use-cases and is
  * tuned to the specifics of this skeleton app, so if your needs are
@@ -73,6 +34,22 @@ class BaseTestCase extends TestCase
      * @var bool
      */
     protected $withMiddleware = true;
+    /**
+     * Install empty tables into database?
+     *
+     * @var bool
+     */
+    protected $installDatabase = true;
+
+    public function __construct($name = null, array $data = [], $dataName = '')
+    {
+        $this->loadDatabase();
+
+        if ($this->installDatabase === true) {
+            $this->installDatabase();
+        }
+        parent::__construct($name, $data, $dataName);
+    }
 
     protected $csrfTokenFields = [
         'csrf_name',
@@ -136,6 +113,51 @@ class BaseTestCase extends TestCase
 
         // Return the response
         return $response;
+    }
+
+    protected function loadDatabase()
+    {
+        /**
+         * Propel ORM config.
+         */
+        $serviceContainer = Propel::getServiceContainer();
+        $serviceContainer->checkVersion('2.0.0-dev');
+        $serviceContainer->setAdapterClass('default', 'sqlite');
+        $manager = new ConnectionManagerSingle();
+        $manager->setConfiguration([
+        'classname'  => 'Propel\\Runtime\\Connection\\ConnectionWrapper',
+        'dsn'        => 'sqlite:/var/tmp/test.db',
+        'attributes' => [
+            'ATTR_EMULATE_PREPARES' => false,
+            'ATTR_TIMEOUT'          => 30,
+        ],
+        'model_paths' => [
+            0 => 'src',
+            1 => 'vendor',
+        ],
+        ]);
+        $manager->setName('default');
+        $serviceContainer->setConnectionManager('default', $manager);
+        $serviceContainer->setDefaultDatasource('default');
+
+        // delete test db (if exists) and create a new one
+        if (file_exists('/var/tmp/test.db')) {
+            unlink('/var/tmp/test.db');
+        }
+    }
+
+    protected function installDatabase()
+    {
+        $sqlManager = new SqlManager();
+        $sqlManager->setConnections(
+            ['default' => [
+                    'dsn'     => 'sqlite:/var/tmp/test.db',
+                    'adapter' => 'sqlite',
+                ],
+            ]
+        );
+        $sqlManager->setWorkingDirectory(__DIR__.'/../../generated-sql');
+        $sqlManager->insertSql();
     }
 
     public function getCsrfTokensForUri($requestUri)

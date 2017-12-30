@@ -29,18 +29,27 @@ class AuthController extends BaseController
         }
 
         $auth = $this->auth;
-        if ($auth->isCredential()) {
-            $resetPasswordUrl = $auth->getResetPasswordUrl();
 
-            return $this->view->render($response->withStatus(401), 'login-credentials.twig', [
-                'reset_password_url' => $resetPasswordUrl,
-            ]);
-        } elseif ($auth->isCallback()) {
-            return $this->view->render($response->withStatus(401), 'login-callback.twig', [
-                'provider' => $auth->getAuthProviderSlug(),
-            ]);
-        } else {
-            return $response->getBody()->write('Your authentication method is invalid. If you are the administrator, please adjust the site config.');
+        try {
+            if ($auth->isCredential()) {
+                $resetPasswordUrl = $auth->getResetPasswordUrl();
+
+                return $this->view->render($response->withStatus(401), 'login-credentials.twig', [
+                    'reset_password_url' => $resetPasswordUrl,
+                ]);
+            } elseif ($auth->isCallback()) {
+                return $this->view->render($response->withStatus(401), 'login-callback.twig', [
+                    'provider' => $auth->getAuthProviderSlug(),
+                ]);
+            } else {
+                return $response->getBody()->write('Your authentication method is invalid. If you are the administrator, please adjust the site config.');
+            }
+        } catch (\PDOException $e) {
+            while ($previous = $e->getPrevious()) {
+                if ($previous->getCode() === '42S02') {
+                    return $response->withStatus(302)->withHeader('Location', $this->container->router->pathFor('install'));
+                }
+            }
         }
     }
 
