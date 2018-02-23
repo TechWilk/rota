@@ -532,16 +532,16 @@
         },
         {
             "name": "mailgun/mailgun-php",
-            "version": "v2.4.0",
+            "version": "2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mailgun/mailgun-php.git",
-                "reference": "20783215042b181b0dec92c9e01947b93cb5d085"
+                "reference": "ef3dc6b8bf78b1f760da16b6860c4072c798d286"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mailgun/mailgun-php/zipball/20783215042b181b0dec92c9e01947b93cb5d085",
-                "reference": "20783215042b181b0dec92c9e01947b93cb5d085",
+                "url": "https://api.github.com/repos/mailgun/mailgun-php/zipball/ef3dc6b8bf78b1f760da16b6860c4072c798d286",
+                "reference": "ef3dc6b8bf78b1f760da16b6860c4072c798d286",
                 "shasum": ""
             },
             "require": {
@@ -575,7 +575,7 @@
                 }
             ],
             "description": "The Mailgun SDK provides methods for all API functions.",
-            "time": "2017-12-07T21:05:43+00:00"
+            "time": "2018-02-01T22:58:55+00:00"
         },
         {
             "name": "michelf/php-markdown",
@@ -1409,12 +1409,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/propelorm/Propel2.git",
-                "reference": "1f6557d1a6f436b6bb08099238878246362028ca"
+                "reference": "6c4996fc130c7555d82d9dca04396c6f3eeef306"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/propelorm/Propel2/zipball/1f6557d1a6f436b6bb08099238878246362028ca",
-                "reference": "1f6557d1a6f436b6bb08099238878246362028ca",
+                "url": "https://api.github.com/repos/propelorm/Propel2/zipball/6c4996fc130c7555d82d9dca04396c6f3eeef306",
+                "reference": "6c4996fc130c7555d82d9dca04396c6f3eeef306",
                 "shasum": ""
             },
             "require": {
@@ -1465,7 +1465,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2018-01-27T02:17:16+00:00"
+            "time": "2018-02-19T13:36:42+00:00"
         },
         {
             "name": "psr/container",
