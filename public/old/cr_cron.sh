@@ -1,1 +1,0 @@
-wget -qO- https://rota.allsaints.church/cr_daily.php?TOKEN=sdhq%5E%235734tqufsry45u46q9arw4%24%25%40%23%24%5Eqartuuc3%26%25%24aear4qq5t4y
