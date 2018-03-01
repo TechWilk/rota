@@ -191,4 +191,4 @@ $app->group('/job', function () {
     $this->get('/daily/{token}', JobController::class.':getDaily')->setName('job-daily');
 });
 
-require_once __DIR__ . '/routes-legacy.php';
+require_once __DIR__.'/routes-legacy.php';

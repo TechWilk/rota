@@ -22,7 +22,6 @@ function legacyRouteUsers($request, $response, $args)
 $app->get('/old/users.php', 'legacyRouteUsers');
 $app->get('/users.php', 'legacyRouteUsers');
 
-
 function legacyRouteCalendarTokens($request, $response, $args)
 {
     return $response->withStatus(308)->withHeader('Location', $this->router->pathFor('user-calendars'));
@@ -45,7 +44,7 @@ $app->get('/editPassword.php', 'legacyRoutePassword');
 
 function legacyRouteEvent($request, $response, $args)
 {
-    $eventId = (int)$args['id'];
+    $eventId = (int) $args['id'];
 
     return $response->withStatus(308)->withHeader('Location', $this->router->pathFor('event', ['id' => $eventId]));
 }
