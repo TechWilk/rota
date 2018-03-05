@@ -41,7 +41,8 @@
         "slim/twig-view": "^2.2",
         "techwilk/twig-linewrap": "^1.0",
         "techwilk/twig-slim-csrf": "^1.0",
-        "twig/extensions": "^1.4"
+        "twig/extensions": "^1.4",
+        "divineomega/password_exposed": "^2.3"
     },
     "autoload": {
         "psr-4": {

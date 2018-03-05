@@ -3,6 +3,9 @@
 namespace TechWilk\Rota;
 
 use DateTime;
+use DivineOmega\PasswordExposed\PasswordExposedChecker;
+use DivineOmega\PasswordExposed\PasswordStatus;
+use Exception;
 use Propel\Runtime\ActiveQuery\Criteria;
 use TechWilk\Rota\Authoriser\UserAuthoriser;
 use TechWilk\Rota\Base\User as BaseUser;
@@ -68,10 +71,16 @@ class User extends BaseUser
             $v = (string) $v;
         }
 
+        $exposedChecker = new PasswordExposedChecker();
+
+        if ($exposedChecker->passwordExposed($v) === PasswordStatus::EXPOSED) {
+            throw new Exception('Password exposed in recent data breach.');
+        }
+
         if (!password_verify($v, $this->password)) {
             $bcrypt_options = [
-        'cost' => 12,
-      ];
+                'cost' => 12,
+            ];
             $this->password = password_hash($v, PASSWORD_BCRYPT, $bcrypt_options);
 
             $this->modifiedColumns[UserTableMap::COL_PASSWORD] = true;
