@@ -533,16 +533,16 @@
         },
         {
             "name": "mailgun/mailgun-php",
-            "version": "2.4.1",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mailgun/mailgun-php.git",
-                "reference": "ef3dc6b8bf78b1f760da16b6860c4072c798d286"
+                "reference": "0bd1d8bfc5c56a9e59deb8526422a04b9e83a80a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mailgun/mailgun-php/zipball/ef3dc6b8bf78b1f760da16b6860c4072c798d286",
-                "reference": "ef3dc6b8bf78b1f760da16b6860c4072c798d286",
+                "url": "https://api.github.com/repos/mailgun/mailgun-php/zipball/0bd1d8bfc5c56a9e59deb8526422a04b9e83a80a",
+                "reference": "0bd1d8bfc5c56a9e59deb8526422a04b9e83a80a",
                 "shasum": ""
             },
             "require": {
@@ -576,7 +576,7 @@
                 }
             ],
             "description": "The Mailgun SDK provides methods for all API functions.",
-            "time": "2018-02-01T22:58:55+00:00"
+            "time": "2018-04-08T10:40:14+00:00"
         },
         {
             "name": "michelf/php-markdown",
@@ -840,6 +840,7 @@
                 "psr-7",
                 "psr-messages"
             ],
+            "abandoned": "middlewares/*",
             "time": "2017-09-28T21:21:24+00:00"
         },
         {
