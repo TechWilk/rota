@@ -1456,7 +1456,7 @@
             ],
             "authors": [
                 {
-                    "name": "William DURAND",
+                    "name": "William Durand",
                     "email": "william.durand1@gmail.com"
                 }
             ],
@@ -1667,16 +1667,16 @@
         },
         {
             "name": "slim/slim",
-            "version": "3.9.2",
+            "version": "3.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim.git",
-                "reference": "4086d0106cf5a7135c69fce4161fe355a8feb118"
+                "reference": "d8aabeacc3688b25e2f2dd2db91df91ec6fdd748"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/Slim/zipball/4086d0106cf5a7135c69fce4161fe355a8feb118",
-                "reference": "4086d0106cf5a7135c69fce4161fe355a8feb118",
+                "url": "https://api.github.com/repos/slimphp/Slim/zipball/d8aabeacc3688b25e2f2dd2db91df91ec6fdd748",
+                "reference": "d8aabeacc3688b25e2f2dd2db91df91ec6fdd748",
                 "shasum": ""
             },
             "require": {
@@ -1734,7 +1734,7 @@
                 "micro",
                 "router"
             ],
-            "time": "2017-11-26T19:13:09+00:00"
+            "time": "2018-04-19T19:29:08+00:00"
         },
         {
             "name": "slim/twig-view",
