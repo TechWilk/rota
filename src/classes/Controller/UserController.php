@@ -2,6 +2,7 @@
 
 namespace TechWilk\Rota\Controller;
 
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TechWilk\Rota\Crypt;
@@ -186,8 +187,14 @@ class UserController extends BaseController
             return $this->view->render($response, 'user-password.twig', ['user' => $u, 'message' => $message]);
         }
 
-        $u->setPassword($new);
-        $u->save();
+        try {
+            $u->setPassword($new);
+            $u->save();
+        } catch (Exception $e) {
+            $message = 'Password has been exposed in a recent data breach. For your safety, we check all passwords against data breaches from other organisations and prevent you from using passwords which have been leaked. If you use this password for any other account, we strongly advise you change it immediately.';
+
+            return $this->view->render($response, 'user-password.twig', ['user' => $u, 'message' => $message]);
+        }
 
         return $response->withStatus(303)->withHeader('Location', $this->router->pathFor('user', ['id' => $u->getId()]));
     }
