@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "98159bdec8cf6f714563e667d20b8cac",
+    "content-hash": "55941aaac302169e631ff7630ed2f28a",
     "packages": [
         {
             "name": "aptoma/twig-markdown",
@@ -194,22 +194,22 @@
         },
         {
             "name": "dpolac/twig-lambda",
-            "version": "v0.5.0",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dpolac/twig-lambda.git",
-                "reference": "703d4440f986035c9010163c79a4afc78894ab80"
+                "reference": "9138b853dd786e1646870c409cc26f379e2b0b8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dpolac/twig-lambda/zipball/703d4440f986035c9010163c79a4afc78894ab80",
-                "reference": "703d4440f986035c9010163c79a4afc78894ab80",
+                "url": "https://api.github.com/repos/dpolac/twig-lambda/zipball/9138b853dd786e1646870c409cc26f379e2b0b8a",
+                "reference": "9138b853dd786e1646870c409cc26f379e2b0b8a",
                 "shasum": ""
             },
             "require": {
                 "dpolac/dictionary": "^1.0",
-                "php": "^5.4 || ^7.0",
-                "twig/twig": "^1.0"
+                "php": "^5.6 || ^7.0",
+                "twig/twig": "^1.0 || ^2.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "~5.0"
@@ -244,7 +244,7 @@
                 "sort",
                 "unique"
             ],
-            "time": "2016-06-11T13:10:51+00:00"
+            "time": "2018-06-06T16:44:04+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -1456,7 +1456,7 @@
             ],
             "authors": [
                 {
-                    "name": "William Durand",
+                    "name": "William DURAND",
                     "email": "william.durand1@gmail.com"
                 }
             ],
@@ -2542,16 +2542,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.35.0",
+            "version": "v1.35.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "daa657073e55b0a78cce8fdd22682fddecc6385f"
+                "reference": "b48680b6eb7d16b5025b9bfc4108d86f6b8af86f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/daa657073e55b0a78cce8fdd22682fddecc6385f",
-                "reference": "daa657073e55b0a78cce8fdd22682fddecc6385f",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/b48680b6eb7d16b5025b9bfc4108d86f6b8af86f",
+                "reference": "b48680b6eb7d16b5025b9bfc4108d86f6b8af86f",
                 "shasum": ""
             },
             "require": {
@@ -2559,8 +2559,8 @@
             },
             "require-dev": {
                 "psr/container": "^1.0",
-                "symfony/debug": "~2.7",
-                "symfony/phpunit-bridge": "~3.3@dev"
+                "symfony/debug": "^2.7",
+                "symfony/phpunit-bridge": "^3.3"
             },
             "type": "library",
             "extra": {
@@ -2603,7 +2603,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-09-27T18:06:46+00:00"
+            "time": "2018-03-20T04:25:58+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -3532,6 +3532,7 @@
                 "github",
                 "test"
             ],
+            "abandoned": "php-coveralls/php-coveralls",
             "time": "2017-12-08T14:28:16+00:00"
         },
         {
