@@ -29,7 +29,7 @@ namespace TechWilk\Rota;
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.4 -->
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <!-- Ionicons -->
@@ -39,14 +39,14 @@ namespace TechWilk\Rota;
 
 
     <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
 
     <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
           page. However, you can choose any other skin. Make sure you
           apply the skin class to the body tag so the changes take effect.
     -->
 		<?php $skin = siteSettings()->getSkin() ? siteSettings()->getSkin() : 'skin-blue-light' ?>
-    <link rel="stylesheet" href="dist/css/skins/<?php echo $skin ?>.min.css">
+    <link rel="stylesheet" href="../dist/css/skins/<?php echo $skin ?>.min.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -455,11 +455,6 @@ namespace TechWilk\Rota;
               <i class="fa fa-arrow-left"></i> <span>Return to new system</span>
             </a>
         </li>
-        <li <?php echo basename($_SERVER['SCRIPT_FILENAME']) == 'index.php' ? 'class="active"' : ''; ?>>
-            <a href="index.php">
-              <i class="fa fa-tachometer"></i> <span>Dashboard</span>
-            </a>
-        </li>
 					<?php if (isLoggedIn()) {
                                             ?>
 					<li class="treeview <?php echo basename($_SERVER['SCRIPT_FILENAME']) == 'events.php' || basename($_SERVER['SCRIPT_FILENAME']) == 'createEvent.php' ? ' active' : ''; ?>">
@@ -485,11 +480,11 @@ namespace TechWilk\Rota;
                                                     echo "class='active' ";
                                                 }
                                             } ?>>
-										<a href="events.php?view=all&filter=<?php echo $row['id']; ?>"><?php echo $row['name']; ?>s</a></li>
+										<a href="../events/type/<?php echo (int)$row['id']; ?>"><?php echo $row['name']; ?>s</a></li>
 									<?php
                                             } ?>
 								<li <?php echo empty($filter) && isset($view) && $view == 'all' ? 'class="active"' : '' ?>>
-									<a href="events.php?view=all">View All</a>
+									<a href="../events">View All</a>
 								</li>
 								<?php if (isAdmin()) : ?>
 								<li <?php echo basename($_SERVER['SCRIPT_FILENAME']) == 'createEvent.php' && is_null(getQueryStringForKey('id')) ? 'class="active"' : '' ?>>
