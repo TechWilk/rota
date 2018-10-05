@@ -6,7 +6,7 @@ if (isset($_GET['view']) && $_GET['view'] !== 'all') {
 }
 
 if (isset($_GET['filter'])) {
-    header('Location: ../events/type/'.(int)$_GET['filter']);
+    header('Location: ../events/type/'.(int) $_GET['filter']);
     exit;
 }
 

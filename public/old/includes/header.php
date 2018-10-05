@@ -480,7 +480,7 @@ namespace TechWilk\Rota;
                                                     echo "class='active' ";
                                                 }
                                             } ?>>
-										<a href="../events/type/<?php echo (int)$row['id']; ?>"><?php echo $row['name']; ?>s</a></li>
+										<a href="../events/type/<?php echo (int) $row['id']; ?>"><?php echo $row['name']; ?>s</a></li>
 									<?php
                                             } ?>
 								<li <?php echo empty($filter) && isset($view) && $view == 'all' ? 'class="active"' : '' ?>>
