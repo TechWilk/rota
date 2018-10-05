@@ -21,7 +21,7 @@ Rota can be installed on almost any PHP web host, possibly even on the one your 
 
 ### What you'll need:
 
-- Web host running PHP 5.6 or above (recommended PHP 7.0)
+- Web host running PHP 7.1 or above (it may work with earlier versions, but this isn't supported)
 - MySQL database (or an alternate DB which works with [PDO](http://php.net/manual/en/pdo.drivers.php), we've only tested MySQL though)
 - [Mailgun](https://www.mailgun.com/) account for email sending (10,000 email/month free) - or sendmail if you're feeling brave...
 
