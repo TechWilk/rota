@@ -24,7 +24,7 @@
         }
     },
     "require": {
-        "aptoma/twig-markdown": "^2.0",
+        "aptoma/twig-markdown": "^3.0",
         "dpolac/twig-lambda": "^1.0.0",
         "erusev/parsedown": "^1.6",
         "facebook/graph-sdk": "~5.0",
