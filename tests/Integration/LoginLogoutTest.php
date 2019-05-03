@@ -124,14 +124,14 @@ class LoginLogoutTest extends BaseTestCase
     }
 
     /**
-     * Test that the logout route won't accept a post request
+     * Test that the logout route won't accept a post request.
      */
     public function testPostLogoutNotAccepted()
     {
         $response = $this->runApp('POST', '/logout', ['test']);
 
         $this->assertEquals(400, $response->getStatusCode());
-        $this->assertContains('Failed CSRF check!', (string)$response->getBody());
+        $this->assertContains('Failed CSRF check!', (string) $response->getBody());
     }
 
     /**

@@ -175,7 +175,6 @@ class BaseTestCase extends TestCase
         $html = strip_tags($html, '<input>');
 
         if (empty($html)) {
-
             return [];
         }
 

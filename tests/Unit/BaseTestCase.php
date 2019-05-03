@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use Slim\App;
 use PHPUnit\Framework\TestCase;
+use Slim\App;
 
 error_reporting(-1);
 ini_set('display_errors', 1);
