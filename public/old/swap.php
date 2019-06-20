@@ -174,7 +174,7 @@ include 'includes/header.php';
         <p><strong>Error: </strong><?php echo $err ?></p>
       
       <?php elseif (!empty($swap)): ?>
-        <?php 
+        <?php
         $canAcceptSwap = canAcceptSwap($swap->getId());
         $canDeclineSwap = canDeclineSwap($swap->getId());
         ?>

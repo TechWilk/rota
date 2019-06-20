@@ -74,6 +74,7 @@ class Authentication
     {
         if (!$this->numberOfLoginAttemptsIsOk($email)) {
             throw new Exception('Too many attempts.');
+
             return false;
         }
 
