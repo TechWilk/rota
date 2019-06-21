@@ -101,7 +101,7 @@ include 'includes/header.php';
                 </strong>
               </p>
             </div>
-            <?php 
+            <?php
             $canAcceptSwap = canAcceptSwap($swap->getId());
             $canDeclineSwap = canDeclineSwap($swap->getId());
             ?>

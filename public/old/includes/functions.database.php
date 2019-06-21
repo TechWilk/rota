@@ -2,8 +2,6 @@
 
 namespace TechWilk\Rota;
 
-use DateTime;
-
 /*
     This file is part of Church Rota.
 

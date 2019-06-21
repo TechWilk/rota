@@ -3,7 +3,6 @@
 namespace Tests\Integration;
 
 use TechWilk\Rota\SettingsQuery;
-use TechWilk\Rota\User;
 use TechWilk\Rota\UserQuery;
 
 class InstallationTest extends BaseTestCase
