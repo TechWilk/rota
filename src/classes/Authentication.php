@@ -95,8 +95,9 @@ class Authentication
                     ->filterByRevoked(false)
                     ->findOne();
                 if (is_null($socialAuth)) {
-                    $user = UserQuery::create()->filterByEmail($email)->findOne();
-                    if (!is_null($user)) {
+                    $users = UserQuery::create()->filterByEmail($email)->find();
+                    if (count($users) === 1) {
+                        $user = $users[0];
                         $socialAuth = new SocialAuth();
                         $socialAuth->setUser($user);
                         $socialAuth->setPlatform('onebody');
