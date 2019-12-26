@@ -29,4 +29,10 @@ jobs:
             cp config/auth{.default,}.php
             cp config/email{.default,}.php
             cp config/recording{.default,}.php
-      - run: composer test
+      - run: |
+          mkdir -p ~/phpunit
+          composer test -- --log-junit ~/phpunit/junit.xml
+      - store_test_results:
+          path: ~/phpunit
+      - store_artifacts:
+          path: ~/phpunit
