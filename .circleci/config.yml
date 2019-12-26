@@ -25,4 +25,3 @@ jobs:
       - run: cp config/email{.default,}.php
       - run: cp config/recording{.default,}.php
       - run: composer test
-      - run: php vendor/bin/coveralls -v
