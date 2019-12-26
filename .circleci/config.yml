@@ -7,8 +7,11 @@ jobs:
     working_directory: ~/laravel
     steps:
       - checkout
-      - run: sudo apt update && sudo apt install -y libsqlite3-dev zlib1g-dev
-      - run: sudo docker-php-ext-install zip
+      - run:
+          command: |
+            sudo apt update
+            sudo apt install -y libsqlite3-dev zlib1g-dev
+            sudo docker-php-ext-install zip
       - run: sudo composer self-update
       - restore_cache:
           keys:
@@ -20,8 +23,10 @@ jobs:
           key: composer-v1-{{ checksum "composer.lock" }}
           paths:
             - vendor
-      - run: cp config/database{.default,}.php
-      - run: cp config/auth{.default,}.php
-      - run: cp config/email{.default,}.php
-      - run: cp config/recording{.default,}.php
+      - run: 
+          command: |
+            cp config/database{.default,}.php
+            cp config/auth{.default,}.php
+            cp config/email{.default,}.php
+            cp config/recording{.default,}.php
       - run: composer test
