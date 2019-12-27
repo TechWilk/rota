@@ -1,5 +1,3 @@
-version: 2
-
 shared: &shared
   working_directory: ~/rota
   steps:
@@ -27,6 +25,8 @@ shared: &shared
         path: ~/phpunit
     - store_artifacts:
         path: ~/phpunit
+
+version: 2
 
 jobs:
   php7.2:
