@@ -173,6 +173,11 @@ class BaseTestCase extends TestCase
 
         // strip html5 tags which break DOMDocument
         $html = strip_tags($html, '<input>');
+
+        if (empty($html)) {
+            return [];
+        }
+
         $dom->loadHTML($html);
 
         $xpath = new DOMXPath($dom);

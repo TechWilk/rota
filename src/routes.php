@@ -99,6 +99,7 @@ $app->group('/resource', function () {
 $app->group('/group', function () {
     $this->get('/{id}', GroupController::class.':getGroup')->setName('group');
     $this->get('/{id}/roles', GroupController::class.':getGroupRoles')->setName('group-roles');
+    $this->post('/{id}/roles', GroupController::class.':postGroupRoles')->setName('group-roles-post');
 
     $this->get('/{id}/events', EventController::class.':getAllEventsToPrintForGroup')->setName('group-events-print');
 
@@ -190,3 +191,5 @@ $app->group('/install', function () {
 $app->group('/job', function () {
     $this->get('/daily/{token}', JobController::class.':getDaily')->setName('job-daily');
 });
+
+require_once __DIR__.'/routes-legacy.php';

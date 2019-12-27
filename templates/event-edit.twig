@@ -2,6 +2,12 @@
 
 {% block content %}
 
+<div class="alert alert-info alert-dismissable no-print">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+  <h4><i class="icon fa fa-info"></i> BETA Test</h4>
+  <p>You are testing the new rota system. <a href="{{ path_for('home') }}old/createEvent.php">Use the old event creation screen.</a></p>
+</div>
+
 {% if event and not copy %}
 <form action="{{ path_for('event-post', { 'id': event.id }) }}" method="post">
 {% else %}

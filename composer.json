@@ -20,17 +20,17 @@
     },
     "config": {
         "platform": {
-            "php": "5.6.0"
+            "php": "7.1.0"
         }
     },
     "require": {
-        "aptoma/twig-markdown": "^2.0",
-        "dpolac/twig-lambda": "^0.5.0",
+        "aptoma/twig-markdown": "^3.0",
+        "dpolac/twig-lambda": "^1.0.0",
         "erusev/parsedown": "^1.6",
         "facebook/graph-sdk": "~5.0",
         "guzzlehttp/guzzle": "~6.0",
         "guzzlehttp/psr7": "^1.3",
-        "mailgun/mailgun-php": "^2.1",
+        "mailgun/mailgun-php": "^3.0",
         "michelf/php-markdown": "~1.3",
         "monolog/monolog": "^1.17",
         "oscarotero/psr7-middlewares": "^3.20",
@@ -52,7 +52,7 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.7.26",
+        "phpunit/phpunit": "^7.5.9",
         "satooshi/php-coveralls": "^2.0"
     },
     "scripts": {
