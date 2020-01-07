@@ -37,7 +37,7 @@ $response = $client->request(
   'POST',
   'v3/tokens.json',
   ['form_params' => ['api_key' => siteConfig()['recording']['locomotivecms']['apiKey'],
-                       'email' => siteConfig()['recording']['locomotivecms']['email'], ]]
+      'email'                  => siteConfig()['recording']['locomotivecms']['email'], ]]
   );
 if ($response->getStatusCode() == 201) {
     $token = json_decode($response->getBody())->token;

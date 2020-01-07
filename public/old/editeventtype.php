@@ -95,7 +95,7 @@ include 'includes/header.php';
 
 <div class="row">
 	<div class="col-sm-6">
-		<?php foreach ($eventTypes as $eventType): ?>
+		<?php foreach ($eventTypes as $eventType) { ?>
 		<div class="box box-primary">
 				<div class="box-header">
 					<h2 class="box-title"><?php echo $eventType->getName() ?></h2>
@@ -117,7 +117,7 @@ include 'includes/header.php';
 				</a>
 			</div>
 		</div><!-- /.box -->
-		<?php endforeach ?>
+		<?php } ?>
 	</div><!-- /.col -->
 
 	<div class="col-sm-6">
@@ -153,9 +153,9 @@ include 'includes/header.php';
 						<select name="defaultLocation" id="defaultLocation" class="form-control">
 							<option value="">No default location</option>
 							<?php $locations = LocationQuery::create()->find();
-                            foreach ($locations as $location): ?>
+                            foreach ($locations as $location) { ?>
 									<option value="<?php echo $location->getId() ?>"><?php echo $location->getName() ?></option>
-							<?php endforeach ?>
+							<?php } ?>
 						</select>
 					</div>
 				</div><!-- /.box-body -->

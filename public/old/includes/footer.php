@@ -118,9 +118,11 @@ namespace TechWilk\Rota;
 
 <script src="js/general.js"></script>
 
-<?php if (!empty($jsToInclude)): foreach ($jsToInclude as $jsInclude): ?>
+<?php if (!empty($jsToInclude)) {
+    foreach ($jsToInclude as $jsInclude) { ?>
 <script src="js/<?php echo $jsInclude; ?>.js"></script>
-<?php endforeach; endif; ?>
+<?php }
+} ?>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
 	 Both of these plugins are recommended to enhance the
