@@ -543,38 +543,38 @@ include 'includes/header.php';
                             }
                             $groups = GroupQuery::create()->joinWith('Group.Role')->joinWith('Role.UserRole')->find();
 
-                            foreach ($groups as $group): ?>
+                            foreach ($groups as $group) { ?>
 							<legend><?php echo $group->getName() ?></legend>
-							<?php foreach ($group->getRoles() as $role): ?>
+							<?php foreach ($group->getRoles() as $role) { ?>
 								<div class="form-group col-md-6">
 									<label><?php echo $role->getName() ?></label>
 									<select name="userRole[]" multiple="multiple" class="form-control multi" style="width:100%;" data-placeholder="Select people for <?php echo $role->getName() ?>">
 										<optgroup label="Regular">
 										<?php $countReserve = 0 ?>
-										<?php foreach ($role->getUserRoles() as $userRole): ?>
-											<?php if (!$userRole->getReserve()): ?>
+										<?php foreach ($role->getUserRoles() as $userRole) { ?>
+											<?php if (!$userRole->getReserve()) { ?>
 											<?php $isInEvent = in_array($userRole->getId(), $usersInEvent) ?>
 											<option value="<?php echo $userRole->getId() ?>" <?php echo $isInEvent ? 'selected="selected"' : '' ?>><?php echo $userRole->getUser()->getFirstName().' '.$userRole->getUser()->getLastName() ?></option>
-											<?php else: ?>
+											<?php } else { ?>
 											<?php $countReserve += 1 ?>
-											<?php endif //!userRole->getReserve?>
-										<?php endforeach //users?>
+											<?php } //!userRole->getReserve?>
+										<?php } //users?>
 										</optgroup>
-										<?php if ($countReserve > 0): ?>
+										<?php if ($countReserve > 0) { ?>
 										<optgroup label="Reserve">
-										<?php foreach ($role->getUserRoles() as $userRole): ?>
-											<?php if ($userRole->getReserve()): ?>
+										<?php foreach ($role->getUserRoles() as $userRole) { ?>
+											<?php if ($userRole->getReserve()) { ?>
 											<?php $isInEvent = in_array($userRole->getId(), $usersInEvent) ?>
 											<option value="<?php echo $userRole->getId() ?>" <?php echo $isInEvent ? 'selected="selected"' : '' ?>><?php echo $userRole->getUser()->getFirstName().' '.$userRole->getUser()->getLastName() ?></option>
-											<?php endif ?>
-										<?php endforeach //users?>
+											<?php } ?>
+										<?php } //users?>
 										</optgroup>
-										<?php endif //countReserve > 0?>
+										<?php } //countReserve > 0?>
 									</select>
 									</div>
-								<?php endforeach // roles?>
+								<?php } // roles?>
 
-							<?php endforeach // groups?>
+							<?php } // groups?>
 
 							<?php /*
 
