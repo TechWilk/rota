@@ -146,7 +146,7 @@ include 'includes/header.php';
 
 				<div class="box-body">
 
-					<?php foreach ($users as $user): ?>
+					<?php foreach ($users as $user) { ?>
 					<div class='checkbox'>
 						<label for='user[<?php echo $user['id']; ?>]'>
 							<input
@@ -159,7 +159,7 @@ include 'includes/header.php';
 							<?php echo $user['name']; ?>
 						</label>
 					</div>
-					<?php endforeach ?>
+					<?php } ?>
 
 				</div>
 				<div class="box-footer">

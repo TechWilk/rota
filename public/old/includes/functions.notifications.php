@@ -5,17 +5,17 @@ namespace TechWilk\Rota;
 function swapTypesArray()
 {
     return [
-    0 => 'general',
-    1 => 'admin',
-    2 => 'feature',
-    3 => 'event',
-    4 => 'reminder',
-    5 => 'account',
-    6 => 'swap',
-    7 => 'swap-pending',
-    8 => 'swap-approved',
-    9 => 'email',
-  ];
+        0 => 'general',
+        1 => 'admin',
+        2 => 'feature',
+        3 => 'event',
+        4 => 'reminder',
+        5 => 'account',
+        6 => 'swap',
+        7 => 'swap-pending',
+        8 => 'swap-approved',
+        9 => 'email',
+    ];
 }
 
 function createNotificationForUser($userId, $summary, $body, $typeName, $link = null)
