@@ -121,13 +121,13 @@ include 'includes/header.php';
           <h2 class="box-title">Send to everyone involved in the event who is in the groups</h2>
         </div>
         <div class="box-body">
-          <?php if (count($groups) > 0): ?>
-            <?php foreach ($groups as $group): ?>
+          <?php if (count($groups) > 0) { ?>
+            <?php foreach ($groups as $group) { ?>
               <div>
                 <label><input type="checkbox" name="group[]" value="<?php echo $group->id ?>"> <?php echo $group->name ?> (<?php echo $group->users ?>)</label>
               </div>
-            <?php endforeach; ?>
-          <?php endif; ?>
+            <?php } ?>
+          <?php } ?>
         </div>
       </div>
       <div class="box box-primary">
