@@ -277,7 +277,7 @@ namespace TechWilk\Rota;
 
 						<!-- Notifications Menu -->
 						<?php
-                        if (isset($_SESSION['userid'])):
+                        if (isset($_SESSION['userid'])) {
                             $userId = $_SESSION['userid'];
                             $sql = "SELECT id, timestamp, summary, body, link, seen FROM notifications WHERE userId = '$userId' AND dismissed = FALSE AND archived = FALSE ORDER BY id DESC";
 
@@ -290,8 +290,7 @@ namespace TechWilk\Rota;
                                 if ($ob->seen == false) {
                                     $unseen += 1;
                                 }
-                            }
-                        ?>
+                            } ?>
 						<li class="dropdown notifications-menu">
 							<!-- Menu toggle button -->
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -303,21 +302,21 @@ namespace TechWilk\Rota;
 								<li>
 									<!-- Inner Menu: contains the notifications -->
 									<ul class="menu">
-									<?php foreach ($notifications as $n): ?>
+									<?php foreach ($notifications as $n) { ?>
 										<li><!-- start notification -->
 											<a href="notification.php?click=notifications-panel&id=<?php echo $n->id ?>">
 												<i class="fa fa-users text-aqua"></i> <?php echo $n->seen ? $n->summary : '<strong>'.$n->summary.'</strong>' ?>
 												<small><?php echo timeAgoInWords($n->timestamp) ?></small>
 											</a>
 										</li><!-- end notification -->
-									<?php endforeach; ?>
+									<?php } ?>
 									</ul>
 								</li>
 								<li class="footer"><a href="#">View all (comming soon...)</a></li>
 							</ul>
 						</li>
 						<?php
-                        endif;
+                        }
 
                         /*
                         <!-- Tasks Menu -->
@@ -357,7 +356,7 @@ namespace TechWilk\Rota;
                         </li>
                         */
 
-                        if (isset($_SESSION['userid'])): ?>
+                        if (isset($_SESSION['userid'])) { ?>
 						<!-- User Account Menu -->
 						<li class="dropdown user user-menu">
 							<?php
@@ -405,7 +404,7 @@ namespace TechWilk\Rota;
 								</li>
 							</ul>
 						</li>
-						<?php endif; ?>
+						<?php } ?>
 
 						<!-- Control Sidebar Toggle Button -->
 						<li>
@@ -486,11 +485,11 @@ namespace TechWilk\Rota;
 								<li <?php echo empty($filter) && isset($view) && $view == 'all' ? 'class="active"' : '' ?>>
 									<a href="../events">View All</a>
 								</li>
-								<?php if (isAdmin()) : ?>
+								<?php if (isAdmin()) { ?>
 								<li <?php echo basename($_SERVER['SCRIPT_FILENAME']) == 'createEvent.php' && is_null(getQueryStringForKey('id')) ? 'class="active"' : '' ?>>
 									<a href="createEvent.php">Add Event</a>
 								</li>
-								<?php endif ?>
+								<?php } ?>
 						</ul>
 					</li>
 					<?php
@@ -503,9 +502,9 @@ namespace TechWilk\Rota;
                         echo basename($_SERVER['SCRIPT_FILENAME']) == 'locations.php' ? 'class="active"' : ''; ?>><a href="settings.php"><i class="fa fa-gears"></i> <span>Settings</span></a></li>
 					<?php
                     }  ?>
-					<?php if (!isLoggedIn()) : ?>
+					<?php if (!isLoggedIn()) { ?>
           <li <?php echo basename($_SERVER['SCRIPT_FILENAME']) == 'login.php' ? 'class="active"' : ''; ?>><a href="login.php">Login</a></li>
-          <?php endif; ?>
+          <?php } ?>
 				</ul>
       </section>
 		</aside>

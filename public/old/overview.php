@@ -89,7 +89,7 @@ include 'includes/header.php';
 			<div class="box-header with-border">
 				<h2 class="box-title"><?php echo $title; ?></h2>
 			</div>
-		  <?php if ($sentSuccess == ''): ?>
+		  <?php if ($sentSuccess == '') { ?>
 			<form action="#" method="post" id="settings">
 				<fieldset>
 					<div class="box-body">
@@ -116,9 +116,9 @@ include 'includes/header.php';
 			</form>
 
 		  <?php
-            else:
+            } else {
                 echo '<div class="box-body">'.$sentSuccess.'</div>';
-            endif;
+            }
             ?>
 				</div>
 			</div>

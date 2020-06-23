@@ -16,10 +16,10 @@ function facebookIsEnabled()
 function facebook()
 {
     $fb = new Facebook\Facebook([
-      'app_id'                => siteConfig()['auth']['facebook']['appId'],
-      'app_secret'            => siteConfig()['auth']['facebook']['appSecret'],
-      'default_graph_version' => 'v2.2',
-      ]);
+        'app_id'                => siteConfig()['auth']['facebook']['appId'],
+        'app_secret'            => siteConfig()['auth']['facebook']['appSecret'],
+        'default_graph_version' => 'v2.2',
+    ]);
 
     return $fb;
 }
