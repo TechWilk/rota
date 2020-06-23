@@ -106,13 +106,13 @@ include 'includes/header.php';
     } ?>
  </div><!-- /.box-body -->
 </div><!-- /.box -->
-<?php if (!empty($message)):?>
+<?php if (!empty($message)) { ?>
 	<div class="alert alert-danger alert-dismissable">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 		<h4><i class="icon fa fa-exclamation-triangle"></i> Error</h4>
 		<?php echo $message; ?>
 	</div>
-<?php endif; ?>
+<?php } ?>
 <div class="box box-primary">
  <div class="box-header">
 	 <h2 class="box-title">Add Series:</h2>

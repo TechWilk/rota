@@ -162,9 +162,9 @@ function sendViaMailgun($to, $subject, $message, $from, $bcc = '')
     $domain = siteConfig()['email']['mailgun']['domain'];
 
     $status = $mg->sendMessage($domain, ['from'                               => $from,
-                                                                    'to'      => $to,
-                                                                    'subject' => $subject,
-                                                                    'text'    => $message, ]);
+        'to'                                                                  => $to,
+        'subject'                                                             => $subject,
+        'text'                                                                => $message, ]);
 
     if ($status->http_response_code = 200) {
         return true;
@@ -263,12 +263,13 @@ function emailTemplate($message, $name, $date, $location, $rehearsal, $rotaoutpu
     $message = str_replace('[date]', $date, $message);
     $message = str_replace('[location]', $location, $message);
     $message = str_replace('[rehearsal]', $rehearsal, $message);
-    if (is_array($rotaoutput)):
-        foreach ($rotaoutput as $key => $skill):
+    if (is_array($rotaoutput)) {
+        foreach ($rotaoutput as $key => $skill) {
             $skillfinal = $skillfinal.$skill.' ';
-    endforeach; else:
+        }
+    } else {
         $skillfinal = $rotaoutput;
-    endif;
+    }
     $message = str_replace('[rotaoutput]', $skillfinal, $message);
     $message = str_replace('[siteurl]', $siteurl, $message);
     $message = str_replace('[username]', $username, $message);
@@ -440,10 +441,11 @@ function notifyEveryoneForEvent($eventId)
             $roleResult = mysqli_query(db(), $roleSql) or die(mysqli_error(db()));
             $roles = [];
             while ($roleRow = mysqli_fetch_array($roleResult, MYSQLI_ASSOC)) {
-                if (($roleRow['name'] == '') || ($roleRow['name'] == $roleRow['description'])):
-                    $roles[] = $roleRow['description']; else:
+                if (($roleRow['name'] == '') || ($roleRow['name'] == $roleRow['description'])) {
+                    $roles[] = $roleRow['description'];
+                } else {
                     $roles[] = $roleRow['description'].' - '.$roleRow['name'];
-                endif;
+                }
             }
 
             $updateID = $ob->userId;

@@ -153,7 +153,8 @@ function updateDatabase()
             insertStatistics('system', __FILE__, 'db-update', '2.3.3', $version);
         case '2.3.3':
             if (substr($mysqli_version, 0, 1) == 5) {
-                executeDbSql("
+                executeDbSql(
+                    "
 					CREATE FUNCTION getBrowserInfo (user_agent VARCHAR(255)) RETURNS VARCHAR(100) DETERMINISTIC
 					 BEGIN
 					  DECLARE v_browser,v_os VARCHAR(20);
@@ -194,7 +195,7 @@ function updateDatabase()
 					
 					  RETURN CONCAT(v_browser ,' / ',v_os);
 					END;"
-                    );
+                );
             }
             executeDbSql("update settings set version = '2.3.4'");
             notifyInfo(__FILE__, 'db-update='.$version.'->2.3.4', $_SESSION['userid']);
@@ -228,7 +229,8 @@ function updateDatabase()
         case '2.4.4':
             if (substr($mysqli_version, 0, 1) == 5) {
                 executeDbSql('DROP FUNCTION getBrowserInfo');
-                executeDbSql("
+                executeDbSql(
+                    "
 					CREATE FUNCTION getBrowserInfo (user_agent VARCHAR(255)) RETURNS VARCHAR(100) DETERMINISTIC
 					 BEGIN
 					  DECLARE v_browser,v_os VARCHAR(20);
