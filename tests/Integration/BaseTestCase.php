@@ -125,73 +125,73 @@ class BaseTestCase extends TestCase
         $serviceContainer->setAdapterClass('default', 'sqlite');
         $manager = new ConnectionManagerSingle();
         $manager->setConfiguration([
-        'classname'  => 'Propel\\Runtime\\Connection\\ConnectionWrapper',
-        'dsn'        => 'sqlite:/var/tmp/test.db',
-        'attributes' => [
-            'ATTR_EMULATE_PREPARES' => false,
-            'ATTR_TIMEOUT'          => 30,
-        ],
-        'model_paths' => [
-            0 => 'src',
-            1 => 'vendor',
-        ],
-        ]);
-        $manager->setName('default');
-        $serviceContainer->setConnectionManager('default', $manager);
-        $serviceContainer->setDefaultDatasource('default');
+            'classname'  => 'Propel\\Runtime\\Connection\\ConnectionWrapper',
+            'dsn'        => 'sqlite:/var/tmp/test.db',
+            'attributes' => [
+                'ATTR_EMULATE_PREPARES' => false,
+                'ATTR_TIMEOUT'          => 30,
+            ],
+            'model_paths' => [
+                0 => 'src',
+                1 => 'vendor',
+            ],
+            ]);
+            $manager->setName('default');
+            $serviceContainer->setConnectionManager('default', $manager);
+            $serviceContainer->setDefaultDatasource('default');
 
-        // delete test db (if exists) and create a new one
-        if (file_exists('/var/tmp/test.db')) {
-            unlink('/var/tmp/test.db');
-        }
+            // delete test db (if exists) and create a new one
+            if (file_exists('/var/tmp/test.db')) {
+                unlink('/var/tmp/test.db');
+            }
     }
 
     protected function installDatabase()
     {
-        $sqlManager = new SqlManager();
-        $sqlManager->setConnections(
-            ['default' => [
+            $sqlManager = new SqlManager();
+            $sqlManager->setConnections(
+                ['default' => [
                     'dsn'     => 'sqlite:/var/tmp/test.db',
                     'adapter' => 'sqlite',
                 ],
-            ]
-        );
-        $sqlManager->setWorkingDirectory(__DIR__.'/../../generated-sql');
-        $sqlManager->insertSql();
+                ]
+            );
+            $sqlManager->setWorkingDirectory(__DIR__.'/../../generated-sql');
+            $sqlManager->insertSql();
     }
 
     public function getCsrfTokensForUri($requestUri)
     {
-        $response = $this->runApp('GET', $requestUri);
+            $response = $this->runApp('GET', $requestUri);
 
-        $html = (string) $response->getBody();
+            $html = (string) $response->getBody();
 
-        $dom = new DOMDocument();
-        $dom->validateOnParse = false;
-        $dom->recover = true;
-        $dom->formatOutput = false;
+            $dom = new DOMDocument();
+            $dom->validateOnParse = false;
+            $dom->recover = true;
+            $dom->formatOutput = false;
 
-        // strip html5 tags which break DOMDocument
-        $html = strip_tags($html, '<input>');
+            // strip html5 tags which break DOMDocument
+            $html = strip_tags($html, '<input>');
 
-        if (empty($html)) {
-            return [];
-        }
-
-        $dom->loadHTML($html);
-
-        $xpath = new DOMXPath($dom);
-        foreach ($this->csrfTokenFields as $field) {
-            $col = $xpath->query('//input[@name="'.$field.'"]');
-            foreach ($col as $node) {
-                $csrfTokens[$field] = $node->getAttribute('value');
+            if (empty($html)) {
+                return [];
             }
-        }
 
-        if (empty($csrfTokens)) {
-            return [];
-        }
+            $dom->loadHTML($html);
 
-        return $csrfTokens;
+            $xpath = new DOMXPath($dom);
+            foreach ($this->csrfTokenFields as $field) {
+                $col = $xpath->query('//input[@name="'.$field.'"]');
+                foreach ($col as $node) {
+                    $csrfTokens[$field] = $node->getAttribute('value');
+                }
+            }
+
+            if (empty($csrfTokens)) {
+                return [];
+            }
+
+            return $csrfTokens;
     }
 }
