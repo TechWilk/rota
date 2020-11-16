@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($editskillID != '') {
         $sql = ("INSERT INTO eventPeople (eventID, skillID) VALUES ('$editeventID', '$editskillID')");
         if (!mysqli_query(db(), $sql)) {
-            die('Error: '.mysqli_error(db()));
+            exit('Error: '.mysqli_error(db()));
         }
 
         // After we have inserted the data, we want to head back to the main page
@@ -81,14 +81,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($editbandID != '') {
         $sqlbandMembers = "SELECT * FROM bandMembers WHERE bandID = '$editbandID'";
-        $resultbandMembers = mysqli_query(db(), $sqlbandMembers) or die(mysqli_error(db()));
+        $resultbandMembers = mysqli_query(db(), $sqlbandMembers) or exit(mysqli_error(db()));
 
         while ($bandMember = mysqli_fetch_array($resultbandMembers, MYSQLI_ASSOC)) {
             $editskillID = $bandMember['skillID'];
 
             $sql = ("INSERT INTO eventPeople (eventID, skillID) VALUES ('$editeventID', '$editskillID')");
             if (!mysqli_query(db(), $sql)) {
-                die('Error: '.mysqli_error(db()));
+                exit('Error: '.mysqli_error(db()));
             }
         }
 

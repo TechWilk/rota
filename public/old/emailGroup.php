@@ -74,7 +74,7 @@ $sql = 'SELECT
           INNER JOIN userRoles ur ON ur.roleId = r.id
         GROUP BY
           g.id';
-$result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+$result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 while ($ob = mysqli_fetch_object($result)) {
     $groups[] = $ob;
 }
@@ -110,13 +110,13 @@ include 'includes/header.php';
           <h2 class="box-title">Send to</h2>
         </div>
         <div class="box-body">
-          <?php if (count($groups) > 0): ?>
-            <?php foreach ($groups as $group): ?>
+          <?php if (count($groups) > 0) { ?>
+            <?php foreach ($groups as $group) { ?>
               <div>              
                 <label><input type="checkbox" name="group[]" value="<?php echo $group->id ?>"> <?php echo $group->name ?> (<?php echo $group->users ?>)</label>
               </div>
-            <?php endforeach; ?>
-          <?php endif; ?>
+            <?php } ?>
+          <?php } ?>
         </div>
       </div>
       <div class="box box-primary">

@@ -58,7 +58,7 @@ $sessionUserId = $_SESSION['userid'];
 
     $sqlSettings = 'SELECT * FROM settings';
 
-    $resultSettings = mysqli_query(db(), $sqlSettings) or die(mysqli_error(db()));
+    $resultSettings = mysqli_query(db(), $sqlSettings) or exit(mysqli_error(db()));
     $rowSettings = mysqli_fetch_array($resultSettings, MYSQLI_ASSOC);
     $lang_locale = $rowSettings['lang_locale'];
     $time_format_short = $rowSettings['time_format_short'];
@@ -83,7 +83,7 @@ $sessionUserId = $_SESSION['userid'];
     }
 
     $sql = 'SELECT count(*) AS colcount FROM groups g';
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
     $colCnt = $row['colcount'] + 2;
 
@@ -116,7 +116,7 @@ $sessionUserId = $_SESSION['userid'];
 																WHERE '.$whereTwoMonth.'
 																AND e.removed = 0)
 									 ORDER BY name';
-        $result = mysqli_query(db(), $filter_sql) or die(mysqli_error(db()));
+        $result = mysqli_query(db(), $filter_sql) or exit(mysqli_error(db()));
 
         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
             ?>
@@ -135,7 +135,7 @@ $sessionUserId = $_SESSION['userid'];
 	<td ><strong>Event</strong></td>
 	<?php
     $sql = 'SELECT * FROM groups g ORDER BY '.$group_sorting_name;
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         echo '<td><strong>';
@@ -179,7 +179,7 @@ $sessionUserId = $_SESSION['userid'];
 							e.date';
     }
 
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $eventID = $row['id'];
         $preacher = '';
@@ -234,7 +234,7 @@ $sessionUserId = $_SESSION['userid'];
         for ($i = 0; $i < count($categoryID); $i++) {
             $peopleInEvent = false;
             echo '<td>';
-            $resultPeople = mysqli_query(db(), $sqlPeople) or die(mysqli_error(db()));
+            $resultPeople = mysqli_query(db(), $sqlPeople) or exit(mysqli_error(db()));
             $previousName = '';
             while ($viewPeople = mysqli_fetch_array($resultPeople, MYSQLI_ASSOC)) {
                 $groupID = $viewPeople['groupId'];
