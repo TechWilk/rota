@@ -167,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		skin='$skin'";
 
     if (!mysqli_query(db(), $sql)) {
-        die('Error: '.mysqli_error(db()));
+        exit('Error: '.mysqli_error(db()));
     }
     header('Location: settings.php');
 }
@@ -183,7 +183,7 @@ include 'includes/header.php';
 
 <?php
 $sql = 'SELECT * FROM settings';
-$result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+$result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
     ?>
@@ -342,21 +342,21 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 					<label for="skin">Application skin:</label>
 					<select name="skin" id="skin" class="form-control">
 						<?php $skinOptions = ['skin-blue-light'                                           => 'Blue &amp; Light',
-                                                                    'skin-blue'         => 'Blue &amp; Dark',
-                                                                    'skin-yellow-light' => 'Yellow &amp; Light',
-                                                                    'skin-yellow'       => 'Yellow &amp; Dark',
-                                                                    'skin-green-light'  => 'Green &amp; Light',
-                                                                    'skin-green'        => 'Green &amp; Dark',
-                                                                    'skin-purple-light' => 'Purple &amp; Light',
-                                                                    'skin-purple'       => 'Purple &amp; Dark',
-                                                                    'skin-red-light'    => 'Red &amp; Light',
-                                                                    'skin-red'          => 'Red &amp; Dark',
-                                                                    'skin-black-light'  => 'Black &amp; Light',
-                                                                    'skin-black'        => 'Black &amp; Dark', ];
+						    'skin-blue'                                                                   => 'Blue &amp; Dark',
+						    'skin-yellow-light'                                                           => 'Yellow &amp; Light',
+						    'skin-yellow'                                                                 => 'Yellow &amp; Dark',
+						    'skin-green-light'                                                            => 'Green &amp; Light',
+						    'skin-green'                                                                  => 'Green &amp; Dark',
+						    'skin-purple-light'                                                           => 'Purple &amp; Light',
+						    'skin-purple'                                                                 => 'Purple &amp; Dark',
+						    'skin-red-light'                                                              => 'Red &amp; Light',
+						    'skin-red'                                                                    => 'Red &amp; Dark',
+						    'skin-black-light'                                                            => 'Black &amp; Light',
+						    'skin-black'                                                                  => 'Black &amp; Dark', ];
 
-    foreach ($skinOptions as $skinName => $skinDescription): ?>
+    foreach ($skinOptions as $skinName => $skinDescription) { ?>
 						<option value="<?php echo $skinName ?>" <?php echo ($skinName == $row['skin']) ? 'selected' : '' ?>><?php echo $skinDescription ?></option>
-						<?php endforeach ?>
+						<?php } ?>
 					</select>
 				</div>
 

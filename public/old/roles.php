@@ -36,7 +36,7 @@ $assignTo = filter_var($assignTo, FILTER_SANITIZE_NUMBER_INT);
 if ($role && $assignTo) {
     $sql = "UPDATE roles r SET r.groupId = '$assignTo' WHERE r.id = '$role'";
     if (!mysqli_query(db(), $sql)) {
-        die('Error: '.mysqli_error(db()));
+        exit('Error: '.mysqli_error(db()));
     }
     header('Location: roles.php');
     exit;
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sql = "INSERT INTO roles (name, description, rehersalId, groupId)
             VALUES ('$newrole', '$newrole', $rehersal, $groupId)";
         if (!mysqli_query(db(), $sql)) {
-            die('Error: '.mysqli_error(db()));
+            exit('Error: '.mysqli_error(db()));
         }
     } else {
         // Handle renaming of the roles
@@ -98,7 +98,7 @@ function listOfGroups($type = 'option', $roleId = '0')
     $sql = 'SELECT *
           FROM groups g
           ORDER BY g.id';
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
     $list = '';
 
@@ -158,7 +158,7 @@ include 'includes/header.php';
                 FROM groups g
                 LEFT JOIN roles r ON g.id = r.groupId
                 ORDER BY g.id, r.name';
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
     $group = 0;
     echo '<div>';

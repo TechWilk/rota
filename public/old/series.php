@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $sql = "UPDATE eventGroups SET name = '$name', description = '$description' WHERE id = '$editid'";
         }
         if (!mysqli_query(db(), $sql)) {
-            die('Error: '.mysqli_error(db()));
+            exit('Error: '.mysqli_error(db()));
         }
     } else {
         $name = $_POST['seriesName'];
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             $sql = ("INSERT INTO eventGroups (name, description) VALUES ('$name', '$description')");
             if (!mysqli_query(db(), $sql)) {
-                die('Error: '.mysqli_error(db()));
+                exit('Error: '.mysqli_error(db()));
             }
 
             // After we have inserted the data, we want to head back to the main users page
@@ -95,7 +95,7 @@ include 'includes/header.php';
   <div class="box-body">
 		<p>
 		<?php $sql = 'SELECT * FROM eventGroups WHERE archived = false ORDER BY name';
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $seriesId = $row['id'];
@@ -106,13 +106,13 @@ include 'includes/header.php';
     } ?>
  </div><!-- /.box-body -->
 </div><!-- /.box -->
-<?php if (!empty($message)):?>
+<?php if (!empty($message)) { ?>
 	<div class="alert alert-danger alert-dismissable">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 		<h4><i class="icon fa fa-exclamation-triangle"></i> Error</h4>
 		<?php echo $message; ?>
 	</div>
-<?php endif; ?>
+<?php } ?>
 <div class="box box-primary">
  <div class="box-header">
 	 <h2 class="box-title">Add Series:</h2>

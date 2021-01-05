@@ -14,7 +14,7 @@ function addUserToEvent($eventId, $userRoleId)
     $sql = ("INSERT INTO eventPeople (eventId, userRoleId) VALUES ('$eventId', '$userRoleId')");
 
     if (!mysqli_query(db(), $sql)) {
-        die('Error: '.mysqli_error(db()));
+        exit('Error: '.mysqli_error(db()));
     }
 }
 
@@ -29,7 +29,7 @@ function removeUserFromEvent($id, $userRoleId)
 {
     $sql = "DELETE FROM eventPeople WHERE eventId = '$id' AND userRoleId = '$userRoleId'";
     if (!mysqli_query(db(), $sql)) {
-        die('Error: '.mysqli_error(db()));
+        exit('Error: '.mysqli_error(db()));
     }
 }
 
@@ -39,7 +39,7 @@ function createSwapEntry($eventPersonId, $newUserRoleId, $verified = 0)
     $newUserRoleId = filter_var($newUserRoleId, FILTER_SANITIZE_NUMBER_INT);
 
     $sql = "SELECT userRoleId FROM eventPeople WHERE id = '$eventPersonId'";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $oldUserRoleId = $row['userRoleId'];
     }
@@ -49,7 +49,7 @@ function createSwapEntry($eventPersonId, $newUserRoleId, $verified = 0)
         $declined = 0;
 
         $sql = "UPDATE eventPeople SET userRoleId = '$newUserRoleId', $notified = 0, $deleted = 0 WHERE id = '$eventPersonId'";
-        mysqli_query(db(), $sql) or die(mysqli_error(db()));
+        mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     } else {
         $verified = 0;
         $declined = 0;
@@ -83,7 +83,7 @@ function createSwapEntry($eventPersonId, $newUserRoleId, $verified = 0)
 function verificationCodeForSwap($swapId)
 {
     $sql = "SELECT verificationCode FROM swaps WHERE id = '$swapId'";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $verificationCode = $row['verificationCode'];
     }
@@ -166,7 +166,7 @@ function notifySwapCreated($swapId, $message = '')
 
     $verificationCode = verificationCodeForSwap($swapId);
 
-    $result = mysqli_query(db(), $query) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $query) or exit(mysqli_error(db()));
 
     $ob = mysqli_fetch_object($result);
 
@@ -229,7 +229,7 @@ function notifySwapAccepted($swapId, $message = '')
 
     $verificationCode = verificationCodeForSwap($swapId);
 
-    $result = mysqli_query(db(), $query) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $query) or exit(mysqli_error(db()));
 
     $ob = mysqli_fetch_object($result);
 
@@ -311,7 +311,7 @@ function notifySwapDeclined($swapId, $message = '')
 
     $verificationCode = verificationCodeForSwap($swapId);
 
-    $result = mysqli_query(db(), $query) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $query) or exit(mysqli_error(db()));
 
     $ob = mysqli_fetch_object($result);
 
@@ -366,7 +366,7 @@ function canDeclineSwap($swapId)
 					WHERE sw.id = $swapId
 						AND sw.declined = 0
 						AND sw.accepted = 0";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $swap = mysqli_fetch_object($result);
 
     if (!isset($swap->id)) {
@@ -397,7 +397,7 @@ function canAcceptSwap($swapId)
 					WHERE sw.id = $swapId
 						AND sw.declined = 0
 						AND sw.accepted = 0";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $swap = mysqli_fetch_object($result);
 
     if (!isset($swap->id)) {
@@ -420,7 +420,7 @@ function swapDetailsWithId($swapId)
     $swapId = filter_var($swapId, FILTER_SANITIZE_NUMBER_INT);
 
     $sql = "SELECT * FROM swaps WHERE id = $swapId";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $ob = mysqli_fetch_object($result);
 
     return $ob;
@@ -444,7 +444,7 @@ function rolesOfUserAtEvent($userId, $eventId)
 					WHERE
 						eventId = '$eventId'
 						AND userId = '$userId'";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
     while ($entry = mysqli_fetch_object($result)) {
         $a[] = $entry;
@@ -472,7 +472,7 @@ function rolesUserCanCoverAtEvent($userId, $eventId)
 					WHERE
 						eventId = '$eventId'
 						AND ur.roleId IN (SELECT roleId FROM userRoles WHERE userId = '$userId')";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
     while ($entry = mysqli_fetch_object($result)) {
         $a[] = $entry;
@@ -484,7 +484,7 @@ function rolesUserCanCoverAtEvent($userId, $eventId)
 function numberOfRolesOfUserAtEvent($userId, $eventId)
 {
     $sql = "SELECT COUNT(ur.userId) AS numberOfRoles FROM eventPeople ep INNER JOIN userRoles ur ON ur.id = ep.userRoleId WHERE eventId = '$eventId' AND userId = '$userId'";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $ob = mysqli_fetch_object($result);
 
     return $ob->numberOfRoles;
@@ -496,7 +496,7 @@ function removeSeries($seriesId)
 
     $sql = "UPDATE eventGroups SET archived = true WHERE id = '$seriesId'";
     if (!mysqli_query(db(), $sql)) {
-        die('Error: '.mysqli_error(db()));
+        exit('Error: '.mysqli_error(db()));
     }
 }
 
@@ -505,7 +505,7 @@ function addPeopleBand($bandId, $userRoleId)
     $sql = "INSERT INTO bandMembers (bandId, userRoleId) VALUES ('$bandId', '$userRoleId')";
 
     if (!mysqli_query(db(), $sql)) {
-        die('Error: '.mysqli_error(db()));
+        exit('Error: '.mysqli_error(db()));
     }
 }
 
@@ -523,7 +523,7 @@ function getEventDetails($eventID, $separator, $type = 4, $apprev_description = 
     //type=4 -> only event type
 
     $sqlSettings = 'SELECT * FROM settings';
-    $resultSettings = mysqli_query(db(), $sqlSettings) or die(mysqli_error(db()));
+    $resultSettings = mysqli_query(db(), $sqlSettings) or exit(mysqli_error(db()));
     $rowSettings = mysqli_fetch_array($resultSettings, MYSQLI_ASSOC);
     $lang_locale = $rowSettings['lang_locale'];
     $time_format_normal = $rowSettings['time_format_normal'];
@@ -555,7 +555,7 @@ function getEventDetails($eventID, $separator, $type = 4, $apprev_description = 
     }
     $sql = $sql.'ORDER BY e.id, g.id desc, role, firstname, lastname ';
 
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
     $returnValue = '';
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {

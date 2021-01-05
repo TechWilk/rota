@@ -14,7 +14,7 @@ function createCalendarToken($userId, $format, $description)
     if (mysqli_query(db(), $sql)) {
         return $token;
     } else {
-        die(mysqli_error(db()));
+        exit(mysqli_error(db()));
 
         return;
     }
@@ -27,7 +27,7 @@ function checkCalendarToken($userId, $format, $token)
     $token = mysqli_real_escape_string(db(), $token);
 
     $sql = "SELECT COUNT(*) AS count FROM calendarTokens WHERE userId = $userId AND format = '$format' AND token = '$token' AND revoked = false";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $ob = mysqli_fetch_object($result);
 
     if ($ob->count == 1) {
@@ -54,7 +54,7 @@ function calendarTokensForUser($userId)
     $userId = filter_var($userId, FILTER_SANITIZE_NUMBER_INT);
 
     $sql = "SELECT id, format, description, created, revoked FROM calendarTokens WHERE userId = $userId";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     while ($ob = mysqli_fetch_object($result)) {
         $calendars[] = $ob;
     }

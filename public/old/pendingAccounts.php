@@ -59,7 +59,7 @@ if (empty($id)) {
 // setup page
 
 $sql = "SELECT socialId, firstName, lastName, email, approved, declined, source FROM pendingUsers WHERE id = $id";
-$result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+$result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 $user = mysqli_fetch_object($result);
 
 if (!($user->approved == true || $user->declined == true)) {
@@ -102,7 +102,7 @@ include 'includes/header.php';
     <p><strong>Source:</strong> <?php echo $user->source ?></p>
 
   </div>
-  <?php if ($buttonsVisible == true): ?>
+  <?php if ($buttonsVisible == true) { ?>
   <div class="box-footer">
     <form action="#" method="post">
       <input type="hidden" name="id" value="<?php echo $id ?>" />
@@ -115,10 +115,10 @@ include 'includes/header.php';
       <button class="btn btn-danger">Delete request</button>
     </form>
   </div>
-  <?php endif; ?>
+  <?php } ?>
 </div>
 
-<?php if ($buttonsVisible == true): ?>
+<?php if ($buttonsVisible == true) { ?>
   <div class="box box-primary">
     <div class="box-header">
       <h2 class="box-title">Merge with existing user</h2>
@@ -132,9 +132,9 @@ include 'includes/header.php';
           <select class="form-control" name="existingUser">
             <?php
             $users = allUsersNames();
-            foreach ($users as $existingUser): ?>
+            foreach ($users as $existingUser) { ?>
             <option value="<?php echo $existingUser->id?>" <?php echo($existingUser->firstName == $user->firstName) && ($existingUser->lastName == $user->lastName) ? "selected='selected'" : '' ?>><?php echo $existingUser->firstName.' '.$existingUser->lastName ?></option>
-            <?php endforeach; ?>
+            <?php } ?>
           </select>
         </div>
     </div>
@@ -143,6 +143,6 @@ include 'includes/header.php';
       </form>
     </div>
   </div>
-<?php endif; ?>
+<?php } ?>
 
 <?php include 'includes/footer.php'; ?>
