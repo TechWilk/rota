@@ -69,7 +69,7 @@ if ($action == 'edit' || $action == 'copy') {
 	(SELECT name FROM eventSubTypes WHERE eventSubTypes.id = events.subType) AS subtypename,
 	(SELECT name FROM eventGroups WHERE eventGroups.id = events.eventGroup) AS groupname
 	FROM events WHERE id = '$eventID'";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         if ($action == 'edit') {
@@ -145,11 +145,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($action == 'edit') {
         $sql = "UPDATE events SET date = '$date', rehearsalDate = '$rehersalDate', location = '$location',
 		rehearsal = '$norehearsal', type = '$type', subType = '$subType', name = '$eventName', eventGroup = '$eventGroup', sermonTitle = '$sermonTitle', bibleVerse = '$bibleVerse' WHERE id = '$id'";
-        mysqli_query(db(), $sql) or die(mysqli_error(db()));
+        mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     } else {
         $sql = "INSERT INTO events (date, createdBy, rehearsalDate, type, subType, location, rehearsal, name, eventGroup, sermonTitle, bibleVerse)
 		VALUES ('$date', '$sessionUserID','$rehersalDate', '$type', '$subType', '$location', '$norehearsal', '$eventName', '$eventGroup', '$sermonTitle', '$bibleVerse')";
-        mysqli_query(db(), $sql) or die(mysqli_error(db()));
+        mysqli_query(db(), $sql) or exit(mysqli_error(db()));
         $id = mysqli_insert_id(db());
         $eventID = mysqli_insert_id(db());
     }
@@ -172,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             //if ($userisBandAdmin) $sql = $sql . " AND userRoleId IN (SELECT id FROM userRoles WHERE groupid IN (2,3,4))";
             //if ($userisEventEditor) $sql = $sql . " AND userRoleId IN (SELECT id FROM userRoles WHERE NOT (groupid IN (2,3,4)))";
 
-            $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+            $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
             while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                 // We're going to put it all in a nice array called membersArray
@@ -214,7 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($userisEventEditor) {
             $delete_all_sql = $delete_all_sql.' and skillID in (select skillID from skills where not (groupid in (2,3,4)))';
         }
-        mysqli_query(db(), $delete_all_sql) or die(mysqli_error(db()));
+        mysqli_query(db(), $delete_all_sql) or exit(mysqli_error(db()));
     }
 
     // redirect
@@ -295,7 +295,7 @@ include 'includes/header.php';
 } ?></option>
 										<?php
                                         $sql = 'SELECT id, name, description, defaultTime, defaultLocationId FROM eventTypes ORDER BY name';
-                                        $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+                                        $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
                                         while ($ob = mysqli_fetch_object($result)) {
                                             if (!(isset($type) && $ob->id == $type)) {
                                                 $defaultTime = strftime('%H:%M', strtotime($ob->defaultTime));
@@ -320,7 +320,7 @@ include 'includes/header.php';
                                         } ?></option>
 										<?php
                                         $sql = 'SELECT * FROM eventSubTypes ORDER BY name';
-                                        $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+                                        $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
                                         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                                             if (isset($subtype) && $row['id'] == $subtype) {
@@ -348,7 +348,7 @@ include 'includes/header.php';
                                         } ?></option>
 										<?php
                                         $sql = 'SELECT * FROM locations order by name';
-                                        $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+                                        $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
                                         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                                             if (isset($location) && $row['id'] == $location) {
@@ -479,7 +479,7 @@ include 'includes/header.php';
 									<option value="<?php echo isset($eventGroup) ? $eventGroup : '' ?>"><?php echo isset($eventGroupName) ? $eventGroupName : '' ?></option>
 									<?php
                                     $sql = 'SELECT * FROM eventGroups WHERE archived = false ORDER BY name';
-                                    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+                                    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
                                     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                                         if (isset($type) && $row['id'] == $type) {
@@ -543,38 +543,38 @@ include 'includes/header.php';
                             }
                             $groups = GroupQuery::create()->joinWith('Group.Role')->joinWith('Role.UserRole')->find();
 
-                            foreach ($groups as $group): ?>
+                            foreach ($groups as $group) { ?>
 							<legend><?php echo $group->getName() ?></legend>
-							<?php foreach ($group->getRoles() as $role): ?>
+							<?php foreach ($group->getRoles() as $role) { ?>
 								<div class="form-group col-md-6">
 									<label><?php echo $role->getName() ?></label>
 									<select name="userRole[]" multiple="multiple" class="form-control multi" style="width:100%;" data-placeholder="Select people for <?php echo $role->getName() ?>">
 										<optgroup label="Regular">
 										<?php $countReserve = 0 ?>
-										<?php foreach ($role->getUserRoles() as $userRole): ?>
-											<?php if (!$userRole->getReserve()): ?>
+										<?php foreach ($role->getUserRoles() as $userRole) { ?>
+											<?php if (!$userRole->getReserve()) { ?>
 											<?php $isInEvent = in_array($userRole->getId(), $usersInEvent) ?>
 											<option value="<?php echo $userRole->getId() ?>" <?php echo $isInEvent ? 'selected="selected"' : '' ?>><?php echo $userRole->getUser()->getFirstName().' '.$userRole->getUser()->getLastName() ?></option>
-											<?php else: ?>
+											<?php } else { ?>
 											<?php $countReserve += 1 ?>
-											<?php endif //!userRole->getReserve?>
-										<?php endforeach //users?>
+											<?php } //!userRole->getReserve?>
+										<?php } //users?>
 										</optgroup>
-										<?php if ($countReserve > 0): ?>
+										<?php if ($countReserve > 0) { ?>
 										<optgroup label="Reserve">
-										<?php foreach ($role->getUserRoles() as $userRole): ?>
-											<?php if ($userRole->getReserve()): ?>
+										<?php foreach ($role->getUserRoles() as $userRole) { ?>
+											<?php if ($userRole->getReserve()) { ?>
 											<?php $isInEvent = in_array($userRole->getId(), $usersInEvent) ?>
 											<option value="<?php echo $userRole->getId() ?>" <?php echo $isInEvent ? 'selected="selected"' : '' ?>><?php echo $userRole->getUser()->getFirstName().' '.$userRole->getUser()->getLastName() ?></option>
-											<?php endif ?>
-										<?php endforeach //users?>
+											<?php } ?>
+										<?php } //users?>
 										</optgroup>
-										<?php endif //countReserve > 0?>
+										<?php } //countReserve > 0?>
 									</select>
 									</div>
-								<?php endforeach // roles?>
+								<?php } // roles?>
 
-							<?php endforeach // groups?>
+							<?php } // groups?>
 
 							<?php /*
 
