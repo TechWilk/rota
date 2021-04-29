@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 $overviewArr = notifyOverview('', '');
 $queryRcpt = 'SELECT COUNT(email) AS count FROM users WHERE isOverviewRecipient = 1';
-$resultRcpt = mysqli_query(db(), $queryRcpt) or die(mysqli_error(db()));
+$resultRcpt = mysqli_query(db(), $queryRcpt) or exit(mysqli_error(db()));
 $rowRcpt = mysqli_fetch_array($resultRcpt, MYSQLI_ASSOC);
 $rowRcptCnt = $rowRcpt['count'];
 $hint = 'This message will be sent to ALL users flagged as "Overview Recipient".';
@@ -89,7 +89,7 @@ include 'includes/header.php';
 			<div class="box-header with-border">
 				<h2 class="box-title"><?php echo $title; ?></h2>
 			</div>
-		  <?php if ($sentSuccess == ''): ?>
+		  <?php if ($sentSuccess == '') { ?>
 			<form action="#" method="post" id="settings">
 				<fieldset>
 					<div class="box-body">
@@ -116,9 +116,9 @@ include 'includes/header.php';
 			</form>
 
 		  <?php
-            else:
+            } else {
                 echo '<div class="box-body">'.$sentSuccess.'</div>';
-            endif;
+            }
             ?>
 				</div>
 			</div>

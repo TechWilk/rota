@@ -28,28 +28,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($method == 'truncate') {
         $sql = "CREATE TABLE tmp_system_statistics as SELECT * from statistics WHERE type='system'";
         if (!mysqli_query(db(), $sql)) {
-            die('Error: '.mysqli_error(db()));
+            exit('Error: '.mysqli_error(db()));
         }
 
         $sql = ('TRUNCATE TABLE statistics');
         if (!mysqli_query(db(), $sql)) {
-            die('Error: '.mysqli_error(db()));
+            exit('Error: '.mysqli_error(db()));
         }
 
         $sql = ('ALTER TABLE statistics  AUTO_INCREMENT = 50');
         if (!mysqli_query(db(), $sql)) {
-            die('Error: '.mysqli_error(db()));
+            exit('Error: '.mysqli_error(db()));
         }
 
         $sql = 'INSERT INTO statistics (userid,date,type,detail1,detail2,detail3,script) ';
         $sql = $sql.'SELECT userid,date,type,detail1,detail2,detail3,script from tmp_system_statistics order by date';
         if (!mysqli_query(db(), $sql)) {
-            die('Error: '.mysqli_error(db()));
+            exit('Error: '.mysqli_error(db()));
         }
 
         $sql = 'DROP TABLE tmp_system_statistics';
         if (!mysqli_query(db(), $sql)) {
-            die('Error: '.mysqli_error(db()));
+            exit('Error: '.mysqli_error(db()));
         }
 
         insertStatistics('system', __FILE__, 'statistics deleted');
@@ -105,7 +105,7 @@ include 'includes/header.php';
               <?php
 
                         $sql = 'SELECT VERSION( ) AS mysqli_version';
-            $result = mysqli_query(db(), $sql) or die('MySQL-Error: '.mysqli_error(db()));
+            $result = mysqli_query(db(), $sql) or exit('MySQL-Error: '.mysqli_error(db()));
             $dbv = mysqli_fetch_array($result, MYSQLI_ASSOC);
             $mysqli_version = $dbv['mysqli_version'];
 
@@ -115,7 +115,7 @@ include 'includes/header.php';
                 $sql = "SELECT detail3 as browser,count(*) as count from statistics where detail1 like 'login%' and detail3!='' group by detail3 order by count desc ".$browserLimit;
             }
 
-            $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+            $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
             while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                 extract($row);
                 echo '<tr>';
@@ -148,7 +148,7 @@ include 'includes/header.php';
               }
           }
                 $sql .= ' ORDER BY date desc '.$limit;
-                $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+                $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
                 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                     extract($row);
                     echo '<tr>';

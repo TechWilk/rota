@@ -79,7 +79,7 @@ include 'includes/header.php';
 
       <div class="row">
         <div class="col-sm-6">
-          <?php foreach ($swaps as $swap):?>
+          <?php foreach ($swaps as $swap) { ?>
           <?php $event = $swap->getEventPerson()->getEvent() ?>
           <div class="box box-primary">
             <div class="box-header with-border">
@@ -101,24 +101,24 @@ include 'includes/header.php';
                 </strong>
               </p>
             </div>
-            <?php 
+            <?php
             $canAcceptSwap = canAcceptSwap($swap->getId());
             $canDeclineSwap = canDeclineSwap($swap->getId());
             ?>
-            <?php if ($canAcceptSwap || $canDeclineSwap): ?>
+            <?php if ($canAcceptSwap || $canDeclineSwap) { ?>
             <div class="box-footer">
-              <?php if ($canAcceptSwap): ?>
+              <?php if ($canAcceptSwap) { ?>
               <a class="btn btn-primary" href="swap.php?action=accept&swap=<?php echo $swap->getId() ?>">Accept</a>
-              <?php endif; ?>
-              <?php if ($canDeclineSwap): ?>
+              <?php } ?>
+              <?php if ($canDeclineSwap) { ?>
               <a class="btn" href="swap.php?action=decline&swap=<?php echo $swap->getId() ?>">Decline</a>
-              <?php endif; ?>
+              <?php } ?>
             </div>
-            <?php endif; ?>
+            <?php } ?>
 
 
           </div>
-          <?php endforeach; ?>
+          <?php } ?>
         </div>
       </div>
 

@@ -50,7 +50,7 @@ $sql = "SELECT
         ORDER BY e.date
         ";
 
-$result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+$result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
 $month = '';
 $userEvents = [];
@@ -70,7 +70,7 @@ $remainingEventsOfType = EventTypeQuery::create()->find();
 
 if (isAdmin()) {
     $sql = 'SELECT COUNT(id) AS pendingSwaps FROM swaps WHERE accepted = 0 AND declined = 0';
-    $results = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $results = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $ob = mysqli_fetch_object($results);
 
     $pendingSwaps = $ob->pendingSwaps;
@@ -104,14 +104,14 @@ include 'includes/header.php';
 <section class="content">
 
 
-  <?php if (isset($_SESSION['notification'])): ?>
+  <?php if (isset($_SESSION['notification'])) { ?>
     <div class="alert alert-info alert-dismissable">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       <h4><i class="icon fa fa-info"></i> Status</h4>
       <p><?php echo $_SESSION['notification'] ?></p>
     </div>
     <?php unset($_SESSION['notification']) ?>
-  <?php endif; ?>
+  <?php } ?>
 
 
   <div class="row">
@@ -127,7 +127,7 @@ include 'includes/header.php';
       </div><!-- /.info-box -->
     </div><!-- /.col -->
 
-    <?php if (!empty($pendingSwaps) && $pendingSwaps > 0): ?>
+    <?php if (!empty($pendingSwaps) && $pendingSwaps > 0) { ?>
     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
       <div class="info-box">
         <span class="info-box-icon bg-<?php echo $pendingSwaps > 0 ? 'yellow' : 'aqua' ?>"><i class="ion ion-loop"></i></span>
@@ -138,7 +138,7 @@ include 'includes/header.php';
         </div><!-- /.info-box-content -->
       </div><!-- /.info-box -->
     </div><!-- /.col -->
-    <?php endif; ?>
+    <?php } ?>
 
     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
       <div class="info-box">
@@ -150,14 +150,14 @@ include 'includes/header.php';
         <div class="info-box-content">
           <span class="info-box-text">Rota Ends</span>
           <span class="info-box-number"><?php echo timeInWordsWithTense($lastEvent->getDate()) ?></span>
-          <?php if (isAdmin()): ?><a href="createEvent.php">add events</a><?php endif ?>
+          <?php if (isAdmin()) { ?><a href="createEvent.php">add events</a><?php } ?>
         </div><!-- /.info-box-content -->
       </div><!-- /.info-box -->
     </div><!-- /.col -->
 
 
     <?php
-    if ((isAdmin()) || ($logged_in_show_snapshot_button == '1')): ?>
+    if ((isAdmin()) || ($logged_in_show_snapshot_button == '1')) { ?>
 
     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
       <a href="tableView.php">
@@ -171,7 +171,7 @@ include 'includes/header.php';
       </a>
     </div><!-- /.col -->
 
-    <?php endif; /* END isAdmin() || logged_in_show_snapshot_button=='1' */ ?>
+    <?php } /* END isAdmin() || logged_in_show_snapshot_button=='1' */ ?>
 
   </div><!-- /.row -->
 
@@ -186,18 +186,18 @@ include 'includes/header.php';
 
       <h2>Events this week:</h2>
 
-      <?php if (count($eventsThisWeek) > 0): ?>
+      <?php if (count($eventsThisWeek) > 0) { ?>
 
       <ul class="timeline" id="this-week">
-        <?php foreach ($eventsThisWeek as $event): ?>
+        <?php foreach ($eventsThisWeek as $event) { ?>
 
         <?php // Month separators
         $newMonth = $event->getDate('F Y');
-        if ($month != $newMonth):
-        $month = $newMonth;
-        ?>
+        if ($month != $newMonth) {
+            $month = $newMonth; ?>
         <li class="time-label"><span class="bg-green"><?php echo $month ?></span></li>
-        <?php endif ?>
+        <?php
+        } ?>
 
         <li>
           <i class="fa fa-bell bg-blue"></i>
@@ -226,16 +226,16 @@ include 'includes/header.php';
               <p><strong><?php echo $event->getEventGroup() ? $event->getEventGroup()->getName().': ' : '' ?></strong><?php echo $event->getSermonTitle() ?> <?php echo $event->getBibleVerse() ? '('.$event->getBibleVerse().')' : '' ?></p>
               <p><strong>Location:</strong> <?php echo $event->getLocation()->getName(); ?></p>
 
-              <?php if ($event->getComments()): ?>
-              <?php foreach ($event->getComments() as $comment): ?>
+              <?php if ($event->getComments()) { ?>
+              <?php foreach ($event->getComments() as $comment) { ?>
               <blockquote>
                 <p>
                   <?php echo $comment->getText() ?>
                 </p>
                 <small>Comments</small>
               </blockquote>
-              <?php endforeach ?>
-              <?php endif ?>
+              <?php } ?>
+              <?php } ?>
             </div><!-- /.box-body -->
 
             <div class="box-footer">
@@ -246,14 +246,14 @@ include 'includes/header.php';
                 <a href="swap.php?event=<?php echo $event->getId() ?>" class="btn btn-warning">
                   <i class="fa fa-refresh"></i>&nbsp; Swap
                 </a>
-                <?php if (isAdmin()): ?>
+                <?php if (isAdmin()) { ?>
                 <a class="btn btn-primary" href="createEvent.php?action=edit&id=<?php echo $event->getId() ?>">
                   <i class="fa fa-pencil"></i><span> &nbsp;Edit</span>
                 </a>
                 <a class="btn btn-primary" href="emailEvent.php?event=<?php echo $event->getId() ?>">
                   <i class='fa fa-envelope-o'></i><span> &nbsp;Send email</span>
                 </a>
-                <?php endif ?>
+                <?php } ?>
               </div><!-- /.btn-group -->
             </div>
           </div>
@@ -287,48 +287,47 @@ include 'includes/header.php';
                                   AND ep.removed = 0
                                 ORDER BY g.name, r.name";
 
-                  $resultPeople = mysqli_query(db(), $sqlPeople) or die(mysqli_error(db()));
+                  $resultPeople = mysqli_query(db(), $sqlPeople) or exit(mysqli_error(db()));
                   $groupName = '';
                   $groupId = 0;
                   $identifier = '1';
                   $firstTime = true;
 
-                  if (mysqli_num_rows($resultPeople) > 0):
-
-                    ?>
+                  if (mysqli_num_rows($resultPeople) > 0) {
+                      ?>
                     <?php while ($viewPeople = mysqli_fetch_object($resultPeople)) {
-                        if ($viewPeople->group == $groupId) {
-                            // Do nothing, because they are all in the same group
-                        } else {
-                            // Update the group heading
-                            $groupId = $viewPeople->group;
-                            $groupName = $viewPeople->groupName;
-                            if ($firstTime) {
-                                $firstTime = false;
-                            } else {
-                                echo '</ul>';
-                            }
-                            echo '<p><strong>'.$groupName.'</strong></p>';
-                            echo '<ul>';
-                        }
+                          if ($viewPeople->group == $groupId) {
+                              // Do nothing, because they are all in the same group
+                          } else {
+                              // Update the group heading
+                              $groupId = $viewPeople->group;
+                              $groupName = $viewPeople->groupName;
+                              if ($firstTime) {
+                                  $firstTime = false;
+                              } else {
+                                  echo '</ul>';
+                              }
+                              echo '<p><strong>'.$groupName.'</strong></p>';
+                              echo '<ul>';
+                          }
 
-                        echo '<li>';
-                        echo (isset($viewPeople->swap)) ? "<s><a class='text-danger' href='swap.php?swap=".$viewPeople->swap."'>" : '';
-                        echo $viewPeople->name;
+                          echo '<li>';
+                          echo (isset($viewPeople->swap)) ? "<s><a class='text-danger' href='swap.php?swap=".$viewPeople->swap."'>" : '';
+                          echo $viewPeople->name;
 
-                        if ($viewPeople->rolename != '') {
-                            echo ' - <em>'.$viewPeople->rolename.'</em>';
-                        } else {
-                            // If there is no skill, we don't need to mention this.
-                        }
-                        echo (isset($viewPeople->swap)) ? '</a></s>' : '';
+                          if ($viewPeople->rolename != '') {
+                              echo ' - <em>'.$viewPeople->rolename.'</em>';
+                          } else {
+                              // If there is no skill, we don't need to mention this.
+                          }
+                          echo (isset($viewPeople->swap)) ? '</a></s>' : '';
 
-                        echo '</li>';
-                    }
-                    echo '</ul>';
-                  else:
-                    echo '<p>No roles assigned to this event.';
-                  endif;
+                          echo '</li>';
+                      }
+                      echo '</ul>';
+                  } else {
+                      echo '<p>No roles assigned to this event.';
+                  }
                 ?>
                 </div>
                 <div class="modal-footer">
@@ -340,25 +339,25 @@ include 'includes/header.php';
                     <a href="swap.php?event=<?php echo $event->getId() ?>" class="btn btn-warning">
                       <i class="fa fa-refresh"></i>&nbsp; Swap
                     </a>
-                    <?php if (isAdmin()): ?>
+                    <?php if (isAdmin()) { ?>
                     <a class="btn btn-primary" href="emailEvent.php?event=<?php echo $event->getId() ?>">
                       <i class='fa fa-envelope-o'></i><span> &nbsp;Send email</span>
                     </a>
-                    <?php endif ?>
+                    <?php } ?>
                   </div>
                 </div>
               </div>
             </div>
           </div><!-- /.peopleModal[id] -->
-        <?php endforeach ?>
+        <?php } ?>
       </ul>
       <div class="timeline-load-more">
         <a href="events.php?view=all" class="btn btn-primary">view all events</a>
       </div>
 
-      <?php else: ?>
+      <?php } else { ?>
       <p>There are no events this week. <a href="events.php?view=all">View all events</a></p>
-      <?php endif ?>
+      <?php } ?>
 
 
       <?php
@@ -369,19 +368,19 @@ include 'includes/header.php';
 
       <h2>My events:</h2>
 
-      <?php if (count($userEvents) > 0): ?>
+      <?php if (count($userEvents) > 0) { ?>
       <?php $month = '' ?>
 
       <ul class="timeline" id="my-events">
-        <?php foreach ($userEvents as $event): ?>
+        <?php foreach ($userEvents as $event) { ?>
 
         <?php // Month separators
         $newMonth = strftime('%B %Y', strtotime($event->date));
-        if ($month != $newMonth):
-        $month = $newMonth;
-        ?>
+        if ($month != $newMonth) {
+            $month = $newMonth; ?>
         <li class="time-label"><span class="bg-green"><?php echo $month ?></span></li>
-        <?php endif ?>
+        <?php
+        } ?>
 
         <li>
           <i class="fa fa-bell bg-blue"></i>
@@ -402,14 +401,14 @@ include 'includes/header.php';
               <p><strong><?php echo $event->eventGroup ? $event->eventGroup.': ' : '' ?></strong><?php echo $event->sermonTitle ?> <?php echo $event->bibleVerse ? '('.$event->bibleVerse.')' : '' ?></p>
               <p><strong>Location:</strong> <?php echo $event->eventLocation; ?></p>
 
-              <?php if ($event->comment != ''): ?>
+              <?php if ($event->comment != '') { ?>
               <blockquote>
                 <p>
                   <?php echo $event->comment ?>
                 </p>
                 <small>Comments</small>
               </blockquote>
-              <?php endif ?>
+              <?php } ?>
             </div><!-- /.box-body -->
 
             <div class="box-footer">
@@ -420,14 +419,14 @@ include 'includes/header.php';
                 <a href="swap.php?event=<?php echo $event->id ?>" class="btn btn-warning">
                   <i class="fa fa-thumbs-o-down"></i>&nbsp; Can't Do It
                 </a>
-                <?php if (isAdmin()): ?>
+                <?php if (isAdmin()) { ?>
                 <a class="btn btn-primary" href="createEvent.php?action=edit&id=<?php echo $event->id ?>">
                   <i class="fa fa-pencil"></i><span> &nbsp;Edit</span>
                 </a>
                 <a class="btn btn-primary" href="emailEvent.php?event=<?php echo $event->id ?>">
                   <i class='fa fa-envelope-o'></i><span> &nbsp;Send email</span>
                 </a>
-                <?php endif ?>
+                <?php } ?>
               </div><!-- /.btn-group -->
             </div>
           </div>
@@ -464,48 +463,47 @@ include 'includes/header.php';
                                   AND ep.removed = 0
                                 ORDER BY g.name, r.name";
 
-                  $resultPeople = mysqli_query(db(), $sqlPeople) or die(mysqli_error(db()));
+                  $resultPeople = mysqli_query(db(), $sqlPeople) or exit(mysqli_error(db()));
                   $groupName = '';
                   $groupId = 0;
                   $identifier = '1';
                   $firstTime = true;
 
-                  if (mysqli_num_rows($resultPeople) > 0):
-
-                    ?>
+                  if (mysqli_num_rows($resultPeople) > 0) {
+                      ?>
                     <?php while ($viewPeople = mysqli_fetch_object($resultPeople)) {
-                        if ($viewPeople->group == $groupId) {
-                            // Do nothing, because they are all in the same group
-                        } else {
-                            // Update the group heading
-                            $groupId = $viewPeople->group;
-                            $groupName = $viewPeople->groupName;
-                            if ($firstTime) {
-                                $firstTime = false;
-                            } else {
-                                echo '</ul>';
-                            }
-                            echo '<p><strong>'.$groupName.'</strong></p>';
-                            echo '<ul>';
-                        }
+                          if ($viewPeople->group == $groupId) {
+                              // Do nothing, because they are all in the same group
+                          } else {
+                              // Update the group heading
+                              $groupId = $viewPeople->group;
+                              $groupName = $viewPeople->groupName;
+                              if ($firstTime) {
+                                  $firstTime = false;
+                              } else {
+                                  echo '</ul>';
+                              }
+                              echo '<p><strong>'.$groupName.'</strong></p>';
+                              echo '<ul>';
+                          }
 
-                        echo '<li>';
-                        echo (isset($viewPeople->swap)) ? "<s><a class='text-danger' href='swap.php?swap=".$viewPeople->swap."'>" : '';
-                        echo $viewPeople->name;
+                          echo '<li>';
+                          echo (isset($viewPeople->swap)) ? "<s><a class='text-danger' href='swap.php?swap=".$viewPeople->swap."'>" : '';
+                          echo $viewPeople->name;
 
-                        if ($viewPeople->rolename != '') {
-                            echo ' - <em>'.$viewPeople->rolename.'</em>';
-                        } else {
-                            // If there is no skill, we don't need to mention this.
-                        }
-                        echo (isset($viewPeople->swap)) ? '</a></s>' : '';
+                          if ($viewPeople->rolename != '') {
+                              echo ' - <em>'.$viewPeople->rolename.'</em>';
+                          } else {
+                              // If there is no skill, we don't need to mention this.
+                          }
+                          echo (isset($viewPeople->swap)) ? '</a></s>' : '';
 
-                        echo '</li>';
-                    }
-                    echo '</ul>';
-                  else:
-                    echo '<p>No roles assigned to this event.';
-                  endif;
+                          echo '</li>';
+                      }
+                      echo '</ul>';
+                  } else {
+                      echo '<p>No roles assigned to this event.';
+                  }
                 ?>
                 </div>
                 <div class="modal-footer">
@@ -517,22 +515,22 @@ include 'includes/header.php';
                     <a href="swap.php?event=<?php echo $event->id ?>" class="btn btn-warning">
                       <i class="fa fa-thumbs-o-down"></i>&nbsp; Can't Do It
                     </a>
-                    <?php if (isAdmin()): ?>
+                    <?php if (isAdmin()) { ?>
                     <a class="btn btn-primary" href="emailEvent.php?event=<?php echo $event->id ?>">
                       <i class='fa fa-envelope-o'></i><span> &nbsp;Send email</span>
                     </a>
-                    <?php endif ?>
+                    <?php } ?>
                   </div>
                 </div>
               </div>
             </div>
           </div><!-- /.peopleModal[id] -->
-        <?php endforeach ?>
+        <?php } ?>
       </ul>
 
-      <?php else: ?>
+      <?php } else { ?>
       <p>You have no events on the upcoming rota. <a href="events.php">View all events</a></p>
-      <?php endif ?>
+      <?php } ?>
 
     </div>
 
@@ -544,7 +542,7 @@ include 'includes/header.php';
       // ~~~~~~~ Remaining events ~~~~~~~~~
       // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       ?>
-      <?php if (isset($remainingEventsInGroups)): ?>
+      <?php if (isset($remainingEventsInGroups)) { ?>
 
       <div class="row">
         <div class="col-lg-6">
@@ -554,25 +552,25 @@ include 'includes/header.php';
             </div>
             <div class="box-body">
 
-              <?php foreach ($remainingEventsInGroups as $group): ?>
+              <?php foreach ($remainingEventsInGroups as $group) { ?>
 
               <p>
                 <?php echo $group->getName() ?>
                 <?php $event = EventQuery::create()->useEventPersonQuery()->useUserRoleQuery()->useRoleQuery()->filterByGroup($group)->endUse()->endUse()->endUse()->orderByDate('desc')->findOne() ?>
-                <?php if (!is_null($event)): ?>
+                <?php if (!is_null($event)) { ?>
                 <span class="pull-right badge
                   <?php echo ($event->getDate()->getTimestamp() < $dateInTwoWeeks->getTimestamp()) ? ($event->getDate()->getTimestamp() < (new DateTime())->getTimestamp() ? 'bg-red' : 'bg-orange') : 'bg-green' ?>
                   ">
                   <?php echo timeInWordsWithTense($event->getDate()) ?>
                 </span>
-                <?php else: ?>
+                <?php } else { ?>
                 <span class="pull-right badge bg-red">
                   never
                 </span>
-                <?php endif ?>
+                <?php } ?>
               </p>
 
-              <?php endforeach ?>
+              <?php } ?>
             </div>
           </div>
         </div>
@@ -586,10 +584,10 @@ include 'includes/header.php';
 
               <ul class="nav nav-stacked">
 
-              <?php foreach ($remainingEventsOfType as $type): ?>
+              <?php foreach ($remainingEventsOfType as $type) { ?>
 
                 <?php $event = EventQuery::create()->filterByEventType($type)->orderByDate('desc')->findOne() ?>
-                <?php if (!is_null($event) && $event->getDate() > new DateTime()): ?>
+                <?php if (!is_null($event) && $event->getDate() > new DateTime()) { ?>
                 <li>
                   <a href="events.php?view=all&filter=<?php echo $type->getId() ?>">
                     <?php echo $type->getName() ?>
@@ -600,13 +598,13 @@ include 'includes/header.php';
                     </span>
                   </a>
                 </li>
-                <?php endif ?>
+                <?php } ?>
 
-              <?php endforeach ?>
+              <?php } ?>
 
-              <?php if (count($remainingEventsOfType) <= 0): ?>
+              <?php if (count($remainingEventsOfType) <= 0) { ?>
                 <li>No upcoming events</li>
-              <?php endif ?>
+              <?php } ?>
 
               </ul>
 
@@ -615,7 +613,7 @@ include 'includes/header.php';
         </div>
       </div>
 
-      <?php endif ?>
+      <?php } ?>
 
 
       <?php
@@ -639,12 +637,12 @@ include 'includes/header.php';
             <li><a href="addUser.php?action=edit">Roles:<span class="pull-right badge bg-aqua"><?php echo $userRoles->count() ?></span>
                 <ul>
                   <?php echo $userRoles->count() > 0 ? '' : '<li>No roles</li>' ?>
-                  <?php foreach ($userRoles as $userRole): ?>
+                  <?php foreach ($userRoles as $userRole) { ?>
                   <li>
                     <?php echo $userRole->getRole()->getGroup()->getName() ?>: <?php echo $userRole->getRole()->getName() ?>
                     <?php echo $userRole->getReserve() ? ' (<strong>reserve</strong>)' : '' ?>
                   </li>
-                  <?php endforeach ?>
+                  <?php } ?>
                 </ul>
               </a>
             </li>

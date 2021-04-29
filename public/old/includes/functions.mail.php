@@ -119,7 +119,7 @@ function sendViaSendmail($to, $subject, $message, $from, $bcc = '')
     //--------------------------------------------------------------------------------
     //general mail footer
     $sqlSettings = 'SELECT * FROM settings';
-    $resultSettings = mysqli_query(db(), $sqlSettings) or die(mysqli_error(db()));
+    $resultSettings = mysqli_query(db(), $sqlSettings) or exit(mysqli_error(db()));
     $rowSettings = mysqli_fetch_array($resultSettings, MYSQLI_ASSOC);
     $version = $rowSettings['version'];
     $owner = $rowSettings['owner'];
@@ -162,9 +162,9 @@ function sendViaMailgun($to, $subject, $message, $from, $bcc = '')
     $domain = siteConfig()['email']['mailgun']['domain'];
 
     $status = $mg->sendMessage($domain, ['from'                               => $from,
-                                                                    'to'      => $to,
-                                                                    'subject' => $subject,
-                                                                    'text'    => $message, ]);
+        'to'                                                                  => $to,
+        'subject'                                                             => $subject,
+        'text'                                                                => $message, ]);
 
     if ($status->http_response_code = 200) {
         return true;
@@ -193,7 +193,7 @@ function notifySubscribers($id, $type, $userid)
 		AS topicname FROM subscriptions WHERE topicid = '$id' AND userid != '$userid'";
         $message = 'There has been a new post in the following discussion: ';
     }
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $postname = $row['name'];
@@ -217,7 +217,7 @@ function mailNewUser($userId, $password = '*******')
 {
     $userId = filter_var($userId, FILTER_SANITIZE_NUMBER_INT);
     $sql = "SELECT firstName, lastName, email, username FROM users WHERE id = $userId";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $user = mysqli_fetch_object($result);
 
     if (strlen($user->email) == 0) {
@@ -263,12 +263,13 @@ function emailTemplate($message, $name, $date, $location, $rehearsal, $rotaoutpu
     $message = str_replace('[date]', $date, $message);
     $message = str_replace('[location]', $location, $message);
     $message = str_replace('[rehearsal]', $rehearsal, $message);
-    if (is_array($rotaoutput)):
-        foreach ($rotaoutput as $key => $skill):
+    if (is_array($rotaoutput)) {
+        foreach ($rotaoutput as $key => $skill) {
             $skillfinal = $skillfinal.$skill.' ';
-    endforeach; else:
+        }
+    } else {
         $skillfinal = $rotaoutput;
-    endif;
+    }
     $message = str_replace('[rotaoutput]', $skillfinal, $message);
     $message = str_replace('[siteurl]', $siteurl, $message);
     $message = str_replace('[username]', $username, $message);
@@ -305,11 +306,11 @@ function notifyIndividual($userID, $eventID, $skillID)
 	(SELECT `rehearsal` FROM groups WHERE `skills`.`groupID` = `groups`.`groupID`) AS `rehearsal`, GROUP_CONCAT(skill) AS joinedskill
 	FROM skills WHERE skillID IN (SELECT skillID FROM eventPeople WHERE eventID = '$eventID')
 	AND skillID = '$skillID' GROUP BY userID, groupID ORDER BY groupID";
-    $userresult = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $userresult = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($userresult, MYSQLI_ASSOC)) {
         $eventsql = "SELECT *, DATE_FORMAT(date,'%W, %M %e') AS sundayDate, DATE_FORMAT(rehearsalDate,'%W, %M %e @ %h:%i %p') AS rehearsalDateFormatted FROM events WHERE id = $eventID ORDER BY date";
-        $eventresult = mysqli_query(db(), $eventsql) or die(mysqli_error(db()));
+        $eventresult = mysqli_query(db(), $eventsql) or exit(mysqli_error(db()));
 
         $location = $row['eventLocationFormatted'];
 
@@ -337,7 +338,7 @@ function notifyIndividual($userID, $eventID, $skillID)
         $temp_user_id = $row['userid'];
 
         $sql = "UPDATE eventPeople SET notified = '1' WHERE skillID = '$skillID' AND eventID = '$eventID'";
-        mysqli_query(db(), $sql) or die(mysqli_error(db()));
+        mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
         $message = $row['notificationmessage'];
         $siteurl = $row['siteurl'];
@@ -386,7 +387,7 @@ function notifyEveryoneForEvent($eventId)
 					ORDER BY
 						g.id";
 
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $countarray = [];
 
     while ($ob = mysqli_fetch_object($result)) {
@@ -405,7 +406,7 @@ function notifyEveryoneForEvent($eventId)
 									WHERE
 										e.id = $eventId ORDER BY date";
 
-            $eventresult = mysqli_query(db(), $eventsql) or die(mysqli_error(db()));
+            $eventresult = mysqli_query(db(), $eventsql) or exit(mysqli_error(db()));
             $location = $ob->location;
 
             while ($eventrow = mysqli_fetch_array($eventresult, MYSQLI_ASSOC)) {
@@ -437,13 +438,14 @@ function notifyEveryoneForEvent($eventId)
 											ur.userId = '$temp_user_id'
 											AND ep.eventId = '$eventId'";
 
-            $roleResult = mysqli_query(db(), $roleSql) or die(mysqli_error(db()));
+            $roleResult = mysqli_query(db(), $roleSql) or exit(mysqli_error(db()));
             $roles = [];
             while ($roleRow = mysqli_fetch_array($roleResult, MYSQLI_ASSOC)) {
-                if (($roleRow['name'] == '') || ($roleRow['name'] == $roleRow['description'])):
-                    $roles[] = $roleRow['description']; else:
+                if (($roleRow['name'] == '') || ($roleRow['name'] == $roleRow['description'])) {
+                    $roles[] = $roleRow['description'];
+                } else {
                     $roles[] = $roleRow['description'].' - '.$roleRow['name'];
-                endif;
+                }
             }
 
             $updateID = $ob->userId;
@@ -503,7 +505,7 @@ function notifyEveryoneForEvent($eventId)
 							ep.eventId = '$eventId'
 							AND ur.userId IN (".implode(', ', $countarray).')';
 
-        mysqli_query(db(), $sql) or die(mysqli_error(db()));
+        mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     }
 
     $sql = "UPDATE
@@ -514,7 +516,7 @@ function notifyEveryoneForEvent($eventId)
 						e.id = '$eventId'
 						AND e.id NOT IN
 							(SELECT ep.eventId FROM eventPeople ep WHERE ep.notified = 0 AND ep.eventId = e.id)";
-    mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
     return $countarray;
 }
@@ -526,7 +528,7 @@ function notifyUserForEvent($userId, $eventId, $subject, $message)
     $eventId = filter_var($eventId, FILTER_SANITIZE_NUMBER_INT);
 
     $sql = "SELECT firstName, lastName, email, recieveReminderEmails FROM users WHERE id = $userId";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $user = mysqli_fetch_object($result);
 
     if (!$user->email) {
@@ -563,7 +565,7 @@ function notifyUserForEvent($userId, $eventId, $subject, $message)
 						e.id = $eventId
 					GROUP BY date,id,location,type";
 
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $event = mysqli_fetch_object($result);
 
     $eventDetails = strftime(siteSettings()->getTimeFormatNormal(), strtotime($event->date));
@@ -581,7 +583,7 @@ function notifyUserForEvent($userId, $eventId, $subject, $message)
 					WHERE
 						e.id = $eventId";
 
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $roles = mysqli_fetch_object($result);
 
     $templateValues = [
@@ -654,7 +656,7 @@ function sendEventEmailToGroups($eventId, $subject, $message, $groups)
 						g.id IN ($groupsString)
 						AND ep.eventId = $eventId";
 
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $errors = [];
     while ($ob = mysqli_fetch_object($result)) {
         $status = sendEventMessageEmailToUser($ob->userId, $eventId, $subject, $message);
@@ -664,7 +666,7 @@ function sendEventEmailToGroups($eventId, $subject, $message, $groups)
     }
 
     $sql = "SELECT name FROM groups WHERE id IN ($groupsString)";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $groupNames = '';
     while ($group = mysqli_fetch_object($result)) {
         $groupNames .= $group->name.', ';
@@ -689,7 +691,7 @@ function getGroupEmailSubject()
 function getGroupEmailMessage()
 {
     $sql = 'SELECT overviewemail FROM settings';
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $ob = mysqli_fetch_object($result);
 
     return $ob->overviewemail;
@@ -715,7 +717,7 @@ function sendGroupEmail($subject, $message, $groups)
 						g.id IN ($groupsString)
 						";
 
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $errors = [];
     while ($ob = mysqli_fetch_object($result)) {
         $status = sendUpcomingEventsToUser($ob->userId, $subject, $message);
@@ -725,7 +727,7 @@ function sendGroupEmail($subject, $message, $groups)
     }
 
     $sql = "SELECT name FROM groups WHERE id IN ($groupsString)";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $groupNames = '';
     while ($group = mysqli_fetch_object($result)) {
         $groupNames .= $group->name.', ';
@@ -749,7 +751,7 @@ function sendEventMessageEmailToUser($userId, $eventId, $subject, $message)
     $eventId = filter_var($eventId, FILTER_SANITIZE_NUMBER_INT);
 
     $sql = "SELECT firstName, lastName, email, isOverviewRecipient FROM users WHERE id = $userId";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $user = mysqli_fetch_object($result);
 
     if (!$user->email) {
@@ -789,12 +791,12 @@ function sendEventMessageEmailToUser($userId, $eventId, $subject, $message)
 					GROUP BY
 						e.id";
 
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
     setlocale(LC_TIME, siteSettings()->getLangLocale()); //de_DE
 
     $eventDetails = '';
-    $date;
+
     $ob = mysqli_fetch_object($result);
 
     $date = $ob->date;
@@ -844,7 +846,7 @@ function sendUpcomingEventsToUser($userId, $subject, $message)
     $userId = filter_var($userId, FILTER_SANITIZE_NUMBER_INT);
 
     $sql = "SELECT firstName, lastName, email, isOverviewRecipient FROM users WHERE id = $userId";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $user = mysqli_fetch_object($result);
 
     if (!$user->email) {
@@ -863,7 +865,7 @@ function sendUpcomingEventsToUser($userId, $subject, $message)
     $crlf = "      \n";
 
     $sql = 'SELECT lang_locale, time_format_normal, adminemailaddress, owner FROM settings';
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     //siteSettings() = mysqli_fetch_object($result);
     // todo: fix settings in this function
 
@@ -881,8 +883,8 @@ function sendUpcomingEventsToUser($userId, $subject, $message)
 						AND e.date >= CURRENT_DATE()
 						AND e.removed = 0";
 
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
-    $events;
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
+
     while ($ob = mysqli_fetch_object($result)) {
         $events[] = $ob->id;
     }
@@ -925,12 +927,12 @@ function sendUpcomingEventsToUser($userId, $subject, $message)
 				) sub
 				GROUP BY date,id,location,type";
 
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
     setlocale(LC_TIME, $lang_locale); //de_DE
 
     $eventDetails = '';
-    $date;
+
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $date = $row['date'];
 
@@ -980,7 +982,7 @@ function notifyAttack($fileName, $attackType, $attackerID)
 	Now() AS `attackTime`
 	FROM settings";
 
-    $userresult = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $userresult = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($userresult, MYSQLI_ASSOC)) {
         $subject = 'SECURITY-ALERT - Attack blocked successfully';
@@ -1010,7 +1012,7 @@ function notifyInfo($fileName, $infoMsg, $userID)
 	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users WHERE `users`.id = $userID) AS `name`
 	FROM settings";
 
-    $userresult = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $userresult = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($userresult, MYSQLI_ASSOC)) {
         $subject = 'Info - '.$infoMsg.' - '.$row[name];
@@ -1063,7 +1065,7 @@ function mailToDb($to, $subject, $message, $from, $bcc = '')
     $bcc = mysqli_real_escape_string(db(), $bcc);
 
     $sql = "INSERT INTO emails (emailTo, emailBcc, emailFrom, subject, message) VALUES ('$to', '$bcc', '$from', '$subject', '$message')";
-    mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
     return mysqli_insert_id(db());
 }
@@ -1074,5 +1076,5 @@ function logFailedMailWithId($id, $error)
     $error = mysqli_real_escape_string(db(), $error);
 
     $sql = "UPDATE emails SET error = '$error' WHERE id = '$id'";
-    mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 }

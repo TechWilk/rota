@@ -88,37 +88,37 @@ include 'includes/header.php';
 	<!-- Main content -->
 	<section class="content">
 
-<?php if (empty($possibleAccounts)): ?>
+<?php if (empty($possibleAccounts)) { ?>
   <div class="alert alert-warning">
     <h4><i class="icon fa fa-info"></i>Social login has not been enabled.</h4>
     <p>Speak with your site administrator if you think this feature should be enabled.</p>
   </div>
-<?php endif; ?>
+<?php } ?>
 
-<?php foreach ($possibleAccounts as $platform): ?>
+<?php foreach ($possibleAccounts as $platform) { ?>
 <div class="box box-primary">
   <div class="box-header">
     <h3 class="box-title"><?php echo $platform ?></h3>
   </div>
   <div class="box-body">
-    <?php if (userIsLinkedToPlatform($id, $platform)): ?>
+    <?php if (userIsLinkedToPlatform($id, $platform)) { ?>
     <form action="#" method="post">
       <input type="hidden" name="id" value="<?php echo $id ?>" />
       <input type="hidden" name="platform" value="<?php echo $platform ?>" />
       <input type="hidden" name="action" value="unlink" />
       <button class="btn btn-danger">Unlink</button>
     </form>
-    <?php else: ?>
+    <?php } else { ?>
     <form action="#" method="post">
       <input type="hidden" name="id" value="<?php echo $id ?>" />
       <input type="hidden" name="platform" value="<?php echo $platform ?>" />
       <input type="hidden" name="action" value="link" />
       <button class="btn btn-primary">Link</button>
     </form>
-    <?php endif; ?>
+    <?php } ?>
   </div>
 </div>
-<?php endforeach; ?>
+<?php } ?>
     
 
 <?php include 'includes/footer.php';
