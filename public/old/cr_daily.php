@@ -117,7 +117,7 @@ MESSAGE;
                         date >= CURDATE()
                         AND date_format( date , "%y-%m-%d" )
                                 <= date_format( DATE_ADD(now(), INTERVAL '.$daysAlert.' DAY ) , "%y-%m-%d" )';
-        $resultEvents = mysqli_query(db(), $sqlEvents) or die(mysqli_error(db()));
+        $resultEvents = mysqli_query(db(), $sqlEvents) or exit(mysqli_error(db()));
         $i = 0;
         while ($rowEvents = mysqli_fetch_array($resultEvents, MYSQLI_ASSOC)) {
             $usersNotified = notifyEveryoneForEvent($rowEvents['id']);

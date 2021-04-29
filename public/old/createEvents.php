@@ -86,7 +86,7 @@ include 'includes/header.php';
 } ?></option>
 										<?php
                                         $sql = 'SELECT id, name, description, defaultTime, defaultLocationId FROM eventTypes ORDER BY name';
-                                        $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+                                        $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
                                         while ($ob = mysqli_fetch_object($result)) {
                                             if (!(isset($type) && $ob->id == $type)) {
                                                 $defaultTime = strftime('%H:%M', strtotime($ob->defaultTime));
@@ -111,7 +111,7 @@ include 'includes/header.php';
                                         } ?></option>
 										<?php
                                         $sql = 'SELECT * FROM eventSubTypes ORDER BY name';
-                                        $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+                                        $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
                                         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                                             if (isset($subtype) && $row['id'] == $subtype) {
@@ -139,7 +139,7 @@ include 'includes/header.php';
                                         } ?></option>
 										<?php
                                         $sql = 'SELECT * FROM locations order by name';
-                                        $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+                                        $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
                                         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                                             if (isset($location) && $row['id'] == $location) {
@@ -282,7 +282,7 @@ include 'includes/header.php';
 									<option value="<?php echo isset($eventGroup) ? $eventGroup : '' ?>"><?php echo isset($eventGroupName) ? $eventGroupName : '' ?></option>
 									<?php
                                     $sql = 'SELECT * FROM eventGroups WHERE archived = false ORDER BY name';
-                                    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+                                    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
                                     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                                         if (isset($type) && $row['id'] == $type) {

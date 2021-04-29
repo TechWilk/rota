@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($editskillID != '') {
         $sql = ("INSERT INTO eventPeople (eventId, userRoleId) VALUES ('$editeventID', '$editskillID')");
         if (!mysqli_query(db(), $sql)) {
-            die('Error: '.mysqli_error(db()));
+            exit('Error: '.mysqli_error(db()));
         }
 
         // After we have inserted the data, we want to head back to the main page
@@ -120,14 +120,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($editbandID != '') {
         $sqlbandMembers = "SELECT * FROM bandMembers WHERE bandID = '$editbandID'";
-        $resultbandMembers = mysqli_query(db(), $sqlbandMembers) or die(mysqli_error(db()));
+        $resultbandMembers = mysqli_query(db(), $sqlbandMembers) or exit(mysqli_error(db()));
 
         while ($bandMember = mysqli_fetch_object($resultbandMembers)) {
             $editskillID = $bandMember->skillID;
 
             $sql = ("INSERT INTO eventPeople (eventId, userRoleId) VALUES ('$editeventID', '$editskillID')");
             if (!mysqli_query(db(), $sql)) {
-                die('Error: '.mysqli_error(db()));
+                exit('Error: '.mysqli_error(db()));
             }
         }
 
@@ -158,7 +158,7 @@ if (siteSettings()->getLoggedInShowSnapshotButton() == 1) {
 
 if (isAdmin()) {
     $sql = 'SELECT COUNT(id) AS pendingSwaps FROM swaps WHERE accepted = 0 AND declined = 0';
-    $results = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $results = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $ob = mysqli_fetch_object($results);
 
     $pendingSwaps = $ob->pendingSwaps;
@@ -175,7 +175,7 @@ if (isAdmin()) {
                     echo 'All Events';
                 } elseif ($filter != '') {
                     $mysqli_query = "SELECT DISTINCT name FROM eventTypes WHERE id = $filter";
-                    $result = mysqli_query(db(), $mysqli_query) or die(mysqli_error(db()));
+                    $result = mysqli_query(db(), $mysqli_query) or exit(mysqli_error(db()));
                     $row = mysqli_fetch_object($result);
 
                     echo $row->name.'s';
@@ -202,27 +202,28 @@ if (isAdmin()) {
 }
 </style>
 
-			<?php if (!empty($pendingSwaps) && $pendingSwaps > 0):
-                if ($pendingSwaps > 1) {
-                    $swapsMessage = $pendingSwaps.' swaps are pending approval. Emails have been sent to the people covering to approve the swaps.';
-                } else {
-                    $swapsMessage = 'A swap is pending approval. An email has been sent to the person covering to approve the swap.';
-                } ?>
+			<?php if (!empty($pendingSwaps) && $pendingSwaps > 0) {
+                    if ($pendingSwaps > 1) {
+                        $swapsMessage = $pendingSwaps.' swaps are pending approval. Emails have been sent to the people covering to approve the swaps.';
+                    } else {
+                        $swapsMessage = 'A swap is pending approval. An email has been sent to the person covering to approve the swap.';
+                    } ?>
 				<div class="alert alert-info alert-dismissable">
 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 					<h4><i class="icon fa fa-info"></i> Swaps pending approval</h4>
 					<p><?php echo $swapsMessage; ?> <a href="swaps.php">view <?php echo $pendingSwaps > 1 ? 'swaps' : 'swap' ?></a></p>
 				</div>
-			<?php endif; ?>
+			<?php
+                } ?>
 
-			<?php if (isset($_SESSION['notification'])): ?>
+			<?php if (isset($_SESSION['notification'])) { ?>
 				<div class="alert alert-info alert-dismissable">
 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 					<h4><i class="icon fa fa-info"></i> Status</h4>
 					<p><?php echo $_SESSION['notification'] ?></p>
 				</div>
 				<?php unset($_SESSION['notification']) ?>
-			<?php endif; ?>
+			<?php } ?>
 
 	<div class="col-sm-8 col-md-8 col-lg-6">
 
@@ -299,7 +300,7 @@ if (isAdmin()) {
 							AND e.removed = 0
 							ORDER BY ".$dateOrderBy;
     }
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
     $month = ''; ?>
 	<ul class="timeline">
@@ -388,47 +389,47 @@ if (isAdmin()) {
 													AND ep.removed = 0
 												ORDER BY g.name, r.name";
 
-        $resultPeople = mysqli_query(db(), $sqlPeople) or die(mysqli_error(db()));
+        $resultPeople = mysqli_query(db(), $sqlPeople) or exit(mysqli_error(db()));
         $groupName = '';
         $groupId = 0;
         $identifier = '1';
         $firstTime = true;
 
-        if (mysqli_num_rows($resultPeople) > 0):
-
-                        ?>
+        if (mysqli_num_rows($resultPeople) > 0) {
+            ?>
 						<?php while ($viewPeople = mysqli_fetch_object($resultPeople)) {
-                            if ($viewPeople->group == $groupId) {
-                                // Do nothing, because they are all in the same group
-                            } else {
-                                // Update the group heading
-                                $groupId = $viewPeople->group;
-                                $groupName = $viewPeople->groupName;
-                                if ($firstTime) {
-                                    $firstTime = false;
-                                } else {
-                                    echo '</ul>';
-                                }
-                                echo '<p><strong>'.$groupName.'</strong></p>';
-                                echo '<ul>';
-                            }
+                if ($viewPeople->group == $groupId) {
+                    // Do nothing, because they are all in the same group
+                } else {
+                    // Update the group heading
+                    $groupId = $viewPeople->group;
+                    $groupName = $viewPeople->groupName;
+                    if ($firstTime) {
+                        $firstTime = false;
+                    } else {
+                        echo '</ul>';
+                    }
+                    echo '<p><strong>'.$groupName.'</strong></p>';
+                    echo '<ul>';
+                }
 
-                            echo '<li>';
-                            echo (isset($viewPeople->swap)) ? "<s><a class='text-danger' href='swap.php?swap=".$viewPeople->swap."'>" : '';
-                            echo $viewPeople->name;
+                echo '<li>';
+                echo (isset($viewPeople->swap)) ? "<s><a class='text-danger' href='swap.php?swap=".$viewPeople->swap."'>" : '';
+                echo $viewPeople->name;
 
-                            if ($viewPeople->rolename != '') {
-                                echo ' - <em>'.$viewPeople->rolename.'</em>';
-                            } else {
-                                // If there is no skill, we don't need to mention this.
-                            }
-                            echo (isset($viewPeople->swap)) ? '</a></s>' : '';
+                if ($viewPeople->rolename != '') {
+                    echo ' - <em>'.$viewPeople->rolename.'</em>';
+                } else {
+                    // If there is no skill, we don't need to mention this.
+                }
+                echo (isset($viewPeople->swap)) ? '</a></s>' : '';
 
-                            echo '</li>';
-                        }
-        echo '</ul>'; else:
-                        echo '<p>No roles assigned to this event.';
-        endif; ?>
+                echo '</li>';
+            }
+            echo '</ul>';
+        } else {
+            echo '<p>No roles assigned to this event.';
+        } ?>
 			</div><!-- /.user-roles -->
 		</div><!-- /.box-body -->
 		<div class="box-footer">
@@ -472,7 +473,7 @@ if (isAdmin()) {
 	<!-- row of action buttons -->
 			<div class="row">
 
-				<?php if (isAdmin()): ?>
+				<?php if (isAdmin()) { ?>
 
 				<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
 					<a href="createEvent.php">
@@ -498,9 +499,9 @@ if (isAdmin()) {
 					</a>
 	      </div><!-- /.col -->
 
-				<?php endif; /* END isAdmin() */
+				<?php } /* END isAdmin() */
 
-                if ((isAdmin()) || ($logged_in_show_snapshot_button == '1')): ?>
+                if ((isAdmin()) || ($logged_in_show_snapshot_button == '1')) { ?>
 
 					<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
 						<a href="tableView.php">
@@ -514,7 +515,7 @@ if (isAdmin()) {
 						</a>
 		      </div><!-- /.col -->
 
-					<?php endif; /* END isAdmin() || logged_in_show_snapshot_button=='1' */ ?>
+					<?php } /* END isAdmin() || logged_in_show_snapshot_button=='1' */ ?>
 
 			</div><!-- /.row -->
 

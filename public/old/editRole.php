@@ -47,14 +47,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //$roleId = filter_var($roleId, FILTER_SANITIZE_NUMBER_INT);
     if (empty($users)) {
         $sql = "DELETE FROM userRoles WHERE roleId = '$roleId'";
-        mysqli_query(db(), $sql) or die(mysqli_error(db()));
+        mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     } else {
         $sqlPeople = "SELECT
 										userId
 									FROM userRoles
 									WHERE roleId = '$roleId'";
 
-        $resultPeople = mysqli_query(db(), $sqlPeople) or die('mysqli_error(db())');
+        $resultPeople = mysqli_query(db(), $sqlPeople) or exit('mysqli_error(db())');
 
         $existingUsers = [];
         while ($viewPeople = mysqli_fetch_array($resultPeople, MYSQLI_ASSOC)) {
@@ -90,7 +90,7 @@ if (!$roleId) {
 $sql = "SELECT *
 FROM roles
 WHERE id = '$roleId'";
-$result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+$result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
     $id = $row['id'];
@@ -105,7 +105,7 @@ $sqlPeople = "SELECT *,
 							FROM users u
 							ORDER BY u.firstName";
 
-$result = mysqli_query(db(), $sqlPeople) or die(mysqli_error(db()));
+$result = mysqli_query(db(), $sqlPeople) or exit(mysqli_error(db()));
 
 while ($viewPeople = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
     $users[] = $viewPeople;
@@ -146,7 +146,7 @@ include 'includes/header.php';
 
 				<div class="box-body">
 
-					<?php foreach ($users as $user): ?>
+					<?php foreach ($users as $user) { ?>
 					<div class='checkbox'>
 						<label for='user[<?php echo $user['id']; ?>]'>
 							<input
@@ -159,7 +159,7 @@ include 'includes/header.php';
 							<?php echo $user['name']; ?>
 						</label>
 					</div>
-					<?php endforeach ?>
+					<?php } ?>
 
 				</div>
 				<div class="box-footer">

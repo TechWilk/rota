@@ -53,7 +53,7 @@ function detectBrowserLanguage()
 $language = detectBrowserLanguage();
 
 $sqlSettings = 'select * from settings';
-$resultSettings = mysqli_query(db(), $sqlSettings) or die(mysqli_error(db()));
+$resultSettings = mysqli_query(db(), $sqlSettings) or exit(mysqli_error(db()));
 $rowSettings = mysqli_fetch_array($resultSettings, MYSQLI_ASSOC);
 
 if ($action == 'update') {
@@ -81,7 +81,7 @@ if ($action == 'update') {
     //notifyInfo(__FILE__,"settings updated",$_SESSION['userid']);
 
     $sqlSettings = 'select * from settings';
-    $resultSettings = mysqli_query(db(), $sqlSettings) or die(mysqli_error(db()));
+    $resultSettings = mysqli_query(db(), $sqlSettings) or exit(mysqli_error(db()));
     $rowSettings = mysqli_fetch_array($resultSettings, MYSQLI_ASSOC);
 
     $updateNotification = 'Settings updated successfully to: '.$rowSettings['lang_locale'].' <br>&nbsp;<br>';
