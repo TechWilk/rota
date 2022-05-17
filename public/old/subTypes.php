@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $sql = ("INSERT INTO eventSubTypes (name, description) VALUES ('$name', '$description')");
         if (!mysqli_query(db(), $sql)) {
-            die('Error: '.mysqli_error(db()));
+            exit('Error: '.mysqli_error(db()));
         }
     } else {
         // Otherwise we are dealing with edits, not new stuff
@@ -87,7 +87,7 @@ include 'includes/header.php';
         <fieldset>
 
 		<?php $sql = 'SELECT * FROM eventSubTypes ORDER BY name';
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         echo '<input type="hidden" name="formindex[]" value="'.$row['id'].'" />';
