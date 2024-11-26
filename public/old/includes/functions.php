@@ -89,7 +89,7 @@ if ((isset($holdQuery)) && ($holdQuery == true)) {
     //if call is not during installation,
     //query real values from db for these variables
     $sql = 'SELECT * FROM settings';
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $owner = $row['owner'];
@@ -157,13 +157,13 @@ function isLoggedIn()
 function subscribeto($userid, $categoryid, $topicid)
 {
     $query = "INSERT INTO subscriptions(userid, categoryid, topicid) VALUES ('$userid', '$categoryid', '$topicid')";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    mysqli_query(db(), $query) or exit(mysqli_error(db()));
 }
 
 function unsubscribefrom($subscription)
 {
     $query = "DELETE FROM subscriptions WHERE id = '$subscription'";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    mysqli_query(db(), $query) or exit(mysqli_error(db()));
 }
 
 function insertStatistics($type, $script, $detail1 = '', $detail2 = '', $detail3 = '')

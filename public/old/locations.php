@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $sql = "UPDATE locations SET name = '$name' WHERE id = '$editid'";
         }
         if (!mysqli_query(db(), $sql)) {
-            die('Error: '.mysqli_error(db()));
+            exit('Error: '.mysqli_error(db()));
         }
     } else {
         $newlocation = $_POST['newlocation'];
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $sql = ("INSERT INTO locations (name) VALUES ('$newlocation')");
         if (!mysqli_query(db(), $sql)) {
-            die('Error: '.mysqli_error(db()));
+            exit('Error: '.mysqli_error(db()));
         }
 
         // After we have inserted the data, we want to head back to the main users page
@@ -93,7 +93,7 @@ include 'includes/header.php';
   <div class="box-body">
 		<p>
 		<?php $sql = 'SELECT * FROM locations ORDER BY name';
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $locationID = $row['id'];

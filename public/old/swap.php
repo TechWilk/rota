@@ -165,15 +165,15 @@ include 'includes/header.php';
 		<section class="content">
       
       <?php
-      if (isset($message)): ?>
+      if (isset($message)) { ?>
       
         <p><?php echo $message ?></p>
 
-      <?php elseif (isset($err)): ?>
+      <?php } elseif (isset($err)) { ?>
       
         <p><strong>Error: </strong><?php echo $err ?></p>
       
-      <?php elseif (!empty($swap)): ?>
+      <?php } elseif (!empty($swap)) { ?>
         <?php
         $canAcceptSwap = canAcceptSwap($swap->getId());
         $canDeclineSwap = canDeclineSwap($swap->getId());
@@ -198,21 +198,21 @@ include 'includes/header.php';
             </p>
             <?php echo $statusText == 'Requested' ? '<p>This swap is awaiting approval</p>' : '' ?>
           </div>
-          <?php if ($canAcceptSwap || $canDeclineSwap): ?>
+          <?php if ($canAcceptSwap || $canDeclineSwap) { ?>
           <div class="box-footer">
-            <?php if ($canAcceptSwap): ?>
+            <?php if ($canAcceptSwap) { ?>
             <a class="btn btn-primary" href="swap.php?action=accept&swap=<?php echo $swap->getId() ?>">Accept</a>
-            <?php endif; ?>
-            <?php if ($canDeclineSwap): ?>
+            <?php } ?>
+            <?php if ($canDeclineSwap) { ?>
             <a class="btn" href="swap.php?action=decline&swap=<?php echo $swap->getId() ?>">Decline</a>
-            <?php endif; ?>
+            <?php } ?>
           </div>
-          <?php endif; ?>
+          <?php } ?>
         </div>
         
-      <?php elseif ($numberOfRoles > 0): ?>
+      <?php } elseif ($numberOfRoles > 0) { ?>
             
-        <?php foreach ($roles as $role): ?>
+        <?php foreach ($roles as $role) { ?>
         
         <form action="swap.php?action=swap" method="post" role="form">
           <div class="box box-primary">
@@ -232,7 +232,7 @@ include 'includes/header.php';
                       $whereAnd = 'r.id = '.$role->roleId;
                   }
                   $sql = 'SELECT ur.id, u.firstName, u.lastName, r.name FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN roles r ON r.id = ur.roleId WHERE u.id <> '.$role->userId.' AND '.$whereAnd.' ORDER BY lastName, firstName, r.name';
-                  $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+                  $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
                   while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                       ?>
@@ -248,11 +248,11 @@ include 'includes/header.php';
           </div>
         </form> 
         
-        <?php endforeach; ?>
+        <?php } ?>
 
-      <?php elseif (count($roles) > 0): ?>
+      <?php } elseif (count($roles) > 0) { ?>
 
-        <?php foreach ($roles as $role): ?>
+        <?php foreach ($roles as $role) { ?>
 
         <form action="swap.php?action=swap" method="post" role="form">
           <div class="box box-primary">
@@ -271,16 +271,16 @@ include 'includes/header.php';
           </div>
         </form> 
 
-        <?php endforeach; ?>
+        <?php } ?>
       
-      <?php else: ?>
+      <?php } else { ?>
       <?php // event has no roles the user can cover?>
       
       <div class="alert alert-warning">
         <h4><i class="icon fa fa-info"></i>There are no roles in the event you are skilled to cover.</h4>
         <p>If you need adding to the rota, speak to an admin.</p>
       </div>
-      <?php endif; ?>
+      <?php } ?>
 
 
 <?php include 'includes/footer.php'; ?>
