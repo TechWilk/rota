@@ -9,9 +9,9 @@ class EmailAddressTest extends BaseTestCase
     public function providerTestValidEmails()
     {
         return [
-      ['test@example.com'],
-      ['no-password@email.com'],
-    ];
+            ['test@example.com'],
+            ['no-password@email.com'],
+        ];
     }
 
     /**
@@ -29,14 +29,15 @@ class EmailAddressTest extends BaseTestCase
     public function providerTestInvalidEmails()
     {
         return [
-      ['not-an-email'],
-      ['another-not-an-email'],
-      [''],
-    ];
+            ['not-an-email'],
+            ['another-not-an-email'],
+            [''],
+        ];
     }
 
     /**
      * @param string $email
+     *
      * @expectedException        InvalidArgumentException
      *
      * @dataProvider providerTestInvalidEmails
