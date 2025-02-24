@@ -24,38 +24,30 @@ namespace TechWilk\Rota;
 function updateRole($id, $name, $description)
 {
     $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-    $name = mysqli_real_escape_string(db(), $name);
-    $description = mysqli_real_escape_string(db(), $description);
 
-    $sql = "UPDATE roles SET name = '$name', description = '$description' WHERE id = '$id'";
-
-    if (!mysqli_query(db(), $sql)) {
-        die('Error: '.mysqli_error(db()));
-    }
+    $sql = "UPDATE roles SET name = ?, description = ? WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'ssi', $name, $description, $id);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
 }
 
 function updateGroup($key, $name, $description)
 {
-    $sql = "UPDATE groups SET name = '$name' WHERE groupId = '$key'";
-
-    if (!mysqli_query(db(), $sql)) {
-        die('Error: '.mysqli_error(db()));
-    }
-
-    $sql = "UPDATE groups SET description = '$description' WHERE groupId = '$key'";
-
-    if (!mysqli_query(db(), $sql)) {
-        die('Error: '.mysqli_error(db()));
-    }
+    $sql = "UPDATE groups SET name = ?, description = ? WHERE groupId = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'ssi', $name, $description, $key);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
 }
 
 function moveRoleGroups($roleID, $value)
 {
-    $sql = "UPDATE roles SET groupId = '$value' WHERE id = '$roleID'";
-
-    if (!mysqli_query(db(), $sql)) {
-        die('Error: '.mysqli_error(db()));
-    }
+    $sql = "UPDATE roles SET groupId = ? WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'ii', $value, $roleID);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
 }
 
 function addUserRole($userId, $roleId)
@@ -64,25 +56,39 @@ function addUserRole($userId, $roleId)
     $roleId = filter_var($roleId, FILTER_SANITIZE_NUMBER_INT);
 
     // prevent duplicate roles
-    $sql = "SELECT COUNT(*) AS count FROM userRoles WHERE roleId = '$roleId' AND userId = '$userId'";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $sql = "SELECT COUNT(*) AS count FROM userRoles WHERE roleId = ? AND userId = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'ii', $roleId, $userId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
+    mysqli_stmt_close($stmt);
+
     if ($ob->count < 1) {
-        $query = "INSERT INTO userRoles (userId, roleId) VALUES ('$userId', '$roleId')";
-        mysqli_query(db(), $query) or die(mysqli_error(db()));
+        $sql = "INSERT INTO userRoles (userId, roleId) VALUES (?, ?)";
+        $stmt = mysqli_prepare(db(), $sql);
+        mysqli_stmt_bind_param($stmt, 'ii', $userId, $roleId);
+        mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+        mysqli_stmt_close($stmt);
     }
 }
 
 function removeUserRoleWithId($userRoleId)
 {
-    $query = "DELETE FROM userRoles WHERE id = '$userRoleId'";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    $sql = "DELETE FROM userRoles WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $userRoleId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
 }
 
 function removeUserRole($userId, $roleId)
 {
-    $query = "DELETE FROM userRoles WHERE userId = '$userId' AND roleId = '$roleId'";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    $sql = "DELETE FROM userRoles WHERE userId = ? AND roleId = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'ii', $userId, $roleId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
 }
 
 function setUserRoleReserveWithId($userRoleId)
@@ -105,35 +111,49 @@ function setUserRoleRegularWithId($userRoleId)
 
 function groupIdWithRole($roleId)
 {
-    $sql = "SELECT groupId FROM roles WHERE id = '$roleId'";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $sql = "SELECT groupId FROM roles WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $roleId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
-
+    mysqli_stmt_close($stmt);
     return $ob->groupId;
 }
 
 function roleNameFromId($roleId)
 {
-    $sql = "SELECT name FROM roles WHERE id = '$roleId'";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $sql = "SELECT name FROM roles WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $roleId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
-
+    mysqli_stmt_close($stmt);
     return $ob->name;
 }
 
 function roleCanSwapToOtherRoleInGroup($roleId)
 {
-    $sql = "SELECT allowRoleSwaps, groupId FROM roles WHERE id = '$roleId'";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $sql = "SELECT allowRoleSwaps, groupId FROM roles WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $roleId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
+    mysqli_stmt_close($stmt);
 
     if ($ob->allowRoleSwaps != null) {
         return $ob->allowRoleSwaps;
     }
 
-    $sql = "SELECT allowRoleSwaps FROM groups WHERE id = '".$ob->groupId."'";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $sql = "SELECT allowRoleSwaps FROM groups WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $ob->groupId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
+    mysqli_stmt_close($stmt);
 
     return $ob->allowRoleSwaps;
 }

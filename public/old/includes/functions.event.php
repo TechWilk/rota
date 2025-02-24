@@ -11,11 +11,14 @@ function addPeople($eventId, $userRoleId)
 // replaces addPeople();
 function addUserToEvent($eventId, $userRoleId)
 {
-    $sql = ("INSERT INTO eventPeople (eventId, userRoleId) VALUES ('$eventId', '$userRoleId')");
+    $sql = "INSERT INTO eventPeople (eventId, userRoleId) VALUES (?, ?)";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'ii', $eventId, $userRoleId);
 
-    if (!mysqli_query(db(), $sql)) {
+    if (!mysqli_stmt_execute($stmt)) {
         die('Error: '.mysqli_error(db()));
     }
+    mysqli_stmt_close($stmt);
 }
 
 // legacy code support - do not use in new code
@@ -27,10 +30,14 @@ function removeEventMember($id, $userRoleId)
 // replaces removeEventMember();
 function removeUserFromEvent($id, $userRoleId)
 {
-    $sql = "DELETE FROM eventPeople WHERE eventId = '$id' AND userRoleId = '$userRoleId'";
-    if (!mysqli_query(db(), $sql)) {
+    $sql = "DELETE FROM eventPeople WHERE eventId = ? AND userRoleId = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'ii', $id, $userRoleId);
+
+    if (!mysqli_stmt_execute($stmt)) {
         die('Error: '.mysqli_error(db()));
     }
+    mysqli_stmt_close($stmt);
 }
 
 function createSwapEntry($eventPersonId, $newUserRoleId, $verified = 0)
@@ -38,18 +45,25 @@ function createSwapEntry($eventPersonId, $newUserRoleId, $verified = 0)
     $eventPersonId = filter_var($eventPersonId, FILTER_SANITIZE_NUMBER_INT);
     $newUserRoleId = filter_var($newUserRoleId, FILTER_SANITIZE_NUMBER_INT);
 
-    $sql = "SELECT userRoleId FROM eventPeople WHERE id = '$eventPersonId'";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $sql = "SELECT userRoleId FROM eventPeople WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $eventPersonId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    $result = mysqli_stmt_get_result($stmt);
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $oldUserRoleId = $row['userRoleId'];
     }
+    mysqli_stmt_close($stmt);
 
     if ($verified) {
         $verified = 1;
         $declined = 0;
 
-        $sql = "UPDATE eventPeople SET userRoleId = '$newUserRoleId', $notified = 0, $deleted = 0 WHERE id = '$eventPersonId'";
-        mysqli_query(db(), $sql) or die(mysqli_error(db()));
+        $sql = "UPDATE eventPeople SET userRoleId = ?, notified = 0, deleted = 0 WHERE id = ?";
+        $stmt = mysqli_prepare(db(), $sql);
+        mysqli_stmt_bind_param($stmt, 'ii', $newUserRoleId, $eventPersonId);
+        mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+        mysqli_stmt_close($stmt);
     } else {
         $verified = 0;
         $declined = 0;
@@ -69,12 +83,6 @@ function createSwapEntry($eventPersonId, $newUserRoleId, $verified = 0)
 
     $swap->save();
 
-    //$sql = "INSERT INTO swaps (eventPersonId, oldUserRoleId, newUserRoleId, accepted, declined, requestedBy, verificationCode) VALUES ('$eventPersonId','$oldUserRoleId', '$newUserRoleId', '$verified', '$declined', '$userId', '$verificationCode')";
-
-    //mysqli_query(db(),$sql) or die(mysqli_error(db()));
-
-    //$swapId = mysqli_insert_id(db());
-
     notifySwapCreated($swap->getId());
 
     return $swap->getId();
@@ -82,11 +90,15 @@ function createSwapEntry($eventPersonId, $newUserRoleId, $verified = 0)
 
 function verificationCodeForSwap($swapId)
 {
-    $sql = "SELECT verificationCode FROM swaps WHERE id = '$swapId'";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $sql = "SELECT verificationCode FROM swaps WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $swapId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    $result = mysqli_stmt_get_result($stmt);
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $verificationCode = $row['verificationCode'];
     }
+    mysqli_stmt_close($stmt);
 
     return $verificationCode;
 }
@@ -152,23 +164,26 @@ function notifySwapCreated($swapId, $message = '')
     $query = "SELECT `siteurl`,
 	`adminemailaddress` AS `siteadmin`,
 	`time_format_long`,
-	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = $swapId) AS `oldUserName`,
-	(SELECT firstname FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = $swapId) AS `oldUserFirstName`,
-	(SELECT u.id FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = $swapId) AS `oldUserId`,
-	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = $swapId) AS `newUserName`,
-	(SELECT firstname FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = $swapId) AS `newUserFirstName`,
-	(SELECT u.id FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = $swapId) AS `newUserId`,
-	(SELECT r.name FROM roles r INNER JOIN userRoles ur ON ur.roleId = r.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = $swapId) AS `oldRole`,
-	(SELECT r.name FROM roles r INNER JOIN userRoles ur ON ur.roleId = r.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = $swapId) AS `newRole`,
-	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users u INNER JOIN swaps sw ON sw.requestedBy = u.id WHERE sw.id = $swapId) AS `requestedBy`,
-	(SELECT e.date FROM events e INNER JOIN eventPeople ep ON e.id = ep.eventId INNER JOIN swaps sw ON sw.eventPersonId = ep.id WHERE sw.id = $swapId) AS `eventDate`
+	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = ?) AS `oldUserName`,
+	(SELECT firstname FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = ?) AS `oldUserFirstName`,
+	(SELECT u.id FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = ?) AS `oldUserId`,
+	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = ?) AS `newUserName`,
+	(SELECT firstname FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = ?) AS `newUserFirstName`,
+	(SELECT u.id FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = ?) AS `newUserId`,
+	(SELECT r.name FROM roles r INNER JOIN userRoles ur ON ur.roleId = r.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = ?) AS `oldRole`,
+	(SELECT r.name FROM roles r INNER JOIN userRoles ur ON ur.roleId = r.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = ?) AS `newRole`,
+	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users u INNER JOIN swaps sw ON sw.requestedBy = u.id WHERE sw.id = ?) AS `requestedBy`,
+	(SELECT e.date FROM events e INNER JOIN eventPeople ep ON e.id = ep.eventId INNER JOIN swaps sw ON sw.eventPersonId = ep.id WHERE sw.id = ?) AS `eventDate`
 	FROM settings";
 
-    $verificationCode = verificationCodeForSwap($swapId);
-
-    $result = mysqli_query(db(), $query) or die(mysqli_error(db()));
-
+    $stmt = mysqli_prepare(db(), $query);
+    mysqli_stmt_bind_param($stmt, 'iiiiiiiiii', $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
+    mysqli_stmt_close($stmt);
+
+    $verificationCode = verificationCodeForSwap($swapId);
 
     $subject = 'Swap requested: '.$ob->newUserName.' - '.$ob->eventDate;
     $message = "Date:\t\t ".strftime($ob->time_format_long, strtotime($ob->eventDate))."\r\n".
@@ -214,24 +229,27 @@ function notifySwapAccepted($swapId, $message = '')
     $query = "SELECT `siteurl`,
 	`adminemailaddress` AS `siteadmin`,
 	`time_format_long`,
-	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = $swapId) AS `oldUserName`,
-	(SELECT firstname FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = $swapId) AS `oldUserFirstName`,
-	(SELECT u.id FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = $swapId) AS `oldUserId`,
-	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = $swapId) AS `newUserName`,
-	(SELECT firstname FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = $swapId) AS `newUserFirstName`,
-	(SELECT u.id FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = $swapId) AS `newUserId`,
-	(SELECT u.email FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.requestedBy = ur.id WHERE sw.id = $swapId) AS `email`,
-	(SELECT r.name FROM roles r INNER JOIN userRoles ur ON ur.roleId = r.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = $swapId) AS `oldRole`,
-	(SELECT r.name FROM roles r INNER JOIN userRoles ur ON ur.roleId = r.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = $swapId) AS `newRole`,
-	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users u INNER JOIN swaps sw ON sw.requestedBy = u.id WHERE sw.id = $swapId) AS `requestedBy`,
-	(SELECT e.date FROM events e INNER JOIN eventPeople ep ON e.id = ep.eventId INNER JOIN swaps sw ON sw.eventPersonId = ep.id WHERE sw.id = $swapId) AS `eventDate`
+	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = ?) AS `oldUserName`,
+	(SELECT firstname FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = ?) AS `oldUserFirstName`,
+	(SELECT u.id FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = ?) AS `oldUserId`,
+	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = ?) AS `newUserName`,
+	(SELECT firstname FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = ?) AS `newUserFirstName`,
+	(SELECT u.id FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = ?) AS `newUserId`,
+	(SELECT u.email FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.requestedBy = ur.id WHERE sw.id = ?) AS `email`,
+	(SELECT r.name FROM roles r INNER JOIN userRoles ur ON ur.roleId = r.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = ?) AS `oldRole`,
+	(SELECT r.name FROM roles r INNER JOIN userRoles ur ON ur.roleId = r.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = ?) AS `newRole`,
+	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users u INNER JOIN swaps sw ON sw.requestedBy = u.id WHERE sw.id = ?) AS `requestedBy`,
+	(SELECT e.date FROM events e INNER JOIN eventPeople ep ON e.id = ep.eventId INNER JOIN swaps sw ON sw.eventPersonId = ep.id WHERE sw.id = ?) AS `eventDate`
 	FROM settings";
 
-    $verificationCode = verificationCodeForSwap($swapId);
-
-    $result = mysqli_query(db(), $query) or die(mysqli_error(db()));
-
+    $stmt = mysqli_prepare(db(), $query);
+    mysqli_stmt_bind_param($stmt, 'iiiiiiiiiii', $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
+    mysqli_stmt_close($stmt);
+
+    $verificationCode = verificationCodeForSwap($swapId);
 
     $subject = 'Swap accepted: '.$ob->newUserName.' - '.$ob->eventDate;
     $message = "The following swap has been accepted\r\n\r\n".
@@ -297,23 +315,26 @@ function notifySwapDeclined($swapId, $message = '')
     $query = "SELECT `siteurl`,
 	`adminemailaddress` AS `siteadmin`,
 	`time_format_long`,
-	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = $swapId) AS `oldUserName`,
-	(SELECT firstname FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = $swapId) AS `oldUserFirstName`,
-	(SELECT u.id FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = $swapId) AS `oldUserId`,
-	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = $swapId) AS `newUserName`,
-	(SELECT firstname FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = $swapId) AS `newUserFirstName`,
-	(SELECT u.id FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = $swapId) AS `newUserId`,
-	(SELECT r.name FROM roles r INNER JOIN userRoles ur ON ur.roleId = r.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = $swapId) AS `oldRole`,
-	(SELECT r.name FROM roles r INNER JOIN userRoles ur ON ur.roleId = r.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = $swapId) AS `newRole`,
-	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users u INNER JOIN swaps sw ON sw.requestedBy = u.id WHERE sw.id = $swapId) AS `requestedBy`,
-	(SELECT e.date FROM events e INNER JOIN eventPeople ep ON e.id = ep.eventId INNER JOIN swaps sw ON sw.eventPersonId = ep.id WHERE sw.id = $swapId) AS `eventDate`
+	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = ?) AS `oldUserName`,
+	(SELECT firstname FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = ?) AS `oldUserFirstName`,
+	(SELECT u.id FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = ?) AS `oldUserId`,
+	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = ?) AS `newUserName`,
+	(SELECT firstname FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = ?) AS `newUserFirstName`,
+	(SELECT u.id FROM users u INNER JOIN userRoles ur ON ur.userId = u.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = ?) AS `newUserId`,
+	(SELECT r.name FROM roles r INNER JOIN userRoles ur ON ur.roleId = r.id INNER JOIN swaps sw ON sw.oldUserRoleId = ur.id WHERE sw.id = ?) AS `oldRole`,
+	(SELECT r.name FROM roles r INNER JOIN userRoles ur ON ur.roleId = r.id INNER JOIN swaps sw ON sw.newUserRoleId = ur.id WHERE sw.id = ?) AS `newRole`,
+	(SELECT CONCAT(`firstname`, ' ', `lastname`) FROM users u INNER JOIN swaps sw ON sw.requestedBy = u.id WHERE sw.id = ?) AS `requestedBy`,
+	(SELECT e.date FROM events e INNER JOIN eventPeople ep ON e.id = ep.eventId INNER JOIN swaps sw ON sw.eventPersonId = ep.id WHERE sw.id = ?) AS `eventDate`
 	FROM settings";
 
-    $verificationCode = verificationCodeForSwap($swapId);
-
-    $result = mysqli_query(db(), $query) or die(mysqli_error(db()));
-
+    $stmt = mysqli_prepare(db(), $query);
+    mysqli_stmt_bind_param($stmt, 'iiiiiiiiii', $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
+    mysqli_stmt_close($stmt);
+
+    $verificationCode = verificationCodeForSwap($swapId);
 
     $subject = 'Swap declined: '.$ob->newUserName.' - '.$ob->eventDate;
     $message = "The following swap has been declined\r\n\r\n".
@@ -363,11 +384,15 @@ function canDeclineSwap($swapId)
 					(SELECT ur.userId FROM userRoles ur WHERE ur.id = sw.oldUserRoleId) AS oldUser,
 					(SELECT ur.userId FROM userRoles ur WHERE ur.id = sw.newUserRoleId) AS newUser
 					FROM swaps sw
-					WHERE sw.id = $swapId
+					WHERE sw.id = ?
 						AND sw.declined = 0
 						AND sw.accepted = 0";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $swapId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    $result = mysqli_stmt_get_result($stmt);
     $swap = mysqli_fetch_object($result);
+    mysqli_stmt_close($stmt);
 
     if (!isset($swap->id)) {
         return false;
@@ -394,11 +419,15 @@ function canAcceptSwap($swapId)
 					(SELECT ur.userId FROM userRoles ur WHERE ur.id = sw.oldUserRoleId) AS oldUser,
 					(SELECT ur.userId FROM userRoles ur WHERE ur.id = sw.newUserRoleId) AS newUser
 					FROM swaps sw
-					WHERE sw.id = $swapId
+					WHERE sw.id = ?
 						AND sw.declined = 0
 						AND sw.accepted = 0";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $swapId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    $result = mysqli_stmt_get_result($stmt);
     $swap = mysqli_fetch_object($result);
+    mysqli_stmt_close($stmt);
 
     if (!isset($swap->id)) {
         return false;
@@ -419,9 +448,13 @@ function swapDetailsWithId($swapId)
 {
     $swapId = filter_var($swapId, FILTER_SANITIZE_NUMBER_INT);
 
-    $sql = "SELECT * FROM swaps WHERE id = $swapId";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $sql = "SELECT * FROM swaps WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $swapId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
+    mysqli_stmt_close($stmt);
 
     return $ob;
 }
@@ -442,13 +475,17 @@ function rolesOfUserAtEvent($userId, $eventId)
 						eventPeople ep
 						INNER JOIN userRoles ur ON ur.id = ep.userRoleId
 					WHERE
-						eventId = '$eventId'
-						AND userId = '$userId'";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+						eventId = ?
+						AND userId = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'ii', $eventId, $userId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    $result = mysqli_stmt_get_result($stmt);
 
     while ($entry = mysqli_fetch_object($result)) {
         $a[] = $entry;
     }
+    mysqli_stmt_close($stmt);
 
     return $a;
 }
@@ -465,27 +502,35 @@ function rolesUserCanCoverAtEvent($userId, $eventId)
 						ep.notified,
 						ur.roleId,
 						ur.userId,
-						(SELECT id FROM userRoles WHERE roleId = ur.roleId AND userId = '$userId') AS newUserRoleId
+						(SELECT id FROM userRoles WHERE roleId = ur.roleId AND userId = ?) AS newUserRoleId
 					FROM
 						eventPeople ep
 						INNER JOIN userRoles ur ON ur.id = ep.userRoleId
 					WHERE
-						eventId = '$eventId'
-						AND ur.roleId IN (SELECT roleId FROM userRoles WHERE userId = '$userId')";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+						eventId = ?
+						AND ur.roleId IN (SELECT roleId FROM userRoles WHERE userId = ?)";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'iii', $userId, $eventId, $userId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    $result = mysqli_stmt_get_result($stmt);
 
     while ($entry = mysqli_fetch_object($result)) {
         $a[] = $entry;
     }
+    mysqli_stmt_close($stmt);
 
     return $a;
 }
 
 function numberOfRolesOfUserAtEvent($userId, $eventId)
 {
-    $sql = "SELECT COUNT(ur.userId) AS numberOfRoles FROM eventPeople ep INNER JOIN userRoles ur ON ur.id = ep.userRoleId WHERE eventId = '$eventId' AND userId = '$userId'";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $sql = "SELECT COUNT(ur.userId) AS numberOfRoles FROM eventPeople ep INNER JOIN userRoles ur ON ur.id = ep.userRoleId WHERE eventId = ? AND userId = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'ii', $eventId, $userId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
+    mysqli_stmt_close($stmt);
 
     return $ob->numberOfRoles;
 }
@@ -494,19 +539,25 @@ function removeSeries($seriesId)
 {
     $seriesId = filter_var($seriesId, FILTER_SANITIZE_NUMBER_INT);
 
-    $sql = "UPDATE eventGroups SET archived = true WHERE id = '$seriesId'";
-    if (!mysqli_query(db(), $sql)) {
+    $sql = "UPDATE eventGroups SET archived = true WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $seriesId);
+    if (!mysqli_stmt_execute($stmt)) {
         die('Error: '.mysqli_error(db()));
     }
+    mysqli_stmt_close($stmt);
 }
 
 function addPeopleBand($bandId, $userRoleId)
 {
-    $sql = "INSERT INTO bandMembers (bandId, userRoleId) VALUES ('$bandId', '$userRoleId')";
+    $sql = "INSERT INTO bandMembers (bandId, userRoleId) VALUES (?, ?)";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'ii', $bandId, $userRoleId);
 
-    if (!mysqli_query(db(), $sql)) {
+    if (!mysqli_stmt_execute($stmt)) {
         die('Error: '.mysqli_error(db()));
     }
+    mysqli_stmt_close($stmt);
 }
 
 function getEventUrl($eventId)
@@ -548,14 +599,17 @@ function getEventDetails($eventID, $separator, $type = 4, $apprev_description = 
 						LEFT OUTER JOIN users u ON ur.userId = u.id
 						INNER JOIN eventTypes et ON e.type = et.id
 					WHERE
-						e.id = $eventID ";
+						e.id = ? ";
 
     if ($type == 1) {
         $sql = $sql."AND ((g.id in (10,11)) OR (g.id=2 and u.firstname='Team')) ";
     }
     $sql = $sql.'ORDER BY e.id, g.id desc, role, firstname, lastname ';
 
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $eventID);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    $result = mysqli_stmt_get_result($stmt);
 
     $returnValue = '';
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
@@ -605,6 +659,7 @@ function getEventDetails($eventID, $separator, $type = 4, $apprev_description = 
 
         }
     }
+    mysqli_stmt_close($stmt);
     //return trim(substr($returnValue,strlen($separator)-1));
     return substr($returnValue, strlen($separator));
 }

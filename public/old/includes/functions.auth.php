@@ -10,8 +10,12 @@ function setSessionAndRedirect($username)
         $users_start_with_myevents = '0';
     }
 
-    $sql = "SELECT * FROM users WHERE username = '$username'";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $sql = "SELECT * FROM users WHERE username = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 's', $username);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    $result = mysqli_stmt_get_result($stmt);
+    mysqli_stmt_close($stmt);
 
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $_SESSION['db_is_logged_in'] = true;
@@ -35,8 +39,11 @@ function setSessionAndRedirect($username)
 
         // Update last login timestamp
         $currentTimestamp = date('Y-m-d H:i:s');
-        $sql = "UPDATE users SET lastLogin = '$currentTimestamp' WHERE id = '".$row['id']."'";
-        mysqli_query(db(), $sql) or die(mysqli_error(db()));
+        $sql = "UPDATE users SET lastLogin = ? WHERE id = ?";
+        $stmt = mysqli_prepare(db(), $sql);
+        mysqli_stmt_bind_param($stmt, 'si', $currentTimestamp, $row['id']);
+        mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+        mysqli_stmt_close($stmt);
 
         // redirect
         $redirectUrl = 'index.php';

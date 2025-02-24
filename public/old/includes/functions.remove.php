@@ -23,90 +23,136 @@ namespace TechWilk\Rota;
 
 function removeSkill($skillID)
 {
-    $query = "DELETE FROM skills WHERE skillID = '$skillID'";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    $sql = "DELETE FROM skills WHERE skillID = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $skillID);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
 }
 
 function removePost($postid)
 {
-    $query = "DELETE FROM discussion WHERE id = '$postid'";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    $sql = "DELETE FROM discussion WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $postid);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
 }
 
 function removeCategory($areaid)
 {
-    $query = "DELETE FROM discussionCategories WHERE id = '$areaid'";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    $sql = "DELETE FROM discussionCategories WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $areaid);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
     header('Location: discussion.php');
 }
 
 function removeDiscussion($areaid)
 {
-    $query = "DELETE FROM discussion WHERE id = '$areaid'";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
-    $query = "DELETE FROM discussion WHERE topicParent = '$areaid'";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    $sql = "DELETE FROM discussion WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $areaid);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
+
+    $sql = "DELETE FROM discussion WHERE topicParent = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $areaid);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
     header('Location: discussion.php');
 }
 
 function removeeventtype($eventtypeid)
 {
-    $query = "DELETE FROM eventTypes WHERE id = '$eventtypeid'";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    $sql = "DELETE FROM eventTypes WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $eventtypeid);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
     header('Location: editeventtype.php');
 }
 
 function removelocation($location)
 {
-    $query = "DELETE FROM locations WHERE id = '$location'";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    $sql = "DELETE FROM locations WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $location);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
     header('Location: locations.php');
 }
 
 function removeGroup($groupId)
 {
-    $query = "DELETE FROM groups WHERE id = '$groupId'";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    $sql = "DELETE FROM groups WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $groupId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
 
-    $query = "DELETE FROM roles WHERE groupId = '$groupId'";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    $sql = "DELETE FROM roles WHERE groupId = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $groupId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
     header('Location: roles.php');
 }
 
 function removeRole($roleId)
 {
-    $query = "DELETE FROM roles WHERE id = '$roleId'";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    $sql = "DELETE FROM roles WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $roleId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
     header('Location: roles.php');
 }
 
 function removeBandMembers($bandMembersID)
 {
-    $query = "DELETE FROM bandMembers WHERE bandMembersID = '$bandMembersID'";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    $sql = "DELETE FROM bandMembers WHERE bandMembersID = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $bandMembersID);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
 }
 
 function removeResource($id)
 {
-    $query = "DELETE FROM documents WHERE id = '$id'";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    $sql = "DELETE FROM documents WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $id);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
 }
 
 function removeEvent($removeWholeEvent)
 {
-    $query = "UPDATE events SET removed = 1 WHERE id = '$removeWholeEvent'";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    $sql = "UPDATE events SET removed = 1 WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $removeWholeEvent);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
 }
 
 function removeBand($removeBand)
 {
-    $query = "DELETE FROM bands WHERE bandID = '$removeBand'";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    $sql = "DELETE FROM bands WHERE bandID = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $removeBand);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
 }
 
 function removeBandSkill($bandskillid)
 {
-    $query = "DELETE FROM instruments WHERE id = '$bandskillid'";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    $sql = "DELETE FROM instruments WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $bandskillid);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
     header('Location: bandskills.php');
 }

@@ -362,8 +362,12 @@ namespace TechWilk\Rota;
 						<li class="dropdown user user-menu">
 							<?php
                             $sql = 'SELECT u.created FROM users u WHERE id = '.$_SESSION['userid'];
-                                            $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
-                                            $currentUser = mysqli_fetch_object($result);
+                            $stmt = mysqli_prepare(db(), $sql);
+                            mysqli_stmt_bind_param($stmt, 'i', $_SESSION['userid']);
+                            mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+                            $result = mysqli_stmt_get_result($stmt);
+                            $currentUser = mysqli_fetch_object($result);
+                            mysqli_stmt_close($stmt);
                             ?>
 							<!-- Menu Toggle Button -->
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">

@@ -1056,23 +1056,20 @@ function splitSubjectMessage($defaultSubject, $message)
 
 function mailToDb($to, $subject, $message, $from, $bcc = '')
 {
-    $to = mysqli_real_escape_string(db(), $to);
-    $subject = mysqli_real_escape_string(db(), $subject);
-    $message = mysqli_real_escape_string(db(), $message);
-    $from = mysqli_real_escape_string(db(), $from);
-    $bcc = mysqli_real_escape_string(db(), $bcc);
-
-    $sql = "INSERT INTO emails (emailTo, emailBcc, emailFrom, subject, message) VALUES ('$to', '$bcc', '$from', '$subject', '$message')";
-    mysqli_query(db(), $sql) or die(mysqli_error(db()));
-
+    $sql = "INSERT INTO emails (emailTo, emailBcc, emailFrom, subject, message) VALUES (?, ?, ?, ?, ?)";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'sssss', $to, $bcc, $from, $subject, $message);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
     return mysqli_insert_id(db());
 }
 
 function logFailedMailWithId($id, $error)
 {
     $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-    $error = mysqli_real_escape_string(db(), $error);
-
-    $sql = "UPDATE emails SET error = '$error' WHERE id = '$id'";
-    mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $sql = "UPDATE emails SET error = ? WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'si', $error, $id);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
 }

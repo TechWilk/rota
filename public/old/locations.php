@@ -31,33 +31,33 @@ if ($locationremove == 'true') {
 // If the form has been submitted, then we need to handle the data.
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($editableaction == 'edit') {
-        $editid = $_POST['id'];
+        $editid = str_replace('title', '', $_POST['id']);
         $type = $_POST['type'];
         $name = $_POST['value'];
         $editableaction = $_POST['editableaction'];
 
-        $editid = str_replace('title', '', $editid);
         if ($type == 'title') {
-            $sql = "UPDATE locations SET name = '$name' WHERE id = '$editid'";
-        }
-        if (!mysqli_query(db(), $sql)) {
-            die('Error: '.mysqli_error(db()));
+            $sql = "UPDATE locations SET name = ? WHERE id = ?";
+            $stmt = mysqli_prepare(db(), $sql);
+            mysqli_stmt_bind_param($stmt, 'si', $name, $editid);
+            mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+            mysqli_stmt_close($stmt);
         }
     } else {
-        $newlocation = $_POST['newlocation'];
-        $newlocation = strip_tags($newlocation);
+        $newlocation = strip_tags($_POST['newlocation']);
 
         $rehearsal = $_POST['rehearsal'];
         $rehearsal = strip_tags($rehearsal);
 
-        $sql = ("INSERT INTO locations (name) VALUES ('$newlocation')");
-        if (!mysqli_query(db(), $sql)) {
-            die('Error: '.mysqli_error(db()));
-        }
+        $sql = "INSERT INTO locations (name) VALUES (?)";
+        $stmt = mysqli_prepare(db(), $sql);
+        mysqli_stmt_bind_param($stmt, 's', $newlocation);
+        mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+        mysqli_stmt_close($stmt);
 
         // After we have inserted the data, we want to head back to the main users page
-     header('Location: locations.php'); // Move to the home page of the admin section
-      exit;
+        header('Location: locations.php'); // Move to the home page of the admin section
+        exit;
     }
 }
 

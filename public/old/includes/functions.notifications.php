@@ -46,13 +46,18 @@ function createNotificationForUser($userId, $summary, $body, $typeName, $link = 
 function seenNotification($notificationId, $referer)
 {
     $notificationId = filter_var($notificationId, FILTER_SANITIZE_NUMBER_INT);
-    $referer = mysqli_real_escape_string(db(), $referer);
 
-    $sql = "UPDATE notifications SET seen = TRUE WHERE id = $notificationId";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $sql = "UPDATE notifications SET seen = TRUE WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $notificationId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
 
-    $sql = "INSERT INTO notificationClicks (notificationId, referer) VALUES ($notificationId, '$referer')";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $sql = "INSERT INTO notificationClicks (notificationId, referer) VALUES (?, ?)";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'is', $notificationId, $referer);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
 
     return true;
 }
@@ -61,8 +66,11 @@ function dismissNotification($notificationId)
 {
     $notificationId = filter_var($notificationId, FILTER_SANITIZE_NUMBER_INT);
 
-    $sql = "UPDATE notifications SET dismissed = TRUE WHERE id = $notificationId";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $sql = "UPDATE notifications SET dismissed = TRUE WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $notificationId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
 
     return true;
 }
@@ -71,10 +79,13 @@ function notificationLink($notificationId)
 {
     $notificationId = filter_var($notificationId, FILTER_SANITIZE_NUMBER_INT);
 
-    $sql = "SELECT link FROM notifications WHERE id = $notificationId";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $sql = "SELECT link FROM notifications WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $notificationId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
-
+    mysqli_stmt_close($stmt);
     return $ob->link;
 }
 
@@ -82,21 +93,26 @@ function notificationWithId($notificationId)
 {
     $notificationId = filter_var($notificationId, FILTER_SANITIZE_NUMBER_INT);
 
-    $sql = "SELECT id, summary, body, link, type, seen, dismissed FROM notifications WHERE id = $notificationId LIMIT 1";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $sql = "SELECT id, summary, body, link, type, seen, dismissed FROM notifications WHERE id = ? LIMIT 1";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $notificationId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
-
+    mysqli_stmt_close($stmt);
     $ob->type = notificationType($ob->type);
-
     return $ob;
 }
 
 function notificationWithIdHasType($notificationId, $type)
 {
-    $sql = "SELECT type FROM notifications WHERE id = $notificationId LIMIT 1";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $sql = "SELECT type FROM notifications WHERE id = ? LIMIT 1";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $notificationId);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
-
+    mysqli_stmt_close($stmt);
     return swapTypesArray()[$ob->type] == $type;
 }
 

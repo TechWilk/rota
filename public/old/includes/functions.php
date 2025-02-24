@@ -156,14 +156,20 @@ function isLoggedIn()
 
 function subscribeto($userid, $categoryid, $topicid)
 {
-    $query = "INSERT INTO subscriptions(userid, categoryid, topicid) VALUES ('$userid', '$categoryid', '$topicid')";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    $sql = "INSERT INTO subscriptions(userid, categoryid, topicid) VALUES (?, ?, ?)";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'iii', $userid, $categoryid, $topicid);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
 }
 
-function unsubscribefrom($subscription)
+function unsubscribefrom($subscription) 
 {
-    $query = "DELETE FROM subscriptions WHERE id = '$subscription'";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    $sql = "DELETE FROM subscriptions WHERE id = ?";
+    $stmt = mysqli_prepare(db(), $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $subscription);
+    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_close($stmt);
 }
 
 function insertStatistics($type, $script, $detail1 = '', $detail2 = '', $detail3 = '')
