@@ -125,16 +125,16 @@ class BaseTestCase extends TestCase
         $serviceContainer->setAdapterClass('default', 'sqlite');
         $manager = new ConnectionManagerSingle();
         $manager->setConfiguration([
-        'classname'  => 'Propel\\Runtime\\Connection\\ConnectionWrapper',
-        'dsn'        => 'sqlite:/var/tmp/test.db',
-        'attributes' => [
-            'ATTR_EMULATE_PREPARES' => false,
-            'ATTR_TIMEOUT'          => 30,
-        ],
-        'model_paths' => [
-            0 => 'src',
-            1 => 'vendor',
-        ],
+            'classname'  => 'Propel\\Runtime\\Connection\\ConnectionWrapper',
+            'dsn'        => 'sqlite:/var/tmp/test.db',
+            'attributes' => [
+                'ATTR_EMULATE_PREPARES' => false,
+                'ATTR_TIMEOUT'          => 30,
+            ],
+            'model_paths' => [
+                0 => 'src',
+                1 => 'vendor',
+            ],
         ]);
         $manager->setName('default');
         $serviceContainer->setConnectionManager('default', $manager);
@@ -151,9 +151,9 @@ class BaseTestCase extends TestCase
         $sqlManager = new SqlManager();
         $sqlManager->setConnections(
             ['default' => [
-                    'dsn'     => 'sqlite:/var/tmp/test.db',
-                    'adapter' => 'sqlite',
-                ],
+                'dsn'     => 'sqlite:/var/tmp/test.db',
+                'adapter' => 'sqlite',
+            ],
             ]
         );
         $sqlManager->setWorkingDirectory(__DIR__.'/../../generated-sql');

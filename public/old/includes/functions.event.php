@@ -11,12 +11,12 @@ function addPeople($eventId, $userRoleId)
 // replaces addPeople();
 function addUserToEvent($eventId, $userRoleId)
 {
-    $sql = "INSERT INTO eventPeople (eventId, userRoleId) VALUES (?, ?)";
+    $sql = 'INSERT INTO eventPeople (eventId, userRoleId) VALUES (?, ?)';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'ii', $eventId, $userRoleId);
 
     if (!mysqli_stmt_execute($stmt)) {
-        die('Error: '.mysqli_error(db()));
+        exit('Error: '.mysqli_error(db()));
     }
     mysqli_stmt_close($stmt);
 }
@@ -30,12 +30,12 @@ function removeEventMember($id, $userRoleId)
 // replaces removeEventMember();
 function removeUserFromEvent($id, $userRoleId)
 {
-    $sql = "DELETE FROM eventPeople WHERE eventId = ? AND userRoleId = ?";
+    $sql = 'DELETE FROM eventPeople WHERE eventId = ? AND userRoleId = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'ii', $id, $userRoleId);
 
     if (!mysqli_stmt_execute($stmt)) {
-        die('Error: '.mysqli_error(db()));
+        exit('Error: '.mysqli_error(db()));
     }
     mysqli_stmt_close($stmt);
 }
@@ -45,10 +45,10 @@ function createSwapEntry($eventPersonId, $newUserRoleId, $verified = 0)
     $eventPersonId = filter_var($eventPersonId, FILTER_SANITIZE_NUMBER_INT);
     $newUserRoleId = filter_var($newUserRoleId, FILTER_SANITIZE_NUMBER_INT);
 
-    $sql = "SELECT userRoleId FROM eventPeople WHERE id = ?";
+    $sql = 'SELECT userRoleId FROM eventPeople WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $eventPersonId);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $oldUserRoleId = $row['userRoleId'];
@@ -59,10 +59,10 @@ function createSwapEntry($eventPersonId, $newUserRoleId, $verified = 0)
         $verified = 1;
         $declined = 0;
 
-        $sql = "UPDATE eventPeople SET userRoleId = ?, notified = 0, deleted = 0 WHERE id = ?";
+        $sql = 'UPDATE eventPeople SET userRoleId = ?, notified = 0, deleted = 0 WHERE id = ?';
         $stmt = mysqli_prepare(db(), $sql);
         mysqli_stmt_bind_param($stmt, 'ii', $newUserRoleId, $eventPersonId);
-        mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+        mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
         mysqli_stmt_close($stmt);
     } else {
         $verified = 0;
@@ -90,10 +90,10 @@ function createSwapEntry($eventPersonId, $newUserRoleId, $verified = 0)
 
 function verificationCodeForSwap($swapId)
 {
-    $sql = "SELECT verificationCode FROM swaps WHERE id = ?";
+    $sql = 'SELECT verificationCode FROM swaps WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $swapId);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $verificationCode = $row['verificationCode'];
@@ -178,7 +178,7 @@ function notifySwapCreated($swapId, $message = '')
 
     $stmt = mysqli_prepare(db(), $query);
     mysqli_stmt_bind_param($stmt, 'iiiiiiiiii', $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
     mysqli_stmt_close($stmt);
@@ -244,7 +244,7 @@ function notifySwapAccepted($swapId, $message = '')
 
     $stmt = mysqli_prepare(db(), $query);
     mysqli_stmt_bind_param($stmt, 'iiiiiiiiiii', $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
     mysqli_stmt_close($stmt);
@@ -329,7 +329,7 @@ function notifySwapDeclined($swapId, $message = '')
 
     $stmt = mysqli_prepare(db(), $query);
     mysqli_stmt_bind_param($stmt, 'iiiiiiiiii', $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId, $swapId);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
     mysqli_stmt_close($stmt);
@@ -378,7 +378,7 @@ function canDeclineSwap($swapId)
 {
     $userId = $_SESSION['userid'];
 
-    $sql = "SELECT
+    $sql = 'SELECT
 					id,
 					sw.requestedBy,
 					(SELECT ur.userId FROM userRoles ur WHERE ur.id = sw.oldUserRoleId) AS oldUser,
@@ -386,10 +386,10 @@ function canDeclineSwap($swapId)
 					FROM swaps sw
 					WHERE sw.id = ?
 						AND sw.declined = 0
-						AND sw.accepted = 0";
+						AND sw.accepted = 0';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $swapId);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     $swap = mysqli_fetch_object($result);
     mysqli_stmt_close($stmt);
@@ -413,7 +413,7 @@ function canAcceptSwap($swapId)
 {
     $userId = $_SESSION['userid'];
 
-    $sql = "SELECT
+    $sql = 'SELECT
 					id,
 					sw.requestedBy,
 					(SELECT ur.userId FROM userRoles ur WHERE ur.id = sw.oldUserRoleId) AS oldUser,
@@ -421,10 +421,10 @@ function canAcceptSwap($swapId)
 					FROM swaps sw
 					WHERE sw.id = ?
 						AND sw.declined = 0
-						AND sw.accepted = 0";
+						AND sw.accepted = 0';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $swapId);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     $swap = mysqli_fetch_object($result);
     mysqli_stmt_close($stmt);
@@ -448,10 +448,10 @@ function swapDetailsWithId($swapId)
 {
     $swapId = filter_var($swapId, FILTER_SANITIZE_NUMBER_INT);
 
-    $sql = "SELECT * FROM swaps WHERE id = ?";
+    $sql = 'SELECT * FROM swaps WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $swapId);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
     mysqli_stmt_close($stmt);
@@ -464,7 +464,7 @@ function rolesOfUserAtEvent($userId, $eventId)
     $userId = filter_var($userId, FILTER_SANITIZE_NUMBER_INT);
     $eventId = filter_var($eventId, FILTER_SANITIZE_NUMBER_INT);
 
-    $sql = "SELECT
+    $sql = 'SELECT
 						ep.id AS eventPersonId,
 						ep.eventId,
 						ep.userRoleId,
@@ -476,10 +476,10 @@ function rolesOfUserAtEvent($userId, $eventId)
 						INNER JOIN userRoles ur ON ur.id = ep.userRoleId
 					WHERE
 						eventId = ?
-						AND userId = ?";
+						AND userId = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'ii', $eventId, $userId);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
 
     while ($entry = mysqli_fetch_object($result)) {
@@ -495,7 +495,7 @@ function rolesUserCanCoverAtEvent($userId, $eventId)
     $userId = filter_var($userId, FILTER_SANITIZE_NUMBER_INT);
     $eventId = filter_var($eventId, FILTER_SANITIZE_NUMBER_INT);
 
-    $sql = "SELECT
+    $sql = 'SELECT
 						ep.id AS eventPersonId,
 						ep.eventId,
 						ep.userRoleId,
@@ -508,10 +508,10 @@ function rolesUserCanCoverAtEvent($userId, $eventId)
 						INNER JOIN userRoles ur ON ur.id = ep.userRoleId
 					WHERE
 						eventId = ?
-						AND ur.roleId IN (SELECT roleId FROM userRoles WHERE userId = ?)";
+						AND ur.roleId IN (SELECT roleId FROM userRoles WHERE userId = ?)';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'iii', $userId, $eventId, $userId);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
 
     while ($entry = mysqli_fetch_object($result)) {
@@ -524,10 +524,10 @@ function rolesUserCanCoverAtEvent($userId, $eventId)
 
 function numberOfRolesOfUserAtEvent($userId, $eventId)
 {
-    $sql = "SELECT COUNT(ur.userId) AS numberOfRoles FROM eventPeople ep INNER JOIN userRoles ur ON ur.id = ep.userRoleId WHERE eventId = ? AND userId = ?";
+    $sql = 'SELECT COUNT(ur.userId) AS numberOfRoles FROM eventPeople ep INNER JOIN userRoles ur ON ur.id = ep.userRoleId WHERE eventId = ? AND userId = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'ii', $eventId, $userId);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
     mysqli_stmt_close($stmt);
@@ -539,23 +539,23 @@ function removeSeries($seriesId)
 {
     $seriesId = filter_var($seriesId, FILTER_SANITIZE_NUMBER_INT);
 
-    $sql = "UPDATE eventGroups SET archived = true WHERE id = ?";
+    $sql = 'UPDATE eventGroups SET archived = true WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $seriesId);
     if (!mysqli_stmt_execute($stmt)) {
-        die('Error: '.mysqli_error(db()));
+        exit('Error: '.mysqli_error(db()));
     }
     mysqli_stmt_close($stmt);
 }
 
 function addPeopleBand($bandId, $userRoleId)
 {
-    $sql = "INSERT INTO bandMembers (bandId, userRoleId) VALUES (?, ?)";
+    $sql = 'INSERT INTO bandMembers (bandId, userRoleId) VALUES (?, ?)';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'ii', $bandId, $userRoleId);
 
     if (!mysqli_stmt_execute($stmt)) {
-        die('Error: '.mysqli_error(db()));
+        exit('Error: '.mysqli_error(db()));
     }
     mysqli_stmt_close($stmt);
 }
@@ -567,20 +567,19 @@ function getEventUrl($eventId)
 
 function getEventDetails($eventID, $separator, $type = 4, $apprev_description = true, $prefix = '')
 {
-
     //type=0 -> all details
     //type=1 -> only groupID in 10,11,2
     //type=2 -> only event date and event type
     //type=4 -> only event type
 
     $sqlSettings = 'SELECT * FROM settings';
-    $resultSettings = mysqli_query(db(), $sqlSettings) or die(mysqli_error(db()));
+    $resultSettings = mysqli_query(db(), $sqlSettings) or exit(mysqli_error(db()));
     $rowSettings = mysqli_fetch_array($resultSettings, MYSQLI_ASSOC);
     $lang_locale = $rowSettings['lang_locale'];
     $time_format_normal = $rowSettings['time_format_normal'];
     setlocale(LC_TIME, $lang_locale);
 
-    $sql = "SELECT
+    $sql = 'SELECT
 						e.id,
 						e.date AS `eventDate`,
 						e.type AS `eventType`,
@@ -599,7 +598,7 @@ function getEventDetails($eventID, $separator, $type = 4, $apprev_description = 
 						LEFT OUTER JOIN users u ON ur.userId = u.id
 						INNER JOIN eventTypes et ON e.type = et.id
 					WHERE
-						e.id = ? ";
+						e.id = ? ';
 
     if ($type == 1) {
         $sql = $sql."AND ((g.id in (10,11)) OR (g.id=2 and u.firstname='Team')) ";
@@ -608,7 +607,7 @@ function getEventDetails($eventID, $separator, $type = 4, $apprev_description = 
 
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $eventID);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
 
     $returnValue = '';
@@ -656,10 +655,10 @@ function getEventDetails($eventID, $separator, $type = 4, $apprev_description = 
                 break;
             case 8:
                 break;
-
         }
     }
     mysqli_stmt_close($stmt);
+
     //return trim(substr($returnValue,strlen($separator)-1));
     return substr($returnValue, strlen($separator));
 }

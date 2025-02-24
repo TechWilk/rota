@@ -58,7 +58,7 @@ class PendingUserController extends BaseController
                 $firstName = $names[0];
                 $lastName = $names[1];
                 $email = $meta['email'];
-            break;
+                break;
         }
 
         return $this->view->render($response, 'login-sign-up.twig', [

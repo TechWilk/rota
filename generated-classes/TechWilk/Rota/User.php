@@ -70,8 +70,8 @@ class User extends BaseUser
 
         if (!password_verify($v, $this->password)) {
             $bcrypt_options = [
-        'cost' => 12,
-      ];
+                'cost' => 12,
+            ];
             $this->password = password_hash($v, PASSWORD_BCRYPT, $bcrypt_options);
 
             $this->modifiedColumns[UserTableMap::COL_PASSWORD] = true;
@@ -165,7 +165,7 @@ class User extends BaseUser
                             break;
                         default:
                             return $baseUrl.'/system/production/people/photos/'.$socialAuth->getSocialId().'/tn/'.$photoFingerprint.'.'.$extension;
-                        break;
+                            break;
                     }
                 }
             }
@@ -183,7 +183,7 @@ class User extends BaseUser
                 break;
             default:
                 return '//www.gravatar.com/avatar/'.md5(strtolower(trim($this->email))).'?s=50&d=mm';
-            break;
+                break;
         }
     }
 

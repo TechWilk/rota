@@ -10,10 +10,10 @@ function setSessionAndRedirect($username)
         $users_start_with_myevents = '0';
     }
 
-    $sql = "SELECT * FROM users WHERE username = ?";
+    $sql = 'SELECT * FROM users WHERE username = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 's', $username);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     mysqli_stmt_close($stmt);
 
@@ -27,7 +27,7 @@ function setSessionAndRedirect($username)
         $_SESSION['onlyShowUserEvents'] = $users_start_with_myevents; // 1 if users_start_with_myevents is set in settings, can be changed by user during session
 
         //statistic
-        if (($debug) && (siteSettings()->getVersion() == '2.6.0')) {
+        if ($debug && (siteSettings()->getVersion() == '2.6.0')) {
             insertStatistics('user', __FILE__, 'login', null, $_SERVER['HTTP_USER_AGENT']);
         }
 
@@ -39,10 +39,10 @@ function setSessionAndRedirect($username)
 
         // Update last login timestamp
         $currentTimestamp = date('Y-m-d H:i:s');
-        $sql = "UPDATE users SET lastLogin = ? WHERE id = ?";
+        $sql = 'UPDATE users SET lastLogin = ? WHERE id = ?';
         $stmt = mysqli_prepare(db(), $sql);
         mysqli_stmt_bind_param($stmt, 'si', $currentTimestamp, $row['id']);
-        mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+        mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
         mysqli_stmt_close($stmt);
 
         // redirect
@@ -51,7 +51,7 @@ function setSessionAndRedirect($username)
             $redirectFromSession = strip_tags($_SESSION['redirectUrl']);
             unset($_SESSION['redirectUrl']);
             // check is url is on same domain and prevents redirecting to logout page
-            if (strncmp(strtolower(siteSettings()->getSiteUrl().'/'), strtolower($redirectFromSession), (strlen(siteSettings()->getSiteUrl()) + 1)) == 0 && strpos($redirectFromSession, 'logout.php') === false) {
+            if (strncmp(strtolower(siteSettings()->getSiteUrl().'/'), strtolower($redirectFromSession), strlen(siteSettings()->getSiteUrl()) + 1) == 0 && strpos($redirectFromSession, 'logout.php') === false) {
                 $redirectUrl = $redirectFromSession;
             }
         }

@@ -9,16 +9,16 @@ class CryptTest extends BaseTestCase
     public function providerTestGenerateToken()
     {
         return [
-      [1],
-      [2],
-      [5],
-      [7],
-      [9],
-      [22],
-      [60],
-      [120],
-      [246],
-    ];
+            [1],
+            [2],
+            [5],
+            [7],
+            [9],
+            [22],
+            [60],
+            [120],
+            [246],
+        ];
     }
 
     /**
@@ -38,13 +38,13 @@ class CryptTest extends BaseTestCase
     public function providerTestGenerateIntBetween()
     {
         return [
-      [1, 2],
-      [1, 100],
-      [2, 43],
-      [5, 555],
-      [7, 9233],
-      [5500, 6703],
-    ];
+            [1, 2],
+            [1, 100],
+            [2, 43],
+            [5, 555],
+            [7, 9233],
+            [5500, 6703],
+        ];
     }
 
     /**
@@ -66,14 +66,15 @@ class CryptTest extends BaseTestCase
     public function providerTestGenerateIntInvalidConstraints()
     {
         return [
-      [100, 1],
-      [2, 2],
-    ];
+            [100, 1],
+            [2, 2],
+        ];
     }
 
     /**
      * @param string $min
      * @param string $max
+     *
      * @expectedException        InvalidArgumentException
      *
      * @dataProvider providerTestGenerateIntInvalidConstraints

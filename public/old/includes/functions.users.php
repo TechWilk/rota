@@ -42,7 +42,7 @@ function addUser($firstName, $lastName, $email, $mobile)
     VALUES (?, ?, ?, ?, ?, '1', NOW(), NOW())";
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'sssss', $firstName, $lastName, $username, $email, $mobile);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     mysqli_stmt_close($stmt);
 
     $id = mysqli_insert_id(db());
@@ -67,10 +67,10 @@ function updateUser($id, $firstName, $lastName, $email, $mobile)
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
     $mobile = filter_var($mobile, FILTER_SANITIZE_NUMBER_INT);
 
-    $sql = "UPDATE users SET firstname = ?, lastname = ?, email = ?, mobile = ? WHERE id = ?";
+    $sql = 'UPDATE users SET firstname = ?, lastname = ?, email = ?, mobile = ? WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'ssssi', $firstName, $lastName, $email, $mobile, $id);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     mysqli_stmt_close($stmt);
 }
 
@@ -80,10 +80,10 @@ function updateUserContactDetails($id, $email, $mobile)
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
     $mobile = filter_var($mobile, FILTER_SANITIZE_NUMBER_INT);
 
-    $sql = "UPDATE users SET email = ?, mobile = ? WHERE id = ?";
+    $sql = 'UPDATE users SET email = ?, mobile = ? WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'ssi', $email, $mobile, $id);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     mysqli_stmt_close($stmt);
 }
 
@@ -91,16 +91,16 @@ function removeUser($id)
 {
     $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
     $queries = [
-        "DELETE FROM userRoles WHERE userId = ?",
-        "DELETE FROM socialAuth WHERE userId = ?",
-        "DELETE FROM notifications WHERE userId = ?",
-        "DELETE FROM users WHERE id = ?"
+        'DELETE FROM userRoles WHERE userId = ?',
+        'DELETE FROM socialAuth WHERE userId = ?',
+        'DELETE FROM notifications WHERE userId = ?',
+        'DELETE FROM users WHERE id = ?',
     ];
 
-    foreach($queries as $sql) {
+    foreach ($queries as $sql) {
         $stmt = mysqli_prepare(db(), $sql);
         mysqli_stmt_bind_param($stmt, 'i', $id);
-        mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+        mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
         mysqli_stmt_close($stmt);
     }
 
@@ -123,30 +123,30 @@ function removePermission($id) {
 function updatePermissions($id, $isAdmin, $isBandAdmin, $isEventEditor, $isOverviewRecipient)
 {
     $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-    $isAdmin = (bool)$isAdmin;
-    $isOverviewRecipient = (bool)$isOverviewRecipient;
-    $isBandAdmin = (bool)$isBandAdmin;
-    $isEventEditor = (bool)$isEventEditor;
+    $isAdmin = (bool) $isAdmin;
+    $isOverviewRecipient = (bool) $isOverviewRecipient;
+    $isBandAdmin = (bool) $isBandAdmin;
+    $isEventEditor = (bool) $isEventEditor;
 
-    $sql = "UPDATE users
+    $sql = 'UPDATE users
             SET isAdmin = ?,
             isOverviewRecipient = ?,
             isBandAdmin = ?,
             isEventEditor = ?
-            WHERE id = ?";
+            WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'iiiii', $isAdmin, $isOverviewRecipient, $isBandAdmin, $isEventEditor, $id);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     mysqli_stmt_close($stmt);
 }
 
 function getNameWithId($id)
 {
     $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-    $sql = "SELECT firstName, lastName FROM users WHERE id = ?";
+    $sql = 'SELECT firstName, lastName FROM users WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $id);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
     mysqli_stmt_close($stmt);
@@ -158,10 +158,10 @@ function getNameWithId($id)
 function getFirstNameWithId($id)
 {
     $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-    $sql = "SELECT firstName FROM users WHERE id = ?";
+    $sql = 'SELECT firstName FROM users WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $id);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
     mysqli_stmt_close($stmt);
@@ -172,10 +172,10 @@ function getFirstNameWithId($id)
 function getUsernameWithId($id)
 {
     $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-    $sql = "SELECT username FROM users WHERE id = ?";
+    $sql = 'SELECT username FROM users WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $id);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $username = $row['username'];
@@ -202,10 +202,10 @@ function getIdWithUsername($username)
 function getEmailWithId($id)
 {
     $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-    $sql = "SELECT email FROM users WHERE id = ?";
+    $sql = 'SELECT email FROM users WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $id);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $email = $row['email'];
@@ -223,10 +223,10 @@ function changePassword($userId, $plainTextNewPassword, $plainTextOldPassword)
     }
     $hashedPassword = hashPassword($plainTextNewPassword);
     $currentTimestamp = date('Y-m-d H:i:s');
-    $sql = "UPDATE users SET password = ?, passwordChanged = ? WHERE id = ?";
+    $sql = 'UPDATE users SET password = ?, passwordChanged = ? WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'ssi', $hashedPassword, $currentTimestamp, $userId);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     mysqli_stmt_close($stmt);
 
     return isPasswordCorrectWithId($userId, $plainTextNewPassword);
@@ -237,10 +237,10 @@ function forceChangePassword($userId, $plainTextNewPassword)
     $userId = filter_var($userId, FILTER_SANITIZE_NUMBER_INT);
     $hashedPassword = hashPassword($plainTextNewPassword);
     $currentTimestamp = date('Y-m-d H:i:s');
-    $sql = "UPDATE users SET password = ?, passwordChanged = ? WHERE id = ?";
+    $sql = 'UPDATE users SET password = ?, passwordChanged = ? WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'ssi', $hashedPassword, $currentTimestamp, $userId);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     mysqli_stmt_close($stmt);
     insertStatistics('user', __FILE__, 'password force changed for user '.getNameWithId($userId), null, $_SERVER['HTTP_USER_AGENT']);
 }
@@ -296,20 +296,20 @@ function numberOfLoginAttemptsIsOk($username, $ipAddress)
 
 function logFailedLoginAttempt($username, $ipAddress)
 {
-    $sql = "INSERT INTO loginFailures (username, ipAddress) VALUES (?, ?)";
+    $sql = 'INSERT INTO loginFailures (username, ipAddress) VALUES (?, ?)';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'ss', $username, $ipAddress);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     mysqli_stmt_close($stmt);
 }
 
 function userIsAdmin($id)
 {
     $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-    $sql = "SELECT isAdmin FROM users WHERE id = ?";
+    $sql = 'SELECT isAdmin FROM users WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $id);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
     mysqli_stmt_close($stmt);
@@ -323,10 +323,10 @@ function userIsAdmin($id)
 function userExistsWithSocialIdForPlatform($socialId, $platform)
 {
     $socialId = filter_var($socialId, FILTER_SANITIZE_NUMBER_INT);
-    $sql = "SELECT COUNT(*) AS count FROM socialAuth WHERE socialId = ? AND platform = ?";
+    $sql = 'SELECT COUNT(*) AS count FROM socialAuth WHERE socialId = ? AND platform = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'is', $socialId, $platform);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
     mysqli_stmt_close($stmt);
@@ -341,7 +341,7 @@ function userExistsWithSocialIdForPlatform($socialId, $platform)
 function usersWhoAreAdmins()
 {
     $sql = 'SELECT id, firstName, lastName FROM users WHERE isAdmin = true ORDER BY lastName, firstName';
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $admins = [];
     while ($ob = mysqli_fetch_object($result)) {
         $admins[] = $ob;
@@ -353,7 +353,7 @@ function usersWhoAreAdmins()
 function allUsersNames()
 {
     $sql = 'SELECT id, firstName, lastName FROM users ORDER BY lastName, firstName';
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $users = [];
     while ($ob = mysqli_fetch_object($result)) {
         $users[] = $ob;
@@ -369,10 +369,10 @@ function createPendingUser($socialId, $firstName, $lastName, $email, $source)
     $lastName = trim($lastName);
     $email = trim($email);
 
-    $sql = "INSERT INTO pendingUsers (socialId, firstName, lastName, email, source) VALUES (?, ?, ?, ?, ?)";
+    $sql = 'INSERT INTO pendingUsers (socialId, firstName, lastName, email, source) VALUES (?, ?, ?, ?, ?)';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'issss', $socialId, $firstName, $lastName, $email, $source);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $pendingId = mysqli_insert_id(db());
     mysqli_stmt_close($stmt);
 
@@ -394,10 +394,10 @@ function createPendingUser($socialId, $firstName, $lastName, $email, $source)
 function pendingUserActioned($pendingAccountId)
 {
     $pendingAccountId = filter_var($pendingAccountId, FILTER_SANITIZE_NUMBER_INT);
-    $sql = "SELECT approved, declined FROM pendingUsers WHERE id = ?";
+    $sql = 'SELECT approved, declined FROM pendingUsers WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $pendingAccountId);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
     mysqli_stmt_close($stmt);
@@ -419,17 +419,17 @@ function approvePendingUser($pendingAccountId)
     }
 
     // update approval bit
-    $sql = "UPDATE pendingUsers SET approved = true WHERE id = ?";
+    $sql = 'UPDATE pendingUsers SET approved = true WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $pendingAccountId);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     mysqli_stmt_close($stmt);
 
     // create user
-    $sql = "SELECT firstName, lastName, email, socialId, source FROM pendingUsers WHERE id = ?";
+    $sql = 'SELECT firstName, lastName, email, socialId, source FROM pendingUsers WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $pendingAccountId);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     $pendingUser = mysqli_fetch_object($result);
     mysqli_stmt_close($stmt);
@@ -454,17 +454,17 @@ function mergePendingUserWithUserId($pendingAccountId, $userId)
     }
 
     // update approval bit
-    $sql = "UPDATE pendingUsers SET approved = true WHERE id = ?";
+    $sql = 'UPDATE pendingUsers SET approved = true WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $pendingAccountId);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     mysqli_stmt_close($stmt);
 
     // add facebook login id
-    $sql = "SELECT firstName, lastName, email, socialId, source FROM pendingUsers WHERE id = ?";
+    $sql = 'SELECT firstName, lastName, email, socialId, source FROM pendingUsers WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $pendingAccountId);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     $pendingUser = mysqli_fetch_object($result);
     mysqli_stmt_close($stmt);
@@ -488,16 +488,16 @@ function declinePendingUser($pendingAccountId)
     }
 
     // update declined bit
-    $sql = "UPDATE pendingUsers SET declined = true WHERE id = ?";
+    $sql = 'UPDATE pendingUsers SET declined = true WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $pendingAccountId);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     mysqli_stmt_close($stmt);
 
-    $sql = "SELECT socialId FROM pendingUsers WHERE id = ?";
+    $sql = 'SELECT socialId FROM pendingUsers WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $pendingAccountId);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     $pendingUser = mysqli_fetch_object($result);
     mysqli_stmt_close($stmt);
@@ -511,30 +511,30 @@ function addSocialAuthToUserWithId($userId, $socialId, $platform)
 {
     $userId = filter_var($userId, FILTER_SANITIZE_NUMBER_INT);
     $socialId = filter_var($socialId, FILTER_SANITIZE_NUMBER_INT);
-    $sql = "INSERT INTO socialAuth (userId, socialId, platform) VALUES (?, ?, ?)";
+    $sql = 'INSERT INTO socialAuth (userId, socialId, platform) VALUES (?, ?, ?)';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'iis', $userId, $socialId, $platform);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     mysqli_stmt_close($stmt);
 }
 
 function removeSocialAuthFromUserWithId($userId, $platform)
 {
     $userId = filter_var($userId, FILTER_SANITIZE_NUMBER_INT);
-    $sql = "DELETE FROM socialAuth WHERE userId = ? AND platform = ?";
+    $sql = 'DELETE FROM socialAuth WHERE userId = ? AND platform = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'is', $userId, $platform);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     mysqli_stmt_close($stmt);
 }
 
 function getUsernameWithSocialId($id)
 {
     $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-    $sql = "SELECT username FROM users u INNER JOIN socialAuth sa ON u.id = sa.userId WHERE sa.socialId = ?";
+    $sql = 'SELECT username FROM users u INNER JOIN socialAuth sa ON u.id = sa.userId WHERE sa.socialId = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $id);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
     mysqli_stmt_close($stmt);
@@ -545,10 +545,10 @@ function getUsernameWithSocialId($id)
 function userIsLinkedToPlatform($userId, $platform)
 {
     $userId = filter_var($userId, FILTER_SANITIZE_NUMBER_INT);
-    $sql = "SELECT COUNT(*) AS count FROM socialAuth WHERE userId = ? AND platform = ? AND revoked = 0";
+    $sql = 'SELECT COUNT(*) AS count FROM socialAuth WHERE userId = ? AND platform = ? AND revoked = 0';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'is', $userId, $platform);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
     mysqli_stmt_close($stmt);
@@ -563,10 +563,10 @@ function userIsLinkedToPlatform($userId, $platform)
 function userSocialIdForPlatform($userId, $platform)
 {
     $userId = filter_var($userId, FILTER_SANITIZE_NUMBER_INT);
-    $sql = "SELECT socialId FROM socialAuth WHERE userId = ? AND platform = ? AND revoked = 0";
+    $sql = 'SELECT socialId FROM socialAuth WHERE userId = ? AND platform = ? AND revoked = 0';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'is', $userId, $platform);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     $ob = mysqli_fetch_object($result);
     mysqli_stmt_close($stmt);
@@ -579,7 +579,7 @@ function getProfileImageUrl($userId, $size = 'small')
     $sql = 'SELECT sa.socialId, u.email FROM users u LEFT JOIN socialAuth sa ON sa.userId = u.id WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $userId);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     $result = mysqli_stmt_get_result($stmt);
     $user = mysqli_fetch_object($result);
     mysqli_stmt_close($stmt);

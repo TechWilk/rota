@@ -74,6 +74,7 @@ class Authentication
     {
         if (!$this->numberOfLoginAttemptsIsOk($email)) {
             throw new Exception('Too many attempts.');
+
             return false;
         }
 
@@ -107,10 +108,10 @@ class Authentication
                     $socialAuth->save();
                     $user = $socialAuth->getUser();
                 }
-            break;
+                break;
             default:
                 $user = UserQuery::create()->filterByEmail($email)->findOne();
-            break;
+                break;
         }
 
         if (is_null($user)) {
@@ -212,7 +213,7 @@ class Authentication
                         //$socialAuth->save();
                         $user = $socialAuth->getUser();
                     }
-                break;
+                    break;
             }
 
             if (is_null($user)) {

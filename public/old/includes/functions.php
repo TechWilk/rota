@@ -89,7 +89,7 @@ if ((isset($holdQuery)) && ($holdQuery == true)) {
     //if call is not during installation,
     //query real values from db for these variables
     $sql = 'SELECT * FROM settings';
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
 
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $owner = $row['owner'];
@@ -156,25 +156,24 @@ function isLoggedIn()
 
 function subscribeto($userid, $categoryid, $topicid)
 {
-    $sql = "INSERT INTO subscriptions(userid, categoryid, topicid) VALUES (?, ?, ?)";
+    $sql = 'INSERT INTO subscriptions(userid, categoryid, topicid) VALUES (?, ?, ?)';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'iii', $userid, $categoryid, $topicid);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     mysqli_stmt_close($stmt);
 }
 
-function unsubscribefrom($subscription) 
+function unsubscribefrom($subscription)
 {
-    $sql = "DELETE FROM subscriptions WHERE id = ?";
+    $sql = 'DELETE FROM subscriptions WHERE id = ?';
     $stmt = mysqli_prepare(db(), $sql);
     mysqli_stmt_bind_param($stmt, 'i', $subscription);
-    mysqli_stmt_execute($stmt) or die(mysqli_error(db()));
+    mysqli_stmt_execute($stmt) or exit(mysqli_error(db()));
     mysqli_stmt_close($stmt);
 }
 
 function insertStatistics($type, $script, $detail1 = '', $detail2 = '', $detail3 = '')
 {
-
     //if type=logout, then update login record (session-statitic-id) and exit
     //fallthrough if no login_statistic_id in session
     if (strtolower($detail1) == 'logout') {

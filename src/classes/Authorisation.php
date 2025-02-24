@@ -17,8 +17,7 @@ class Authorisation
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
     {
-
-    // do something!
+        // do something!
 
         return $response;
     }

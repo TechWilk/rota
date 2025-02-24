@@ -17,16 +17,16 @@ $serviceContainer->checkVersion('2.0.0-dev');
 $serviceContainer->setAdapterClass('default', 'sqlite');
 $manager = new \Propel\Runtime\Connection\ConnectionManagerSingle();
 $manager->setConfiguration([
-  'classname'  => 'Propel\\Runtime\\Connection\\ConnectionWrapper',
-  'dsn'        => 'sqlite:/var/tmp/test.db',
-  'attributes' => [
-    'ATTR_EMULATE_PREPARES' => false,
-    'ATTR_TIMEOUT'          => 30,
-  ],
-  'model_paths' => [
-    0 => 'src',
-    1 => 'vendor',
-  ],
+    'classname'  => 'Propel\\Runtime\\Connection\\ConnectionWrapper',
+    'dsn'        => 'sqlite:/var/tmp/test.db',
+    'attributes' => [
+        'ATTR_EMULATE_PREPARES' => false,
+        'ATTR_TIMEOUT'          => 30,
+    ],
+    'model_paths' => [
+        0 => 'src',
+        1 => 'vendor',
+    ],
 ]);
 $manager->setName('default');
 $serviceContainer->setConnectionManager('default', $manager);
@@ -35,9 +35,9 @@ $serviceContainer->setDefaultDatasource('default');
 $sqlManager = new \Propel\Generator\Manager\SqlManager();
 $sqlManager->setConnections(
     ['default' => [
-            'dsn'     => 'sqlite:/var/tmp/test.db',
-            'adapter' => 'sqlite',
-        ],
+        'dsn'     => 'sqlite:/var/tmp/test.db',
+        'adapter' => 'sqlite',
+    ],
     ]
 );
 $sqlManager->setWorkingDirectory(__DIR__.'/../../generated-sql');
