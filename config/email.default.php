@@ -1,5 +1,7 @@
 <?php
 
+global $config;
+
 //
 // Emails can be sent using two different methods.
 //

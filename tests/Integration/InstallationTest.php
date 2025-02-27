@@ -12,7 +12,7 @@ class InstallationTest extends BaseTestCase
     /**
      * Ensure database is empty.
      */
-    public function setUp()
+    public function setUp(): void
     {
         $users = UserQuery::create()->find();
         if (!empty($users)) {

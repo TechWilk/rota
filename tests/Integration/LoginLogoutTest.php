@@ -9,7 +9,7 @@ class LoginLogoutTest extends BaseTestCase
     /**
      * Create an admin user.
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         $user = new User();
         $user->setEmail('test@example.com');

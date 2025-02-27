@@ -1,5 +1,7 @@
 <?php
 
+global $config;
+
 // Which service to use? Choose from:
 // - none
 // - locomotivecms

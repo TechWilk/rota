@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use InvalidArgumentException;
 use TechWilk\Rota\EmailAddress;
 
 class EmailAddressTest extends BaseTestCase
@@ -37,14 +38,12 @@ class EmailAddressTest extends BaseTestCase
 
     /**
      * @param string $email
-     * @expectedException        InvalidArgumentException
      *
      * @dataProvider providerTestInvalidEmails
      */
     public function testInvalidEmails($email)
     {
+        $this->expectException(InvalidArgumentException::class);
         $emailObject = new EmailAddress($email);
-
-        //$this->assertNotEqual((string)$emailObject, $email);
     }
 }

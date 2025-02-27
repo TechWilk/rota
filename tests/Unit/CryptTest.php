@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use InvalidArgumentException;
 use TechWilk\Rota\Crypt;
 
 class CryptTest extends BaseTestCase
@@ -74,12 +75,12 @@ class CryptTest extends BaseTestCase
     /**
      * @param string $min
      * @param string $max
-     * @expectedException        InvalidArgumentException
      *
      * @dataProvider providerTestGenerateIntInvalidConstraints
      */
     public function testGenerateIntInvalidConstraints($min, $max)
     {
+        $this->expectException(InvalidArgumentException::class);
         $crypt = new Crypt();
         $crypt->generateInt($min, $max);
     }

@@ -1,5 +1,7 @@
 <?php
 
+global $config;
+
 // Only a MySQL database can be used with this software.
 
 // Enter the name of your Database
