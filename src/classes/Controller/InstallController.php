@@ -4,6 +4,7 @@ namespace TechWilk\Rota\Controller;
 
 use Locale;
 use Propel\Generator\Application;
+use Propel\Runtime\ActiveQuery\QueryExecutor\QueryExecutionException;
 use Propel\Runtime\Propel;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -41,6 +42,7 @@ class InstallController extends BaseController
             }
             $stage = 3;
         } catch (\Propel\Runtime\Exception\PropelException $e) {
+        } catch (QueryExecutionException $e) {
         }
 
         return $this->view->render($response, 'install.twig', ['stage' => $stage]);
@@ -61,8 +63,8 @@ class InstallController extends BaseController
             if ($e->getPrevious()->getCode() !== '42S02') {
                 return $response;
             }
+        } catch (QueryExecutionException $e) {
         }
-
         $site = new Site();
         $config = $site->getConfig();
 
@@ -101,6 +103,8 @@ class InstallController extends BaseController
             if ($e->getPrevious()->getCode() === '42S02') {
                 return $response->getBody()->write('Error installing database:'."\n".$outputString);
             }
+        } catch (QueryExecutionException $e) {
+            return $response->getBody()->write('Error installing database:'."\n".$outputString);
         }
 
         return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('install'));
