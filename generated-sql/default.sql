@@ -1,555 +1,616 @@
------------------------------------------------------------------------
--- availability
------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [availability];
+# This is a fix for InnoDB in MySQL >= 4.1.x
+# It "suspends judgement" for fkey relationships until are tables are set.
+SET FOREIGN_KEY_CHECKS = 0;
 
-CREATE TABLE [availability]
-(
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [eventId] INTEGER(30) NOT NULL,
-    [userId] INTEGER NOT NULL,
-    [available] BOOLEAN NOT NULL DEFAULT 1,
-    [comment] VARCHAR(64) NOT NULL,
-    UNIQUE ([id]),
-    FOREIGN KEY ([userId]) REFERENCES [users] ([id]),
-    FOREIGN KEY ([eventId]) REFERENCES [events] ([id])
-);
-
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- calendarTokens
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [calendarTokens];
+DROP TABLE IF EXISTS `calendarTokens`;
 
-CREATE TABLE [calendarTokens]
+CREATE TABLE `calendarTokens`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [token] VARCHAR(30) NOT NULL,
-    [userId] INTEGER(30) NOT NULL,
-    [format] VARCHAR(5) NOT NULL,
-    [description] VARCHAR(100),
-    [revoked] INTEGER(1) DEFAULT 0 NOT NULL,
-    [revokedDate] TIMESTAMP,
-    [lastFetched] TIMESTAMP,
-    [created] TIMESTAMP,
-    [updated] TIMESTAMP,
-    UNIQUE ([token]),
-    FOREIGN KEY ([userId]) REFERENCES [users] ([id])
-);
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `token` VARCHAR(30) NOT NULL,
+    `userId` INTEGER(30) NOT NULL,
+    `format` VARCHAR(5) NOT NULL,
+    `description` VARCHAR(100),
+    `revoked` TINYINT(1) DEFAULT 0 NOT NULL,
+    `revokedDate` TIMESTAMP NULL,
+    `lastFetched` TIMESTAMP NULL,
+    `created` TIMESTAMP NULL,
+    `updated` TIMESTAMP NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `token` (`token`),
+    INDEX `calendarTokens_fi_2596c7` (`userId`),
+    CONSTRAINT `calendarTokens_fk_2596c7`
+        FOREIGN KEY (`userId`)
+        REFERENCES `users` (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
--- discussion
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
+-- comments
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [discussion];
+DROP TABLE IF EXISTS `comments`;
 
-CREATE TABLE [discussion]
+CREATE TABLE `comments`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [topicParent] INTEGER(6) DEFAULT 0 NOT NULL,
-    [CategoryParent] INTEGER(6) DEFAULT 0 NOT NULL,
-    [userID] INTEGER(6) DEFAULT 0 NOT NULL,
-    [topic] MEDIUMTEXT NOT NULL,
-    [topicName] MEDIUMTEXT NOT NULL,
-    [date] TIMESTAMP DEFAULT '0000-00-00 00:00:00' NOT NULL,
-    UNIQUE ([id])
-);
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `eventId` INTEGER DEFAULT 0 NOT NULL,
+    `userId` INTEGER DEFAULT 0 NOT NULL,
+    `text` VARCHAR(255),
+    `removed` TINYINT(1) DEFAULT 0,
+    `created` TIMESTAMP NULL,
+    `updated` TIMESTAMP NULL,
+    PRIMARY KEY (`id`),
+    INDEX `comments_fi_c07e67` (`eventId`),
+    INDEX `comments_fi_2596c7` (`userId`),
+    CONSTRAINT `comments_fk_c07e67`
+        FOREIGN KEY (`eventId`)
+        REFERENCES `events` (`id`),
+    CONSTRAINT `comments_fk_2596c7`
+        FOREIGN KEY (`userId`)
+        REFERENCES `users` (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
--- discussionCategories
------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS [discussionCategories];
-
-CREATE TABLE [discussionCategories]
-(
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [name] VARCHAR(255) DEFAULT '' NOT NULL,
-    [description] MEDIUMTEXT NOT NULL,
-    [parent] INTEGER(1) DEFAULT 0 NOT NULL,
-    UNIQUE ([id])
-);
-
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- documents
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [documents];
+DROP TABLE IF EXISTS `documents`;
 
-CREATE TABLE [documents]
+CREATE TABLE `documents`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [title] VARCHAR(127) DEFAULT '' NOT NULL,
-    [description] MEDIUMTEXT NOT NULL,
-    [url] VARCHAR(127) DEFAULT '' NOT NULL,
-    [link] MEDIUMTEXT NOT NULL,
-    UNIQUE ([id])
-);
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(127) DEFAULT '' NOT NULL,
+    `description` TEXT NOT NULL,
+    `url` VARCHAR(127) DEFAULT '' NOT NULL,
+    `link` TEXT NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- emails
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [emails];
+DROP TABLE IF EXISTS `emails`;
 
-CREATE TABLE [emails]
+CREATE TABLE `emails`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [emailTo] VARCHAR(100) DEFAULT '' NOT NULL,
-    [emailBcc] VARCHAR(100) DEFAULT '' NOT NULL,
-    [emailFrom] VARCHAR(100) NOT NULL,
-    [subject] VARCHAR(150) NOT NULL,
-    [message] MEDIUMTEXT NOT NULL,
-    [error] MEDIUMTEXT,
-    UNIQUE ([id])
-);
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `emailTo` VARCHAR(100) DEFAULT '' NOT NULL,
+    `emailBcc` VARCHAR(100) DEFAULT '' NOT NULL,
+    `emailFrom` VARCHAR(100) NOT NULL,
+    `subject` VARCHAR(150) NOT NULL,
+    `message` TEXT NOT NULL,
+    `error` TEXT,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- eventGroups
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [eventGroups];
+DROP TABLE IF EXISTS `eventGroups`;
 
-CREATE TABLE [eventGroups]
+CREATE TABLE `eventGroups`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [name] VARCHAR(128) DEFAULT '' NOT NULL,
-    [description] MEDIUMTEXT NOT NULL,
-    [archived] INTEGER(1) DEFAULT 0 NOT NULL,
-    UNIQUE ([id])
-);
+    `id` INTEGER(30) NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(128) DEFAULT '' NOT NULL,
+    `description` TEXT NOT NULL,
+    `archived` TINYINT(1) DEFAULT 0 NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- eventPeople
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [eventPeople];
+DROP TABLE IF EXISTS `eventPeople`;
 
-CREATE TABLE [eventPeople]
+CREATE TABLE `eventPeople`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [eventId] INTEGER DEFAULT 0 NOT NULL,
-    [userRoleId] INTEGER DEFAULT 0 NOT NULL,
-    [notified] SMALLINT(1) DEFAULT 0 NOT NULL,
-    [removed] SMALLINT(1) DEFAULT 0,
-    UNIQUE ([id]),
-    FOREIGN KEY ([eventId]) REFERENCES [events] ([id]),
-    FOREIGN KEY ([userRoleId]) REFERENCES [userRoles] ([id])
-);
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `eventId` INTEGER DEFAULT 0 NOT NULL,
+    `userRoleId` INTEGER DEFAULT 0 NOT NULL,
+    `notified` SMALLINT(1) DEFAULT 0 NOT NULL,
+    `removed` SMALLINT(1) DEFAULT 0,
+    PRIMARY KEY (`id`),
+    INDEX `eventPeople_fi_c07e67` (`eventId`),
+    INDEX `eventPeople_fi_f11fe6` (`userRoleId`),
+    CONSTRAINT `eventPeople_fk_c07e67`
+        FOREIGN KEY (`eventId`)
+        REFERENCES `events` (`id`),
+    CONSTRAINT `eventPeople_fk_f11fe6`
+        FOREIGN KEY (`userRoleId`)
+        REFERENCES `userRoles` (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- eventSubTypes
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [eventSubTypes];
+DROP TABLE IF EXISTS `eventSubTypes`;
 
-CREATE TABLE [eventSubTypes]
+CREATE TABLE `eventSubTypes`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [name] VARCHAR(128) DEFAULT '' NOT NULL,
-    [description] MEDIUMTEXT NOT NULL,
-    UNIQUE ([id])
-);
+    `id` INTEGER(30) NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(128) DEFAULT '' NOT NULL,
+    `description` TEXT NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- eventTypes
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [eventTypes];
+DROP TABLE IF EXISTS `eventTypes`;
 
-CREATE TABLE [eventTypes]
+CREATE TABLE `eventTypes`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [name] VARCHAR(30) NOT NULL,
-    [description] MEDIUMTEXT NOT NULL,
-    [defaultDay] INTEGER(1),
-    [defaultTime] TIME,
-    [defaultRepitition] INTEGER(3),
-    [defaultLocationId] INTEGER(30),
-    [rehearsal] INTEGER(2) DEFAULT 0 NOT NULL,
-    [groupformat] INTEGER(1) DEFAULT 0 NOT NULL,
-    UNIQUE ([id]),
-    FOREIGN KEY ([defaultLocationId]) REFERENCES [locations] ([id])
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(30) NOT NULL,
+    `description` TEXT NOT NULL,
+    `defaultDay` INTEGER(1),
+    `defaultTime` TIME,
+    `defaultRepitition` INTEGER(3),
+    `defaultLocationId` INTEGER(30),
+    `rehearsal` INTEGER(2) DEFAULT 0 NOT NULL,
+    `groupformat` INTEGER(1) DEFAULT 0 NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `eventTypes_fi_c58e0b` (`defaultLocationId`),
+    CONSTRAINT `eventTypes_fk_c58e0b`
+        FOREIGN KEY (`defaultLocationId`)
+        REFERENCES `locations` (`id`)
         ON DELETE SET NULL
-);
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- events
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [events];
+DROP TABLE IF EXISTS `events`;
 
-CREATE TABLE [events]
+CREATE TABLE `events`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [date] TIMESTAMP DEFAULT '0000-00-00 00:00:00' NOT NULL,
-    [name] MEDIUMTEXT NOT NULL,
-    [createdBy] INTEGER(5) DEFAULT 0 NOT NULL,
-    [rehearsalDate] TIMESTAMP DEFAULT '0000-00-00 00:00:00' NOT NULL,
-    [type] INTEGER(30) DEFAULT 0 NOT NULL,
-    [subType] INTEGER(30) DEFAULT 0 NOT NULL,
-    [location] INTEGER DEFAULT 0 NOT NULL,
-    [notified] INTEGER(2) DEFAULT 0 NOT NULL,
-    [rehearsal] INTEGER DEFAULT 0 NOT NULL,
-    [comment] MEDIUMTEXT NOT NULL,
-    [removed] SMALLINT(1) DEFAULT 0,
-    [eventGroup] INTEGER(30) NOT NULL,
-    [sermonTitle] VARCHAR(64) DEFAULT '' NOT NULL,
-    [bibleVerse] VARCHAR(64) DEFAULT '' NOT NULL,
-    [created] TIMESTAMP,
-    [updated] TIMESTAMP,
-    UNIQUE ([id]),
-    FOREIGN KEY ([createdBy]) REFERENCES [users] ([id]),
-    FOREIGN KEY ([type]) REFERENCES [eventTypes] ([id]),
-    FOREIGN KEY ([subType]) REFERENCES [eventSubTypes] ([id]),
-    FOREIGN KEY ([location]) REFERENCES [locations] ([id]),
-    FOREIGN KEY ([eventGroup]) REFERENCES [eventGroups] ([id])
-);
+    `id` INTEGER(6) NOT NULL AUTO_INCREMENT,
+    `date` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `name` TEXT NOT NULL,
+    `createdBy` INTEGER DEFAULT 0 NOT NULL,
+    `rehearsalDate` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `type` INTEGER(30) DEFAULT 0 NOT NULL,
+    `subType` INTEGER(30) DEFAULT 0 NOT NULL,
+    `location` INTEGER DEFAULT 0 NOT NULL,
+    `notified` INTEGER(2) DEFAULT 0 NOT NULL,
+    `rehearsal` INTEGER DEFAULT 0 NOT NULL,
+    `removed` SMALLINT(1) DEFAULT 0,
+    `eventGroup` INTEGER(30),
+    `sermonTitle` VARCHAR(64),
+    `bibleVerse` VARCHAR(64),
+    `created` TIMESTAMP NULL,
+    `updated` TIMESTAMP NULL,
+    PRIMARY KEY (`id`),
+    INDEX `events_fi_40a46e` (`createdBy`),
+    INDEX `events_fi_80afae` (`type`),
+    INDEX `events_fi_8cc9da` (`subType`),
+    INDEX `events_fi_fb6343` (`location`),
+    INDEX `events_fi_c5f971` (`eventGroup`),
+    CONSTRAINT `events_fk_40a46e`
+        FOREIGN KEY (`createdBy`)
+        REFERENCES `users` (`id`),
+    CONSTRAINT `events_fk_80afae`
+        FOREIGN KEY (`type`)
+        REFERENCES `eventTypes` (`id`),
+    CONSTRAINT `events_fk_8cc9da`
+        FOREIGN KEY (`subType`)
+        REFERENCES `eventSubTypes` (`id`),
+    CONSTRAINT `events_fk_fb6343`
+        FOREIGN KEY (`location`)
+        REFERENCES `locations` (`id`),
+    CONSTRAINT `events_fk_c5f971`
+        FOREIGN KEY (`eventGroup`)
+        REFERENCES `eventGroups` (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
+-- availability
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `availability`;
+
+CREATE TABLE `availability`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `eventId` INTEGER NOT NULL,
+    `userId` INTEGER NOT NULL,
+    `available` TINYINT(1) DEFAULT 1 NOT NULL,
+    `comment` VARCHAR(64),
+    PRIMARY KEY (`id`),
+    INDEX `availability_fi_2596c7` (`userId`),
+    INDEX `availability_fi_c07e67` (`eventId`),
+    CONSTRAINT `availability_fk_2596c7`
+        FOREIGN KEY (`userId`)
+        REFERENCES `users` (`id`),
+    CONSTRAINT `availability_fk_c07e67`
+        FOREIGN KEY (`eventId`)
+        REFERENCES `events` (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- groups
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [groups];
+DROP TABLE IF EXISTS `groups`;
 
-CREATE TABLE [groups]
+CREATE TABLE `groups`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [name] VARCHAR(25) DEFAULT '' NOT NULL,
-    [rehearsal] INTEGER(1) DEFAULT 0 NOT NULL,
-    [formatgroup] INTEGER(2) DEFAULT 0 NOT NULL,
-    [description] MEDIUMTEXT,
-    [allowRoleSwaps] INTEGER(1) DEFAULT 1 NOT NULL,
-    UNIQUE ([id])
-);
+    `id` INTEGER(3) NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(25) DEFAULT '' NOT NULL,
+    `rehearsal` INTEGER(1) DEFAULT 0 NOT NULL,
+    `formatgroup` INTEGER(2) DEFAULT 0 NOT NULL,
+    `description` TEXT,
+    `allowRoleSwaps` TINYINT(1) DEFAULT 1 NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- locations
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [locations];
+DROP TABLE IF EXISTS `locations`;
 
-CREATE TABLE [locations]
+CREATE TABLE `locations`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [name] MEDIUMTEXT NOT NULL,
-    [address] MEDIUMTEXT,
-    UNIQUE ([id])
-);
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` TEXT NOT NULL,
+    `address` TEXT,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- notificationClicks
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [notificationClicks];
+DROP TABLE IF EXISTS `notificationClicks`;
 
-CREATE TABLE [notificationClicks]
+CREATE TABLE `notificationClicks`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [notificationId] INTEGER(30) NOT NULL,
-    [referer] VARCHAR(50) NOT NULL,
-    [timestamp] TIMESTAMP,
-    UNIQUE ([id]),
-    FOREIGN KEY ([notificationId]) REFERENCES [notifications] ([id])
-);
+    `id` INTEGER(30) NOT NULL AUTO_INCREMENT,
+    `notificationId` INTEGER(30) NOT NULL,
+    `referer` VARCHAR(50) NOT NULL,
+    `timestamp` TIMESTAMP NULL,
+    PRIMARY KEY (`id`),
+    INDEX `notificationClicks_fi_1e5260` (`notificationId`),
+    CONSTRAINT `notificationClicks_fk_1e5260`
+        FOREIGN KEY (`notificationId`)
+        REFERENCES `notifications` (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- notifications
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [notifications];
+DROP TABLE IF EXISTS `notifications`;
 
-CREATE TABLE [notifications]
+CREATE TABLE `notifications`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [timestamp] TIMESTAMP DEFAULT (datetime(CURRENT_TIMESTAMP, 'localtime')) NOT NULL,
-    [userId] INTEGER(30) NOT NULL,
-    [summary] VARCHAR(40) NOT NULL,
-    [body] MEDIUMTEXT NOT NULL,
-    [link] VARCHAR(150),
-    [type] INTEGER(2) NOT NULL,
-    [seen] INTEGER(1) DEFAULT 0 NOT NULL,
-    [dismissed] INTEGER(1) DEFAULT 0 NOT NULL,
-    [archived] INTEGER(1) DEFAULT 0 NOT NULL,
-    UNIQUE ([id]),
-    FOREIGN KEY ([userId]) REFERENCES [users] ([id])
-);
+    `id` INTEGER(30) NOT NULL AUTO_INCREMENT,
+    `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `userId` INTEGER(30) NOT NULL,
+    `summary` VARCHAR(40) NOT NULL,
+    `body` TEXT NOT NULL,
+    `link` VARCHAR(150),
+    `type` INTEGER(2) NOT NULL,
+    `seen` TINYINT(1) DEFAULT 0 NOT NULL,
+    `dismissed` TINYINT(1) DEFAULT 0 NOT NULL,
+    `archived` TINYINT(1) DEFAULT 0 NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `notifications_fi_2596c7` (`userId`),
+    CONSTRAINT `notifications_fk_2596c7`
+        FOREIGN KEY (`userId`)
+        REFERENCES `users` (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- pendingUsers
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [pendingUsers];
+DROP TABLE IF EXISTS `pendingUsers`;
 
-CREATE TABLE [pendingUsers]
+CREATE TABLE `pendingUsers`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [socialId] BIGINT(30),
-    [firstName] VARCHAR(100) NOT NULL,
-    [lastName] VARCHAR(100) NOT NULL,
-    [email] VARCHAR(100) NOT NULL,
-    [approved] INTEGER(1) DEFAULT 0 NOT NULL,
-    [declined] INTEGER(1) DEFAULT 0 NOT NULL,
-    [source] VARCHAR(50) NOT NULL,
-    UNIQUE ([socialId]),
-    UNIQUE ([id])
-);
+    `id` INTEGER(30) NOT NULL AUTO_INCREMENT,
+    `socialId` BIGINT(30),
+    `firstName` VARCHAR(100) NOT NULL,
+    `lastName` VARCHAR(100) NOT NULL,
+    `email` VARCHAR(100) NOT NULL,
+    `approved` TINYINT(1) DEFAULT 0 NOT NULL,
+    `declined` TINYINT(1) DEFAULT 0 NOT NULL,
+    `source` VARCHAR(50) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `userId` (`socialId`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- roles
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [roles];
+DROP TABLE IF EXISTS `roles`;
 
-CREATE TABLE [roles]
+CREATE TABLE `roles`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [groupId] INTEGER(6) DEFAULT 0 NOT NULL,
-    [name] VARCHAR(15) DEFAULT '' NOT NULL,
-    [description] MEDIUMTEXT NOT NULL,
-    [rehersalId] INTEGER(6) DEFAULT 0 NOT NULL,
-    [allowRoleSwaps] INTEGER(1),
-    UNIQUE ([id]),
-    FOREIGN KEY ([groupId]) REFERENCES [groups] ([id])
-);
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `groupId` INTEGER(6) DEFAULT 0 NOT NULL,
+    `name` VARCHAR(15) DEFAULT '' NOT NULL,
+    `description` TEXT NOT NULL,
+    `rehersalId` INTEGER(6) DEFAULT 0 NOT NULL,
+    `allowRoleSwaps` TINYINT(1),
+    PRIMARY KEY (`id`),
+    INDEX `roles_fi_1264f9` (`groupId`),
+    CONSTRAINT `roles_fk_1264f9`
+        FOREIGN KEY (`groupId`)
+        REFERENCES `groups` (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- settings
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [settings];
+DROP TABLE IF EXISTS `settings`;
 
-CREATE TABLE [settings]
+CREATE TABLE `settings`
 (
-    [siteurl] MEDIUMTEXT NOT NULL,
-    [owner] MEDIUMTEXT NOT NULL,
-    [notificationemail] MEDIUMTEXT,
-    [adminemailaddress] MEDIUMTEXT,
-    [norehearsalemail] MEDIUMTEXT,
-    [yesrehearsal] MEDIUMTEXT,
-    [newusermessage] MEDIUMTEXT,
-    [version] VARCHAR(20),
-    [lang_locale] VARCHAR(20),
-    [event_sorting_latest] INTEGER(1),
-    [snapshot_show_two_month] INTEGER(1),
-    [snapshot_reduce_skills_by_group] INTEGER(1),
-    [logged_in_show_snapshot_button] INTEGER(1),
-    [time_format_long] VARCHAR(50),
-    [time_format_normal] VARCHAR(50),
-    [time_format_short] VARCHAR(50),
-    [time_only_format] VARCHAR(20),
-    [date_only_format] VARCHAR(20),
-    [day_only_format] VARCHAR(20),
-    [users_start_with_myevents] INTEGER(1),
-    [time_zone] VARCHAR(50),
-    [google_group_calendar] VARCHAR(100),
-    [overviewemail] MEDIUMTEXT,
-    [group_sorting_name] INTEGER(1),
-    [debug_mode] INTEGER(1) DEFAULT 0,
-    [days_to_alert] INTEGER(2) DEFAULT 5,
-    [token] VARCHAR(100) DEFAULT '',
-    [skin] VARCHAR(20) DEFAULT ''
-);
+    `siteurl` TEXT NOT NULL,
+    `owner` TEXT NOT NULL,
+    `notificationemail` TEXT,
+    `adminemailaddress` TEXT,
+    `norehearsalemail` TEXT,
+    `yesrehearsal` TEXT,
+    `newusermessage` TEXT,
+    `version` VARCHAR(20),
+    `lang_locale` VARCHAR(20),
+    `event_sorting_latest` INTEGER(1),
+    `snapshot_show_two_month` INTEGER(1),
+    `snapshot_reduce_skills_by_group` INTEGER(1),
+    `logged_in_show_snapshot_button` INTEGER(1),
+    `time_format_long` VARCHAR(50),
+    `time_format_normal` VARCHAR(50),
+    `time_format_short` VARCHAR(50),
+    `time_only_format` VARCHAR(20),
+    `date_only_format` VARCHAR(20),
+    `day_only_format` VARCHAR(20),
+    `users_start_with_myevents` INTEGER(1),
+    `time_zone` VARCHAR(50),
+    `google_group_calendar` VARCHAR(100),
+    `overviewemail` TEXT,
+    `group_sorting_name` INTEGER(1),
+    `debug_mode` INTEGER(1) DEFAULT 0,
+    `days_to_alert` INTEGER(2) DEFAULT 5,
+    `token` VARCHAR(100) DEFAULT '',
+    `skin` VARCHAR(20) DEFAULT ''
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- socialAuth
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [socialAuth];
+DROP TABLE IF EXISTS `socialAuth`;
 
-CREATE TABLE [socialAuth]
+CREATE TABLE `socialAuth`
 (
-    [userId] INTEGER(30) NOT NULL,
-    [platform] MEDIUMTEXT NOT NULL,
-    [socialId] BIGINT(30) NOT NULL,
-    [meta] MEDIUMTEXT,
-    [revoked] INTEGER(1) DEFAULT 0 NOT NULL,
-    PRIMARY KEY ([userId], [platform], [socialId]),
-    UNIQUE ([socialId]),
-    UNIQUE ([userId]),
-    UNIQUE ([platform]),
-    FOREIGN KEY ([userId]) REFERENCES [users] ([id])
-);
+    `userId` INTEGER(30) NOT NULL,
+    `platform` VARCHAR(10) NOT NULL,
+    `socialId` BIGINT(30) NOT NULL,
+    `meta` TEXT,
+    `revoked` TINYINT(1) DEFAULT 0 NOT NULL,
+    PRIMARY KEY (`userId`,`platform`,`socialId`),
+    UNIQUE INDEX `socialId` (`socialId`),
+    CONSTRAINT `socialAuth_fk_2596c7`
+        FOREIGN KEY (`userId`)
+        REFERENCES `users` (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- statistics
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [statistics];
+DROP TABLE IF EXISTS `statistics`;
 
-CREATE TABLE [statistics]
+CREATE TABLE `statistics`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [userid] INTEGER(6) DEFAULT 0,
-    [date] TIMESTAMP DEFAULT '0000-00-00 00:00:00' NOT NULL,
-    [type] MEDIUMTEXT NOT NULL,
-    [detail1] MEDIUMTEXT NOT NULL,
-    [detail2] MEDIUMTEXT NOT NULL,
-    [detail3] MEDIUMTEXT NOT NULL,
-    [script] MEDIUMTEXT NOT NULL,
-    UNIQUE ([id]),
-    FOREIGN KEY ([userid]) REFERENCES [users] ([id])
-);
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `userid` INTEGER(6) DEFAULT 0,
+    `date` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `type` TEXT NOT NULL,
+    `detail1` TEXT NOT NULL,
+    `detail2` TEXT NOT NULL,
+    `detail3` TEXT NOT NULL,
+    `script` TEXT NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `statistics_fi_2596c7` (`userid`),
+    CONSTRAINT `statistics_fk_2596c7`
+        FOREIGN KEY (`userid`)
+        REFERENCES `users` (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
--- subscriptions
------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS [subscriptions];
-
-CREATE TABLE [subscriptions]
-(
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [userid] INTEGER(6) DEFAULT 0 NOT NULL,
-    [categoryid] INTEGER(4) DEFAULT 0 NOT NULL,
-    [topicid] INTEGER(4) DEFAULT 0 NOT NULL,
-    UNIQUE ([id])
-);
-
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- swaps
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [swaps];
+DROP TABLE IF EXISTS `swaps`;
 
-CREATE TABLE [swaps]
+CREATE TABLE `swaps`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [eventPersonId] INTEGER DEFAULT 0 NOT NULL,
-    [oldUserRoleId] INTEGER DEFAULT 0 NOT NULL,
-    [newUserRoleId] INTEGER DEFAULT 0 NOT NULL,
-    [accepted] INTEGER(1) DEFAULT 0 NOT NULL,
-    [declined] INTEGER(1) DEFAULT 0 NOT NULL,
-    [requestedBy] INTEGER NOT NULL,
-    [verificationCode] VARCHAR(18) NOT NULL,
-    [created] TIMESTAMP,
-    [updated] TIMESTAMP,
-    UNIQUE ([id]),
-    FOREIGN KEY ([eventPersonId]) REFERENCES [eventPeople] ([id]),
-    FOREIGN KEY ([oldUserRoleId]) REFERENCES [userRoles] ([id]),
-    FOREIGN KEY ([newUserRoleId]) REFERENCES [userRoles] ([id]),
-    FOREIGN KEY ([requestedBy]) REFERENCES [users] ([id])
-);
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `eventPersonId` INTEGER DEFAULT 0 NOT NULL,
+    `oldUserRoleId` INTEGER DEFAULT 0 NOT NULL,
+    `newUserRoleId` INTEGER DEFAULT 0 NOT NULL,
+    `accepted` INTEGER(1) DEFAULT 0 NOT NULL,
+    `declined` INTEGER(1) DEFAULT 0 NOT NULL,
+    `requestedBy` INTEGER NOT NULL,
+    `verificationCode` VARCHAR(18) NOT NULL,
+    `created` TIMESTAMP NULL,
+    `updated` TIMESTAMP NULL,
+    PRIMARY KEY (`id`),
+    INDEX `swaps_fi_2e6337` (`eventPersonId`),
+    INDEX `swaps_fi_fd4ea7` (`oldUserRoleId`),
+    INDEX `swaps_fi_11ab3c` (`newUserRoleId`),
+    INDEX `swaps_fi_53db89` (`requestedBy`),
+    CONSTRAINT `swaps_fk_2e6337`
+        FOREIGN KEY (`eventPersonId`)
+        REFERENCES `eventPeople` (`id`),
+    CONSTRAINT `swaps_fk_fd4ea7`
+        FOREIGN KEY (`oldUserRoleId`)
+        REFERENCES `userRoles` (`id`),
+    CONSTRAINT `swaps_fk_11ab3c`
+        FOREIGN KEY (`newUserRoleId`)
+        REFERENCES `userRoles` (`id`),
+    CONSTRAINT `swaps_fk_53db89`
+        FOREIGN KEY (`requestedBy`)
+        REFERENCES `users` (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- userRoles
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [userRoles];
+DROP TABLE IF EXISTS `userRoles`;
 
-CREATE TABLE [userRoles]
+CREATE TABLE `userRoles`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [userId] INTEGER(30) DEFAULT 0 NOT NULL,
-    [roleId] INTEGER DEFAULT 0 NOT NULL,
-    [reserve] INTEGER DEFAULT 0 NOT NULL,
-    UNIQUE ([id]),
-    FOREIGN KEY ([userId]) REFERENCES [users] ([id]),
-    FOREIGN KEY ([roleId]) REFERENCES [roles] ([id])
-);
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `userId` INTEGER(30) DEFAULT 0 NOT NULL,
+    `roleId` INTEGER DEFAULT 0 NOT NULL,
+    `reserve` TINYINT(1) DEFAULT 0 NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `userRoles_fi_2596c7` (`userId`),
+    INDEX `userRoles_fi_c19afe` (`roleId`),
+    CONSTRAINT `userRoles_fk_2596c7`
+        FOREIGN KEY (`userId`)
+        REFERENCES `users` (`id`),
+    CONSTRAINT `userRoles_fk_c19afe`
+        FOREIGN KEY (`roleId`)
+        REFERENCES `roles` (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- users
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [users];
+DROP TABLE IF EXISTS `users`;
 
-CREATE TABLE [users]
+CREATE TABLE `users`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [firstName] VARCHAR(30) DEFAULT '' NOT NULL,
-    [lastName] VARCHAR(30) DEFAULT '' NOT NULL,
-    [username] VARCHAR(30) DEFAULT '' NOT NULL,
-    [password] VARCHAR(200) DEFAULT '' NOT NULL,
-    [isAdmin] CHAR(2) DEFAULT '0' NOT NULL,
-    [email] VARCHAR(255),
-    [mobile] VARCHAR(15) DEFAULT '' NOT NULL,
-    [isOverviewRecipient] CHAR(2) DEFAULT '0' NOT NULL,
-    [recieveReminderEmails] INTEGER(1) DEFAULT 1 NOT NULL,
-    [isBandAdmin] CHAR(2) DEFAULT '0' NOT NULL,
-    [isEventEditor] CHAR(2) DEFAULT '0' NOT NULL,
-    [lastLogin] TIMESTAMP,
-    [passwordChanged] TIMESTAMP,
-    [created] TIMESTAMP,
-    [updated] TIMESTAMP,
-    UNIQUE ([id])
-);
+    `id` INTEGER(30) NOT NULL AUTO_INCREMENT,
+    `firstName` VARCHAR(30) DEFAULT '' NOT NULL,
+    `lastName` VARCHAR(30) DEFAULT '' NOT NULL,
+    `username` VARCHAR(30) DEFAULT '' NOT NULL,
+    `password` VARCHAR(200) DEFAULT '' NOT NULL,
+    `isAdmin` CHAR(2) DEFAULT '0' NOT NULL,
+    `email` VARCHAR(255),
+    `mobile` VARCHAR(15) DEFAULT '' NOT NULL,
+    `isOverviewRecipient` CHAR(2) DEFAULT '0' NOT NULL,
+    `recieveReminderEmails` TINYINT(1) DEFAULT 1 NOT NULL,
+    `isBandAdmin` CHAR(2) DEFAULT '0' NOT NULL,
+    `isEventEditor` CHAR(2) DEFAULT '0' NOT NULL,
+    `lastLogin` TIMESTAMP NULL,
+    `passwordChanged` TIMESTAMP NULL,
+    `created` TIMESTAMP NULL,
+    `updated` TIMESTAMP NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- userPermissions
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [userPermissions];
+DROP TABLE IF EXISTS `userPermissions`;
 
-CREATE TABLE [userPermissions]
+CREATE TABLE `userPermissions`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [userId] INTEGER(30) DEFAULT 0 NOT NULL,
-    [permissionId] INTEGER DEFAULT 0 NOT NULL,
-    [created] TIMESTAMP,
-    [updated] TIMESTAMP,
-    UNIQUE ([id]),
-    FOREIGN KEY ([userId]) REFERENCES [users] ([id]),
-    FOREIGN KEY ([permissionId]) REFERENCES [permissions] ([id])
-);
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `userId` INTEGER(30) DEFAULT 0 NOT NULL,
+    `permissionId` INTEGER DEFAULT 0 NOT NULL,
+    `created` TIMESTAMP NULL,
+    `updated` TIMESTAMP NULL,
+    PRIMARY KEY (`id`),
+    INDEX `userPermissions_fi_2596c7` (`userId`),
+    INDEX `userPermissions_fi_5234cd` (`permissionId`),
+    CONSTRAINT `userPermissions_fk_2596c7`
+        FOREIGN KEY (`userId`)
+        REFERENCES `users` (`id`),
+    CONSTRAINT `userPermissions_fk_5234cd`
+        FOREIGN KEY (`permissionId`)
+        REFERENCES `permissions` (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- permissionGroups
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [permissionGroups];
+DROP TABLE IF EXISTS `permissionGroups`;
 
-CREATE TABLE [permissionGroups]
+CREATE TABLE `permissionGroups`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [name] VARCHAR(255),
-    [description] MEDIUMTEXT,
-    [created] TIMESTAMP,
-    [updated] TIMESTAMP,
-    UNIQUE ([id])
-);
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255),
+    `description` TEXT,
+    `created` TIMESTAMP NULL,
+    `updated` TIMESTAMP NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- permissionGroupPermissions
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [permissionGroupPermissions];
+DROP TABLE IF EXISTS `permissionGroupPermissions`;
 
-CREATE TABLE [permissionGroupPermissions]
+CREATE TABLE `permissionGroupPermissions`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [permissionId] INTEGER(30) DEFAULT 0 NOT NULL,
-    [permissionGroupId] INTEGER DEFAULT 0 NOT NULL,
-    UNIQUE ([id]),
-    FOREIGN KEY ([permissionId]) REFERENCES [permissions] ([id]),
-    FOREIGN KEY ([permissionGroupId]) REFERENCES [permissionGroups] ([id])
-);
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `permissionId` INTEGER(30) DEFAULT 0 NOT NULL,
+    `permissionGroupId` INTEGER DEFAULT 0 NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `permissionGroupPermissions_fi_5234cd` (`permissionId`),
+    INDEX `permissionGroupPermissions_fi_32d04a` (`permissionGroupId`),
+    CONSTRAINT `permissionGroupPermissions_fk_5234cd`
+        FOREIGN KEY (`permissionId`)
+        REFERENCES `permissions` (`id`),
+    CONSTRAINT `permissionGroupPermissions_fk_32d04a`
+        FOREIGN KEY (`permissionGroupId`)
+        REFERENCES `permissionGroups` (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- permissions
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [permissions];
+DROP TABLE IF EXISTS `permissions`;
 
-CREATE TABLE [permissions]
+CREATE TABLE `permissions`
 (
-    [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    [name] VARCHAR(255),
-    [description] MEDIUMTEXT,
-    [slug] VARCHAR(10) NOT NULL,
-    UNIQUE ([id])
-);
+    `id` INTEGER(30) NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255),
+    `description` TEXT,
+    `slug` VARCHAR(10) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
 
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- loginFailures
------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS [loginFailures];
+DROP TABLE IF EXISTS `loginFailures`;
 
-CREATE TABLE [loginFailures]
+CREATE TABLE `loginFailures`
 (
-    [username] VARCHAR(30) NOT NULL,
-    [ipAddress] VARCHAR(15) NOT NULL,
-    [timestamp] TIMESTAMP DEFAULT (datetime(CURRENT_TIMESTAMP, 'localtime')) NOT NULL
-);
+    `username` VARCHAR(30) NOT NULL,
+    `ipAddress` VARCHAR(15) NOT NULL,
+    `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+# This restores the fkey checks, after having unset them earlier
+SET FOREIGN_KEY_CHECKS = 1;

@@ -14,6 +14,7 @@ use Propel\Runtime\Map\TableMapTrait;
 use TechWilk\Rota\SocialAuth;
 use TechWilk\Rota\SocialAuthQuery;
 
+
 /**
  * This class defines the structure of the 'socialAuth' table.
  *
@@ -23,7 +24,6 @@ use TechWilk\Rota\SocialAuthQuery;
  * For example, the createSelectSql() method checks the type of a given column used in an
  * ORDER BY clause to know whether it needs to apply SQL to make the ORDER BY case-insensitive
  * (i.e. if it's a text column type).
- *
  */
 class SocialAuthTableMap extends TableMap
 {
@@ -33,109 +33,156 @@ class SocialAuthTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'TechWilk.Rota.Map.SocialAuthTableMap';
+    public const CLASS_NAME = 'TechWilk.Rota.Map.SocialAuthTableMap';
 
     /**
      * The default database name for this class
      */
-    const DATABASE_NAME = 'default';
+    public const DATABASE_NAME = 'default';
 
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'socialAuth';
+    public const TABLE_NAME = 'socialAuth';
+
+    /**
+     * The PHP name of this class (PascalCase)
+     */
+    public const TABLE_PHP_NAME = 'SocialAuth';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\TechWilk\\Rota\\SocialAuth';
+    public const OM_CLASS = '\\TechWilk\\Rota\\SocialAuth';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'TechWilk.Rota.SocialAuth';
+    public const CLASS_DEFAULT = 'TechWilk.Rota.SocialAuth';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    public const NUM_COLUMNS = 5;
 
     /**
      * The number of lazy-loaded columns
      */
-    const NUM_LAZY_LOAD_COLUMNS = 0;
+    public const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    public const NUM_HYDRATE_COLUMNS = 5;
 
     /**
      * the column name for the userId field
      */
-    const COL_USERID = 'socialAuth.userId';
+    public const COL_USERID = 'socialAuth.userId';
 
     /**
      * the column name for the platform field
      */
-    const COL_PLATFORM = 'socialAuth.platform';
+    public const COL_PLATFORM = 'socialAuth.platform';
 
     /**
      * the column name for the socialId field
      */
-    const COL_SOCIALID = 'socialAuth.socialId';
+    public const COL_SOCIALID = 'socialAuth.socialId';
 
     /**
      * the column name for the meta field
      */
-    const COL_META = 'socialAuth.meta';
+    public const COL_META = 'socialAuth.meta';
 
     /**
      * the column name for the revoked field
      */
-    const COL_REVOKED = 'socialAuth.revoked';
+    public const COL_REVOKED = 'socialAuth.revoked';
 
     /**
      * The default string format for model objects of the related table
      */
-    const DEFAULT_STRING_FORMAT = 'YAML';
+    public const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
+     *
+     * @var array<string, mixed>
      */
-    protected static $fieldNames = array(
-        self::TYPE_PHPNAME       => array('UserId', 'Platform', 'SocialId', 'Meta', 'Revoked', ),
-        self::TYPE_CAMELNAME     => array('userId', 'platform', 'socialId', 'meta', 'revoked', ),
-        self::TYPE_COLNAME       => array(SocialAuthTableMap::COL_USERID, SocialAuthTableMap::COL_PLATFORM, SocialAuthTableMap::COL_SOCIALID, SocialAuthTableMap::COL_META, SocialAuthTableMap::COL_REVOKED, ),
-        self::TYPE_FIELDNAME     => array('userId', 'platform', 'socialId', 'meta', 'revoked', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
-    );
+    protected static $fieldNames = [
+        self::TYPE_PHPNAME       => ['UserId', 'Platform', 'SocialId', 'Meta', 'Revoked', ],
+        self::TYPE_CAMELNAME     => ['userId', 'platform', 'socialId', 'meta', 'revoked', ],
+        self::TYPE_COLNAME       => [SocialAuthTableMap::COL_USERID, SocialAuthTableMap::COL_PLATFORM, SocialAuthTableMap::COL_SOCIALID, SocialAuthTableMap::COL_META, SocialAuthTableMap::COL_REVOKED, ],
+        self::TYPE_FIELDNAME     => ['userId', 'platform', 'socialId', 'meta', 'revoked', ],
+        self::TYPE_NUM           => [0, 1, 2, 3, 4, ]
+    ];
 
     /**
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
+     *
+     * @var array<string, mixed>
      */
-    protected static $fieldKeys = array(
-        self::TYPE_PHPNAME       => array('UserId' => 0, 'Platform' => 1, 'SocialId' => 2, 'Meta' => 3, 'Revoked' => 4, ),
-        self::TYPE_CAMELNAME     => array('userId' => 0, 'platform' => 1, 'socialId' => 2, 'meta' => 3, 'revoked' => 4, ),
-        self::TYPE_COLNAME       => array(SocialAuthTableMap::COL_USERID => 0, SocialAuthTableMap::COL_PLATFORM => 1, SocialAuthTableMap::COL_SOCIALID => 2, SocialAuthTableMap::COL_META => 3, SocialAuthTableMap::COL_REVOKED => 4, ),
-        self::TYPE_FIELDNAME     => array('userId' => 0, 'platform' => 1, 'socialId' => 2, 'meta' => 3, 'revoked' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
-    );
+    protected static $fieldKeys = [
+        self::TYPE_PHPNAME       => ['UserId' => 0, 'Platform' => 1, 'SocialId' => 2, 'Meta' => 3, 'Revoked' => 4, ],
+        self::TYPE_CAMELNAME     => ['userId' => 0, 'platform' => 1, 'socialId' => 2, 'meta' => 3, 'revoked' => 4, ],
+        self::TYPE_COLNAME       => [SocialAuthTableMap::COL_USERID => 0, SocialAuthTableMap::COL_PLATFORM => 1, SocialAuthTableMap::COL_SOCIALID => 2, SocialAuthTableMap::COL_META => 3, SocialAuthTableMap::COL_REVOKED => 4, ],
+        self::TYPE_FIELDNAME     => ['userId' => 0, 'platform' => 1, 'socialId' => 2, 'meta' => 3, 'revoked' => 4, ],
+        self::TYPE_NUM           => [0, 1, 2, 3, 4, ]
+    ];
+
+    /**
+     * Holds a list of column names and their normalized version.
+     *
+     * @var array<string>
+     */
+    protected $normalizedColumnNameMap = [
+        'UserId' => 'USERID',
+        'SocialAuth.UserId' => 'USERID',
+        'userId' => 'USERID',
+        'socialAuth.userId' => 'USERID',
+        'SocialAuthTableMap::COL_USERID' => 'USERID',
+        'COL_USERID' => 'USERID',
+        'Platform' => 'PLATFORM',
+        'SocialAuth.Platform' => 'PLATFORM',
+        'platform' => 'PLATFORM',
+        'socialAuth.platform' => 'PLATFORM',
+        'SocialAuthTableMap::COL_PLATFORM' => 'PLATFORM',
+        'COL_PLATFORM' => 'PLATFORM',
+        'SocialId' => 'SOCIALID',
+        'SocialAuth.SocialId' => 'SOCIALID',
+        'socialId' => 'SOCIALID',
+        'socialAuth.socialId' => 'SOCIALID',
+        'SocialAuthTableMap::COL_SOCIALID' => 'SOCIALID',
+        'COL_SOCIALID' => 'SOCIALID',
+        'Meta' => 'META',
+        'SocialAuth.Meta' => 'META',
+        'meta' => 'META',
+        'socialAuth.meta' => 'META',
+        'SocialAuthTableMap::COL_META' => 'META',
+        'COL_META' => 'META',
+        'Revoked' => 'REVOKED',
+        'SocialAuth.Revoked' => 'REVOKED',
+        'revoked' => 'REVOKED',
+        'socialAuth.revoked' => 'REVOKED',
+        'SocialAuthTableMap::COL_REVOKED' => 'REVOKED',
+        'COL_REVOKED' => 'REVOKED',
+    ];
 
     /**
      * Initialize the table attributes and columns
      * Relations are not initialized by this method since they are lazy loaded
      *
      * @return void
-     * @throws PropelException
+     * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function initialize()
+    public function initialize(): void
     {
         // attributes
         $this->setName('socialAuth');
@@ -145,26 +192,28 @@ class SocialAuthTableMap extends TableMap
         $this->setPackage('TechWilk.Rota');
         $this->setUseIdGenerator(false);
         // columns
-        $this->addForeignPrimaryKey('userId', 'UserId', 'INTEGER', 'users', 'id', true, 30, null);
+        $this->addForeignPrimaryKey('userId', 'UserId', 'INTEGER' , 'users', 'id', true, 30, null);
         $this->addPrimaryKey('platform', 'Platform', 'VARCHAR', true, 10, null);
         $this->addPrimaryKey('socialId', 'SocialId', 'BIGINT', true, 30, null);
         $this->addColumn('meta', 'Meta', 'LONGVARCHAR', false, null, null);
         $this->addColumn('revoked', 'Revoked', 'BOOLEAN', true, 1, false);
-    } // initialize()
+    }
 
     /**
      * Build the RelationMap objects for this table relationships
+     *
+     * @return void
      */
-    public function buildRelations()
+    public function buildRelations(): void
     {
-        $this->addRelation('User', '\\TechWilk\\Rota\\User', RelationMap::MANY_TO_ONE, array(
+        $this->addRelation('User', '\\TechWilk\\Rota\\User', RelationMap::MANY_TO_ONE, array (
   0 =>
-  array(
+  array (
     0 => ':userId',
     1 => ':id',
   ),
 ), null, null, null, false);
-    } // buildRelations()
+    }
 
     /**
      * Adds an object to the instance pool.
@@ -175,9 +224,11 @@ class SocialAuthTableMap extends TableMap
      * and findPk*() calls.
      *
      * @param \TechWilk\Rota\SocialAuth $obj A \TechWilk\Rota\SocialAuth object.
-     * @param string $key             (optional) key to use for instance map (for performance boost if key was already calculated externally).
+     * @param string|null $key Key (optional) to use for instance map (for performance boost if key was already calculated externally).
+     *
+     * @return void
      */
-    public static function addInstanceToPool($obj, $key = null)
+    public static function addInstanceToPool(SocialAuth $obj, ?string $key = null): void
     {
         if (Propel::isInstancePoolingEnabled()) {
             if (null === $key) {
@@ -196,12 +247,15 @@ class SocialAuthTableMap extends TableMap
      * from the cache in order to prevent returning objects that no longer exist.
      *
      * @param mixed $value A \TechWilk\Rota\SocialAuth object or a primary key value.
+     *
+     * @return void
      */
-    public static function removeInstanceFromPool($value)
+    public static function removeInstanceFromPool($value): void
     {
         if (Propel::isInstancePoolingEnabled() && null !== $value) {
             if (is_object($value) && $value instanceof \TechWilk\Rota\SocialAuth) {
                 $key = serialize([(null === $value->getUserId() || is_scalar($value->getUserId()) || is_callable([$value->getUserId(), '__toString']) ? (string) $value->getUserId() : $value->getUserId()), (null === $value->getPlatform() || is_scalar($value->getPlatform()) || is_callable([$value->getPlatform(), '__toString']) ? (string) $value->getPlatform() : $value->getPlatform()), (null === $value->getSocialId() || is_scalar($value->getSocialId()) || is_callable([$value->getSocialId(), '__toString']) ? (string) $value->getSocialId() : $value->getSocialId())]);
+
             } elseif (is_array($value) && count($value) === 3) {
                 // assume we've been passed a primary key";
                 $key = serialize([(null === $value[0] || is_scalar($value[0]) || is_callable([$value[0], '__toString']) ? (string) $value[0] : $value[0]), (null === $value[1] || is_scalar($value[1]) || is_callable([$value[1], '__toString']) ? (string) $value[1] : $value[1]), (null === $value[2] || is_scalar($value[2]) || is_callable([$value[2], '__toString']) ? (string) $value[2] : $value[2])]);
@@ -224,14 +278,14 @@ class SocialAuthTableMap extends TableMap
      * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
-     * @param array  $row       resultset row.
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Resultset row.
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      *
-     * @return string The primary key hash of the row
+     * @return string|null The primary key hash of the row
      */
-    public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function getPrimaryKeyHashFromRow(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM): ?string
     {
         // If the PK cannot be derived from the row, return NULL.
         if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)] === null && $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('Platform', TableMap::TYPE_PHPNAME, $indexType)] === null && $row[TableMap::TYPE_NUM == $indexType ? 2 + $offset : static::translateFieldName('SocialId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
@@ -246,16 +300,16 @@ class SocialAuthTableMap extends TableMap
      * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
      * a multi-column primary key, an array of the primary key columns will be returned.
      *
-     * @param array  $row       resultset row.
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Resultset row.
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      *
      * @return mixed The primary key of the row
      */
-    public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function getPrimaryKeyFromRow(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM)
     {
-        $pks = [];
+            $pks = [];
 
         $pks[] = (int) $row[
             $indexType == TableMap::TYPE_NUM
@@ -284,10 +338,10 @@ class SocialAuthTableMap extends TableMap
      * relative to a location on the PHP include_path.
      * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
      *
-     * @param boolean $withPrefix Whether or not to return the path with the class name
+     * @param bool $withPrefix Whether to return the path with the class name
      * @return string path.to.ClassName
      */
-    public static function getOMClass($withPrefix = true)
+    public static function getOMClass(bool $withPrefix = true): string
     {
         return $withPrefix ? SocialAuthTableMap::CLASS_DEFAULT : SocialAuthTableMap::OM_CLASS;
     }
@@ -295,17 +349,17 @@ class SocialAuthTableMap extends TableMap
     /**
      * Populates an object of the default type or an object that inherit from the default.
      *
-     * @param array  $row       row returned by DataFetcher->fetch().
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Row returned by DataFetcher->fetch().
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType The index type of $row. Mostly DataFetcher->getIndexType().
                                  One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (SocialAuth object, last column rank)
+     * @return array (SocialAuth object, last column rank)
      */
-    public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function populateObject(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM): array
     {
         $key = SocialAuthTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
         if (null !== ($obj = SocialAuthTableMap::getInstanceFromPool($key))) {
@@ -321,7 +375,7 @@ class SocialAuthTableMap extends TableMap
             SocialAuthTableMap::addInstanceToPool($obj, $key);
         }
 
-        return array($obj, $col);
+        return [$obj, $col];
     }
 
     /**
@@ -329,13 +383,13 @@ class SocialAuthTableMap extends TableMap
      * objects that inherit from the default.
      *
      * @param DataFetcherInterface $dataFetcher
-     * @return array
-     * @throws PropelException Any exceptions caught during processing will be
+     * @return array<object>
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function populateObjects(DataFetcherInterface $dataFetcher)
+    public static function populateObjects(DataFetcherInterface $dataFetcher): array
     {
-        $results = array();
+        $results = [];
 
         // set the class once to avoid overhead in the loop
         $cls = static::getOMClass(false);
@@ -365,12 +419,13 @@ class SocialAuthTableMap extends TableMap
      * XML schema will not be added to the select list and only loaded
      * on demand.
      *
-     * @param Criteria $criteria object containing the columns to add.
-     * @param string   $alias    optional table alias
-     * @throws PropelException Any exceptions caught during processing will be
+     * @param Criteria $criteria Object containing the columns to add.
+     * @param string|null $alias Optional table alias
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
+     * @return void
      */
-    public static function addSelectColumns(Criteria $criteria, $alias = null)
+    public static function addSelectColumns(Criteria $criteria, ?string $alias = null): void
     {
         if (null === $alias) {
             $criteria->addSelectColumn(SocialAuthTableMap::COL_USERID);
@@ -388,79 +443,97 @@ class SocialAuthTableMap extends TableMap
     }
 
     /**
+     * Remove all the columns needed to create a new object.
+     *
+     * Note: any columns that were marked with lazyLoad="true" in the
+     * XML schema will not be removed as they are only loaded on demand.
+     *
+     * @param Criteria $criteria Object containing the columns to remove.
+     * @param string|null $alias Optional table alias
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
+     *                         rethrown wrapped into a PropelException.
+     * @return void
+     */
+    public static function removeSelectColumns(Criteria $criteria, ?string $alias = null): void
+    {
+        if (null === $alias) {
+            $criteria->removeSelectColumn(SocialAuthTableMap::COL_USERID);
+            $criteria->removeSelectColumn(SocialAuthTableMap::COL_PLATFORM);
+            $criteria->removeSelectColumn(SocialAuthTableMap::COL_SOCIALID);
+            $criteria->removeSelectColumn(SocialAuthTableMap::COL_META);
+            $criteria->removeSelectColumn(SocialAuthTableMap::COL_REVOKED);
+        } else {
+            $criteria->removeSelectColumn($alias . '.userId');
+            $criteria->removeSelectColumn($alias . '.platform');
+            $criteria->removeSelectColumn($alias . '.socialId');
+            $criteria->removeSelectColumn($alias . '.meta');
+            $criteria->removeSelectColumn($alias . '.revoked');
+        }
+    }
+
+    /**
      * Returns the TableMap related to this object.
      * This method is not needed for general use but a specific application could have a need.
      * @return TableMap
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function getTableMap()
+    public static function getTableMap(): TableMap
     {
         return Propel::getServiceContainer()->getDatabaseMap(SocialAuthTableMap::DATABASE_NAME)->getTable(SocialAuthTableMap::TABLE_NAME);
     }
 
     /**
-     * Add a TableMap instance to the database for this tableMap class.
-     */
-    public static function buildTableMap()
-    {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(SocialAuthTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(SocialAuthTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new SocialAuthTableMap());
-        }
-    }
-
-    /**
      * Performs a DELETE on the database, given a SocialAuth or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or SocialAuth object or primary key or array of primary keys
+     * @param mixed $values Criteria or SocialAuth object or primary key or array of primary keys
      *              which is used to create the DELETE statement
-     * @param  ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @param ConnectionInterface $con the connection to use
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-     public static function doDelete($values, ConnectionInterface $con = null)
+     public static function doDelete($values, ?ConnectionInterface $con = null): int
      {
-         if (null === $con) {
-             $con = Propel::getServiceContainer()->getWriteConnection(SocialAuthTableMap::DATABASE_NAME);
-         }
+        if (null === $con) {
+            $con = Propel::getServiceContainer()->getWriteConnection(SocialAuthTableMap::DATABASE_NAME);
+        }
 
-         if ($values instanceof Criteria) {
-             // rename for clarity
+        if ($values instanceof Criteria) {
+            // rename for clarity
             $criteria = $values;
-         } elseif ($values instanceof \TechWilk\Rota\SocialAuth) { // it's a model object
+        } elseif ($values instanceof \TechWilk\Rota\SocialAuth) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
-         } else { // it's a primary key, or an array of pks
+        } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(SocialAuthTableMap::DATABASE_NAME);
             // primary key is composite; we therefore, expect
             // the primary key passed to be an array of pkey values
             if (count($values) == count($values, COUNT_RECURSIVE)) {
                 // array is not multi-dimensional
-                $values = array($values);
+                $values = [$values];
             }
-             foreach ($values as $value) {
-                 $criterion = $criteria->getNewCriterion(SocialAuthTableMap::COL_USERID, $value[0]);
-                 $criterion->addAnd($criteria->getNewCriterion(SocialAuthTableMap::COL_PLATFORM, $value[1]));
-                 $criterion->addAnd($criteria->getNewCriterion(SocialAuthTableMap::COL_SOCIALID, $value[2]));
-                 $criteria->addOr($criterion);
-             }
-         }
+            foreach ($values as $value) {
+                $criterion = $criteria->getNewCriterion(SocialAuthTableMap::COL_USERID, $value[0]);
+                $criterion->addAnd($criteria->getNewCriterion(SocialAuthTableMap::COL_PLATFORM, $value[1]));
+                $criterion->addAnd($criteria->getNewCriterion(SocialAuthTableMap::COL_SOCIALID, $value[2]));
+                $criteria->addOr($criterion);
+            }
+        }
 
-         $query = SocialAuthQuery::create()->mergeWith($criteria);
+        $query = SocialAuthQuery::create()->mergeWith($criteria);
 
-         if ($values instanceof Criteria) {
-             SocialAuthTableMap::clearInstancePool();
-         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
+        if ($values instanceof Criteria) {
+            SocialAuthTableMap::clearInstancePool();
+        } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
                 SocialAuthTableMap::removeInstanceFromPool($singleval);
             }
-         }
+        }
 
-         return $query->delete($con);
-     }
+        return $query->delete($con);
+    }
 
     /**
      * Deletes all rows from the socialAuth table.
@@ -468,7 +541,7 @@ class SocialAuthTableMap extends TableMap
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public static function doDeleteAll(ConnectionInterface $con = null)
+    public static function doDeleteAll(?ConnectionInterface $con = null): int
     {
         return SocialAuthQuery::create()->doDeleteAll($con);
     }
@@ -476,13 +549,13 @@ class SocialAuthTableMap extends TableMap
     /**
      * Performs an INSERT on the database, given a SocialAuth or Criteria object.
      *
-     * @param mixed               $criteria Criteria or SocialAuth object containing data that is used to create the INSERT statement.
+     * @param mixed $criteria Criteria or SocialAuth object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
-     * @return mixed           The new primary key.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @return mixed The new primary key.
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function doInsert($criteria, ConnectionInterface $con = null)
+    public static function doInsert($criteria, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(SocialAuthTableMap::DATABASE_NAME);
@@ -504,7 +577,5 @@ class SocialAuthTableMap extends TableMap
             return $query->doInsert($con);
         });
     }
-} // SocialAuthTableMap
-// This is the static code needed to register the TableMap for this table with the main Propel class.
-//
-SocialAuthTableMap::buildTableMap();
+
+}

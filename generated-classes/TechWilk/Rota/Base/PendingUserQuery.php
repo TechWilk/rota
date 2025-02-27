@@ -7,7 +7,7 @@ use \PDO;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
-use Propel\Runtime\Collection\ObjectCollection;
+use Propel\Runtime\Collection\Collection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
 use TechWilk\Rota\PendingUser as ChildPendingUser;
@@ -15,9 +15,7 @@ use TechWilk\Rota\PendingUserQuery as ChildPendingUserQuery;
 use TechWilk\Rota\Map\PendingUserTableMap;
 
 /**
- * Base class that represents a query for the 'pendingUsers' table.
- *
- *
+ * Base class that represents a query for the `pendingUsers` table.
  *
  * @method     ChildPendingUserQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildPendingUserQuery orderBySocialId($order = Criteria::ASC) Order by the socialId column
@@ -45,20 +43,20 @@ use TechWilk\Rota\Map\PendingUserTableMap;
  * @method     ChildPendingUserQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildPendingUserQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildPendingUser findOne(ConnectionInterface $con = null) Return the first ChildPendingUser matching the query
- * @method     ChildPendingUser findOneOrCreate(ConnectionInterface $con = null) Return the first ChildPendingUser matching the query, or a new ChildPendingUser object populated from the query conditions when no match is found
+ * @method     ChildPendingUser|null findOne(?ConnectionInterface $con = null) Return the first ChildPendingUser matching the query
+ * @method     ChildPendingUser findOneOrCreate(?ConnectionInterface $con = null) Return the first ChildPendingUser matching the query, or a new ChildPendingUser object populated from the query conditions when no match is found
  *
- * @method     ChildPendingUser findOneById(int $id) Return the first ChildPendingUser filtered by the id column
- * @method     ChildPendingUser findOneBySocialId(string $socialId) Return the first ChildPendingUser filtered by the socialId column
- * @method     ChildPendingUser findOneByFirstName(string $firstName) Return the first ChildPendingUser filtered by the firstName column
- * @method     ChildPendingUser findOneByLastName(string $lastName) Return the first ChildPendingUser filtered by the lastName column
- * @method     ChildPendingUser findOneByEmail(string $email) Return the first ChildPendingUser filtered by the email column
- * @method     ChildPendingUser findOneByApproved(boolean $approved) Return the first ChildPendingUser filtered by the approved column
- * @method     ChildPendingUser findOneByDeclined(boolean $declined) Return the first ChildPendingUser filtered by the declined column
- * @method     ChildPendingUser findOneBySource(string $source) Return the first ChildPendingUser filtered by the source column *
-
- * @method     ChildPendingUser requirePk($key, ConnectionInterface $con = null) Return the ChildPendingUser by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPendingUser requireOne(ConnectionInterface $con = null) Return the first ChildPendingUser matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPendingUser|null findOneById(int $id) Return the first ChildPendingUser filtered by the id column
+ * @method     ChildPendingUser|null findOneBySocialId(string $socialId) Return the first ChildPendingUser filtered by the socialId column
+ * @method     ChildPendingUser|null findOneByFirstName(string $firstName) Return the first ChildPendingUser filtered by the firstName column
+ * @method     ChildPendingUser|null findOneByLastName(string $lastName) Return the first ChildPendingUser filtered by the lastName column
+ * @method     ChildPendingUser|null findOneByEmail(string $email) Return the first ChildPendingUser filtered by the email column
+ * @method     ChildPendingUser|null findOneByApproved(boolean $approved) Return the first ChildPendingUser filtered by the approved column
+ * @method     ChildPendingUser|null findOneByDeclined(boolean $declined) Return the first ChildPendingUser filtered by the declined column
+ * @method     ChildPendingUser|null findOneBySource(string $source) Return the first ChildPendingUser filtered by the source column
+ *
+ * @method     ChildPendingUser requirePk($key, ?ConnectionInterface $con = null) Return the ChildPendingUser by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPendingUser requireOne(?ConnectionInterface $con = null) Return the first ChildPendingUser matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildPendingUser requireOneById(int $id) Return the first ChildPendingUser filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPendingUser requireOneBySocialId(string $socialId) Return the first ChildPendingUser filtered by the socialId column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -69,17 +67,28 @@ use TechWilk\Rota\Map\PendingUserTableMap;
  * @method     ChildPendingUser requireOneByDeclined(boolean $declined) Return the first ChildPendingUser filtered by the declined column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPendingUser requireOneBySource(string $source) Return the first ChildPendingUser filtered by the source column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildPendingUser[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildPendingUser objects based on current ModelCriteria
- * @method     ChildPendingUser[]|ObjectCollection findById(int $id) Return ChildPendingUser objects filtered by the id column
- * @method     ChildPendingUser[]|ObjectCollection findBySocialId(string $socialId) Return ChildPendingUser objects filtered by the socialId column
- * @method     ChildPendingUser[]|ObjectCollection findByFirstName(string $firstName) Return ChildPendingUser objects filtered by the firstName column
- * @method     ChildPendingUser[]|ObjectCollection findByLastName(string $lastName) Return ChildPendingUser objects filtered by the lastName column
- * @method     ChildPendingUser[]|ObjectCollection findByEmail(string $email) Return ChildPendingUser objects filtered by the email column
- * @method     ChildPendingUser[]|ObjectCollection findByApproved(boolean $approved) Return ChildPendingUser objects filtered by the approved column
- * @method     ChildPendingUser[]|ObjectCollection findByDeclined(boolean $declined) Return ChildPendingUser objects filtered by the declined column
- * @method     ChildPendingUser[]|ObjectCollection findBySource(string $source) Return ChildPendingUser objects filtered by the source column
- * @method     ChildPendingUser[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @method     ChildPendingUser[]|Collection find(?ConnectionInterface $con = null) Return ChildPendingUser objects based on current ModelCriteria
+ * @psalm-method Collection&\Traversable<ChildPendingUser> find(?ConnectionInterface $con = null) Return ChildPendingUser objects based on current ModelCriteria
  *
+ * @method     ChildPendingUser[]|Collection findById(int|array<int> $id) Return ChildPendingUser objects filtered by the id column
+ * @psalm-method Collection&\Traversable<ChildPendingUser> findById(int|array<int> $id) Return ChildPendingUser objects filtered by the id column
+ * @method     ChildPendingUser[]|Collection findBySocialId(string|array<string> $socialId) Return ChildPendingUser objects filtered by the socialId column
+ * @psalm-method Collection&\Traversable<ChildPendingUser> findBySocialId(string|array<string> $socialId) Return ChildPendingUser objects filtered by the socialId column
+ * @method     ChildPendingUser[]|Collection findByFirstName(string|array<string> $firstName) Return ChildPendingUser objects filtered by the firstName column
+ * @psalm-method Collection&\Traversable<ChildPendingUser> findByFirstName(string|array<string> $firstName) Return ChildPendingUser objects filtered by the firstName column
+ * @method     ChildPendingUser[]|Collection findByLastName(string|array<string> $lastName) Return ChildPendingUser objects filtered by the lastName column
+ * @psalm-method Collection&\Traversable<ChildPendingUser> findByLastName(string|array<string> $lastName) Return ChildPendingUser objects filtered by the lastName column
+ * @method     ChildPendingUser[]|Collection findByEmail(string|array<string> $email) Return ChildPendingUser objects filtered by the email column
+ * @psalm-method Collection&\Traversable<ChildPendingUser> findByEmail(string|array<string> $email) Return ChildPendingUser objects filtered by the email column
+ * @method     ChildPendingUser[]|Collection findByApproved(boolean|array<boolean> $approved) Return ChildPendingUser objects filtered by the approved column
+ * @psalm-method Collection&\Traversable<ChildPendingUser> findByApproved(boolean|array<boolean> $approved) Return ChildPendingUser objects filtered by the approved column
+ * @method     ChildPendingUser[]|Collection findByDeclined(boolean|array<boolean> $declined) Return ChildPendingUser objects filtered by the declined column
+ * @psalm-method Collection&\Traversable<ChildPendingUser> findByDeclined(boolean|array<boolean> $declined) Return ChildPendingUser objects filtered by the declined column
+ * @method     ChildPendingUser[]|Collection findBySource(string|array<string> $source) Return ChildPendingUser objects filtered by the source column
+ * @psalm-method Collection&\Traversable<ChildPendingUser> findBySource(string|array<string> $source) Return ChildPendingUser objects filtered by the source column
+ *
+ * @method     ChildPendingUser[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @psalm-method \Propel\Runtime\Util\PropelModelPager&\Traversable<ChildPendingUser> paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  */
 abstract class PendingUserQuery extends ModelCriteria
 {
@@ -88,9 +97,9 @@ abstract class PendingUserQuery extends ModelCriteria
     /**
      * Initializes internal state of \TechWilk\Rota\Base\PendingUserQuery object.
      *
-     * @param     string $dbName The database name
-     * @param     string $modelName The phpName of a model, e.g. 'Book'
-     * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
+     * @param string $dbName The database name
+     * @param string $modelName The phpName of a model, e.g. 'Book'
+     * @param string $modelAlias The alias for the model in this query, e.g. 'b'
      */
     public function __construct($dbName = 'default', $modelName = '\\TechWilk\\Rota\\PendingUser', $modelAlias = null)
     {
@@ -100,12 +109,12 @@ abstract class PendingUserQuery extends ModelCriteria
     /**
      * Returns a new ChildPendingUserQuery object.
      *
-     * @param     string $modelAlias The alias of a model in the query
-     * @param     Criteria $criteria Optional Criteria to build the query from
+     * @param string $modelAlias The alias of a model in the query
+     * @param Criteria $criteria Optional Criteria to build the query from
      *
      * @return ChildPendingUserQuery
      */
-    public static function create($modelAlias = null, Criteria $criteria = null)
+    public static function create(?string $modelAlias = null, ?Criteria $criteria = null): Criteria
     {
         if ($criteria instanceof ChildPendingUserQuery) {
             return $criteria;
@@ -135,7 +144,7 @@ abstract class PendingUserQuery extends ModelCriteria
      *
      * @return ChildPendingUser|array|mixed the result, formatted by the current formatter
      */
-    public function findPk($key, ConnectionInterface $con = null)
+    public function findPk($key, ?ConnectionInterface $con = null)
     {
         if ($key === null) {
             return null;
@@ -167,8 +176,8 @@ abstract class PendingUserQuery extends ModelCriteria
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
@@ -200,8 +209,8 @@ abstract class PendingUserQuery extends ModelCriteria
     /**
      * Find object by primary key.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @return ChildPendingUser|array|mixed the result, formatted by the current formatter
      */
@@ -221,12 +230,12 @@ abstract class PendingUserQuery extends ModelCriteria
      * <code>
      * $objs = $c->findPks(array(12, 56, 832), $con);
      * </code>
-     * @param     array $keys Primary keys to use for the query
-     * @param     ConnectionInterface $con an optional connection object
+     * @param array $keys Primary keys to use for the query
+     * @param ConnectionInterface $con an optional connection object
      *
-     * @return ObjectCollection|array|mixed the list of results, formatted by the current formatter
+     * @return Collection|array|mixed the list of results, formatted by the current formatter
      */
-    public function findPks($keys, ConnectionInterface $con = null)
+    public function findPks($keys, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getReadConnection($this->getDbName());
@@ -243,25 +252,31 @@ abstract class PendingUserQuery extends ModelCriteria
     /**
      * Filter the query by primary key
      *
-     * @param     mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query
      *
-     * @return $this|ChildPendingUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
-        return $this->addUsingAlias(PendingUserTableMap::COL_ID, $key, Criteria::EQUAL);
+
+        $this->addUsingAlias(PendingUserTableMap::COL_ID, $key, Criteria::EQUAL);
+
+        return $this;
     }
 
     /**
      * Filter the query by a list of primary keys
      *
-     * @param     array $keys The list of primary key to use for the query
+     * @param array|int $keys The list of primary key to use for the query
      *
-     * @return $this|ChildPendingUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
-        return $this->addUsingAlias(PendingUserTableMap::COL_ID, $keys, Criteria::IN);
+
+        $this->addUsingAlias(PendingUserTableMap::COL_ID, $keys, Criteria::IN);
+
+        return $this;
     }
 
     /**
@@ -274,15 +289,15 @@ abstract class PendingUserQuery extends ModelCriteria
      * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
      *
-     * @param     mixed $id The value to use as filter.
+     * @param mixed $id The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPendingUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterById($id = null, $comparison = null)
+    public function filterById($id = null, ?string $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
@@ -302,7 +317,9 @@ abstract class PendingUserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PendingUserTableMap::COL_ID, $id, $comparison);
+        $this->addUsingAlias(PendingUserTableMap::COL_ID, $id, $comparison);
+
+        return $this;
     }
 
     /**
@@ -315,15 +332,15 @@ abstract class PendingUserQuery extends ModelCriteria
      * $query->filterBySocialId(array('min' => 12)); // WHERE socialId > 12
      * </code>
      *
-     * @param     mixed $socialId The value to use as filter.
+     * @param mixed $socialId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPendingUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterBySocialId($socialId = null, $comparison = null)
+    public function filterBySocialId($socialId = null, ?string $comparison = null)
     {
         if (is_array($socialId)) {
             $useMinMax = false;
@@ -343,7 +360,9 @@ abstract class PendingUserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PendingUserTableMap::COL_SOCIALID, $socialId, $comparison);
+        $this->addUsingAlias(PendingUserTableMap::COL_SOCIALID, $socialId, $comparison);
+
+        return $this;
     }
 
     /**
@@ -353,14 +372,15 @@ abstract class PendingUserQuery extends ModelCriteria
      * <code>
      * $query->filterByFirstName('fooValue');   // WHERE firstName = 'fooValue'
      * $query->filterByFirstName('%fooValue%', Criteria::LIKE); // WHERE firstName LIKE '%fooValue%'
+     * $query->filterByFirstName(['foo', 'bar']); // WHERE firstName IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $firstName The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $firstName The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPendingUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByFirstName($firstName = null, $comparison = null)
+    public function filterByFirstName($firstName = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($firstName)) {
@@ -368,7 +388,9 @@ abstract class PendingUserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PendingUserTableMap::COL_FIRSTNAME, $firstName, $comparison);
+        $this->addUsingAlias(PendingUserTableMap::COL_FIRSTNAME, $firstName, $comparison);
+
+        return $this;
     }
 
     /**
@@ -378,14 +400,15 @@ abstract class PendingUserQuery extends ModelCriteria
      * <code>
      * $query->filterByLastName('fooValue');   // WHERE lastName = 'fooValue'
      * $query->filterByLastName('%fooValue%', Criteria::LIKE); // WHERE lastName LIKE '%fooValue%'
+     * $query->filterByLastName(['foo', 'bar']); // WHERE lastName IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $lastName The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $lastName The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPendingUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByLastName($lastName = null, $comparison = null)
+    public function filterByLastName($lastName = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($lastName)) {
@@ -393,7 +416,9 @@ abstract class PendingUserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PendingUserTableMap::COL_LASTNAME, $lastName, $comparison);
+        $this->addUsingAlias(PendingUserTableMap::COL_LASTNAME, $lastName, $comparison);
+
+        return $this;
     }
 
     /**
@@ -403,14 +428,15 @@ abstract class PendingUserQuery extends ModelCriteria
      * <code>
      * $query->filterByEmail('fooValue');   // WHERE email = 'fooValue'
      * $query->filterByEmail('%fooValue%', Criteria::LIKE); // WHERE email LIKE '%fooValue%'
+     * $query->filterByEmail(['foo', 'bar']); // WHERE email IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $email The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $email The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPendingUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByEmail($email = null, $comparison = null)
+    public function filterByEmail($email = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($email)) {
@@ -418,7 +444,9 @@ abstract class PendingUserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PendingUserTableMap::COL_EMAIL, $email, $comparison);
+        $this->addUsingAlias(PendingUserTableMap::COL_EMAIL, $email, $comparison);
+
+        return $this;
     }
 
     /**
@@ -430,22 +458,24 @@ abstract class PendingUserQuery extends ModelCriteria
      * $query->filterByApproved('yes'); // WHERE approved = true
      * </code>
      *
-     * @param     boolean|string $approved The value to use as filter.
+     * @param bool|string $approved The value to use as filter.
      *              Non-boolean arguments are converted using the following rules:
      *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPendingUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByApproved($approved = null, $comparison = null)
+    public function filterByApproved($approved = null, ?string $comparison = null)
     {
         if (is_string($approved)) {
-            $approved = in_array(strtolower($approved), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            $approved = in_array(strtolower($approved), array('false', 'off', '-', 'no', 'n', '0', ''), true) ? false : true;
         }
 
-        return $this->addUsingAlias(PendingUserTableMap::COL_APPROVED, $approved, $comparison);
+        $this->addUsingAlias(PendingUserTableMap::COL_APPROVED, $approved, $comparison);
+
+        return $this;
     }
 
     /**
@@ -457,22 +487,24 @@ abstract class PendingUserQuery extends ModelCriteria
      * $query->filterByDeclined('yes'); // WHERE declined = true
      * </code>
      *
-     * @param     boolean|string $declined The value to use as filter.
+     * @param bool|string $declined The value to use as filter.
      *              Non-boolean arguments are converted using the following rules:
      *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPendingUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByDeclined($declined = null, $comparison = null)
+    public function filterByDeclined($declined = null, ?string $comparison = null)
     {
         if (is_string($declined)) {
-            $declined = in_array(strtolower($declined), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            $declined = in_array(strtolower($declined), array('false', 'off', '-', 'no', 'n', '0', ''), true) ? false : true;
         }
 
-        return $this->addUsingAlias(PendingUserTableMap::COL_DECLINED, $declined, $comparison);
+        $this->addUsingAlias(PendingUserTableMap::COL_DECLINED, $declined, $comparison);
+
+        return $this;
     }
 
     /**
@@ -482,14 +514,15 @@ abstract class PendingUserQuery extends ModelCriteria
      * <code>
      * $query->filterBySource('fooValue');   // WHERE source = 'fooValue'
      * $query->filterBySource('%fooValue%', Criteria::LIKE); // WHERE source LIKE '%fooValue%'
+     * $query->filterBySource(['foo', 'bar']); // WHERE source IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $source The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $source The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPendingUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterBySource($source = null, $comparison = null)
+    public function filterBySource($source = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($source)) {
@@ -497,15 +530,17 @@ abstract class PendingUserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PendingUserTableMap::COL_SOURCE, $source, $comparison);
+        $this->addUsingAlias(PendingUserTableMap::COL_SOURCE, $source, $comparison);
+
+        return $this;
     }
 
     /**
      * Exclude object from result
      *
-     * @param   ChildPendingUser $pendingUser Object to remove from the list of results
+     * @param ChildPendingUser $pendingUser Object to remove from the list of results
      *
-     * @return $this|ChildPendingUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function prune($pendingUser = null)
     {
@@ -522,7 +557,7 @@ abstract class PendingUserQuery extends ModelCriteria
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public function doDeleteAll(ConnectionInterface $con = null)
+    public function doDeleteAll(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(PendingUserTableMap::DATABASE_NAME);
@@ -547,12 +582,12 @@ abstract class PendingUserQuery extends ModelCriteria
      * Performs a DELETE on the database based on the current ModelCriteria
      *
      * @param ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public function delete(ConnectionInterface $con = null)
+    public function delete(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(PendingUserTableMap::DATABASE_NAME);
@@ -576,4 +611,5 @@ abstract class PendingUserQuery extends ModelCriteria
             return $affectedRows;
         });
     }
-} // PendingUserQuery
+
+}

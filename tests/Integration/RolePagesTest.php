@@ -13,7 +13,7 @@ class RolePagesTest extends BaseTestCase
     /**
      * Ensure user is logged in before tests run.
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         $user = new User();
         $user->setEmail('test@example.com');
@@ -52,7 +52,7 @@ class RolePagesTest extends BaseTestCase
     /**
      * Logout user is after tests run.
      */
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         unset($_SESSION['userId']);
     }

@@ -34,11 +34,11 @@ $client = new Client([
 
 // get token
 $response = $client->request(
-  'POST',
-  'v3/tokens.json',
-  ['form_params' => ['api_key' => siteConfig()['recording']['locomotivecms']['apiKey'],
-                       'email' => siteConfig()['recording']['locomotivecms']['email'], ]]
-  );
+    'POST',
+    'v3/tokens.json',
+    ['form_params' => ['api_key' => siteConfig()['recording']['locomotivecms']['apiKey'],
+        'email'                  => siteConfig()['recording']['locomotivecms']['email'], ]]
+);
 if ($response->getStatusCode() == 201) {
     $token = json_decode($response->getBody())->token;
 }
@@ -46,9 +46,10 @@ if ($response->getStatusCode() == 201) {
 // test token
 if (isset($token)) {
     $response = $client->request(
-  'GET',
-  'v3/my_account.json',
-  ['query' => ['auth_token' => $token]]);
+        'GET',
+        'v3/my_account.json',
+        ['query' => ['auth_token' => $token]]
+    );
     var_dump($response);
 } else {
     echo '<p>Unable to connect to main site</p>';

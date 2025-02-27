@@ -14,6 +14,7 @@ use Propel\Runtime\Map\TableMapTrait;
 use TechWilk\Rota\Event;
 use TechWilk\Rota\EventQuery;
 
+
 /**
  * This class defines the structure of the 'events' table.
  *
@@ -23,7 +24,6 @@ use TechWilk\Rota\EventQuery;
  * For example, the createSelectSql() method checks the type of a given column used in an
  * ORDER BY clause to know whether it needs to apply SQL to make the ORDER BY case-insensitive
  * (i.e. if it's a text column type).
- *
  */
 class EventTableMap extends TableMap
 {
@@ -33,164 +33,297 @@ class EventTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'TechWilk.Rota.Map.EventTableMap';
+    public const CLASS_NAME = 'TechWilk.Rota.Map.EventTableMap';
 
     /**
      * The default database name for this class
      */
-    const DATABASE_NAME = 'default';
+    public const DATABASE_NAME = 'default';
 
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'events';
+    public const TABLE_NAME = 'events';
+
+    /**
+     * The PHP name of this class (PascalCase)
+     */
+    public const TABLE_PHP_NAME = 'Event';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\TechWilk\\Rota\\Event';
+    public const OM_CLASS = '\\TechWilk\\Rota\\Event';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'TechWilk.Rota.Event';
+    public const CLASS_DEFAULT = 'TechWilk.Rota.Event';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 16;
+    public const NUM_COLUMNS = 16;
 
     /**
      * The number of lazy-loaded columns
      */
-    const NUM_LAZY_LOAD_COLUMNS = 0;
+    public const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 16;
+    public const NUM_HYDRATE_COLUMNS = 16;
 
     /**
      * the column name for the id field
      */
-    const COL_ID = 'events.id';
+    public const COL_ID = 'events.id';
 
     /**
      * the column name for the date field
      */
-    const COL_DATE = 'events.date';
+    public const COL_DATE = 'events.date';
 
     /**
      * the column name for the name field
      */
-    const COL_NAME = 'events.name';
+    public const COL_NAME = 'events.name';
 
     /**
      * the column name for the createdBy field
      */
-    const COL_CREATEDBY = 'events.createdBy';
+    public const COL_CREATEDBY = 'events.createdBy';
 
     /**
      * the column name for the rehearsalDate field
      */
-    const COL_REHEARSALDATE = 'events.rehearsalDate';
+    public const COL_REHEARSALDATE = 'events.rehearsalDate';
 
     /**
      * the column name for the type field
      */
-    const COL_TYPE = 'events.type';
+    public const COL_TYPE = 'events.type';
 
     /**
      * the column name for the subType field
      */
-    const COL_SUBTYPE = 'events.subType';
+    public const COL_SUBTYPE = 'events.subType';
 
     /**
      * the column name for the location field
      */
-    const COL_LOCATION = 'events.location';
+    public const COL_LOCATION = 'events.location';
 
     /**
      * the column name for the notified field
      */
-    const COL_NOTIFIED = 'events.notified';
+    public const COL_NOTIFIED = 'events.notified';
 
     /**
      * the column name for the rehearsal field
      */
-    const COL_REHEARSAL = 'events.rehearsal';
+    public const COL_REHEARSAL = 'events.rehearsal';
 
     /**
      * the column name for the removed field
      */
-    const COL_REMOVED = 'events.removed';
+    public const COL_REMOVED = 'events.removed';
 
     /**
      * the column name for the eventGroup field
      */
-    const COL_EVENTGROUP = 'events.eventGroup';
+    public const COL_EVENTGROUP = 'events.eventGroup';
 
     /**
      * the column name for the sermonTitle field
      */
-    const COL_SERMONTITLE = 'events.sermonTitle';
+    public const COL_SERMONTITLE = 'events.sermonTitle';
 
     /**
      * the column name for the bibleVerse field
      */
-    const COL_BIBLEVERSE = 'events.bibleVerse';
+    public const COL_BIBLEVERSE = 'events.bibleVerse';
 
     /**
      * the column name for the created field
      */
-    const COL_CREATED = 'events.created';
+    public const COL_CREATED = 'events.created';
 
     /**
      * the column name for the updated field
      */
-    const COL_UPDATED = 'events.updated';
+    public const COL_UPDATED = 'events.updated';
 
     /**
      * The default string format for model objects of the related table
      */
-    const DEFAULT_STRING_FORMAT = 'YAML';
+    public const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
+     *
+     * @var array<string, mixed>
      */
-    protected static $fieldNames = array(
-        self::TYPE_PHPNAME       => array('Id', 'Date', 'Name', 'CreatedBy', 'RehearsalDate', 'EventTypeId', 'EventSubTypeId', 'LocationId', 'Notified', 'Rehearsal', 'Removed', 'EventGroupId', 'SermonTitle', 'BibleVerse', 'Created', 'Updated', ),
-        self::TYPE_CAMELNAME     => array('id', 'date', 'name', 'createdBy', 'rehearsalDate', 'eventTypeId', 'eventSubTypeId', 'locationId', 'notified', 'rehearsal', 'removed', 'eventGroupId', 'sermonTitle', 'bibleVerse', 'created', 'updated', ),
-        self::TYPE_COLNAME       => array(EventTableMap::COL_ID, EventTableMap::COL_DATE, EventTableMap::COL_NAME, EventTableMap::COL_CREATEDBY, EventTableMap::COL_REHEARSALDATE, EventTableMap::COL_TYPE, EventTableMap::COL_SUBTYPE, EventTableMap::COL_LOCATION, EventTableMap::COL_NOTIFIED, EventTableMap::COL_REHEARSAL, EventTableMap::COL_REMOVED, EventTableMap::COL_EVENTGROUP, EventTableMap::COL_SERMONTITLE, EventTableMap::COL_BIBLEVERSE, EventTableMap::COL_CREATED, EventTableMap::COL_UPDATED, ),
-        self::TYPE_FIELDNAME     => array('id', 'date', 'name', 'createdBy', 'rehearsalDate', 'type', 'subType', 'location', 'notified', 'rehearsal', 'removed', 'eventGroup', 'sermonTitle', 'bibleVerse', 'created', 'updated', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
-    );
+    protected static $fieldNames = [
+        self::TYPE_PHPNAME       => ['Id', 'Date', 'Name', 'CreatedBy', 'RehearsalDate', 'EventTypeId', 'EventSubTypeId', 'LocationId', 'Notified', 'Rehearsal', 'Removed', 'EventGroupId', 'SermonTitle', 'BibleVerse', 'Created', 'Updated', ],
+        self::TYPE_CAMELNAME     => ['id', 'date', 'name', 'createdBy', 'rehearsalDate', 'eventTypeId', 'eventSubTypeId', 'locationId', 'notified', 'rehearsal', 'removed', 'eventGroupId', 'sermonTitle', 'bibleVerse', 'created', 'updated', ],
+        self::TYPE_COLNAME       => [EventTableMap::COL_ID, EventTableMap::COL_DATE, EventTableMap::COL_NAME, EventTableMap::COL_CREATEDBY, EventTableMap::COL_REHEARSALDATE, EventTableMap::COL_TYPE, EventTableMap::COL_SUBTYPE, EventTableMap::COL_LOCATION, EventTableMap::COL_NOTIFIED, EventTableMap::COL_REHEARSAL, EventTableMap::COL_REMOVED, EventTableMap::COL_EVENTGROUP, EventTableMap::COL_SERMONTITLE, EventTableMap::COL_BIBLEVERSE, EventTableMap::COL_CREATED, EventTableMap::COL_UPDATED, ],
+        self::TYPE_FIELDNAME     => ['id', 'date', 'name', 'createdBy', 'rehearsalDate', 'type', 'subType', 'location', 'notified', 'rehearsal', 'removed', 'eventGroup', 'sermonTitle', 'bibleVerse', 'created', 'updated', ],
+        self::TYPE_NUM           => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, ]
+    ];
 
     /**
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
+     *
+     * @var array<string, mixed>
      */
-    protected static $fieldKeys = array(
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Date' => 1, 'Name' => 2, 'CreatedBy' => 3, 'RehearsalDate' => 4, 'EventTypeId' => 5, 'EventSubTypeId' => 6, 'LocationId' => 7, 'Notified' => 8, 'Rehearsal' => 9, 'Removed' => 10, 'EventGroupId' => 11, 'SermonTitle' => 12, 'BibleVerse' => 13, 'Created' => 14, 'Updated' => 15, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'date' => 1, 'name' => 2, 'createdBy' => 3, 'rehearsalDate' => 4, 'eventTypeId' => 5, 'eventSubTypeId' => 6, 'locationId' => 7, 'notified' => 8, 'rehearsal' => 9, 'removed' => 10, 'eventGroupId' => 11, 'sermonTitle' => 12, 'bibleVerse' => 13, 'created' => 14, 'updated' => 15, ),
-        self::TYPE_COLNAME       => array(EventTableMap::COL_ID => 0, EventTableMap::COL_DATE => 1, EventTableMap::COL_NAME => 2, EventTableMap::COL_CREATEDBY => 3, EventTableMap::COL_REHEARSALDATE => 4, EventTableMap::COL_TYPE => 5, EventTableMap::COL_SUBTYPE => 6, EventTableMap::COL_LOCATION => 7, EventTableMap::COL_NOTIFIED => 8, EventTableMap::COL_REHEARSAL => 9, EventTableMap::COL_REMOVED => 10, EventTableMap::COL_EVENTGROUP => 11, EventTableMap::COL_SERMONTITLE => 12, EventTableMap::COL_BIBLEVERSE => 13, EventTableMap::COL_CREATED => 14, EventTableMap::COL_UPDATED => 15, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'date' => 1, 'name' => 2, 'createdBy' => 3, 'rehearsalDate' => 4, 'type' => 5, 'subType' => 6, 'location' => 7, 'notified' => 8, 'rehearsal' => 9, 'removed' => 10, 'eventGroup' => 11, 'sermonTitle' => 12, 'bibleVerse' => 13, 'created' => 14, 'updated' => 15, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
-    );
+    protected static $fieldKeys = [
+        self::TYPE_PHPNAME       => ['Id' => 0, 'Date' => 1, 'Name' => 2, 'CreatedBy' => 3, 'RehearsalDate' => 4, 'EventTypeId' => 5, 'EventSubTypeId' => 6, 'LocationId' => 7, 'Notified' => 8, 'Rehearsal' => 9, 'Removed' => 10, 'EventGroupId' => 11, 'SermonTitle' => 12, 'BibleVerse' => 13, 'Created' => 14, 'Updated' => 15, ],
+        self::TYPE_CAMELNAME     => ['id' => 0, 'date' => 1, 'name' => 2, 'createdBy' => 3, 'rehearsalDate' => 4, 'eventTypeId' => 5, 'eventSubTypeId' => 6, 'locationId' => 7, 'notified' => 8, 'rehearsal' => 9, 'removed' => 10, 'eventGroupId' => 11, 'sermonTitle' => 12, 'bibleVerse' => 13, 'created' => 14, 'updated' => 15, ],
+        self::TYPE_COLNAME       => [EventTableMap::COL_ID => 0, EventTableMap::COL_DATE => 1, EventTableMap::COL_NAME => 2, EventTableMap::COL_CREATEDBY => 3, EventTableMap::COL_REHEARSALDATE => 4, EventTableMap::COL_TYPE => 5, EventTableMap::COL_SUBTYPE => 6, EventTableMap::COL_LOCATION => 7, EventTableMap::COL_NOTIFIED => 8, EventTableMap::COL_REHEARSAL => 9, EventTableMap::COL_REMOVED => 10, EventTableMap::COL_EVENTGROUP => 11, EventTableMap::COL_SERMONTITLE => 12, EventTableMap::COL_BIBLEVERSE => 13, EventTableMap::COL_CREATED => 14, EventTableMap::COL_UPDATED => 15, ],
+        self::TYPE_FIELDNAME     => ['id' => 0, 'date' => 1, 'name' => 2, 'createdBy' => 3, 'rehearsalDate' => 4, 'type' => 5, 'subType' => 6, 'location' => 7, 'notified' => 8, 'rehearsal' => 9, 'removed' => 10, 'eventGroup' => 11, 'sermonTitle' => 12, 'bibleVerse' => 13, 'created' => 14, 'updated' => 15, ],
+        self::TYPE_NUM           => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, ]
+    ];
+
+    /**
+     * Holds a list of column names and their normalized version.
+     *
+     * @var array<string>
+     */
+    protected $normalizedColumnNameMap = [
+        'Id' => 'ID',
+        'Event.Id' => 'ID',
+        'id' => 'ID',
+        'event.id' => 'ID',
+        'EventTableMap::COL_ID' => 'ID',
+        'COL_ID' => 'ID',
+        'events.id' => 'ID',
+        'Date' => 'DATE',
+        'Event.Date' => 'DATE',
+        'date' => 'DATE',
+        'event.date' => 'DATE',
+        'EventTableMap::COL_DATE' => 'DATE',
+        'COL_DATE' => 'DATE',
+        'events.date' => 'DATE',
+        'Name' => 'NAME',
+        'Event.Name' => 'NAME',
+        'name' => 'NAME',
+        'event.name' => 'NAME',
+        'EventTableMap::COL_NAME' => 'NAME',
+        'COL_NAME' => 'NAME',
+        'events.name' => 'NAME',
+        'CreatedBy' => 'CREATEDBY',
+        'Event.CreatedBy' => 'CREATEDBY',
+        'createdBy' => 'CREATEDBY',
+        'event.createdBy' => 'CREATEDBY',
+        'EventTableMap::COL_CREATEDBY' => 'CREATEDBY',
+        'COL_CREATEDBY' => 'CREATEDBY',
+        'events.createdBy' => 'CREATEDBY',
+        'RehearsalDate' => 'REHEARSALDATE',
+        'Event.RehearsalDate' => 'REHEARSALDATE',
+        'rehearsalDate' => 'REHEARSALDATE',
+        'event.rehearsalDate' => 'REHEARSALDATE',
+        'EventTableMap::COL_REHEARSALDATE' => 'REHEARSALDATE',
+        'COL_REHEARSALDATE' => 'REHEARSALDATE',
+        'events.rehearsalDate' => 'REHEARSALDATE',
+        'EventTypeId' => 'TYPE',
+        'Event.EventTypeId' => 'TYPE',
+        'eventTypeId' => 'TYPE',
+        'event.eventTypeId' => 'TYPE',
+        'EventTableMap::COL_TYPE' => 'TYPE',
+        'COL_TYPE' => 'TYPE',
+        'type' => 'TYPE',
+        'events.type' => 'TYPE',
+        'EventSubTypeId' => 'SUBTYPE',
+        'Event.EventSubTypeId' => 'SUBTYPE',
+        'eventSubTypeId' => 'SUBTYPE',
+        'event.eventSubTypeId' => 'SUBTYPE',
+        'EventTableMap::COL_SUBTYPE' => 'SUBTYPE',
+        'COL_SUBTYPE' => 'SUBTYPE',
+        'subType' => 'SUBTYPE',
+        'events.subType' => 'SUBTYPE',
+        'LocationId' => 'LOCATION',
+        'Event.LocationId' => 'LOCATION',
+        'locationId' => 'LOCATION',
+        'event.locationId' => 'LOCATION',
+        'EventTableMap::COL_LOCATION' => 'LOCATION',
+        'COL_LOCATION' => 'LOCATION',
+        'location' => 'LOCATION',
+        'events.location' => 'LOCATION',
+        'Notified' => 'NOTIFIED',
+        'Event.Notified' => 'NOTIFIED',
+        'notified' => 'NOTIFIED',
+        'event.notified' => 'NOTIFIED',
+        'EventTableMap::COL_NOTIFIED' => 'NOTIFIED',
+        'COL_NOTIFIED' => 'NOTIFIED',
+        'events.notified' => 'NOTIFIED',
+        'Rehearsal' => 'REHEARSAL',
+        'Event.Rehearsal' => 'REHEARSAL',
+        'rehearsal' => 'REHEARSAL',
+        'event.rehearsal' => 'REHEARSAL',
+        'EventTableMap::COL_REHEARSAL' => 'REHEARSAL',
+        'COL_REHEARSAL' => 'REHEARSAL',
+        'events.rehearsal' => 'REHEARSAL',
+        'Removed' => 'REMOVED',
+        'Event.Removed' => 'REMOVED',
+        'removed' => 'REMOVED',
+        'event.removed' => 'REMOVED',
+        'EventTableMap::COL_REMOVED' => 'REMOVED',
+        'COL_REMOVED' => 'REMOVED',
+        'events.removed' => 'REMOVED',
+        'EventGroupId' => 'EVENTGROUP',
+        'Event.EventGroupId' => 'EVENTGROUP',
+        'eventGroupId' => 'EVENTGROUP',
+        'event.eventGroupId' => 'EVENTGROUP',
+        'EventTableMap::COL_EVENTGROUP' => 'EVENTGROUP',
+        'COL_EVENTGROUP' => 'EVENTGROUP',
+        'eventGroup' => 'EVENTGROUP',
+        'events.eventGroup' => 'EVENTGROUP',
+        'SermonTitle' => 'SERMONTITLE',
+        'Event.SermonTitle' => 'SERMONTITLE',
+        'sermonTitle' => 'SERMONTITLE',
+        'event.sermonTitle' => 'SERMONTITLE',
+        'EventTableMap::COL_SERMONTITLE' => 'SERMONTITLE',
+        'COL_SERMONTITLE' => 'SERMONTITLE',
+        'events.sermonTitle' => 'SERMONTITLE',
+        'BibleVerse' => 'BIBLEVERSE',
+        'Event.BibleVerse' => 'BIBLEVERSE',
+        'bibleVerse' => 'BIBLEVERSE',
+        'event.bibleVerse' => 'BIBLEVERSE',
+        'EventTableMap::COL_BIBLEVERSE' => 'BIBLEVERSE',
+        'COL_BIBLEVERSE' => 'BIBLEVERSE',
+        'events.bibleVerse' => 'BIBLEVERSE',
+        'Created' => 'CREATED',
+        'Event.Created' => 'CREATED',
+        'created' => 'CREATED',
+        'event.created' => 'CREATED',
+        'EventTableMap::COL_CREATED' => 'CREATED',
+        'COL_CREATED' => 'CREATED',
+        'events.created' => 'CREATED',
+        'Updated' => 'UPDATED',
+        'Event.Updated' => 'UPDATED',
+        'updated' => 'UPDATED',
+        'event.updated' => 'UPDATED',
+        'EventTableMap::COL_UPDATED' => 'UPDATED',
+        'COL_UPDATED' => 'UPDATED',
+        'events.updated' => 'UPDATED',
+    ];
 
     /**
      * Initialize the table attributes and columns
      * Relations are not initialized by this method since they are lazy loaded
      *
      * @return void
-     * @throws PropelException
+     * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function initialize()
+    public function initialize(): void
     {
         // attributes
         $this->setName('events');
@@ -216,83 +349,85 @@ class EventTableMap extends TableMap
         $this->addColumn('bibleVerse', 'BibleVerse', 'VARCHAR', false, 64, null);
         $this->addColumn('created', 'Created', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated', 'Updated', 'TIMESTAMP', false, null, null);
-    } // initialize()
+    }
 
     /**
      * Build the RelationMap objects for this table relationships
+     *
+     * @return void
      */
-    public function buildRelations()
+    public function buildRelations(): void
     {
-        $this->addRelation('User', '\\TechWilk\\Rota\\User', RelationMap::MANY_TO_ONE, array(
+        $this->addRelation('User', '\\TechWilk\\Rota\\User', RelationMap::MANY_TO_ONE, array (
   0 =>
-  array(
+  array (
     0 => ':createdBy',
     1 => ':id',
   ),
 ), null, null, null, false);
-        $this->addRelation('EventType', '\\TechWilk\\Rota\\EventType', RelationMap::MANY_TO_ONE, array(
+        $this->addRelation('EventType', '\\TechWilk\\Rota\\EventType', RelationMap::MANY_TO_ONE, array (
   0 =>
-  array(
+  array (
     0 => ':type',
     1 => ':id',
   ),
 ), null, null, null, false);
-        $this->addRelation('EventSubType', '\\TechWilk\\Rota\\EventSubType', RelationMap::MANY_TO_ONE, array(
+        $this->addRelation('EventSubType', '\\TechWilk\\Rota\\EventSubType', RelationMap::MANY_TO_ONE, array (
   0 =>
-  array(
+  array (
     0 => ':subType',
     1 => ':id',
   ),
 ), null, null, null, false);
-        $this->addRelation('Location', '\\TechWilk\\Rota\\Location', RelationMap::MANY_TO_ONE, array(
+        $this->addRelation('Location', '\\TechWilk\\Rota\\Location', RelationMap::MANY_TO_ONE, array (
   0 =>
-  array(
+  array (
     0 => ':location',
     1 => ':id',
   ),
 ), null, null, null, false);
-        $this->addRelation('EventGroup', '\\TechWilk\\Rota\\EventGroup', RelationMap::MANY_TO_ONE, array(
+        $this->addRelation('EventGroup', '\\TechWilk\\Rota\\EventGroup', RelationMap::MANY_TO_ONE, array (
   0 =>
-  array(
+  array (
     0 => ':eventGroup',
     1 => ':id',
   ),
 ), null, null, null, false);
-        $this->addRelation('Comment', '\\TechWilk\\Rota\\Comment', RelationMap::ONE_TO_MANY, array(
+        $this->addRelation('Comment', '\\TechWilk\\Rota\\Comment', RelationMap::ONE_TO_MANY, array (
   0 =>
-  array(
+  array (
     0 => ':eventId',
     1 => ':id',
   ),
 ), null, null, 'Comments', false);
-        $this->addRelation('EventPerson', '\\TechWilk\\Rota\\EventPerson', RelationMap::ONE_TO_MANY, array(
+        $this->addRelation('EventPerson', '\\TechWilk\\Rota\\EventPerson', RelationMap::ONE_TO_MANY, array (
   0 =>
-  array(
+  array (
     0 => ':eventId',
     1 => ':id',
   ),
 ), null, null, 'Eventpeople', false);
-        $this->addRelation('Availability', '\\TechWilk\\Rota\\Availability', RelationMap::ONE_TO_MANY, array(
+        $this->addRelation('Availability', '\\TechWilk\\Rota\\Availability', RelationMap::ONE_TO_MANY, array (
   0 =>
-  array(
+  array (
     0 => ':eventId',
     1 => ':id',
   ),
 ), null, null, 'Availabilities', false);
-    } // buildRelations()
+    }
 
     /**
      *
      * Gets the list of behaviors registered for this table
      *
-     * @return array Associative array (name => parameters) of behaviors
+     * @return array<string, array> Associative array (name => parameters) of behaviors
      */
-    public function getBehaviors()
+    public function getBehaviors(): array
     {
-        return array(
-            'timestampable' => array('create_column' => 'created', 'update_column' => 'updated', 'disable_created_at' => 'false', 'disable_updated_at' => 'false', ),
-        );
-    } // getBehaviors()
+        return [
+            'timestampable' => ['create_column' => 'created', 'update_column' => 'updated', 'disable_created_at' => 'false', 'disable_updated_at' => 'false'],
+        ];
+    }
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
@@ -300,14 +435,14 @@ class EventTableMap extends TableMap
      * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
-     * @param array  $row       resultset row.
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Resultset row.
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      *
-     * @return string The primary key hash of the row
+     * @return string|null The primary key hash of the row
      */
-    public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function getPrimaryKeyHashFromRow(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM): ?string
     {
         // If the PK cannot be derived from the row, return NULL.
         if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
@@ -322,14 +457,14 @@ class EventTableMap extends TableMap
      * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
      * a multi-column primary key, an array of the primary key columns will be returned.
      *
-     * @param array  $row       resultset row.
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Resultset row.
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      *
      * @return mixed The primary key of the row
      */
-    public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function getPrimaryKeyFromRow(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM)
     {
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
@@ -346,10 +481,10 @@ class EventTableMap extends TableMap
      * relative to a location on the PHP include_path.
      * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
      *
-     * @param boolean $withPrefix Whether or not to return the path with the class name
+     * @param bool $withPrefix Whether to return the path with the class name
      * @return string path.to.ClassName
      */
-    public static function getOMClass($withPrefix = true)
+    public static function getOMClass(bool $withPrefix = true): string
     {
         return $withPrefix ? EventTableMap::CLASS_DEFAULT : EventTableMap::OM_CLASS;
     }
@@ -357,17 +492,17 @@ class EventTableMap extends TableMap
     /**
      * Populates an object of the default type or an object that inherit from the default.
      *
-     * @param array  $row       row returned by DataFetcher->fetch().
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Row returned by DataFetcher->fetch().
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType The index type of $row. Mostly DataFetcher->getIndexType().
                                  One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Event object, last column rank)
+     * @return array (Event object, last column rank)
      */
-    public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function populateObject(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM): array
     {
         $key = EventTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
         if (null !== ($obj = EventTableMap::getInstanceFromPool($key))) {
@@ -383,7 +518,7 @@ class EventTableMap extends TableMap
             EventTableMap::addInstanceToPool($obj, $key);
         }
 
-        return array($obj, $col);
+        return [$obj, $col];
     }
 
     /**
@@ -391,13 +526,13 @@ class EventTableMap extends TableMap
      * objects that inherit from the default.
      *
      * @param DataFetcherInterface $dataFetcher
-     * @return array
-     * @throws PropelException Any exceptions caught during processing will be
+     * @return array<object>
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function populateObjects(DataFetcherInterface $dataFetcher)
+    public static function populateObjects(DataFetcherInterface $dataFetcher): array
     {
-        $results = array();
+        $results = [];
 
         // set the class once to avoid overhead in the loop
         $cls = static::getOMClass(false);
@@ -427,12 +562,13 @@ class EventTableMap extends TableMap
      * XML schema will not be added to the select list and only loaded
      * on demand.
      *
-     * @param Criteria $criteria object containing the columns to add.
-     * @param string   $alias    optional table alias
-     * @throws PropelException Any exceptions caught during processing will be
+     * @param Criteria $criteria Object containing the columns to add.
+     * @param string|null $alias Optional table alias
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
+     * @return void
      */
-    public static function addSelectColumns(Criteria $criteria, $alias = null)
+    public static function addSelectColumns(Criteria $criteria, ?string $alias = null): void
     {
         if (null === $alias) {
             $criteria->addSelectColumn(EventTableMap::COL_ID);
@@ -472,68 +608,108 @@ class EventTableMap extends TableMap
     }
 
     /**
+     * Remove all the columns needed to create a new object.
+     *
+     * Note: any columns that were marked with lazyLoad="true" in the
+     * XML schema will not be removed as they are only loaded on demand.
+     *
+     * @param Criteria $criteria Object containing the columns to remove.
+     * @param string|null $alias Optional table alias
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
+     *                         rethrown wrapped into a PropelException.
+     * @return void
+     */
+    public static function removeSelectColumns(Criteria $criteria, ?string $alias = null): void
+    {
+        if (null === $alias) {
+            $criteria->removeSelectColumn(EventTableMap::COL_ID);
+            $criteria->removeSelectColumn(EventTableMap::COL_DATE);
+            $criteria->removeSelectColumn(EventTableMap::COL_NAME);
+            $criteria->removeSelectColumn(EventTableMap::COL_CREATEDBY);
+            $criteria->removeSelectColumn(EventTableMap::COL_REHEARSALDATE);
+            $criteria->removeSelectColumn(EventTableMap::COL_TYPE);
+            $criteria->removeSelectColumn(EventTableMap::COL_SUBTYPE);
+            $criteria->removeSelectColumn(EventTableMap::COL_LOCATION);
+            $criteria->removeSelectColumn(EventTableMap::COL_NOTIFIED);
+            $criteria->removeSelectColumn(EventTableMap::COL_REHEARSAL);
+            $criteria->removeSelectColumn(EventTableMap::COL_REMOVED);
+            $criteria->removeSelectColumn(EventTableMap::COL_EVENTGROUP);
+            $criteria->removeSelectColumn(EventTableMap::COL_SERMONTITLE);
+            $criteria->removeSelectColumn(EventTableMap::COL_BIBLEVERSE);
+            $criteria->removeSelectColumn(EventTableMap::COL_CREATED);
+            $criteria->removeSelectColumn(EventTableMap::COL_UPDATED);
+        } else {
+            $criteria->removeSelectColumn($alias . '.id');
+            $criteria->removeSelectColumn($alias . '.date');
+            $criteria->removeSelectColumn($alias . '.name');
+            $criteria->removeSelectColumn($alias . '.createdBy');
+            $criteria->removeSelectColumn($alias . '.rehearsalDate');
+            $criteria->removeSelectColumn($alias . '.type');
+            $criteria->removeSelectColumn($alias . '.subType');
+            $criteria->removeSelectColumn($alias . '.location');
+            $criteria->removeSelectColumn($alias . '.notified');
+            $criteria->removeSelectColumn($alias . '.rehearsal');
+            $criteria->removeSelectColumn($alias . '.removed');
+            $criteria->removeSelectColumn($alias . '.eventGroup');
+            $criteria->removeSelectColumn($alias . '.sermonTitle');
+            $criteria->removeSelectColumn($alias . '.bibleVerse');
+            $criteria->removeSelectColumn($alias . '.created');
+            $criteria->removeSelectColumn($alias . '.updated');
+        }
+    }
+
+    /**
      * Returns the TableMap related to this object.
      * This method is not needed for general use but a specific application could have a need.
      * @return TableMap
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function getTableMap()
+    public static function getTableMap(): TableMap
     {
         return Propel::getServiceContainer()->getDatabaseMap(EventTableMap::DATABASE_NAME)->getTable(EventTableMap::TABLE_NAME);
     }
 
     /**
-     * Add a TableMap instance to the database for this tableMap class.
-     */
-    public static function buildTableMap()
-    {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(EventTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(EventTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new EventTableMap());
-        }
-    }
-
-    /**
      * Performs a DELETE on the database, given a Event or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Event object or primary key or array of primary keys
+     * @param mixed $values Criteria or Event object or primary key or array of primary keys
      *              which is used to create the DELETE statement
-     * @param  ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @param ConnectionInterface $con the connection to use
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-     public static function doDelete($values, ConnectionInterface $con = null)
+     public static function doDelete($values, ?ConnectionInterface $con = null): int
      {
-         if (null === $con) {
-             $con = Propel::getServiceContainer()->getWriteConnection(EventTableMap::DATABASE_NAME);
-         }
+        if (null === $con) {
+            $con = Propel::getServiceContainer()->getWriteConnection(EventTableMap::DATABASE_NAME);
+        }
 
-         if ($values instanceof Criteria) {
-             // rename for clarity
+        if ($values instanceof Criteria) {
+            // rename for clarity
             $criteria = $values;
-         } elseif ($values instanceof \TechWilk\Rota\Event) { // it's a model object
+        } elseif ($values instanceof \TechWilk\Rota\Event) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
-         } else { // it's a primary key, or an array of pks
+        } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(EventTableMap::DATABASE_NAME);
-             $criteria->add(EventTableMap::COL_ID, (array) $values, Criteria::IN);
-         }
+            $criteria->add(EventTableMap::COL_ID, (array) $values, Criteria::IN);
+        }
 
-         $query = EventQuery::create()->mergeWith($criteria);
+        $query = EventQuery::create()->mergeWith($criteria);
 
-         if ($values instanceof Criteria) {
-             EventTableMap::clearInstancePool();
-         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
+        if ($values instanceof Criteria) {
+            EventTableMap::clearInstancePool();
+        } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
                 EventTableMap::removeInstanceFromPool($singleval);
             }
-         }
+        }
 
-         return $query->delete($con);
-     }
+        return $query->delete($con);
+    }
 
     /**
      * Deletes all rows from the events table.
@@ -541,7 +717,7 @@ class EventTableMap extends TableMap
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public static function doDeleteAll(ConnectionInterface $con = null)
+    public static function doDeleteAll(?ConnectionInterface $con = null): int
     {
         return EventQuery::create()->doDeleteAll($con);
     }
@@ -549,13 +725,13 @@ class EventTableMap extends TableMap
     /**
      * Performs an INSERT on the database, given a Event or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Event object containing data that is used to create the INSERT statement.
+     * @param mixed $criteria Criteria or Event object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
-     * @return mixed           The new primary key.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @return mixed The new primary key.
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function doInsert($criteria, ConnectionInterface $con = null)
+    public static function doInsert($criteria, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(EventTableMap::DATABASE_NAME);
@@ -577,7 +753,5 @@ class EventTableMap extends TableMap
             return $query->doInsert($con);
         });
     }
-} // EventTableMap
-// This is the static code needed to register the TableMap for this table with the main Propel class.
-//
-EventTableMap::buildTableMap();
+
+}

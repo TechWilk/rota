@@ -8,6 +8,7 @@ use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveQuery\ModelJoin;
+use Propel\Runtime\Collection\Collection;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -16,9 +17,7 @@ use TechWilk\Rota\NotificationClickQuery as ChildNotificationClickQuery;
 use TechWilk\Rota\Map\NotificationClickTableMap;
 
 /**
- * Base class that represents a query for the 'notificationClicks' table.
- *
- *
+ * Base class that represents a query for the `notificationClicks` table.
  *
  * @method     ChildNotificationClickQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildNotificationClickQuery orderByNotificationId($order = Criteria::ASC) Order by the notificationId column
@@ -50,29 +49,36 @@ use TechWilk\Rota\Map\NotificationClickTableMap;
  *
  * @method     \TechWilk\Rota\NotificationQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
- * @method     ChildNotificationClick findOne(ConnectionInterface $con = null) Return the first ChildNotificationClick matching the query
- * @method     ChildNotificationClick findOneOrCreate(ConnectionInterface $con = null) Return the first ChildNotificationClick matching the query, or a new ChildNotificationClick object populated from the query conditions when no match is found
+ * @method     ChildNotificationClick|null findOne(?ConnectionInterface $con = null) Return the first ChildNotificationClick matching the query
+ * @method     ChildNotificationClick findOneOrCreate(?ConnectionInterface $con = null) Return the first ChildNotificationClick matching the query, or a new ChildNotificationClick object populated from the query conditions when no match is found
  *
- * @method     ChildNotificationClick findOneById(int $id) Return the first ChildNotificationClick filtered by the id column
- * @method     ChildNotificationClick findOneByNotificationId(int $notificationId) Return the first ChildNotificationClick filtered by the notificationId column
- * @method     ChildNotificationClick findOneByReferer(string $referer) Return the first ChildNotificationClick filtered by the referer column
- * @method     ChildNotificationClick findOneByTimestamp(string $timestamp) Return the first ChildNotificationClick filtered by the timestamp column *
-
- * @method     ChildNotificationClick requirePk($key, ConnectionInterface $con = null) Return the ChildNotificationClick by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildNotificationClick requireOne(ConnectionInterface $con = null) Return the first ChildNotificationClick matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildNotificationClick|null findOneById(int $id) Return the first ChildNotificationClick filtered by the id column
+ * @method     ChildNotificationClick|null findOneByNotificationId(int $notificationId) Return the first ChildNotificationClick filtered by the notificationId column
+ * @method     ChildNotificationClick|null findOneByReferer(string $referer) Return the first ChildNotificationClick filtered by the referer column
+ * @method     ChildNotificationClick|null findOneByTimestamp(string $timestamp) Return the first ChildNotificationClick filtered by the timestamp column
+ *
+ * @method     ChildNotificationClick requirePk($key, ?ConnectionInterface $con = null) Return the ChildNotificationClick by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildNotificationClick requireOne(?ConnectionInterface $con = null) Return the first ChildNotificationClick matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildNotificationClick requireOneById(int $id) Return the first ChildNotificationClick filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildNotificationClick requireOneByNotificationId(int $notificationId) Return the first ChildNotificationClick filtered by the notificationId column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildNotificationClick requireOneByReferer(string $referer) Return the first ChildNotificationClick filtered by the referer column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildNotificationClick requireOneByTimestamp(string $timestamp) Return the first ChildNotificationClick filtered by the timestamp column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildNotificationClick[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildNotificationClick objects based on current ModelCriteria
- * @method     ChildNotificationClick[]|ObjectCollection findById(int $id) Return ChildNotificationClick objects filtered by the id column
- * @method     ChildNotificationClick[]|ObjectCollection findByNotificationId(int $notificationId) Return ChildNotificationClick objects filtered by the notificationId column
- * @method     ChildNotificationClick[]|ObjectCollection findByReferer(string $referer) Return ChildNotificationClick objects filtered by the referer column
- * @method     ChildNotificationClick[]|ObjectCollection findByTimestamp(string $timestamp) Return ChildNotificationClick objects filtered by the timestamp column
- * @method     ChildNotificationClick[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @method     ChildNotificationClick[]|Collection find(?ConnectionInterface $con = null) Return ChildNotificationClick objects based on current ModelCriteria
+ * @psalm-method Collection&\Traversable<ChildNotificationClick> find(?ConnectionInterface $con = null) Return ChildNotificationClick objects based on current ModelCriteria
  *
+ * @method     ChildNotificationClick[]|Collection findById(int|array<int> $id) Return ChildNotificationClick objects filtered by the id column
+ * @psalm-method Collection&\Traversable<ChildNotificationClick> findById(int|array<int> $id) Return ChildNotificationClick objects filtered by the id column
+ * @method     ChildNotificationClick[]|Collection findByNotificationId(int|array<int> $notificationId) Return ChildNotificationClick objects filtered by the notificationId column
+ * @psalm-method Collection&\Traversable<ChildNotificationClick> findByNotificationId(int|array<int> $notificationId) Return ChildNotificationClick objects filtered by the notificationId column
+ * @method     ChildNotificationClick[]|Collection findByReferer(string|array<string> $referer) Return ChildNotificationClick objects filtered by the referer column
+ * @psalm-method Collection&\Traversable<ChildNotificationClick> findByReferer(string|array<string> $referer) Return ChildNotificationClick objects filtered by the referer column
+ * @method     ChildNotificationClick[]|Collection findByTimestamp(string|array<string> $timestamp) Return ChildNotificationClick objects filtered by the timestamp column
+ * @psalm-method Collection&\Traversable<ChildNotificationClick> findByTimestamp(string|array<string> $timestamp) Return ChildNotificationClick objects filtered by the timestamp column
+ *
+ * @method     ChildNotificationClick[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @psalm-method \Propel\Runtime\Util\PropelModelPager&\Traversable<ChildNotificationClick> paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  */
 abstract class NotificationClickQuery extends ModelCriteria
 {
@@ -81,9 +87,9 @@ abstract class NotificationClickQuery extends ModelCriteria
     /**
      * Initializes internal state of \TechWilk\Rota\Base\NotificationClickQuery object.
      *
-     * @param     string $dbName The database name
-     * @param     string $modelName The phpName of a model, e.g. 'Book'
-     * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
+     * @param string $dbName The database name
+     * @param string $modelName The phpName of a model, e.g. 'Book'
+     * @param string $modelAlias The alias for the model in this query, e.g. 'b'
      */
     public function __construct($dbName = 'default', $modelName = '\\TechWilk\\Rota\\NotificationClick', $modelAlias = null)
     {
@@ -93,12 +99,12 @@ abstract class NotificationClickQuery extends ModelCriteria
     /**
      * Returns a new ChildNotificationClickQuery object.
      *
-     * @param     string $modelAlias The alias of a model in the query
-     * @param     Criteria $criteria Optional Criteria to build the query from
+     * @param string $modelAlias The alias of a model in the query
+     * @param Criteria $criteria Optional Criteria to build the query from
      *
      * @return ChildNotificationClickQuery
      */
-    public static function create($modelAlias = null, Criteria $criteria = null)
+    public static function create(?string $modelAlias = null, ?Criteria $criteria = null): Criteria
     {
         if ($criteria instanceof ChildNotificationClickQuery) {
             return $criteria;
@@ -128,7 +134,7 @@ abstract class NotificationClickQuery extends ModelCriteria
      *
      * @return ChildNotificationClick|array|mixed the result, formatted by the current formatter
      */
-    public function findPk($key, ConnectionInterface $con = null)
+    public function findPk($key, ?ConnectionInterface $con = null)
     {
         if ($key === null) {
             return null;
@@ -160,8 +166,8 @@ abstract class NotificationClickQuery extends ModelCriteria
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
@@ -193,8 +199,8 @@ abstract class NotificationClickQuery extends ModelCriteria
     /**
      * Find object by primary key.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @return ChildNotificationClick|array|mixed the result, formatted by the current formatter
      */
@@ -214,12 +220,12 @@ abstract class NotificationClickQuery extends ModelCriteria
      * <code>
      * $objs = $c->findPks(array(12, 56, 832), $con);
      * </code>
-     * @param     array $keys Primary keys to use for the query
-     * @param     ConnectionInterface $con an optional connection object
+     * @param array $keys Primary keys to use for the query
+     * @param ConnectionInterface $con an optional connection object
      *
-     * @return ObjectCollection|array|mixed the list of results, formatted by the current formatter
+     * @return Collection|array|mixed the list of results, formatted by the current formatter
      */
-    public function findPks($keys, ConnectionInterface $con = null)
+    public function findPks($keys, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getReadConnection($this->getDbName());
@@ -236,25 +242,31 @@ abstract class NotificationClickQuery extends ModelCriteria
     /**
      * Filter the query by primary key
      *
-     * @param     mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query
      *
-     * @return $this|ChildNotificationClickQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
-        return $this->addUsingAlias(NotificationClickTableMap::COL_ID, $key, Criteria::EQUAL);
+
+        $this->addUsingAlias(NotificationClickTableMap::COL_ID, $key, Criteria::EQUAL);
+
+        return $this;
     }
 
     /**
      * Filter the query by a list of primary keys
      *
-     * @param     array $keys The list of primary key to use for the query
+     * @param array|int $keys The list of primary key to use for the query
      *
-     * @return $this|ChildNotificationClickQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
-        return $this->addUsingAlias(NotificationClickTableMap::COL_ID, $keys, Criteria::IN);
+
+        $this->addUsingAlias(NotificationClickTableMap::COL_ID, $keys, Criteria::IN);
+
+        return $this;
     }
 
     /**
@@ -267,15 +279,15 @@ abstract class NotificationClickQuery extends ModelCriteria
      * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
      *
-     * @param     mixed $id The value to use as filter.
+     * @param mixed $id The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildNotificationClickQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterById($id = null, $comparison = null)
+    public function filterById($id = null, ?string $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
@@ -295,7 +307,9 @@ abstract class NotificationClickQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(NotificationClickTableMap::COL_ID, $id, $comparison);
+        $this->addUsingAlias(NotificationClickTableMap::COL_ID, $id, $comparison);
+
+        return $this;
     }
 
     /**
@@ -310,15 +324,15 @@ abstract class NotificationClickQuery extends ModelCriteria
      *
      * @see       filterByNotification()
      *
-     * @param     mixed $notificationId The value to use as filter.
+     * @param mixed $notificationId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildNotificationClickQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByNotificationId($notificationId = null, $comparison = null)
+    public function filterByNotificationId($notificationId = null, ?string $comparison = null)
     {
         if (is_array($notificationId)) {
             $useMinMax = false;
@@ -338,7 +352,9 @@ abstract class NotificationClickQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(NotificationClickTableMap::COL_NOTIFICATIONID, $notificationId, $comparison);
+        $this->addUsingAlias(NotificationClickTableMap::COL_NOTIFICATIONID, $notificationId, $comparison);
+
+        return $this;
     }
 
     /**
@@ -348,14 +364,15 @@ abstract class NotificationClickQuery extends ModelCriteria
      * <code>
      * $query->filterByReferer('fooValue');   // WHERE referer = 'fooValue'
      * $query->filterByReferer('%fooValue%', Criteria::LIKE); // WHERE referer LIKE '%fooValue%'
+     * $query->filterByReferer(['foo', 'bar']); // WHERE referer IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $referer The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $referer The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildNotificationClickQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByReferer($referer = null, $comparison = null)
+    public function filterByReferer($referer = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($referer)) {
@@ -363,7 +380,9 @@ abstract class NotificationClickQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(NotificationClickTableMap::COL_REFERER, $referer, $comparison);
+        $this->addUsingAlias(NotificationClickTableMap::COL_REFERER, $referer, $comparison);
+
+        return $this;
     }
 
     /**
@@ -376,17 +395,17 @@ abstract class NotificationClickQuery extends ModelCriteria
      * $query->filterByTimestamp(array('max' => 'yesterday')); // WHERE timestamp > '2011-03-13'
      * </code>
      *
-     * @param     mixed $timestamp The value to use as filter.
+     * @param mixed $timestamp The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildNotificationClickQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByTimestamp($timestamp = null, $comparison = null)
+    public function filterByTimestamp($timestamp = null, ?string $comparison = null)
     {
         if (is_array($timestamp)) {
             $useMinMax = false;
@@ -406,20 +425,22 @@ abstract class NotificationClickQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(NotificationClickTableMap::COL_TIMESTAMP, $timestamp, $comparison);
+        $this->addUsingAlias(NotificationClickTableMap::COL_TIMESTAMP, $timestamp, $comparison);
+
+        return $this;
     }
 
     /**
      * Filter the query by a related \TechWilk\Rota\Notification object
      *
      * @param \TechWilk\Rota\Notification|ObjectCollection $notification The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
-     * @return ChildNotificationClickQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByNotification($notification, $comparison = null)
+    public function filterByNotification($notification, ?string $comparison = null)
     {
         if ($notification instanceof \TechWilk\Rota\Notification) {
             return $this
@@ -429,8 +450,10 @@ abstract class NotificationClickQuery extends ModelCriteria
                 $comparison = Criteria::IN;
             }
 
-            return $this
+            $this
                 ->addUsingAlias(NotificationClickTableMap::COL_NOTIFICATIONID, $notification->toKeyValue('PrimaryKey', 'Id'), $comparison);
+
+            return $this;
         } else {
             throw new PropelException('filterByNotification() only accepts arguments of type \TechWilk\Rota\Notification or Collection');
         }
@@ -439,12 +462,12 @@ abstract class NotificationClickQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the Notification relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildNotificationClickQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinNotification($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinNotification(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Notification');
@@ -473,9 +496,9 @@ abstract class NotificationClickQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \TechWilk\Rota\NotificationQuery A secondary query class using the current class as primary query
      */
@@ -487,11 +510,107 @@ abstract class NotificationClickQuery extends ModelCriteria
     }
 
     /**
+     * Use the Notification relation Notification object
+     *
+     * @param callable(\TechWilk\Rota\NotificationQuery):\TechWilk\Rota\NotificationQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withNotificationQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->useNotificationQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the relation to Notification table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \TechWilk\Rota\NotificationQuery The inner query object of the EXISTS statement
+     */
+    public function useNotificationExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \TechWilk\Rota\NotificationQuery */
+        $q = $this->useExistsQuery('Notification', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Notification table for a NOT EXISTS query.
+     *
+     * @see useNotificationExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\NotificationQuery The inner query object of the NOT EXISTS statement
+     */
+    public function useNotificationNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\NotificationQuery */
+        $q = $this->useExistsQuery('Notification', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the relation to Notification table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \TechWilk\Rota\NotificationQuery The inner query object of the IN statement
+     */
+    public function useInNotificationQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \TechWilk\Rota\NotificationQuery */
+        $q = $this->useInQuery('Notification', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Notification table for a NOT IN query.
+     *
+     * @see useNotificationInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\NotificationQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInNotificationQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\NotificationQuery */
+        $q = $this->useInQuery('Notification', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Exclude object from result
      *
-     * @param   ChildNotificationClick $notificationClick Object to remove from the list of results
+     * @param ChildNotificationClick $notificationClick Object to remove from the list of results
      *
-     * @return $this|ChildNotificationClickQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function prune($notificationClick = null)
     {
@@ -508,7 +627,7 @@ abstract class NotificationClickQuery extends ModelCriteria
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public function doDeleteAll(ConnectionInterface $con = null)
+    public function doDeleteAll(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(NotificationClickTableMap::DATABASE_NAME);
@@ -533,12 +652,12 @@ abstract class NotificationClickQuery extends ModelCriteria
      * Performs a DELETE on the database based on the current ModelCriteria
      *
      * @param ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public function delete(ConnectionInterface $con = null)
+    public function delete(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(NotificationClickTableMap::DATABASE_NAME);
@@ -568,32 +687,39 @@ abstract class NotificationClickQuery extends ModelCriteria
     /**
      * Order by create date desc
      *
-     * @return     $this|ChildNotificationClickQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function lastCreatedFirst()
     {
-        return $this->addDescendingOrderByColumn(NotificationClickTableMap::COL_TIMESTAMP);
+        $this->addDescendingOrderByColumn(NotificationClickTableMap::COL_TIMESTAMP);
+
+        return $this;
     }
 
     /**
      * Filter by the latest created
      *
-     * @param      int $nbDays Maximum age of in days
+     * @param int $nbDays Maximum age of in days
      *
-     * @return     $this|ChildNotificationClickQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function recentlyCreated($nbDays = 7)
     {
-        return $this->addUsingAlias(NotificationClickTableMap::COL_TIMESTAMP, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        $this->addUsingAlias(NotificationClickTableMap::COL_TIMESTAMP, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+
+        return $this;
     }
 
     /**
      * Order by create date asc
      *
-     * @return     $this|ChildNotificationClickQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function firstCreatedFirst()
     {
-        return $this->addAscendingOrderByColumn(NotificationClickTableMap::COL_TIMESTAMP);
+        $this->addAscendingOrderByColumn(NotificationClickTableMap::COL_TIMESTAMP);
+
+        return $this;
     }
-} // NotificationClickQuery
+
+}

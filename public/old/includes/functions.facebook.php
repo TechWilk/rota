@@ -16,10 +16,10 @@ function facebookIsEnabled()
 function facebook()
 {
     $fb = new Facebook\Facebook([
-      'app_id'                => siteConfig()['auth']['facebook']['appId'],
-      'app_secret'            => siteConfig()['auth']['facebook']['appSecret'],
-      'default_graph_version' => 'v2.2',
-      ]);
+        'app_id'                => siteConfig()['auth']['facebook']['appId'],
+        'app_secret'            => siteConfig()['auth']['facebook']['appSecret'],
+        'default_graph_version' => 'v2.2',
+    ]);
 
     return $fb;
 }
@@ -66,10 +66,10 @@ function getFacebookUserAccessToken($fb)
     $tokenMetadata = $oAuth2Client->debugToken($accessToken);
 
     // Validation (these will throw FacebookSDKException's when they fail)
-  $tokenMetadata->validateAppId($config['auth']['facebook']['appId']); // Replace {app-id} with your app id
+    $tokenMetadata->validateAppId($config['auth']['facebook']['appId']); // Replace {app-id} with your app id
   // If you know the user ID this access token belongs to, you can validate it here
   //$tokenMetadata->validateUserId('123');
-  $tokenMetadata->validateExpiration();
+    $tokenMetadata->validateExpiration();
 
     if (!$accessToken->isLongLived()) {
         // Exchanges a short-lived access token for a long-lived one

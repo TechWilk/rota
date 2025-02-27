@@ -4,6 +4,7 @@ namespace TechWilk\Rota\Controller;
 
 use Locale;
 use Propel\Generator\Application;
+use Propel\Runtime\ActiveQuery\QueryExecutor\QueryExecutionException;
 use Propel\Runtime\Propel;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -41,6 +42,7 @@ class InstallController extends BaseController
             }
             $stage = 3;
         } catch (\Propel\Runtime\Exception\PropelException $e) {
+        } catch (QueryExecutionException $e) {
         }
 
         return $this->view->render($response, 'install.twig', ['stage' => $stage]);
@@ -61,8 +63,8 @@ class InstallController extends BaseController
             if ($e->getPrevious()->getCode() !== '42S02') {
                 return $response;
             }
+        } catch (QueryExecutionException $e) {
         }
-
         $site = new Site();
         $config = $site->getConfig();
 
@@ -101,6 +103,8 @@ class InstallController extends BaseController
             if ($e->getPrevious()->getCode() === '42S02') {
                 return $response->getBody()->write('Error installing database:'."\n".$outputString);
             }
+        } catch (QueryExecutionException $e) {
+            return $response->getBody()->write('Error installing database:'."\n".$outputString);
         }
 
         return $response->withStatus(302)->withHeader('Location', $this->router->pathFor('install'));
@@ -184,7 +188,8 @@ class InstallController extends BaseController
         $settings->setDateOnlyFormat('%A');
         $settings->setDayOnlyFormat('%A, %B %e');
 
-        $settings->setNotificationEmail(<<<'EMAIL'
+        $settings->setNotificationEmail(
+            <<<'EMAIL'
 Dear [name]
 
 This is an automatic reminder.
@@ -197,7 +202,7 @@ If you have arranged a swap, please let us know.
 
 Many thanks for your continued service!
 EMAIL
-);
+        );
 
         $settings->setToken(Crypt::generateToken(100));
         $settings->setSkin('skin-blue');

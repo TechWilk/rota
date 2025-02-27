@@ -1,5 +1,7 @@
 <?php
 
+global $config;
+
 // choose either 'database', 'onebody' or 'facebook'
 // onebody and facebook require additional config (below)
 $config['auth']['scheme'] = 'database';

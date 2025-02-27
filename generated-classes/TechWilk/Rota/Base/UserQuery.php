@@ -8,6 +8,7 @@ use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveQuery\ModelJoin;
+use Propel\Runtime\Collection\Collection;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -16,9 +17,7 @@ use TechWilk\Rota\UserQuery as ChildUserQuery;
 use TechWilk\Rota\Map\UserTableMap;
 
 /**
- * Base class that represents a query for the 'users' table.
- *
- *
+ * Base class that represents a query for the `users` table.
  *
  * @method     ChildUserQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildUserQuery orderByFirstName($order = Criteria::ASC) Order by the firstName column
@@ -164,28 +163,28 @@ use TechWilk\Rota\Map\UserTableMap;
  *
  * @method     \TechWilk\Rota\CalendarTokenQuery|\TechWilk\Rota\CommentQuery|\TechWilk\Rota\EventQuery|\TechWilk\Rota\AvailabilityQuery|\TechWilk\Rota\NotificationQuery|\TechWilk\Rota\SocialAuthQuery|\TechWilk\Rota\StatisticQuery|\TechWilk\Rota\SwapQuery|\TechWilk\Rota\UserRoleQuery|\TechWilk\Rota\UserPermissionQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
- * @method     ChildUser findOne(ConnectionInterface $con = null) Return the first ChildUser matching the query
- * @method     ChildUser findOneOrCreate(ConnectionInterface $con = null) Return the first ChildUser matching the query, or a new ChildUser object populated from the query conditions when no match is found
+ * @method     ChildUser|null findOne(?ConnectionInterface $con = null) Return the first ChildUser matching the query
+ * @method     ChildUser findOneOrCreate(?ConnectionInterface $con = null) Return the first ChildUser matching the query, or a new ChildUser object populated from the query conditions when no match is found
  *
- * @method     ChildUser findOneById(int $id) Return the first ChildUser filtered by the id column
- * @method     ChildUser findOneByFirstName(string $firstName) Return the first ChildUser filtered by the firstName column
- * @method     ChildUser findOneByLastName(string $lastName) Return the first ChildUser filtered by the lastName column
- * @method     ChildUser findOneByUsername(string $username) Return the first ChildUser filtered by the username column
- * @method     ChildUser findOneByPassword(string $password) Return the first ChildUser filtered by the password column
- * @method     ChildUser findOneByIsAdmin(string $isAdmin) Return the first ChildUser filtered by the isAdmin column
- * @method     ChildUser findOneByEmail(\TechWilk\Rota\EmailAddress $email) Return the first ChildUser filtered by the email column
- * @method     ChildUser findOneByMobile(string $mobile) Return the first ChildUser filtered by the mobile column
- * @method     ChildUser findOneByIsOverviewRecipient(string $isOverviewRecipient) Return the first ChildUser filtered by the isOverviewRecipient column
- * @method     ChildUser findOneByRecieveReminderEmails(boolean $recieveReminderEmails) Return the first ChildUser filtered by the recieveReminderEmails column
- * @method     ChildUser findOneByIsBandAdmin(string $isBandAdmin) Return the first ChildUser filtered by the isBandAdmin column
- * @method     ChildUser findOneByIsEventEditor(string $isEventEditor) Return the first ChildUser filtered by the isEventEditor column
- * @method     ChildUser findOneByLastLogin(string $lastLogin) Return the first ChildUser filtered by the lastLogin column
- * @method     ChildUser findOneByPasswordChanged(string $passwordChanged) Return the first ChildUser filtered by the passwordChanged column
- * @method     ChildUser findOneByCreated(string $created) Return the first ChildUser filtered by the created column
- * @method     ChildUser findOneByUpdated(string $updated) Return the first ChildUser filtered by the updated column *
-
- * @method     ChildUser requirePk($key, ConnectionInterface $con = null) Return the ChildUser by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUser requireOne(ConnectionInterface $con = null) Return the first ChildUser matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUser|null findOneById(int $id) Return the first ChildUser filtered by the id column
+ * @method     ChildUser|null findOneByFirstName(string $firstName) Return the first ChildUser filtered by the firstName column
+ * @method     ChildUser|null findOneByLastName(string $lastName) Return the first ChildUser filtered by the lastName column
+ * @method     ChildUser|null findOneByUsername(string $username) Return the first ChildUser filtered by the username column
+ * @method     ChildUser|null findOneByPassword(string $password) Return the first ChildUser filtered by the password column
+ * @method     ChildUser|null findOneByIsAdmin(string $isAdmin) Return the first ChildUser filtered by the isAdmin column
+ * @method     ChildUser|null findOneByEmail(\TechWilk\Rota\EmailAddress $email) Return the first ChildUser filtered by the email column
+ * @method     ChildUser|null findOneByMobile(string $mobile) Return the first ChildUser filtered by the mobile column
+ * @method     ChildUser|null findOneByIsOverviewRecipient(string $isOverviewRecipient) Return the first ChildUser filtered by the isOverviewRecipient column
+ * @method     ChildUser|null findOneByRecieveReminderEmails(boolean $recieveReminderEmails) Return the first ChildUser filtered by the recieveReminderEmails column
+ * @method     ChildUser|null findOneByIsBandAdmin(string $isBandAdmin) Return the first ChildUser filtered by the isBandAdmin column
+ * @method     ChildUser|null findOneByIsEventEditor(string $isEventEditor) Return the first ChildUser filtered by the isEventEditor column
+ * @method     ChildUser|null findOneByLastLogin(string $lastLogin) Return the first ChildUser filtered by the lastLogin column
+ * @method     ChildUser|null findOneByPasswordChanged(string $passwordChanged) Return the first ChildUser filtered by the passwordChanged column
+ * @method     ChildUser|null findOneByCreated(string $created) Return the first ChildUser filtered by the created column
+ * @method     ChildUser|null findOneByUpdated(string $updated) Return the first ChildUser filtered by the updated column
+ *
+ * @method     ChildUser requirePk($key, ?ConnectionInterface $con = null) Return the ChildUser by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUser requireOne(?ConnectionInterface $con = null) Return the first ChildUser matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildUser requireOneById(int $id) Return the first ChildUser filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUser requireOneByFirstName(string $firstName) Return the first ChildUser filtered by the firstName column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -204,25 +203,44 @@ use TechWilk\Rota\Map\UserTableMap;
  * @method     ChildUser requireOneByCreated(string $created) Return the first ChildUser filtered by the created column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUser requireOneByUpdated(string $updated) Return the first ChildUser filtered by the updated column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildUser[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildUser objects based on current ModelCriteria
- * @method     ChildUser[]|ObjectCollection findById(int $id) Return ChildUser objects filtered by the id column
- * @method     ChildUser[]|ObjectCollection findByFirstName(string $firstName) Return ChildUser objects filtered by the firstName column
- * @method     ChildUser[]|ObjectCollection findByLastName(string $lastName) Return ChildUser objects filtered by the lastName column
- * @method     ChildUser[]|ObjectCollection findByUsername(string $username) Return ChildUser objects filtered by the username column
- * @method     ChildUser[]|ObjectCollection findByPassword(string $password) Return ChildUser objects filtered by the password column
- * @method     ChildUser[]|ObjectCollection findByIsAdmin(string $isAdmin) Return ChildUser objects filtered by the isAdmin column
- * @method     ChildUser[]|ObjectCollection findByEmail(\TechWilk\Rota\EmailAddress $email) Return ChildUser objects filtered by the email column
- * @method     ChildUser[]|ObjectCollection findByMobile(string $mobile) Return ChildUser objects filtered by the mobile column
- * @method     ChildUser[]|ObjectCollection findByIsOverviewRecipient(string $isOverviewRecipient) Return ChildUser objects filtered by the isOverviewRecipient column
- * @method     ChildUser[]|ObjectCollection findByRecieveReminderEmails(boolean $recieveReminderEmails) Return ChildUser objects filtered by the recieveReminderEmails column
- * @method     ChildUser[]|ObjectCollection findByIsBandAdmin(string $isBandAdmin) Return ChildUser objects filtered by the isBandAdmin column
- * @method     ChildUser[]|ObjectCollection findByIsEventEditor(string $isEventEditor) Return ChildUser objects filtered by the isEventEditor column
- * @method     ChildUser[]|ObjectCollection findByLastLogin(string $lastLogin) Return ChildUser objects filtered by the lastLogin column
- * @method     ChildUser[]|ObjectCollection findByPasswordChanged(string $passwordChanged) Return ChildUser objects filtered by the passwordChanged column
- * @method     ChildUser[]|ObjectCollection findByCreated(string $created) Return ChildUser objects filtered by the created column
- * @method     ChildUser[]|ObjectCollection findByUpdated(string $updated) Return ChildUser objects filtered by the updated column
- * @method     ChildUser[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @method     ChildUser[]|Collection find(?ConnectionInterface $con = null) Return ChildUser objects based on current ModelCriteria
+ * @psalm-method Collection&\Traversable<ChildUser> find(?ConnectionInterface $con = null) Return ChildUser objects based on current ModelCriteria
  *
+ * @method     ChildUser[]|Collection findById(int|array<int> $id) Return ChildUser objects filtered by the id column
+ * @psalm-method Collection&\Traversable<ChildUser> findById(int|array<int> $id) Return ChildUser objects filtered by the id column
+ * @method     ChildUser[]|Collection findByFirstName(string|array<string> $firstName) Return ChildUser objects filtered by the firstName column
+ * @psalm-method Collection&\Traversable<ChildUser> findByFirstName(string|array<string> $firstName) Return ChildUser objects filtered by the firstName column
+ * @method     ChildUser[]|Collection findByLastName(string|array<string> $lastName) Return ChildUser objects filtered by the lastName column
+ * @psalm-method Collection&\Traversable<ChildUser> findByLastName(string|array<string> $lastName) Return ChildUser objects filtered by the lastName column
+ * @method     ChildUser[]|Collection findByUsername(string|array<string> $username) Return ChildUser objects filtered by the username column
+ * @psalm-method Collection&\Traversable<ChildUser> findByUsername(string|array<string> $username) Return ChildUser objects filtered by the username column
+ * @method     ChildUser[]|Collection findByPassword(string|array<string> $password) Return ChildUser objects filtered by the password column
+ * @psalm-method Collection&\Traversable<ChildUser> findByPassword(string|array<string> $password) Return ChildUser objects filtered by the password column
+ * @method     ChildUser[]|Collection findByIsAdmin(string|array<string> $isAdmin) Return ChildUser objects filtered by the isAdmin column
+ * @psalm-method Collection&\Traversable<ChildUser> findByIsAdmin(string|array<string> $isAdmin) Return ChildUser objects filtered by the isAdmin column
+ * @method     ChildUser[]|Collection findByEmail(\TechWilk\Rota\EmailAddress|array<\TechWilk\Rota\EmailAddress> $email) Return ChildUser objects filtered by the email column
+ * @psalm-method Collection&\Traversable<ChildUser> findByEmail(\TechWilk\Rota\EmailAddress|array<\TechWilk\Rota\EmailAddress> $email) Return ChildUser objects filtered by the email column
+ * @method     ChildUser[]|Collection findByMobile(string|array<string> $mobile) Return ChildUser objects filtered by the mobile column
+ * @psalm-method Collection&\Traversable<ChildUser> findByMobile(string|array<string> $mobile) Return ChildUser objects filtered by the mobile column
+ * @method     ChildUser[]|Collection findByIsOverviewRecipient(string|array<string> $isOverviewRecipient) Return ChildUser objects filtered by the isOverviewRecipient column
+ * @psalm-method Collection&\Traversable<ChildUser> findByIsOverviewRecipient(string|array<string> $isOverviewRecipient) Return ChildUser objects filtered by the isOverviewRecipient column
+ * @method     ChildUser[]|Collection findByRecieveReminderEmails(boolean|array<boolean> $recieveReminderEmails) Return ChildUser objects filtered by the recieveReminderEmails column
+ * @psalm-method Collection&\Traversable<ChildUser> findByRecieveReminderEmails(boolean|array<boolean> $recieveReminderEmails) Return ChildUser objects filtered by the recieveReminderEmails column
+ * @method     ChildUser[]|Collection findByIsBandAdmin(string|array<string> $isBandAdmin) Return ChildUser objects filtered by the isBandAdmin column
+ * @psalm-method Collection&\Traversable<ChildUser> findByIsBandAdmin(string|array<string> $isBandAdmin) Return ChildUser objects filtered by the isBandAdmin column
+ * @method     ChildUser[]|Collection findByIsEventEditor(string|array<string> $isEventEditor) Return ChildUser objects filtered by the isEventEditor column
+ * @psalm-method Collection&\Traversable<ChildUser> findByIsEventEditor(string|array<string> $isEventEditor) Return ChildUser objects filtered by the isEventEditor column
+ * @method     ChildUser[]|Collection findByLastLogin(string|array<string> $lastLogin) Return ChildUser objects filtered by the lastLogin column
+ * @psalm-method Collection&\Traversable<ChildUser> findByLastLogin(string|array<string> $lastLogin) Return ChildUser objects filtered by the lastLogin column
+ * @method     ChildUser[]|Collection findByPasswordChanged(string|array<string> $passwordChanged) Return ChildUser objects filtered by the passwordChanged column
+ * @psalm-method Collection&\Traversable<ChildUser> findByPasswordChanged(string|array<string> $passwordChanged) Return ChildUser objects filtered by the passwordChanged column
+ * @method     ChildUser[]|Collection findByCreated(string|array<string> $created) Return ChildUser objects filtered by the created column
+ * @psalm-method Collection&\Traversable<ChildUser> findByCreated(string|array<string> $created) Return ChildUser objects filtered by the created column
+ * @method     ChildUser[]|Collection findByUpdated(string|array<string> $updated) Return ChildUser objects filtered by the updated column
+ * @psalm-method Collection&\Traversable<ChildUser> findByUpdated(string|array<string> $updated) Return ChildUser objects filtered by the updated column
+ *
+ * @method     ChildUser[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @psalm-method \Propel\Runtime\Util\PropelModelPager&\Traversable<ChildUser> paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  */
 abstract class UserQuery extends ModelCriteria
 {
@@ -231,9 +249,9 @@ abstract class UserQuery extends ModelCriteria
     /**
      * Initializes internal state of \TechWilk\Rota\Base\UserQuery object.
      *
-     * @param     string $dbName The database name
-     * @param     string $modelName The phpName of a model, e.g. 'Book'
-     * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
+     * @param string $dbName The database name
+     * @param string $modelName The phpName of a model, e.g. 'Book'
+     * @param string $modelAlias The alias for the model in this query, e.g. 'b'
      */
     public function __construct($dbName = 'default', $modelName = '\\TechWilk\\Rota\\User', $modelAlias = null)
     {
@@ -243,12 +261,12 @@ abstract class UserQuery extends ModelCriteria
     /**
      * Returns a new ChildUserQuery object.
      *
-     * @param     string $modelAlias The alias of a model in the query
-     * @param     Criteria $criteria Optional Criteria to build the query from
+     * @param string $modelAlias The alias of a model in the query
+     * @param Criteria $criteria Optional Criteria to build the query from
      *
      * @return ChildUserQuery
      */
-    public static function create($modelAlias = null, Criteria $criteria = null)
+    public static function create(?string $modelAlias = null, ?Criteria $criteria = null): Criteria
     {
         if ($criteria instanceof ChildUserQuery) {
             return $criteria;
@@ -278,7 +296,7 @@ abstract class UserQuery extends ModelCriteria
      *
      * @return ChildUser|array|mixed the result, formatted by the current formatter
      */
-    public function findPk($key, ConnectionInterface $con = null)
+    public function findPk($key, ?ConnectionInterface $con = null)
     {
         if ($key === null) {
             return null;
@@ -310,8 +328,8 @@ abstract class UserQuery extends ModelCriteria
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
@@ -343,8 +361,8 @@ abstract class UserQuery extends ModelCriteria
     /**
      * Find object by primary key.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @return ChildUser|array|mixed the result, formatted by the current formatter
      */
@@ -364,12 +382,12 @@ abstract class UserQuery extends ModelCriteria
      * <code>
      * $objs = $c->findPks(array(12, 56, 832), $con);
      * </code>
-     * @param     array $keys Primary keys to use for the query
-     * @param     ConnectionInterface $con an optional connection object
+     * @param array $keys Primary keys to use for the query
+     * @param ConnectionInterface $con an optional connection object
      *
-     * @return ObjectCollection|array|mixed the list of results, formatted by the current formatter
+     * @return Collection|array|mixed the list of results, formatted by the current formatter
      */
-    public function findPks($keys, ConnectionInterface $con = null)
+    public function findPks($keys, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getReadConnection($this->getDbName());
@@ -386,25 +404,31 @@ abstract class UserQuery extends ModelCriteria
     /**
      * Filter the query by primary key
      *
-     * @param     mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
-        return $this->addUsingAlias(UserTableMap::COL_ID, $key, Criteria::EQUAL);
+
+        $this->addUsingAlias(UserTableMap::COL_ID, $key, Criteria::EQUAL);
+
+        return $this;
     }
 
     /**
      * Filter the query by a list of primary keys
      *
-     * @param     array $keys The list of primary key to use for the query
+     * @param array|int $keys The list of primary key to use for the query
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
-        return $this->addUsingAlias(UserTableMap::COL_ID, $keys, Criteria::IN);
+
+        $this->addUsingAlias(UserTableMap::COL_ID, $keys, Criteria::IN);
+
+        return $this;
     }
 
     /**
@@ -417,15 +441,15 @@ abstract class UserQuery extends ModelCriteria
      * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
      *
-     * @param     mixed $id The value to use as filter.
+     * @param mixed $id The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterById($id = null, $comparison = null)
+    public function filterById($id = null, ?string $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
@@ -445,7 +469,9 @@ abstract class UserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserTableMap::COL_ID, $id, $comparison);
+        $this->addUsingAlias(UserTableMap::COL_ID, $id, $comparison);
+
+        return $this;
     }
 
     /**
@@ -455,14 +481,15 @@ abstract class UserQuery extends ModelCriteria
      * <code>
      * $query->filterByFirstName('fooValue');   // WHERE firstName = 'fooValue'
      * $query->filterByFirstName('%fooValue%', Criteria::LIKE); // WHERE firstName LIKE '%fooValue%'
+     * $query->filterByFirstName(['foo', 'bar']); // WHERE firstName IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $firstName The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $firstName The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByFirstName($firstName = null, $comparison = null)
+    public function filterByFirstName($firstName = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($firstName)) {
@@ -470,7 +497,9 @@ abstract class UserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserTableMap::COL_FIRSTNAME, $firstName, $comparison);
+        $this->addUsingAlias(UserTableMap::COL_FIRSTNAME, $firstName, $comparison);
+
+        return $this;
     }
 
     /**
@@ -480,14 +509,15 @@ abstract class UserQuery extends ModelCriteria
      * <code>
      * $query->filterByLastName('fooValue');   // WHERE lastName = 'fooValue'
      * $query->filterByLastName('%fooValue%', Criteria::LIKE); // WHERE lastName LIKE '%fooValue%'
+     * $query->filterByLastName(['foo', 'bar']); // WHERE lastName IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $lastName The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $lastName The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByLastName($lastName = null, $comparison = null)
+    public function filterByLastName($lastName = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($lastName)) {
@@ -495,7 +525,9 @@ abstract class UserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserTableMap::COL_LASTNAME, $lastName, $comparison);
+        $this->addUsingAlias(UserTableMap::COL_LASTNAME, $lastName, $comparison);
+
+        return $this;
     }
 
     /**
@@ -505,14 +537,15 @@ abstract class UserQuery extends ModelCriteria
      * <code>
      * $query->filterByUsername('fooValue');   // WHERE username = 'fooValue'
      * $query->filterByUsername('%fooValue%', Criteria::LIKE); // WHERE username LIKE '%fooValue%'
+     * $query->filterByUsername(['foo', 'bar']); // WHERE username IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $username The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $username The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUsername($username = null, $comparison = null)
+    public function filterByUsername($username = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($username)) {
@@ -520,7 +553,9 @@ abstract class UserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserTableMap::COL_USERNAME, $username, $comparison);
+        $this->addUsingAlias(UserTableMap::COL_USERNAME, $username, $comparison);
+
+        return $this;
     }
 
     /**
@@ -530,14 +565,15 @@ abstract class UserQuery extends ModelCriteria
      * <code>
      * $query->filterByPassword('fooValue');   // WHERE password = 'fooValue'
      * $query->filterByPassword('%fooValue%', Criteria::LIKE); // WHERE password LIKE '%fooValue%'
+     * $query->filterByPassword(['foo', 'bar']); // WHERE password IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $password The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $password The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByPassword($password = null, $comparison = null)
+    public function filterByPassword($password = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($password)) {
@@ -545,7 +581,9 @@ abstract class UserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserTableMap::COL_PASSWORD, $password, $comparison);
+        $this->addUsingAlias(UserTableMap::COL_PASSWORD, $password, $comparison);
+
+        return $this;
     }
 
     /**
@@ -555,14 +593,15 @@ abstract class UserQuery extends ModelCriteria
      * <code>
      * $query->filterByIsAdmin('fooValue');   // WHERE isAdmin = 'fooValue'
      * $query->filterByIsAdmin('%fooValue%', Criteria::LIKE); // WHERE isAdmin LIKE '%fooValue%'
+     * $query->filterByIsAdmin(['foo', 'bar']); // WHERE isAdmin IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $isAdmin The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $isAdmin The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByIsAdmin($isAdmin = null, $comparison = null)
+    public function filterByIsAdmin($isAdmin = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($isAdmin)) {
@@ -570,7 +609,9 @@ abstract class UserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserTableMap::COL_ISADMIN, $isAdmin, $comparison);
+        $this->addUsingAlias(UserTableMap::COL_ISADMIN, $isAdmin, $comparison);
+
+        return $this;
     }
 
     /**
@@ -580,14 +621,15 @@ abstract class UserQuery extends ModelCriteria
      * <code>
      * $query->filterByEmail('fooValue');   // WHERE email = 'fooValue'
      * $query->filterByEmail('%fooValue%', Criteria::LIKE); // WHERE email LIKE '%fooValue%'
+     * $query->filterByEmail(['foo', 'bar']); // WHERE email IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $email The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $email The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByEmail($email = null, $comparison = null)
+    public function filterByEmail($email = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($email)) {
@@ -595,7 +637,9 @@ abstract class UserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserTableMap::COL_EMAIL, $email, $comparison);
+        $this->addUsingAlias(UserTableMap::COL_EMAIL, $email, $comparison);
+
+        return $this;
     }
 
     /**
@@ -605,14 +649,15 @@ abstract class UserQuery extends ModelCriteria
      * <code>
      * $query->filterByMobile('fooValue');   // WHERE mobile = 'fooValue'
      * $query->filterByMobile('%fooValue%', Criteria::LIKE); // WHERE mobile LIKE '%fooValue%'
+     * $query->filterByMobile(['foo', 'bar']); // WHERE mobile IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $mobile The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $mobile The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByMobile($mobile = null, $comparison = null)
+    public function filterByMobile($mobile = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($mobile)) {
@@ -620,7 +665,9 @@ abstract class UserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserTableMap::COL_MOBILE, $mobile, $comparison);
+        $this->addUsingAlias(UserTableMap::COL_MOBILE, $mobile, $comparison);
+
+        return $this;
     }
 
     /**
@@ -630,14 +677,15 @@ abstract class UserQuery extends ModelCriteria
      * <code>
      * $query->filterByIsOverviewRecipient('fooValue');   // WHERE isOverviewRecipient = 'fooValue'
      * $query->filterByIsOverviewRecipient('%fooValue%', Criteria::LIKE); // WHERE isOverviewRecipient LIKE '%fooValue%'
+     * $query->filterByIsOverviewRecipient(['foo', 'bar']); // WHERE isOverviewRecipient IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $isOverviewRecipient The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $isOverviewRecipient The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByIsOverviewRecipient($isOverviewRecipient = null, $comparison = null)
+    public function filterByIsOverviewRecipient($isOverviewRecipient = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($isOverviewRecipient)) {
@@ -645,7 +693,9 @@ abstract class UserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserTableMap::COL_ISOVERVIEWRECIPIENT, $isOverviewRecipient, $comparison);
+        $this->addUsingAlias(UserTableMap::COL_ISOVERVIEWRECIPIENT, $isOverviewRecipient, $comparison);
+
+        return $this;
     }
 
     /**
@@ -657,22 +707,24 @@ abstract class UserQuery extends ModelCriteria
      * $query->filterByRecieveReminderEmails('yes'); // WHERE recieveReminderEmails = true
      * </code>
      *
-     * @param     boolean|string $recieveReminderEmails The value to use as filter.
+     * @param bool|string $recieveReminderEmails The value to use as filter.
      *              Non-boolean arguments are converted using the following rules:
      *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByRecieveReminderEmails($recieveReminderEmails = null, $comparison = null)
+    public function filterByRecieveReminderEmails($recieveReminderEmails = null, ?string $comparison = null)
     {
         if (is_string($recieveReminderEmails)) {
-            $recieveReminderEmails = in_array(strtolower($recieveReminderEmails), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            $recieveReminderEmails = in_array(strtolower($recieveReminderEmails), array('false', 'off', '-', 'no', 'n', '0', ''), true) ? false : true;
         }
 
-        return $this->addUsingAlias(UserTableMap::COL_RECIEVEREMINDEREMAILS, $recieveReminderEmails, $comparison);
+        $this->addUsingAlias(UserTableMap::COL_RECIEVEREMINDEREMAILS, $recieveReminderEmails, $comparison);
+
+        return $this;
     }
 
     /**
@@ -682,14 +734,15 @@ abstract class UserQuery extends ModelCriteria
      * <code>
      * $query->filterByIsBandAdmin('fooValue');   // WHERE isBandAdmin = 'fooValue'
      * $query->filterByIsBandAdmin('%fooValue%', Criteria::LIKE); // WHERE isBandAdmin LIKE '%fooValue%'
+     * $query->filterByIsBandAdmin(['foo', 'bar']); // WHERE isBandAdmin IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $isBandAdmin The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $isBandAdmin The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByIsBandAdmin($isBandAdmin = null, $comparison = null)
+    public function filterByIsBandAdmin($isBandAdmin = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($isBandAdmin)) {
@@ -697,7 +750,9 @@ abstract class UserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserTableMap::COL_ISBANDADMIN, $isBandAdmin, $comparison);
+        $this->addUsingAlias(UserTableMap::COL_ISBANDADMIN, $isBandAdmin, $comparison);
+
+        return $this;
     }
 
     /**
@@ -707,14 +762,15 @@ abstract class UserQuery extends ModelCriteria
      * <code>
      * $query->filterByIsEventEditor('fooValue');   // WHERE isEventEditor = 'fooValue'
      * $query->filterByIsEventEditor('%fooValue%', Criteria::LIKE); // WHERE isEventEditor LIKE '%fooValue%'
+     * $query->filterByIsEventEditor(['foo', 'bar']); // WHERE isEventEditor IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $isEventEditor The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $isEventEditor The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByIsEventEditor($isEventEditor = null, $comparison = null)
+    public function filterByIsEventEditor($isEventEditor = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($isEventEditor)) {
@@ -722,7 +778,9 @@ abstract class UserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserTableMap::COL_ISEVENTEDITOR, $isEventEditor, $comparison);
+        $this->addUsingAlias(UserTableMap::COL_ISEVENTEDITOR, $isEventEditor, $comparison);
+
+        return $this;
     }
 
     /**
@@ -735,17 +793,17 @@ abstract class UserQuery extends ModelCriteria
      * $query->filterByLastLogin(array('max' => 'yesterday')); // WHERE lastLogin > '2011-03-13'
      * </code>
      *
-     * @param     mixed $lastLogin The value to use as filter.
+     * @param mixed $lastLogin The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByLastLogin($lastLogin = null, $comparison = null)
+    public function filterByLastLogin($lastLogin = null, ?string $comparison = null)
     {
         if (is_array($lastLogin)) {
             $useMinMax = false;
@@ -765,7 +823,9 @@ abstract class UserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserTableMap::COL_LASTLOGIN, $lastLogin, $comparison);
+        $this->addUsingAlias(UserTableMap::COL_LASTLOGIN, $lastLogin, $comparison);
+
+        return $this;
     }
 
     /**
@@ -778,17 +838,17 @@ abstract class UserQuery extends ModelCriteria
      * $query->filterByPasswordChanged(array('max' => 'yesterday')); // WHERE passwordChanged > '2011-03-13'
      * </code>
      *
-     * @param     mixed $passwordChanged The value to use as filter.
+     * @param mixed $passwordChanged The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByPasswordChanged($passwordChanged = null, $comparison = null)
+    public function filterByPasswordChanged($passwordChanged = null, ?string $comparison = null)
     {
         if (is_array($passwordChanged)) {
             $useMinMax = false;
@@ -808,7 +868,9 @@ abstract class UserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserTableMap::COL_PASSWORDCHANGED, $passwordChanged, $comparison);
+        $this->addUsingAlias(UserTableMap::COL_PASSWORDCHANGED, $passwordChanged, $comparison);
+
+        return $this;
     }
 
     /**
@@ -821,17 +883,17 @@ abstract class UserQuery extends ModelCriteria
      * $query->filterByCreated(array('max' => 'yesterday')); // WHERE created > '2011-03-13'
      * </code>
      *
-     * @param     mixed $created The value to use as filter.
+     * @param mixed $created The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByCreated($created = null, $comparison = null)
+    public function filterByCreated($created = null, ?string $comparison = null)
     {
         if (is_array($created)) {
             $useMinMax = false;
@@ -851,7 +913,9 @@ abstract class UserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserTableMap::COL_CREATED, $created, $comparison);
+        $this->addUsingAlias(UserTableMap::COL_CREATED, $created, $comparison);
+
+        return $this;
     }
 
     /**
@@ -864,17 +928,17 @@ abstract class UserQuery extends ModelCriteria
      * $query->filterByUpdated(array('max' => 'yesterday')); // WHERE updated > '2011-03-13'
      * </code>
      *
-     * @param     mixed $updated The value to use as filter.
+     * @param mixed $updated The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUpdated($updated = null, $comparison = null)
+    public function filterByUpdated($updated = null, ?string $comparison = null)
     {
         if (is_array($updated)) {
             $useMinMax = false;
@@ -894,27 +958,33 @@ abstract class UserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserTableMap::COL_UPDATED, $updated, $comparison);
+        $this->addUsingAlias(UserTableMap::COL_UPDATED, $updated, $comparison);
+
+        return $this;
     }
 
     /**
      * Filter the query by a related \TechWilk\Rota\CalendarToken object
      *
      * @param \TechWilk\Rota\CalendarToken|ObjectCollection $calendarToken the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByCalendarToken($calendarToken, $comparison = null)
+    public function filterByCalendarToken($calendarToken, ?string $comparison = null)
     {
         if ($calendarToken instanceof \TechWilk\Rota\CalendarToken) {
-            return $this
+            $this
                 ->addUsingAlias(UserTableMap::COL_ID, $calendarToken->getUserid(), $comparison);
+
+            return $this;
         } elseif ($calendarToken instanceof ObjectCollection) {
-            return $this
+            $this
                 ->useCalendarTokenQuery()
                 ->filterByPrimaryKeys($calendarToken->getPrimaryKeys())
                 ->endUse();
+
+            return $this;
         } else {
             throw new PropelException('filterByCalendarToken() only accepts arguments of type \TechWilk\Rota\CalendarToken or Collection');
         }
@@ -923,12 +993,12 @@ abstract class UserQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the CalendarToken relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinCalendarToken($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinCalendarToken(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('CalendarToken');
@@ -957,9 +1027,9 @@ abstract class UserQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \TechWilk\Rota\CalendarTokenQuery A secondary query class using the current class as primary query
      */
@@ -971,23 +1041,123 @@ abstract class UserQuery extends ModelCriteria
     }
 
     /**
+     * Use the CalendarToken relation CalendarToken object
+     *
+     * @param callable(\TechWilk\Rota\CalendarTokenQuery):\TechWilk\Rota\CalendarTokenQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withCalendarTokenQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->useCalendarTokenQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the relation to CalendarToken table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \TechWilk\Rota\CalendarTokenQuery The inner query object of the EXISTS statement
+     */
+    public function useCalendarTokenExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \TechWilk\Rota\CalendarTokenQuery */
+        $q = $this->useExistsQuery('CalendarToken', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the relation to CalendarToken table for a NOT EXISTS query.
+     *
+     * @see useCalendarTokenExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\CalendarTokenQuery The inner query object of the NOT EXISTS statement
+     */
+    public function useCalendarTokenNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\CalendarTokenQuery */
+        $q = $this->useExistsQuery('CalendarToken', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the relation to CalendarToken table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \TechWilk\Rota\CalendarTokenQuery The inner query object of the IN statement
+     */
+    public function useInCalendarTokenQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \TechWilk\Rota\CalendarTokenQuery */
+        $q = $this->useInQuery('CalendarToken', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the relation to CalendarToken table for a NOT IN query.
+     *
+     * @see useCalendarTokenInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\CalendarTokenQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInCalendarTokenQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\CalendarTokenQuery */
+        $q = $this->useInQuery('CalendarToken', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Filter the query by a related \TechWilk\Rota\Comment object
      *
      * @param \TechWilk\Rota\Comment|ObjectCollection $comment the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByComment($comment, $comparison = null)
+    public function filterByComment($comment, ?string $comparison = null)
     {
         if ($comment instanceof \TechWilk\Rota\Comment) {
-            return $this
+            $this
                 ->addUsingAlias(UserTableMap::COL_ID, $comment->getUserId(), $comparison);
+
+            return $this;
         } elseif ($comment instanceof ObjectCollection) {
-            return $this
+            $this
                 ->useCommentQuery()
                 ->filterByPrimaryKeys($comment->getPrimaryKeys())
                 ->endUse();
+
+            return $this;
         } else {
             throw new PropelException('filterByComment() only accepts arguments of type \TechWilk\Rota\Comment or Collection');
         }
@@ -996,12 +1166,12 @@ abstract class UserQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the Comment relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinComment($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinComment(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Comment');
@@ -1030,9 +1200,9 @@ abstract class UserQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \TechWilk\Rota\CommentQuery A secondary query class using the current class as primary query
      */
@@ -1044,23 +1214,123 @@ abstract class UserQuery extends ModelCriteria
     }
 
     /**
+     * Use the Comment relation Comment object
+     *
+     * @param callable(\TechWilk\Rota\CommentQuery):\TechWilk\Rota\CommentQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withCommentQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->useCommentQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the relation to Comment table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \TechWilk\Rota\CommentQuery The inner query object of the EXISTS statement
+     */
+    public function useCommentExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \TechWilk\Rota\CommentQuery */
+        $q = $this->useExistsQuery('Comment', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Comment table for a NOT EXISTS query.
+     *
+     * @see useCommentExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\CommentQuery The inner query object of the NOT EXISTS statement
+     */
+    public function useCommentNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\CommentQuery */
+        $q = $this->useExistsQuery('Comment', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the relation to Comment table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \TechWilk\Rota\CommentQuery The inner query object of the IN statement
+     */
+    public function useInCommentQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \TechWilk\Rota\CommentQuery */
+        $q = $this->useInQuery('Comment', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Comment table for a NOT IN query.
+     *
+     * @see useCommentInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\CommentQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInCommentQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\CommentQuery */
+        $q = $this->useInQuery('Comment', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Filter the query by a related \TechWilk\Rota\Event object
      *
      * @param \TechWilk\Rota\Event|ObjectCollection $event the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByEvent($event, $comparison = null)
+    public function filterByEvent($event, ?string $comparison = null)
     {
         if ($event instanceof \TechWilk\Rota\Event) {
-            return $this
+            $this
                 ->addUsingAlias(UserTableMap::COL_ID, $event->getCreatedBy(), $comparison);
+
+            return $this;
         } elseif ($event instanceof ObjectCollection) {
-            return $this
+            $this
                 ->useEventQuery()
                 ->filterByPrimaryKeys($event->getPrimaryKeys())
                 ->endUse();
+
+            return $this;
         } else {
             throw new PropelException('filterByEvent() only accepts arguments of type \TechWilk\Rota\Event or Collection');
         }
@@ -1069,12 +1339,12 @@ abstract class UserQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the Event relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinEvent($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinEvent(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Event');
@@ -1103,9 +1373,9 @@ abstract class UserQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \TechWilk\Rota\EventQuery A secondary query class using the current class as primary query
      */
@@ -1117,23 +1387,123 @@ abstract class UserQuery extends ModelCriteria
     }
 
     /**
+     * Use the Event relation Event object
+     *
+     * @param callable(\TechWilk\Rota\EventQuery):\TechWilk\Rota\EventQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withEventQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->useEventQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the relation to Event table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \TechWilk\Rota\EventQuery The inner query object of the EXISTS statement
+     */
+    public function useEventExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \TechWilk\Rota\EventQuery */
+        $q = $this->useExistsQuery('Event', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Event table for a NOT EXISTS query.
+     *
+     * @see useEventExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\EventQuery The inner query object of the NOT EXISTS statement
+     */
+    public function useEventNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\EventQuery */
+        $q = $this->useExistsQuery('Event', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the relation to Event table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \TechWilk\Rota\EventQuery The inner query object of the IN statement
+     */
+    public function useInEventQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \TechWilk\Rota\EventQuery */
+        $q = $this->useInQuery('Event', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Event table for a NOT IN query.
+     *
+     * @see useEventInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\EventQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInEventQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\EventQuery */
+        $q = $this->useInQuery('Event', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Filter the query by a related \TechWilk\Rota\Availability object
      *
      * @param \TechWilk\Rota\Availability|ObjectCollection $availability the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByAvailability($availability, $comparison = null)
+    public function filterByAvailability($availability, ?string $comparison = null)
     {
         if ($availability instanceof \TechWilk\Rota\Availability) {
-            return $this
+            $this
                 ->addUsingAlias(UserTableMap::COL_ID, $availability->getUserId(), $comparison);
+
+            return $this;
         } elseif ($availability instanceof ObjectCollection) {
-            return $this
+            $this
                 ->useAvailabilityQuery()
                 ->filterByPrimaryKeys($availability->getPrimaryKeys())
                 ->endUse();
+
+            return $this;
         } else {
             throw new PropelException('filterByAvailability() only accepts arguments of type \TechWilk\Rota\Availability or Collection');
         }
@@ -1142,12 +1512,12 @@ abstract class UserQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the Availability relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinAvailability($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinAvailability(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Availability');
@@ -1176,9 +1546,9 @@ abstract class UserQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \TechWilk\Rota\AvailabilityQuery A secondary query class using the current class as primary query
      */
@@ -1190,23 +1560,123 @@ abstract class UserQuery extends ModelCriteria
     }
 
     /**
+     * Use the Availability relation Availability object
+     *
+     * @param callable(\TechWilk\Rota\AvailabilityQuery):\TechWilk\Rota\AvailabilityQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withAvailabilityQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->useAvailabilityQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the relation to Availability table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \TechWilk\Rota\AvailabilityQuery The inner query object of the EXISTS statement
+     */
+    public function useAvailabilityExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \TechWilk\Rota\AvailabilityQuery */
+        $q = $this->useExistsQuery('Availability', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Availability table for a NOT EXISTS query.
+     *
+     * @see useAvailabilityExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\AvailabilityQuery The inner query object of the NOT EXISTS statement
+     */
+    public function useAvailabilityNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\AvailabilityQuery */
+        $q = $this->useExistsQuery('Availability', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the relation to Availability table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \TechWilk\Rota\AvailabilityQuery The inner query object of the IN statement
+     */
+    public function useInAvailabilityQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \TechWilk\Rota\AvailabilityQuery */
+        $q = $this->useInQuery('Availability', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Availability table for a NOT IN query.
+     *
+     * @see useAvailabilityInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\AvailabilityQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInAvailabilityQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\AvailabilityQuery */
+        $q = $this->useInQuery('Availability', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Filter the query by a related \TechWilk\Rota\Notification object
      *
      * @param \TechWilk\Rota\Notification|ObjectCollection $notification the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByNotification($notification, $comparison = null)
+    public function filterByNotification($notification, ?string $comparison = null)
     {
         if ($notification instanceof \TechWilk\Rota\Notification) {
-            return $this
+            $this
                 ->addUsingAlias(UserTableMap::COL_ID, $notification->getUserId(), $comparison);
+
+            return $this;
         } elseif ($notification instanceof ObjectCollection) {
-            return $this
+            $this
                 ->useNotificationQuery()
                 ->filterByPrimaryKeys($notification->getPrimaryKeys())
                 ->endUse();
+
+            return $this;
         } else {
             throw new PropelException('filterByNotification() only accepts arguments of type \TechWilk\Rota\Notification or Collection');
         }
@@ -1215,12 +1685,12 @@ abstract class UserQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the Notification relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinNotification($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinNotification(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Notification');
@@ -1249,9 +1719,9 @@ abstract class UserQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \TechWilk\Rota\NotificationQuery A secondary query class using the current class as primary query
      */
@@ -1263,23 +1733,123 @@ abstract class UserQuery extends ModelCriteria
     }
 
     /**
+     * Use the Notification relation Notification object
+     *
+     * @param callable(\TechWilk\Rota\NotificationQuery):\TechWilk\Rota\NotificationQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withNotificationQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->useNotificationQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the relation to Notification table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \TechWilk\Rota\NotificationQuery The inner query object of the EXISTS statement
+     */
+    public function useNotificationExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \TechWilk\Rota\NotificationQuery */
+        $q = $this->useExistsQuery('Notification', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Notification table for a NOT EXISTS query.
+     *
+     * @see useNotificationExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\NotificationQuery The inner query object of the NOT EXISTS statement
+     */
+    public function useNotificationNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\NotificationQuery */
+        $q = $this->useExistsQuery('Notification', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the relation to Notification table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \TechWilk\Rota\NotificationQuery The inner query object of the IN statement
+     */
+    public function useInNotificationQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \TechWilk\Rota\NotificationQuery */
+        $q = $this->useInQuery('Notification', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Notification table for a NOT IN query.
+     *
+     * @see useNotificationInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\NotificationQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInNotificationQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\NotificationQuery */
+        $q = $this->useInQuery('Notification', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Filter the query by a related \TechWilk\Rota\SocialAuth object
      *
      * @param \TechWilk\Rota\SocialAuth|ObjectCollection $socialAuth the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterBySocialAuth($socialAuth, $comparison = null)
+    public function filterBySocialAuth($socialAuth, ?string $comparison = null)
     {
         if ($socialAuth instanceof \TechWilk\Rota\SocialAuth) {
-            return $this
+            $this
                 ->addUsingAlias(UserTableMap::COL_ID, $socialAuth->getUserId(), $comparison);
+
+            return $this;
         } elseif ($socialAuth instanceof ObjectCollection) {
-            return $this
+            $this
                 ->useSocialAuthQuery()
                 ->filterByPrimaryKeys($socialAuth->getPrimaryKeys())
                 ->endUse();
+
+            return $this;
         } else {
             throw new PropelException('filterBySocialAuth() only accepts arguments of type \TechWilk\Rota\SocialAuth or Collection');
         }
@@ -1288,12 +1858,12 @@ abstract class UserQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the SocialAuth relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinSocialAuth($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinSocialAuth(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('SocialAuth');
@@ -1322,9 +1892,9 @@ abstract class UserQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \TechWilk\Rota\SocialAuthQuery A secondary query class using the current class as primary query
      */
@@ -1336,23 +1906,123 @@ abstract class UserQuery extends ModelCriteria
     }
 
     /**
+     * Use the SocialAuth relation SocialAuth object
+     *
+     * @param callable(\TechWilk\Rota\SocialAuthQuery):\TechWilk\Rota\SocialAuthQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withSocialAuthQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->useSocialAuthQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the relation to SocialAuth table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \TechWilk\Rota\SocialAuthQuery The inner query object of the EXISTS statement
+     */
+    public function useSocialAuthExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \TechWilk\Rota\SocialAuthQuery */
+        $q = $this->useExistsQuery('SocialAuth', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the relation to SocialAuth table for a NOT EXISTS query.
+     *
+     * @see useSocialAuthExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\SocialAuthQuery The inner query object of the NOT EXISTS statement
+     */
+    public function useSocialAuthNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\SocialAuthQuery */
+        $q = $this->useExistsQuery('SocialAuth', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the relation to SocialAuth table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \TechWilk\Rota\SocialAuthQuery The inner query object of the IN statement
+     */
+    public function useInSocialAuthQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \TechWilk\Rota\SocialAuthQuery */
+        $q = $this->useInQuery('SocialAuth', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the relation to SocialAuth table for a NOT IN query.
+     *
+     * @see useSocialAuthInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\SocialAuthQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInSocialAuthQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\SocialAuthQuery */
+        $q = $this->useInQuery('SocialAuth', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Filter the query by a related \TechWilk\Rota\Statistic object
      *
      * @param \TechWilk\Rota\Statistic|ObjectCollection $statistic the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByStatistic($statistic, $comparison = null)
+    public function filterByStatistic($statistic, ?string $comparison = null)
     {
         if ($statistic instanceof \TechWilk\Rota\Statistic) {
-            return $this
+            $this
                 ->addUsingAlias(UserTableMap::COL_ID, $statistic->getUserId(), $comparison);
+
+            return $this;
         } elseif ($statistic instanceof ObjectCollection) {
-            return $this
+            $this
                 ->useStatisticQuery()
                 ->filterByPrimaryKeys($statistic->getPrimaryKeys())
                 ->endUse();
+
+            return $this;
         } else {
             throw new PropelException('filterByStatistic() only accepts arguments of type \TechWilk\Rota\Statistic or Collection');
         }
@@ -1361,12 +2031,12 @@ abstract class UserQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the Statistic relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinStatistic($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinStatistic(?string $relationAlias = null, ?string $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Statistic');
@@ -1395,9 +2065,9 @@ abstract class UserQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \TechWilk\Rota\StatisticQuery A secondary query class using the current class as primary query
      */
@@ -1409,23 +2079,123 @@ abstract class UserQuery extends ModelCriteria
     }
 
     /**
+     * Use the Statistic relation Statistic object
+     *
+     * @param callable(\TechWilk\Rota\StatisticQuery):\TechWilk\Rota\StatisticQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withStatisticQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::LEFT_JOIN
+    ) {
+        $relatedQuery = $this->useStatisticQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the relation to Statistic table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \TechWilk\Rota\StatisticQuery The inner query object of the EXISTS statement
+     */
+    public function useStatisticExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \TechWilk\Rota\StatisticQuery */
+        $q = $this->useExistsQuery('Statistic', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Statistic table for a NOT EXISTS query.
+     *
+     * @see useStatisticExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\StatisticQuery The inner query object of the NOT EXISTS statement
+     */
+    public function useStatisticNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\StatisticQuery */
+        $q = $this->useExistsQuery('Statistic', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the relation to Statistic table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \TechWilk\Rota\StatisticQuery The inner query object of the IN statement
+     */
+    public function useInStatisticQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \TechWilk\Rota\StatisticQuery */
+        $q = $this->useInQuery('Statistic', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Statistic table for a NOT IN query.
+     *
+     * @see useStatisticInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\StatisticQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInStatisticQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\StatisticQuery */
+        $q = $this->useInQuery('Statistic', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Filter the query by a related \TechWilk\Rota\Swap object
      *
      * @param \TechWilk\Rota\Swap|ObjectCollection $swap the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterBySwap($swap, $comparison = null)
+    public function filterBySwap($swap, ?string $comparison = null)
     {
         if ($swap instanceof \TechWilk\Rota\Swap) {
-            return $this
+            $this
                 ->addUsingAlias(UserTableMap::COL_ID, $swap->getRequestedBy(), $comparison);
+
+            return $this;
         } elseif ($swap instanceof ObjectCollection) {
-            return $this
+            $this
                 ->useSwapQuery()
                 ->filterByPrimaryKeys($swap->getPrimaryKeys())
                 ->endUse();
+
+            return $this;
         } else {
             throw new PropelException('filterBySwap() only accepts arguments of type \TechWilk\Rota\Swap or Collection');
         }
@@ -1434,12 +2204,12 @@ abstract class UserQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the Swap relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinSwap($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinSwap(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Swap');
@@ -1468,9 +2238,9 @@ abstract class UserQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \TechWilk\Rota\SwapQuery A secondary query class using the current class as primary query
      */
@@ -1482,23 +2252,123 @@ abstract class UserQuery extends ModelCriteria
     }
 
     /**
+     * Use the Swap relation Swap object
+     *
+     * @param callable(\TechWilk\Rota\SwapQuery):\TechWilk\Rota\SwapQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withSwapQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->useSwapQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the relation to Swap table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \TechWilk\Rota\SwapQuery The inner query object of the EXISTS statement
+     */
+    public function useSwapExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \TechWilk\Rota\SwapQuery */
+        $q = $this->useExistsQuery('Swap', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Swap table for a NOT EXISTS query.
+     *
+     * @see useSwapExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\SwapQuery The inner query object of the NOT EXISTS statement
+     */
+    public function useSwapNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\SwapQuery */
+        $q = $this->useExistsQuery('Swap', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the relation to Swap table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \TechWilk\Rota\SwapQuery The inner query object of the IN statement
+     */
+    public function useInSwapQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \TechWilk\Rota\SwapQuery */
+        $q = $this->useInQuery('Swap', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Swap table for a NOT IN query.
+     *
+     * @see useSwapInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\SwapQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInSwapQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\SwapQuery */
+        $q = $this->useInQuery('Swap', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Filter the query by a related \TechWilk\Rota\UserRole object
      *
      * @param \TechWilk\Rota\UserRole|ObjectCollection $userRole the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUserRole($userRole, $comparison = null)
+    public function filterByUserRole($userRole, ?string $comparison = null)
     {
         if ($userRole instanceof \TechWilk\Rota\UserRole) {
-            return $this
+            $this
                 ->addUsingAlias(UserTableMap::COL_ID, $userRole->getUserId(), $comparison);
+
+            return $this;
         } elseif ($userRole instanceof ObjectCollection) {
-            return $this
+            $this
                 ->useUserRoleQuery()
                 ->filterByPrimaryKeys($userRole->getPrimaryKeys())
                 ->endUse();
+
+            return $this;
         } else {
             throw new PropelException('filterByUserRole() only accepts arguments of type \TechWilk\Rota\UserRole or Collection');
         }
@@ -1507,12 +2377,12 @@ abstract class UserQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the UserRole relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinUserRole($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinUserRole(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('UserRole');
@@ -1541,9 +2411,9 @@ abstract class UserQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \TechWilk\Rota\UserRoleQuery A secondary query class using the current class as primary query
      */
@@ -1555,23 +2425,123 @@ abstract class UserQuery extends ModelCriteria
     }
 
     /**
+     * Use the UserRole relation UserRole object
+     *
+     * @param callable(\TechWilk\Rota\UserRoleQuery):\TechWilk\Rota\UserRoleQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withUserRoleQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->useUserRoleQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the relation to UserRole table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \TechWilk\Rota\UserRoleQuery The inner query object of the EXISTS statement
+     */
+    public function useUserRoleExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \TechWilk\Rota\UserRoleQuery */
+        $q = $this->useExistsQuery('UserRole', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the relation to UserRole table for a NOT EXISTS query.
+     *
+     * @see useUserRoleExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\UserRoleQuery The inner query object of the NOT EXISTS statement
+     */
+    public function useUserRoleNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\UserRoleQuery */
+        $q = $this->useExistsQuery('UserRole', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the relation to UserRole table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \TechWilk\Rota\UserRoleQuery The inner query object of the IN statement
+     */
+    public function useInUserRoleQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \TechWilk\Rota\UserRoleQuery */
+        $q = $this->useInQuery('UserRole', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the relation to UserRole table for a NOT IN query.
+     *
+     * @see useUserRoleInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\UserRoleQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInUserRoleQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\UserRoleQuery */
+        $q = $this->useInQuery('UserRole', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Filter the query by a related \TechWilk\Rota\UserPermission object
      *
      * @param \TechWilk\Rota\UserPermission|ObjectCollection $userPermission the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUserPermission($userPermission, $comparison = null)
+    public function filterByUserPermission($userPermission, ?string $comparison = null)
     {
         if ($userPermission instanceof \TechWilk\Rota\UserPermission) {
-            return $this
+            $this
                 ->addUsingAlias(UserTableMap::COL_ID, $userPermission->getUserId(), $comparison);
+
+            return $this;
         } elseif ($userPermission instanceof ObjectCollection) {
-            return $this
+            $this
                 ->useUserPermissionQuery()
                 ->filterByPrimaryKeys($userPermission->getPrimaryKeys())
                 ->endUse();
+
+            return $this;
         } else {
             throw new PropelException('filterByUserPermission() only accepts arguments of type \TechWilk\Rota\UserPermission or Collection');
         }
@@ -1580,12 +2550,12 @@ abstract class UserQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the UserPermission relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinUserPermission($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinUserPermission(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('UserPermission');
@@ -1614,9 +2584,9 @@ abstract class UserQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \TechWilk\Rota\UserPermissionQuery A secondary query class using the current class as primary query
      */
@@ -1628,11 +2598,107 @@ abstract class UserQuery extends ModelCriteria
     }
 
     /**
+     * Use the UserPermission relation UserPermission object
+     *
+     * @param callable(\TechWilk\Rota\UserPermissionQuery):\TechWilk\Rota\UserPermissionQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withUserPermissionQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->useUserPermissionQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the relation to UserPermission table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \TechWilk\Rota\UserPermissionQuery The inner query object of the EXISTS statement
+     */
+    public function useUserPermissionExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \TechWilk\Rota\UserPermissionQuery */
+        $q = $this->useExistsQuery('UserPermission', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the relation to UserPermission table for a NOT EXISTS query.
+     *
+     * @see useUserPermissionExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\UserPermissionQuery The inner query object of the NOT EXISTS statement
+     */
+    public function useUserPermissionNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\UserPermissionQuery */
+        $q = $this->useExistsQuery('UserPermission', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the relation to UserPermission table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \TechWilk\Rota\UserPermissionQuery The inner query object of the IN statement
+     */
+    public function useInUserPermissionQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \TechWilk\Rota\UserPermissionQuery */
+        $q = $this->useInQuery('UserPermission', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the relation to UserPermission table for a NOT IN query.
+     *
+     * @see useUserPermissionInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\UserPermissionQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInUserPermissionQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\UserPermissionQuery */
+        $q = $this->useInQuery('UserPermission', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Exclude object from result
      *
-     * @param   ChildUser $user Object to remove from the list of results
+     * @param ChildUser $user Object to remove from the list of results
      *
-     * @return $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function prune($user = null)
     {
@@ -1649,7 +2715,7 @@ abstract class UserQuery extends ModelCriteria
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public function doDeleteAll(ConnectionInterface $con = null)
+    public function doDeleteAll(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(UserTableMap::DATABASE_NAME);
@@ -1674,12 +2740,12 @@ abstract class UserQuery extends ModelCriteria
      * Performs a DELETE on the database based on the current ModelCriteria
      *
      * @param ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public function delete(ConnectionInterface $con = null)
+    public function delete(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(UserTableMap::DATABASE_NAME);
@@ -1709,64 +2775,77 @@ abstract class UserQuery extends ModelCriteria
     /**
      * Filter by the latest updated
      *
-     * @param      int $nbDays Maximum age of the latest update in days
+     * @param int $nbDays Maximum age of the latest update in days
      *
-     * @return     $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function recentlyUpdated($nbDays = 7)
     {
-        return $this->addUsingAlias(UserTableMap::COL_UPDATED, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        $this->addUsingAlias(UserTableMap::COL_UPDATED, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+
+        return $this;
     }
 
     /**
      * Order by update date desc
      *
-     * @return     $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function lastUpdatedFirst()
     {
-        return $this->addDescendingOrderByColumn(UserTableMap::COL_UPDATED);
+        $this->addDescendingOrderByColumn(UserTableMap::COL_UPDATED);
+
+        return $this;
     }
 
     /**
      * Order by update date asc
      *
-     * @return     $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function firstUpdatedFirst()
     {
-        return $this->addAscendingOrderByColumn(UserTableMap::COL_UPDATED);
+        $this->addAscendingOrderByColumn(UserTableMap::COL_UPDATED);
+
+        return $this;
     }
 
     /**
      * Order by create date desc
      *
-     * @return     $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function lastCreatedFirst()
     {
-        return $this->addDescendingOrderByColumn(UserTableMap::COL_CREATED);
+        $this->addDescendingOrderByColumn(UserTableMap::COL_CREATED);
+
+        return $this;
     }
 
     /**
      * Filter by the latest created
      *
-     * @param      int $nbDays Maximum age of in days
+     * @param int $nbDays Maximum age of in days
      *
-     * @return     $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function recentlyCreated($nbDays = 7)
     {
-        return $this->addUsingAlias(UserTableMap::COL_CREATED, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        $this->addUsingAlias(UserTableMap::COL_CREATED, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+
+        return $this;
     }
 
     /**
      * Order by create date asc
      *
-     * @return     $this|ChildUserQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function firstCreatedFirst()
     {
-        return $this->addAscendingOrderByColumn(UserTableMap::COL_CREATED);
+        $this->addAscendingOrderByColumn(UserTableMap::COL_CREATED);
+
+        return $this;
     }
-} // UserQuery
+
+}

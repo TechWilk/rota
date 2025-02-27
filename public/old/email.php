@@ -44,15 +44,15 @@ $eventId = filter_var($eventId, FILTER_SANITIZE_NUMBER_INT);
 
 switch ($action) {
     case 'individual':
-    if ($userRoleId && $eventId) {
-        echo '<p>Function not complete, please wait while we finish writing it.</p><p>Apologies for any inconvinence.</p>';
-    }
+        if ($userRoleId && $eventId) {
+            echo '<p>Function not complete, please wait while we finish writing it.</p><p>Apologies for any inconvinence.</p>';
+        }
         break;
     case 'everyone':
-      echo '<p>Function not complete, please wait while we finish writing it.</p><p>Apologies for any inconvinence.</p>';
+        echo '<p>Function not complete, please wait while we finish writing it.</p><p>Apologies for any inconvinence.</p>';
         break;
-  default:
-    echo '<p>Error: Insufficient parameters.</p>';
-    echo '<p>Please inform the system administrator</p>';
-    break;
+    default:
+        echo '<p>Error: Insufficient parameters.</p>';
+        echo '<p>Please inform the system administrator</p>';
+        break;
 }

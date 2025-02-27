@@ -9,5 +9,9 @@ function getConfig()
 {
     global $config;
 
+    if (!is_array($config)) {
+        throw new Exception('Invalid config files');
+    }
+
     return $config;
 }

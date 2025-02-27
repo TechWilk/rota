@@ -45,8 +45,8 @@ function youtubeReplace($string)
     return preg_replace(
         '#(http://(www.)?youtube.com)?/(v/|watch\?v\=)([-|~_0-9A-Za-z]+)&?.*?#i',
         '<iframe title="YouTube Video" width="560" height="340" src="http://www.youtube.com/embed/$4" frameborder="0" allowfullscreen></iframe>',
-    $string
-  );
+        $string
+    );
 
     return $string;
 }

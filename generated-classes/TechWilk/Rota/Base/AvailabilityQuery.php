@@ -8,6 +8,7 @@ use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveQuery\ModelJoin;
+use Propel\Runtime\Collection\Collection;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -16,9 +17,7 @@ use TechWilk\Rota\AvailabilityQuery as ChildAvailabilityQuery;
 use TechWilk\Rota\Map\AvailabilityTableMap;
 
 /**
- * Base class that represents a query for the 'availability' table.
- *
- *
+ * Base class that represents a query for the `availability` table.
  *
  * @method     ChildAvailabilityQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildAvailabilityQuery orderByEventId($order = Criteria::ASC) Order by the eventId column
@@ -62,17 +61,17 @@ use TechWilk\Rota\Map\AvailabilityTableMap;
  *
  * @method     \TechWilk\Rota\UserQuery|\TechWilk\Rota\EventQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
- * @method     ChildAvailability findOne(ConnectionInterface $con = null) Return the first ChildAvailability matching the query
- * @method     ChildAvailability findOneOrCreate(ConnectionInterface $con = null) Return the first ChildAvailability matching the query, or a new ChildAvailability object populated from the query conditions when no match is found
+ * @method     ChildAvailability|null findOne(?ConnectionInterface $con = null) Return the first ChildAvailability matching the query
+ * @method     ChildAvailability findOneOrCreate(?ConnectionInterface $con = null) Return the first ChildAvailability matching the query, or a new ChildAvailability object populated from the query conditions when no match is found
  *
- * @method     ChildAvailability findOneById(int $id) Return the first ChildAvailability filtered by the id column
- * @method     ChildAvailability findOneByEventId(int $eventId) Return the first ChildAvailability filtered by the eventId column
- * @method     ChildAvailability findOneByUserId(int $userId) Return the first ChildAvailability filtered by the userId column
- * @method     ChildAvailability findOneByAvailable(boolean $available) Return the first ChildAvailability filtered by the available column
- * @method     ChildAvailability findOneByComment(string $comment) Return the first ChildAvailability filtered by the comment column *
-
- * @method     ChildAvailability requirePk($key, ConnectionInterface $con = null) Return the ChildAvailability by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildAvailability requireOne(ConnectionInterface $con = null) Return the first ChildAvailability matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAvailability|null findOneById(int $id) Return the first ChildAvailability filtered by the id column
+ * @method     ChildAvailability|null findOneByEventId(int $eventId) Return the first ChildAvailability filtered by the eventId column
+ * @method     ChildAvailability|null findOneByUserId(int $userId) Return the first ChildAvailability filtered by the userId column
+ * @method     ChildAvailability|null findOneByAvailable(boolean $available) Return the first ChildAvailability filtered by the available column
+ * @method     ChildAvailability|null findOneByComment(string $comment) Return the first ChildAvailability filtered by the comment column
+ *
+ * @method     ChildAvailability requirePk($key, ?ConnectionInterface $con = null) Return the ChildAvailability by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAvailability requireOne(?ConnectionInterface $con = null) Return the first ChildAvailability matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildAvailability requireOneById(int $id) Return the first ChildAvailability filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildAvailability requireOneByEventId(int $eventId) Return the first ChildAvailability filtered by the eventId column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -80,14 +79,22 @@ use TechWilk\Rota\Map\AvailabilityTableMap;
  * @method     ChildAvailability requireOneByAvailable(boolean $available) Return the first ChildAvailability filtered by the available column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildAvailability requireOneByComment(string $comment) Return the first ChildAvailability filtered by the comment column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildAvailability[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildAvailability objects based on current ModelCriteria
- * @method     ChildAvailability[]|ObjectCollection findById(int $id) Return ChildAvailability objects filtered by the id column
- * @method     ChildAvailability[]|ObjectCollection findByEventId(int $eventId) Return ChildAvailability objects filtered by the eventId column
- * @method     ChildAvailability[]|ObjectCollection findByUserId(int $userId) Return ChildAvailability objects filtered by the userId column
- * @method     ChildAvailability[]|ObjectCollection findByAvailable(boolean $available) Return ChildAvailability objects filtered by the available column
- * @method     ChildAvailability[]|ObjectCollection findByComment(string $comment) Return ChildAvailability objects filtered by the comment column
- * @method     ChildAvailability[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @method     ChildAvailability[]|Collection find(?ConnectionInterface $con = null) Return ChildAvailability objects based on current ModelCriteria
+ * @psalm-method Collection&\Traversable<ChildAvailability> find(?ConnectionInterface $con = null) Return ChildAvailability objects based on current ModelCriteria
  *
+ * @method     ChildAvailability[]|Collection findById(int|array<int> $id) Return ChildAvailability objects filtered by the id column
+ * @psalm-method Collection&\Traversable<ChildAvailability> findById(int|array<int> $id) Return ChildAvailability objects filtered by the id column
+ * @method     ChildAvailability[]|Collection findByEventId(int|array<int> $eventId) Return ChildAvailability objects filtered by the eventId column
+ * @psalm-method Collection&\Traversable<ChildAvailability> findByEventId(int|array<int> $eventId) Return ChildAvailability objects filtered by the eventId column
+ * @method     ChildAvailability[]|Collection findByUserId(int|array<int> $userId) Return ChildAvailability objects filtered by the userId column
+ * @psalm-method Collection&\Traversable<ChildAvailability> findByUserId(int|array<int> $userId) Return ChildAvailability objects filtered by the userId column
+ * @method     ChildAvailability[]|Collection findByAvailable(boolean|array<boolean> $available) Return ChildAvailability objects filtered by the available column
+ * @psalm-method Collection&\Traversable<ChildAvailability> findByAvailable(boolean|array<boolean> $available) Return ChildAvailability objects filtered by the available column
+ * @method     ChildAvailability[]|Collection findByComment(string|array<string> $comment) Return ChildAvailability objects filtered by the comment column
+ * @psalm-method Collection&\Traversable<ChildAvailability> findByComment(string|array<string> $comment) Return ChildAvailability objects filtered by the comment column
+ *
+ * @method     ChildAvailability[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @psalm-method \Propel\Runtime\Util\PropelModelPager&\Traversable<ChildAvailability> paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  */
 abstract class AvailabilityQuery extends ModelCriteria
 {
@@ -96,9 +103,9 @@ abstract class AvailabilityQuery extends ModelCriteria
     /**
      * Initializes internal state of \TechWilk\Rota\Base\AvailabilityQuery object.
      *
-     * @param     string $dbName The database name
-     * @param     string $modelName The phpName of a model, e.g. 'Book'
-     * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
+     * @param string $dbName The database name
+     * @param string $modelName The phpName of a model, e.g. 'Book'
+     * @param string $modelAlias The alias for the model in this query, e.g. 'b'
      */
     public function __construct($dbName = 'default', $modelName = '\\TechWilk\\Rota\\Availability', $modelAlias = null)
     {
@@ -108,12 +115,12 @@ abstract class AvailabilityQuery extends ModelCriteria
     /**
      * Returns a new ChildAvailabilityQuery object.
      *
-     * @param     string $modelAlias The alias of a model in the query
-     * @param     Criteria $criteria Optional Criteria to build the query from
+     * @param string $modelAlias The alias of a model in the query
+     * @param Criteria $criteria Optional Criteria to build the query from
      *
      * @return ChildAvailabilityQuery
      */
-    public static function create($modelAlias = null, Criteria $criteria = null)
+    public static function create(?string $modelAlias = null, ?Criteria $criteria = null): Criteria
     {
         if ($criteria instanceof ChildAvailabilityQuery) {
             return $criteria;
@@ -143,7 +150,7 @@ abstract class AvailabilityQuery extends ModelCriteria
      *
      * @return ChildAvailability|array|mixed the result, formatted by the current formatter
      */
-    public function findPk($key, ConnectionInterface $con = null)
+    public function findPk($key, ?ConnectionInterface $con = null)
     {
         if ($key === null) {
             return null;
@@ -175,8 +182,8 @@ abstract class AvailabilityQuery extends ModelCriteria
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
@@ -208,8 +215,8 @@ abstract class AvailabilityQuery extends ModelCriteria
     /**
      * Find object by primary key.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @return ChildAvailability|array|mixed the result, formatted by the current formatter
      */
@@ -229,12 +236,12 @@ abstract class AvailabilityQuery extends ModelCriteria
      * <code>
      * $objs = $c->findPks(array(12, 56, 832), $con);
      * </code>
-     * @param     array $keys Primary keys to use for the query
-     * @param     ConnectionInterface $con an optional connection object
+     * @param array $keys Primary keys to use for the query
+     * @param ConnectionInterface $con an optional connection object
      *
-     * @return ObjectCollection|array|mixed the list of results, formatted by the current formatter
+     * @return Collection|array|mixed the list of results, formatted by the current formatter
      */
-    public function findPks($keys, ConnectionInterface $con = null)
+    public function findPks($keys, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getReadConnection($this->getDbName());
@@ -251,25 +258,31 @@ abstract class AvailabilityQuery extends ModelCriteria
     /**
      * Filter the query by primary key
      *
-     * @param     mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query
      *
-     * @return $this|ChildAvailabilityQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
-        return $this->addUsingAlias(AvailabilityTableMap::COL_ID, $key, Criteria::EQUAL);
+
+        $this->addUsingAlias(AvailabilityTableMap::COL_ID, $key, Criteria::EQUAL);
+
+        return $this;
     }
 
     /**
      * Filter the query by a list of primary keys
      *
-     * @param     array $keys The list of primary key to use for the query
+     * @param array|int $keys The list of primary key to use for the query
      *
-     * @return $this|ChildAvailabilityQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
-        return $this->addUsingAlias(AvailabilityTableMap::COL_ID, $keys, Criteria::IN);
+
+        $this->addUsingAlias(AvailabilityTableMap::COL_ID, $keys, Criteria::IN);
+
+        return $this;
     }
 
     /**
@@ -282,15 +295,15 @@ abstract class AvailabilityQuery extends ModelCriteria
      * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
      *
-     * @param     mixed $id The value to use as filter.
+     * @param mixed $id The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildAvailabilityQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterById($id = null, $comparison = null)
+    public function filterById($id = null, ?string $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
@@ -310,7 +323,9 @@ abstract class AvailabilityQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(AvailabilityTableMap::COL_ID, $id, $comparison);
+        $this->addUsingAlias(AvailabilityTableMap::COL_ID, $id, $comparison);
+
+        return $this;
     }
 
     /**
@@ -325,15 +340,15 @@ abstract class AvailabilityQuery extends ModelCriteria
      *
      * @see       filterByEvent()
      *
-     * @param     mixed $eventId The value to use as filter.
+     * @param mixed $eventId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildAvailabilityQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByEventId($eventId = null, $comparison = null)
+    public function filterByEventId($eventId = null, ?string $comparison = null)
     {
         if (is_array($eventId)) {
             $useMinMax = false;
@@ -353,7 +368,9 @@ abstract class AvailabilityQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(AvailabilityTableMap::COL_EVENTID, $eventId, $comparison);
+        $this->addUsingAlias(AvailabilityTableMap::COL_EVENTID, $eventId, $comparison);
+
+        return $this;
     }
 
     /**
@@ -368,15 +385,15 @@ abstract class AvailabilityQuery extends ModelCriteria
      *
      * @see       filterByUser()
      *
-     * @param     mixed $userId The value to use as filter.
+     * @param mixed $userId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildAvailabilityQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUserId($userId = null, $comparison = null)
+    public function filterByUserId($userId = null, ?string $comparison = null)
     {
         if (is_array($userId)) {
             $useMinMax = false;
@@ -396,7 +413,9 @@ abstract class AvailabilityQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(AvailabilityTableMap::COL_USERID, $userId, $comparison);
+        $this->addUsingAlias(AvailabilityTableMap::COL_USERID, $userId, $comparison);
+
+        return $this;
     }
 
     /**
@@ -408,22 +427,24 @@ abstract class AvailabilityQuery extends ModelCriteria
      * $query->filterByAvailable('yes'); // WHERE available = true
      * </code>
      *
-     * @param     boolean|string $available The value to use as filter.
+     * @param bool|string $available The value to use as filter.
      *              Non-boolean arguments are converted using the following rules:
      *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildAvailabilityQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByAvailable($available = null, $comparison = null)
+    public function filterByAvailable($available = null, ?string $comparison = null)
     {
         if (is_string($available)) {
-            $available = in_array(strtolower($available), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            $available = in_array(strtolower($available), array('false', 'off', '-', 'no', 'n', '0', ''), true) ? false : true;
         }
 
-        return $this->addUsingAlias(AvailabilityTableMap::COL_AVAILABLE, $available, $comparison);
+        $this->addUsingAlias(AvailabilityTableMap::COL_AVAILABLE, $available, $comparison);
+
+        return $this;
     }
 
     /**
@@ -433,14 +454,15 @@ abstract class AvailabilityQuery extends ModelCriteria
      * <code>
      * $query->filterByComment('fooValue');   // WHERE comment = 'fooValue'
      * $query->filterByComment('%fooValue%', Criteria::LIKE); // WHERE comment LIKE '%fooValue%'
+     * $query->filterByComment(['foo', 'bar']); // WHERE comment IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $comment The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $comment The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildAvailabilityQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByComment($comment = null, $comparison = null)
+    public function filterByComment($comment = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($comment)) {
@@ -448,20 +470,22 @@ abstract class AvailabilityQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(AvailabilityTableMap::COL_COMMENT, $comment, $comparison);
+        $this->addUsingAlias(AvailabilityTableMap::COL_COMMENT, $comment, $comparison);
+
+        return $this;
     }
 
     /**
      * Filter the query by a related \TechWilk\Rota\User object
      *
      * @param \TechWilk\Rota\User|ObjectCollection $user The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
-     * @return ChildAvailabilityQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUser($user, $comparison = null)
+    public function filterByUser($user, ?string $comparison = null)
     {
         if ($user instanceof \TechWilk\Rota\User) {
             return $this
@@ -471,8 +495,10 @@ abstract class AvailabilityQuery extends ModelCriteria
                 $comparison = Criteria::IN;
             }
 
-            return $this
+            $this
                 ->addUsingAlias(AvailabilityTableMap::COL_USERID, $user->toKeyValue('PrimaryKey', 'Id'), $comparison);
+
+            return $this;
         } else {
             throw new PropelException('filterByUser() only accepts arguments of type \TechWilk\Rota\User or Collection');
         }
@@ -481,12 +507,12 @@ abstract class AvailabilityQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the User relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildAvailabilityQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinUser(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('User');
@@ -515,9 +541,9 @@ abstract class AvailabilityQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \TechWilk\Rota\UserQuery A secondary query class using the current class as primary query
      */
@@ -529,16 +555,112 @@ abstract class AvailabilityQuery extends ModelCriteria
     }
 
     /**
+     * Use the User relation User object
+     *
+     * @param callable(\TechWilk\Rota\UserQuery):\TechWilk\Rota\UserQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withUserQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->useUserQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the relation to User table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \TechWilk\Rota\UserQuery The inner query object of the EXISTS statement
+     */
+    public function useUserExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \TechWilk\Rota\UserQuery */
+        $q = $this->useExistsQuery('User', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the relation to User table for a NOT EXISTS query.
+     *
+     * @see useUserExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\UserQuery The inner query object of the NOT EXISTS statement
+     */
+    public function useUserNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\UserQuery */
+        $q = $this->useExistsQuery('User', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the relation to User table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \TechWilk\Rota\UserQuery The inner query object of the IN statement
+     */
+    public function useInUserQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \TechWilk\Rota\UserQuery */
+        $q = $this->useInQuery('User', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the relation to User table for a NOT IN query.
+     *
+     * @see useUserInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\UserQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInUserQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\UserQuery */
+        $q = $this->useInQuery('User', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Filter the query by a related \TechWilk\Rota\Event object
      *
      * @param \TechWilk\Rota\Event|ObjectCollection $event The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
-     * @return ChildAvailabilityQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByEvent($event, $comparison = null)
+    public function filterByEvent($event, ?string $comparison = null)
     {
         if ($event instanceof \TechWilk\Rota\Event) {
             return $this
@@ -548,8 +670,10 @@ abstract class AvailabilityQuery extends ModelCriteria
                 $comparison = Criteria::IN;
             }
 
-            return $this
+            $this
                 ->addUsingAlias(AvailabilityTableMap::COL_EVENTID, $event->toKeyValue('PrimaryKey', 'Id'), $comparison);
+
+            return $this;
         } else {
             throw new PropelException('filterByEvent() only accepts arguments of type \TechWilk\Rota\Event or Collection');
         }
@@ -558,12 +682,12 @@ abstract class AvailabilityQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the Event relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildAvailabilityQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinEvent($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinEvent(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Event');
@@ -592,9 +716,9 @@ abstract class AvailabilityQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \TechWilk\Rota\EventQuery A secondary query class using the current class as primary query
      */
@@ -606,11 +730,107 @@ abstract class AvailabilityQuery extends ModelCriteria
     }
 
     /**
+     * Use the Event relation Event object
+     *
+     * @param callable(\TechWilk\Rota\EventQuery):\TechWilk\Rota\EventQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withEventQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->useEventQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the relation to Event table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \TechWilk\Rota\EventQuery The inner query object of the EXISTS statement
+     */
+    public function useEventExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \TechWilk\Rota\EventQuery */
+        $q = $this->useExistsQuery('Event', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Event table for a NOT EXISTS query.
+     *
+     * @see useEventExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\EventQuery The inner query object of the NOT EXISTS statement
+     */
+    public function useEventNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\EventQuery */
+        $q = $this->useExistsQuery('Event', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the relation to Event table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \TechWilk\Rota\EventQuery The inner query object of the IN statement
+     */
+    public function useInEventQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \TechWilk\Rota\EventQuery */
+        $q = $this->useInQuery('Event', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Event table for a NOT IN query.
+     *
+     * @see useEventInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\EventQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInEventQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\EventQuery */
+        $q = $this->useInQuery('Event', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Exclude object from result
      *
-     * @param   ChildAvailability $availability Object to remove from the list of results
+     * @param ChildAvailability $availability Object to remove from the list of results
      *
-     * @return $this|ChildAvailabilityQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function prune($availability = null)
     {
@@ -627,7 +847,7 @@ abstract class AvailabilityQuery extends ModelCriteria
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public function doDeleteAll(ConnectionInterface $con = null)
+    public function doDeleteAll(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(AvailabilityTableMap::DATABASE_NAME);
@@ -652,12 +872,12 @@ abstract class AvailabilityQuery extends ModelCriteria
      * Performs a DELETE on the database based on the current ModelCriteria
      *
      * @param ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public function delete(ConnectionInterface $con = null)
+    public function delete(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(AvailabilityTableMap::DATABASE_NAME);
@@ -681,4 +901,5 @@ abstract class AvailabilityQuery extends ModelCriteria
             return $affectedRows;
         });
     }
-} // AvailabilityQuery
+
+}
