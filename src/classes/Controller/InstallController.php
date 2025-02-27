@@ -188,7 +188,8 @@ class InstallController extends BaseController
         $settings->setDateOnlyFormat('%A');
         $settings->setDayOnlyFormat('%A, %B %e');
 
-        $settings->setNotificationEmail(<<<'EMAIL'
+        $settings->setNotificationEmail(
+            <<<'EMAIL'
 Dear [name]
 
 This is an automatic reminder.
@@ -201,7 +202,7 @@ If you have arranged a swap, please let us know.
 
 Many thanks for your continued service!
 EMAIL
-);
+        );
 
         $settings->setToken(Crypt::generateToken(100));
         $settings->setSkin('skin-blue');

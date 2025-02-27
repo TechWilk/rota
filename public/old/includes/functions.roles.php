@@ -30,7 +30,7 @@ function updateRole($id, $name, $description)
     $sql = "UPDATE roles SET name = '$name', description = '$description' WHERE id = '$id'";
 
     if (!mysqli_query(db(), $sql)) {
-        die('Error: '.mysqli_error(db()));
+        exit('Error: '.mysqli_error(db()));
     }
 }
 
@@ -39,13 +39,13 @@ function updateGroup($key, $name, $description)
     $sql = "UPDATE groups SET name = '$name' WHERE groupId = '$key'";
 
     if (!mysqli_query(db(), $sql)) {
-        die('Error: '.mysqli_error(db()));
+        exit('Error: '.mysqli_error(db()));
     }
 
     $sql = "UPDATE groups SET description = '$description' WHERE groupId = '$key'";
 
     if (!mysqli_query(db(), $sql)) {
-        die('Error: '.mysqli_error(db()));
+        exit('Error: '.mysqli_error(db()));
     }
 }
 
@@ -54,7 +54,7 @@ function moveRoleGroups($roleID, $value)
     $sql = "UPDATE roles SET groupId = '$value' WHERE id = '$roleID'";
 
     if (!mysqli_query(db(), $sql)) {
-        die('Error: '.mysqli_error(db()));
+        exit('Error: '.mysqli_error(db()));
     }
 }
 
@@ -65,24 +65,24 @@ function addUserRole($userId, $roleId)
 
     // prevent duplicate roles
     $sql = "SELECT COUNT(*) AS count FROM userRoles WHERE roleId = '$roleId' AND userId = '$userId'";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $ob = mysqli_fetch_object($result);
     if ($ob->count < 1) {
         $query = "INSERT INTO userRoles (userId, roleId) VALUES ('$userId', '$roleId')";
-        mysqli_query(db(), $query) or die(mysqli_error(db()));
+        mysqli_query(db(), $query) or exit(mysqli_error(db()));
     }
 }
 
 function removeUserRoleWithId($userRoleId)
 {
     $query = "DELETE FROM userRoles WHERE id = '$userRoleId'";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    mysqli_query(db(), $query) or exit(mysqli_error(db()));
 }
 
 function removeUserRole($userId, $roleId)
 {
     $query = "DELETE FROM userRoles WHERE userId = '$userId' AND roleId = '$roleId'";
-    mysqli_query(db(), $query) or die(mysqli_error(db()));
+    mysqli_query(db(), $query) or exit(mysqli_error(db()));
 }
 
 function setUserRoleReserveWithId($userRoleId)
@@ -106,7 +106,7 @@ function setUserRoleRegularWithId($userRoleId)
 function groupIdWithRole($roleId)
 {
     $sql = "SELECT groupId FROM roles WHERE id = '$roleId'";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $ob = mysqli_fetch_object($result);
 
     return $ob->groupId;
@@ -115,7 +115,7 @@ function groupIdWithRole($roleId)
 function roleNameFromId($roleId)
 {
     $sql = "SELECT name FROM roles WHERE id = '$roleId'";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $ob = mysqli_fetch_object($result);
 
     return $ob->name;
@@ -124,7 +124,7 @@ function roleNameFromId($roleId)
 function roleCanSwapToOtherRoleInGroup($roleId)
 {
     $sql = "SELECT allowRoleSwaps, groupId FROM roles WHERE id = '$roleId'";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $ob = mysqli_fetch_object($result);
 
     if ($ob->allowRoleSwaps != null) {
@@ -132,7 +132,7 @@ function roleCanSwapToOtherRoleInGroup($roleId)
     }
 
     $sql = "SELECT allowRoleSwaps FROM groups WHERE id = '".$ob->groupId."'";
-    $result = mysqli_query(db(), $sql) or die(mysqli_error(db()));
+    $result = mysqli_query(db(), $sql) or exit(mysqli_error(db()));
     $ob = mysqli_fetch_object($result);
 
     return $ob->allowRoleSwaps;
