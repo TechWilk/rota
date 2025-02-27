@@ -6,7 +6,7 @@ use \Exception;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
-use Propel\Runtime\Collection\ObjectCollection;
+use Propel\Runtime\Collection\Collection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
@@ -15,9 +15,7 @@ use TechWilk\Rota\LoginFailureQuery as ChildLoginFailureQuery;
 use TechWilk\Rota\Map\LoginFailureTableMap;
 
 /**
- * Base class that represents a query for the 'loginFailures' table.
- *
- *
+ * Base class that represents a query for the `loginFailures` table.
  *
  * @method     ChildLoginFailureQuery orderByUsername($order = Criteria::ASC) Order by the username column
  * @method     ChildLoginFailureQuery orderByipAddress($order = Criteria::ASC) Order by the ipAddress column
@@ -35,26 +33,32 @@ use TechWilk\Rota\Map\LoginFailureTableMap;
  * @method     ChildLoginFailureQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildLoginFailureQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildLoginFailure findOne(ConnectionInterface $con = null) Return the first ChildLoginFailure matching the query
- * @method     ChildLoginFailure findOneOrCreate(ConnectionInterface $con = null) Return the first ChildLoginFailure matching the query, or a new ChildLoginFailure object populated from the query conditions when no match is found
+ * @method     ChildLoginFailure|null findOne(?ConnectionInterface $con = null) Return the first ChildLoginFailure matching the query
+ * @method     ChildLoginFailure findOneOrCreate(?ConnectionInterface $con = null) Return the first ChildLoginFailure matching the query, or a new ChildLoginFailure object populated from the query conditions when no match is found
  *
- * @method     ChildLoginFailure findOneByUsername(string $username) Return the first ChildLoginFailure filtered by the username column
- * @method     ChildLoginFailure findOneByipAddress(string $ipAddress) Return the first ChildLoginFailure filtered by the ipAddress column
- * @method     ChildLoginFailure findOneByTimestamp(string $timestamp) Return the first ChildLoginFailure filtered by the timestamp column *
-
- * @method     ChildLoginFailure requirePk($key, ConnectionInterface $con = null) Return the ChildLoginFailure by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildLoginFailure requireOne(ConnectionInterface $con = null) Return the first ChildLoginFailure matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildLoginFailure|null findOneByUsername(string $username) Return the first ChildLoginFailure filtered by the username column
+ * @method     ChildLoginFailure|null findOneByipAddress(string $ipAddress) Return the first ChildLoginFailure filtered by the ipAddress column
+ * @method     ChildLoginFailure|null findOneByTimestamp(string $timestamp) Return the first ChildLoginFailure filtered by the timestamp column
+ *
+ * @method     ChildLoginFailure requirePk($key, ?ConnectionInterface $con = null) Return the ChildLoginFailure by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildLoginFailure requireOne(?ConnectionInterface $con = null) Return the first ChildLoginFailure matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildLoginFailure requireOneByUsername(string $username) Return the first ChildLoginFailure filtered by the username column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildLoginFailure requireOneByipAddress(string $ipAddress) Return the first ChildLoginFailure filtered by the ipAddress column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildLoginFailure requireOneByTimestamp(string $timestamp) Return the first ChildLoginFailure filtered by the timestamp column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildLoginFailure[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildLoginFailure objects based on current ModelCriteria
- * @method     ChildLoginFailure[]|ObjectCollection findByUsername(string $username) Return ChildLoginFailure objects filtered by the username column
- * @method     ChildLoginFailure[]|ObjectCollection findByipAddress(string $ipAddress) Return ChildLoginFailure objects filtered by the ipAddress column
- * @method     ChildLoginFailure[]|ObjectCollection findByTimestamp(string $timestamp) Return ChildLoginFailure objects filtered by the timestamp column
- * @method     ChildLoginFailure[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @method     ChildLoginFailure[]|Collection find(?ConnectionInterface $con = null) Return ChildLoginFailure objects based on current ModelCriteria
+ * @psalm-method Collection&\Traversable<ChildLoginFailure> find(?ConnectionInterface $con = null) Return ChildLoginFailure objects based on current ModelCriteria
  *
+ * @method     ChildLoginFailure[]|Collection findByUsername(string|array<string> $username) Return ChildLoginFailure objects filtered by the username column
+ * @psalm-method Collection&\Traversable<ChildLoginFailure> findByUsername(string|array<string> $username) Return ChildLoginFailure objects filtered by the username column
+ * @method     ChildLoginFailure[]|Collection findByipAddress(string|array<string> $ipAddress) Return ChildLoginFailure objects filtered by the ipAddress column
+ * @psalm-method Collection&\Traversable<ChildLoginFailure> findByipAddress(string|array<string> $ipAddress) Return ChildLoginFailure objects filtered by the ipAddress column
+ * @method     ChildLoginFailure[]|Collection findByTimestamp(string|array<string> $timestamp) Return ChildLoginFailure objects filtered by the timestamp column
+ * @psalm-method Collection&\Traversable<ChildLoginFailure> findByTimestamp(string|array<string> $timestamp) Return ChildLoginFailure objects filtered by the timestamp column
+ *
+ * @method     ChildLoginFailure[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @psalm-method \Propel\Runtime\Util\PropelModelPager&\Traversable<ChildLoginFailure> paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  */
 abstract class LoginFailureQuery extends ModelCriteria
 {
@@ -63,9 +67,9 @@ abstract class LoginFailureQuery extends ModelCriteria
     /**
      * Initializes internal state of \TechWilk\Rota\Base\LoginFailureQuery object.
      *
-     * @param     string $dbName The database name
-     * @param     string $modelName The phpName of a model, e.g. 'Book'
-     * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
+     * @param string $dbName The database name
+     * @param string $modelName The phpName of a model, e.g. 'Book'
+     * @param string $modelAlias The alias for the model in this query, e.g. 'b'
      */
     public function __construct($dbName = 'default', $modelName = '\\TechWilk\\Rota\\LoginFailure', $modelAlias = null)
     {
@@ -75,12 +79,12 @@ abstract class LoginFailureQuery extends ModelCriteria
     /**
      * Returns a new ChildLoginFailureQuery object.
      *
-     * @param     string $modelAlias The alias of a model in the query
-     * @param     Criteria $criteria Optional Criteria to build the query from
+     * @param string $modelAlias The alias of a model in the query
+     * @param Criteria $criteria Optional Criteria to build the query from
      *
      * @return ChildLoginFailureQuery
      */
-    public static function create($modelAlias = null, Criteria $criteria = null)
+    public static function create(?string $modelAlias = null, ?Criteria $criteria = null): Criteria
     {
         if ($criteria instanceof ChildLoginFailureQuery) {
             return $criteria;
@@ -110,7 +114,7 @@ abstract class LoginFailureQuery extends ModelCriteria
      *
      * @return ChildLoginFailure|array|mixed the result, formatted by the current formatter
      */
-    public function findPk($key, ConnectionInterface $con = null)
+    public function findPk($key, ?ConnectionInterface $con = null)
     {
         throw new LogicException('The LoginFailure object has no primary key');
     }
@@ -120,12 +124,12 @@ abstract class LoginFailureQuery extends ModelCriteria
      * <code>
      * $objs = $c->findPks(array(array(12, 56), array(832, 123), array(123, 456)), $con);
      * </code>
-     * @param     array $keys Primary keys to use for the query
-     * @param     ConnectionInterface $con an optional connection object
+     * @param array $keys Primary keys to use for the query
+     * @param ConnectionInterface $con an optional connection object
      *
-     * @return ObjectCollection|array|mixed the list of results, formatted by the current formatter
+     * @return Collection|array|mixed the list of results, formatted by the current formatter
      */
-    public function findPks($keys, ConnectionInterface $con = null)
+    public function findPks($keys, ?ConnectionInterface $con = null)
     {
         throw new LogicException('The LoginFailure object has no primary key');
     }
@@ -133,9 +137,9 @@ abstract class LoginFailureQuery extends ModelCriteria
     /**
      * Filter the query by primary key
      *
-     * @param     mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query
      *
-     * @return $this|ChildLoginFailureQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
@@ -145,9 +149,9 @@ abstract class LoginFailureQuery extends ModelCriteria
     /**
      * Filter the query by a list of primary keys
      *
-     * @param     array $keys The list of primary key to use for the query
+     * @param array|int $keys The list of primary key to use for the query
      *
-     * @return $this|ChildLoginFailureQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
@@ -161,14 +165,15 @@ abstract class LoginFailureQuery extends ModelCriteria
      * <code>
      * $query->filterByUsername('fooValue');   // WHERE username = 'fooValue'
      * $query->filterByUsername('%fooValue%', Criteria::LIKE); // WHERE username LIKE '%fooValue%'
+     * $query->filterByUsername(['foo', 'bar']); // WHERE username IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $username The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $username The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildLoginFailureQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUsername($username = null, $comparison = null)
+    public function filterByUsername($username = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($username)) {
@@ -176,7 +181,9 @@ abstract class LoginFailureQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(LoginFailureTableMap::COL_USERNAME, $username, $comparison);
+        $this->addUsingAlias(LoginFailureTableMap::COL_USERNAME, $username, $comparison);
+
+        return $this;
     }
 
     /**
@@ -186,14 +193,15 @@ abstract class LoginFailureQuery extends ModelCriteria
      * <code>
      * $query->filterByipAddress('fooValue');   // WHERE ipAddress = 'fooValue'
      * $query->filterByipAddress('%fooValue%', Criteria::LIKE); // WHERE ipAddress LIKE '%fooValue%'
+     * $query->filterByipAddress(['foo', 'bar']); // WHERE ipAddress IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $ipAddress The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $ipAddress The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildLoginFailureQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByipAddress($ipAddress = null, $comparison = null)
+    public function filterByipAddress($ipAddress = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($ipAddress)) {
@@ -201,7 +209,9 @@ abstract class LoginFailureQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(LoginFailureTableMap::COL_IPADDRESS, $ipAddress, $comparison);
+        $this->addUsingAlias(LoginFailureTableMap::COL_IPADDRESS, $ipAddress, $comparison);
+
+        return $this;
     }
 
     /**
@@ -214,17 +224,17 @@ abstract class LoginFailureQuery extends ModelCriteria
      * $query->filterByTimestamp(array('max' => 'yesterday')); // WHERE timestamp > '2011-03-13'
      * </code>
      *
-     * @param     mixed $timestamp The value to use as filter.
+     * @param mixed $timestamp The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildLoginFailureQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByTimestamp($timestamp = null, $comparison = null)
+    public function filterByTimestamp($timestamp = null, ?string $comparison = null)
     {
         if (is_array($timestamp)) {
             $useMinMax = false;
@@ -244,20 +254,23 @@ abstract class LoginFailureQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(LoginFailureTableMap::COL_TIMESTAMP, $timestamp, $comparison);
+        $this->addUsingAlias(LoginFailureTableMap::COL_TIMESTAMP, $timestamp, $comparison);
+
+        return $this;
     }
 
     /**
      * Exclude object from result
      *
-     * @param   ChildLoginFailure $loginFailure Object to remove from the list of results
+     * @param ChildLoginFailure $loginFailure Object to remove from the list of results
      *
-     * @return $this|ChildLoginFailureQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function prune($loginFailure = null)
     {
         if ($loginFailure) {
             throw new LogicException('LoginFailure object has no primary key');
+
         }
 
         return $this;
@@ -269,7 +282,7 @@ abstract class LoginFailureQuery extends ModelCriteria
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public function doDeleteAll(ConnectionInterface $con = null)
+    public function doDeleteAll(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(LoginFailureTableMap::DATABASE_NAME);
@@ -294,12 +307,12 @@ abstract class LoginFailureQuery extends ModelCriteria
      * Performs a DELETE on the database based on the current ModelCriteria
      *
      * @param ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public function delete(ConnectionInterface $con = null)
+    public function delete(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(LoginFailureTableMap::DATABASE_NAME);
@@ -323,4 +336,5 @@ abstract class LoginFailureQuery extends ModelCriteria
             return $affectedRows;
         });
     }
-} // LoginFailureQuery
+
+}

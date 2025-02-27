@@ -14,6 +14,7 @@ use Propel\Runtime\Map\TableMapTrait;
 use TechWilk\Rota\EventPerson;
 use TechWilk\Rota\EventPersonQuery;
 
+
 /**
  * This class defines the structure of the 'eventPeople' table.
  *
@@ -23,7 +24,6 @@ use TechWilk\Rota\EventPersonQuery;
  * For example, the createSelectSql() method checks the type of a given column used in an
  * ORDER BY clause to know whether it needs to apply SQL to make the ORDER BY case-insensitive
  * (i.e. if it's a text column type).
- *
  */
 class EventPersonTableMap extends TableMap
 {
@@ -33,109 +33,161 @@ class EventPersonTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'TechWilk.Rota.Map.EventPersonTableMap';
+    public const CLASS_NAME = 'TechWilk.Rota.Map.EventPersonTableMap';
 
     /**
      * The default database name for this class
      */
-    const DATABASE_NAME = 'default';
+    public const DATABASE_NAME = 'default';
 
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'eventPeople';
+    public const TABLE_NAME = 'eventPeople';
+
+    /**
+     * The PHP name of this class (PascalCase)
+     */
+    public const TABLE_PHP_NAME = 'EventPerson';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\TechWilk\\Rota\\EventPerson';
+    public const OM_CLASS = '\\TechWilk\\Rota\\EventPerson';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'TechWilk.Rota.EventPerson';
+    public const CLASS_DEFAULT = 'TechWilk.Rota.EventPerson';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    public const NUM_COLUMNS = 5;
 
     /**
      * The number of lazy-loaded columns
      */
-    const NUM_LAZY_LOAD_COLUMNS = 0;
+    public const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    public const NUM_HYDRATE_COLUMNS = 5;
 
     /**
      * the column name for the id field
      */
-    const COL_ID = 'eventPeople.id';
+    public const COL_ID = 'eventPeople.id';
 
     /**
      * the column name for the eventId field
      */
-    const COL_EVENTID = 'eventPeople.eventId';
+    public const COL_EVENTID = 'eventPeople.eventId';
 
     /**
      * the column name for the userRoleId field
      */
-    const COL_USERROLEID = 'eventPeople.userRoleId';
+    public const COL_USERROLEID = 'eventPeople.userRoleId';
 
     /**
      * the column name for the notified field
      */
-    const COL_NOTIFIED = 'eventPeople.notified';
+    public const COL_NOTIFIED = 'eventPeople.notified';
 
     /**
      * the column name for the removed field
      */
-    const COL_REMOVED = 'eventPeople.removed';
+    public const COL_REMOVED = 'eventPeople.removed';
 
     /**
      * The default string format for model objects of the related table
      */
-    const DEFAULT_STRING_FORMAT = 'YAML';
+    public const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
+     *
+     * @var array<string, mixed>
      */
-    protected static $fieldNames = array(
-        self::TYPE_PHPNAME       => array('Id', 'EventId', 'UserRoleId', 'Notified', 'Removed', ),
-        self::TYPE_CAMELNAME     => array('id', 'eventId', 'userRoleId', 'notified', 'removed', ),
-        self::TYPE_COLNAME       => array(EventPersonTableMap::COL_ID, EventPersonTableMap::COL_EVENTID, EventPersonTableMap::COL_USERROLEID, EventPersonTableMap::COL_NOTIFIED, EventPersonTableMap::COL_REMOVED, ),
-        self::TYPE_FIELDNAME     => array('id', 'eventId', 'userRoleId', 'notified', 'removed', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
-    );
+    protected static $fieldNames = [
+        self::TYPE_PHPNAME       => ['Id', 'EventId', 'UserRoleId', 'Notified', 'Removed', ],
+        self::TYPE_CAMELNAME     => ['id', 'eventId', 'userRoleId', 'notified', 'removed', ],
+        self::TYPE_COLNAME       => [EventPersonTableMap::COL_ID, EventPersonTableMap::COL_EVENTID, EventPersonTableMap::COL_USERROLEID, EventPersonTableMap::COL_NOTIFIED, EventPersonTableMap::COL_REMOVED, ],
+        self::TYPE_FIELDNAME     => ['id', 'eventId', 'userRoleId', 'notified', 'removed', ],
+        self::TYPE_NUM           => [0, 1, 2, 3, 4, ]
+    ];
 
     /**
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
+     *
+     * @var array<string, mixed>
      */
-    protected static $fieldKeys = array(
-        self::TYPE_PHPNAME       => array('Id' => 0, 'EventId' => 1, 'UserRoleId' => 2, 'Notified' => 3, 'Removed' => 4, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'eventId' => 1, 'userRoleId' => 2, 'notified' => 3, 'removed' => 4, ),
-        self::TYPE_COLNAME       => array(EventPersonTableMap::COL_ID => 0, EventPersonTableMap::COL_EVENTID => 1, EventPersonTableMap::COL_USERROLEID => 2, EventPersonTableMap::COL_NOTIFIED => 3, EventPersonTableMap::COL_REMOVED => 4, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'eventId' => 1, 'userRoleId' => 2, 'notified' => 3, 'removed' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
-    );
+    protected static $fieldKeys = [
+        self::TYPE_PHPNAME       => ['Id' => 0, 'EventId' => 1, 'UserRoleId' => 2, 'Notified' => 3, 'Removed' => 4, ],
+        self::TYPE_CAMELNAME     => ['id' => 0, 'eventId' => 1, 'userRoleId' => 2, 'notified' => 3, 'removed' => 4, ],
+        self::TYPE_COLNAME       => [EventPersonTableMap::COL_ID => 0, EventPersonTableMap::COL_EVENTID => 1, EventPersonTableMap::COL_USERROLEID => 2, EventPersonTableMap::COL_NOTIFIED => 3, EventPersonTableMap::COL_REMOVED => 4, ],
+        self::TYPE_FIELDNAME     => ['id' => 0, 'eventId' => 1, 'userRoleId' => 2, 'notified' => 3, 'removed' => 4, ],
+        self::TYPE_NUM           => [0, 1, 2, 3, 4, ]
+    ];
+
+    /**
+     * Holds a list of column names and their normalized version.
+     *
+     * @var array<string>
+     */
+    protected $normalizedColumnNameMap = [
+        'Id' => 'ID',
+        'EventPerson.Id' => 'ID',
+        'id' => 'ID',
+        'eventPerson.id' => 'ID',
+        'EventPersonTableMap::COL_ID' => 'ID',
+        'COL_ID' => 'ID',
+        'eventPeople.id' => 'ID',
+        'EventId' => 'EVENTID',
+        'EventPerson.EventId' => 'EVENTID',
+        'eventId' => 'EVENTID',
+        'eventPerson.eventId' => 'EVENTID',
+        'EventPersonTableMap::COL_EVENTID' => 'EVENTID',
+        'COL_EVENTID' => 'EVENTID',
+        'eventPeople.eventId' => 'EVENTID',
+        'UserRoleId' => 'USERROLEID',
+        'EventPerson.UserRoleId' => 'USERROLEID',
+        'userRoleId' => 'USERROLEID',
+        'eventPerson.userRoleId' => 'USERROLEID',
+        'EventPersonTableMap::COL_USERROLEID' => 'USERROLEID',
+        'COL_USERROLEID' => 'USERROLEID',
+        'eventPeople.userRoleId' => 'USERROLEID',
+        'Notified' => 'NOTIFIED',
+        'EventPerson.Notified' => 'NOTIFIED',
+        'notified' => 'NOTIFIED',
+        'eventPerson.notified' => 'NOTIFIED',
+        'EventPersonTableMap::COL_NOTIFIED' => 'NOTIFIED',
+        'COL_NOTIFIED' => 'NOTIFIED',
+        'eventPeople.notified' => 'NOTIFIED',
+        'Removed' => 'REMOVED',
+        'EventPerson.Removed' => 'REMOVED',
+        'removed' => 'REMOVED',
+        'eventPerson.removed' => 'REMOVED',
+        'EventPersonTableMap::COL_REMOVED' => 'REMOVED',
+        'COL_REMOVED' => 'REMOVED',
+        'eventPeople.removed' => 'REMOVED',
+    ];
 
     /**
      * Initialize the table attributes and columns
      * Relations are not initialized by this method since they are lazy loaded
      *
      * @return void
-     * @throws PropelException
+     * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function initialize()
+    public function initialize(): void
     {
         // attributes
         $this->setName('eventPeople');
@@ -150,35 +202,37 @@ class EventPersonTableMap extends TableMap
         $this->addForeignKey('userRoleId', 'UserRoleId', 'INTEGER', 'userRoles', 'id', true, null, 0);
         $this->addColumn('notified', 'Notified', 'SMALLINT', true, 1, 0);
         $this->addColumn('removed', 'Removed', 'SMALLINT', false, 1, 0);
-    } // initialize()
+    }
 
     /**
      * Build the RelationMap objects for this table relationships
+     *
+     * @return void
      */
-    public function buildRelations()
+    public function buildRelations(): void
     {
-        $this->addRelation('Event', '\\TechWilk\\Rota\\Event', RelationMap::MANY_TO_ONE, array(
+        $this->addRelation('Event', '\\TechWilk\\Rota\\Event', RelationMap::MANY_TO_ONE, array (
   0 =>
-  array(
+  array (
     0 => ':eventId',
     1 => ':id',
   ),
 ), null, null, null, false);
-        $this->addRelation('UserRole', '\\TechWilk\\Rota\\UserRole', RelationMap::MANY_TO_ONE, array(
+        $this->addRelation('UserRole', '\\TechWilk\\Rota\\UserRole', RelationMap::MANY_TO_ONE, array (
   0 =>
-  array(
+  array (
     0 => ':userRoleId',
     1 => ':id',
   ),
 ), null, null, null, false);
-        $this->addRelation('Swap', '\\TechWilk\\Rota\\Swap', RelationMap::ONE_TO_MANY, array(
+        $this->addRelation('Swap', '\\TechWilk\\Rota\\Swap', RelationMap::ONE_TO_MANY, array (
   0 =>
-  array(
+  array (
     0 => ':eventPersonId',
     1 => ':id',
   ),
 ), null, null, 'Swaps', false);
-    } // buildRelations()
+    }
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
@@ -186,14 +240,14 @@ class EventPersonTableMap extends TableMap
      * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
-     * @param array  $row       resultset row.
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Resultset row.
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      *
-     * @return string The primary key hash of the row
+     * @return string|null The primary key hash of the row
      */
-    public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function getPrimaryKeyHashFromRow(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM): ?string
     {
         // If the PK cannot be derived from the row, return NULL.
         if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
@@ -208,14 +262,14 @@ class EventPersonTableMap extends TableMap
      * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
      * a multi-column primary key, an array of the primary key columns will be returned.
      *
-     * @param array  $row       resultset row.
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Resultset row.
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      *
      * @return mixed The primary key of the row
      */
-    public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function getPrimaryKeyFromRow(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM)
     {
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
@@ -232,10 +286,10 @@ class EventPersonTableMap extends TableMap
      * relative to a location on the PHP include_path.
      * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
      *
-     * @param boolean $withPrefix Whether or not to return the path with the class name
+     * @param bool $withPrefix Whether to return the path with the class name
      * @return string path.to.ClassName
      */
-    public static function getOMClass($withPrefix = true)
+    public static function getOMClass(bool $withPrefix = true): string
     {
         return $withPrefix ? EventPersonTableMap::CLASS_DEFAULT : EventPersonTableMap::OM_CLASS;
     }
@@ -243,17 +297,17 @@ class EventPersonTableMap extends TableMap
     /**
      * Populates an object of the default type or an object that inherit from the default.
      *
-     * @param array  $row       row returned by DataFetcher->fetch().
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Row returned by DataFetcher->fetch().
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType The index type of $row. Mostly DataFetcher->getIndexType().
                                  One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (EventPerson object, last column rank)
+     * @return array (EventPerson object, last column rank)
      */
-    public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function populateObject(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM): array
     {
         $key = EventPersonTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
         if (null !== ($obj = EventPersonTableMap::getInstanceFromPool($key))) {
@@ -269,7 +323,7 @@ class EventPersonTableMap extends TableMap
             EventPersonTableMap::addInstanceToPool($obj, $key);
         }
 
-        return array($obj, $col);
+        return [$obj, $col];
     }
 
     /**
@@ -277,13 +331,13 @@ class EventPersonTableMap extends TableMap
      * objects that inherit from the default.
      *
      * @param DataFetcherInterface $dataFetcher
-     * @return array
-     * @throws PropelException Any exceptions caught during processing will be
+     * @return array<object>
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function populateObjects(DataFetcherInterface $dataFetcher)
+    public static function populateObjects(DataFetcherInterface $dataFetcher): array
     {
-        $results = array();
+        $results = [];
 
         // set the class once to avoid overhead in the loop
         $cls = static::getOMClass(false);
@@ -313,12 +367,13 @@ class EventPersonTableMap extends TableMap
      * XML schema will not be added to the select list and only loaded
      * on demand.
      *
-     * @param Criteria $criteria object containing the columns to add.
-     * @param string   $alias    optional table alias
-     * @throws PropelException Any exceptions caught during processing will be
+     * @param Criteria $criteria Object containing the columns to add.
+     * @param string|null $alias Optional table alias
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
+     * @return void
      */
-    public static function addSelectColumns(Criteria $criteria, $alias = null)
+    public static function addSelectColumns(Criteria $criteria, ?string $alias = null): void
     {
         if (null === $alias) {
             $criteria->addSelectColumn(EventPersonTableMap::COL_ID);
@@ -336,68 +391,86 @@ class EventPersonTableMap extends TableMap
     }
 
     /**
+     * Remove all the columns needed to create a new object.
+     *
+     * Note: any columns that were marked with lazyLoad="true" in the
+     * XML schema will not be removed as they are only loaded on demand.
+     *
+     * @param Criteria $criteria Object containing the columns to remove.
+     * @param string|null $alias Optional table alias
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
+     *                         rethrown wrapped into a PropelException.
+     * @return void
+     */
+    public static function removeSelectColumns(Criteria $criteria, ?string $alias = null): void
+    {
+        if (null === $alias) {
+            $criteria->removeSelectColumn(EventPersonTableMap::COL_ID);
+            $criteria->removeSelectColumn(EventPersonTableMap::COL_EVENTID);
+            $criteria->removeSelectColumn(EventPersonTableMap::COL_USERROLEID);
+            $criteria->removeSelectColumn(EventPersonTableMap::COL_NOTIFIED);
+            $criteria->removeSelectColumn(EventPersonTableMap::COL_REMOVED);
+        } else {
+            $criteria->removeSelectColumn($alias . '.id');
+            $criteria->removeSelectColumn($alias . '.eventId');
+            $criteria->removeSelectColumn($alias . '.userRoleId');
+            $criteria->removeSelectColumn($alias . '.notified');
+            $criteria->removeSelectColumn($alias . '.removed');
+        }
+    }
+
+    /**
      * Returns the TableMap related to this object.
      * This method is not needed for general use but a specific application could have a need.
      * @return TableMap
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function getTableMap()
+    public static function getTableMap(): TableMap
     {
         return Propel::getServiceContainer()->getDatabaseMap(EventPersonTableMap::DATABASE_NAME)->getTable(EventPersonTableMap::TABLE_NAME);
     }
 
     /**
-     * Add a TableMap instance to the database for this tableMap class.
-     */
-    public static function buildTableMap()
-    {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(EventPersonTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(EventPersonTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new EventPersonTableMap());
-        }
-    }
-
-    /**
      * Performs a DELETE on the database, given a EventPerson or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or EventPerson object or primary key or array of primary keys
+     * @param mixed $values Criteria or EventPerson object or primary key or array of primary keys
      *              which is used to create the DELETE statement
-     * @param  ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @param ConnectionInterface $con the connection to use
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-     public static function doDelete($values, ConnectionInterface $con = null)
+     public static function doDelete($values, ?ConnectionInterface $con = null): int
      {
-         if (null === $con) {
-             $con = Propel::getServiceContainer()->getWriteConnection(EventPersonTableMap::DATABASE_NAME);
-         }
+        if (null === $con) {
+            $con = Propel::getServiceContainer()->getWriteConnection(EventPersonTableMap::DATABASE_NAME);
+        }
 
-         if ($values instanceof Criteria) {
-             // rename for clarity
+        if ($values instanceof Criteria) {
+            // rename for clarity
             $criteria = $values;
-         } elseif ($values instanceof \TechWilk\Rota\EventPerson) { // it's a model object
+        } elseif ($values instanceof \TechWilk\Rota\EventPerson) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
-         } else { // it's a primary key, or an array of pks
+        } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(EventPersonTableMap::DATABASE_NAME);
-             $criteria->add(EventPersonTableMap::COL_ID, (array) $values, Criteria::IN);
-         }
+            $criteria->add(EventPersonTableMap::COL_ID, (array) $values, Criteria::IN);
+        }
 
-         $query = EventPersonQuery::create()->mergeWith($criteria);
+        $query = EventPersonQuery::create()->mergeWith($criteria);
 
-         if ($values instanceof Criteria) {
-             EventPersonTableMap::clearInstancePool();
-         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
+        if ($values instanceof Criteria) {
+            EventPersonTableMap::clearInstancePool();
+        } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
                 EventPersonTableMap::removeInstanceFromPool($singleval);
             }
-         }
+        }
 
-         return $query->delete($con);
-     }
+        return $query->delete($con);
+    }
 
     /**
      * Deletes all rows from the eventPeople table.
@@ -405,7 +478,7 @@ class EventPersonTableMap extends TableMap
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public static function doDeleteAll(ConnectionInterface $con = null)
+    public static function doDeleteAll(?ConnectionInterface $con = null): int
     {
         return EventPersonQuery::create()->doDeleteAll($con);
     }
@@ -413,13 +486,13 @@ class EventPersonTableMap extends TableMap
     /**
      * Performs an INSERT on the database, given a EventPerson or Criteria object.
      *
-     * @param mixed               $criteria Criteria or EventPerson object containing data that is used to create the INSERT statement.
+     * @param mixed $criteria Criteria or EventPerson object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
-     * @return mixed           The new primary key.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @return mixed The new primary key.
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function doInsert($criteria, ConnectionInterface $con = null)
+    public static function doInsert($criteria, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(EventPersonTableMap::DATABASE_NAME);
@@ -431,7 +504,7 @@ class EventPersonTableMap extends TableMap
             $criteria = $criteria->buildCriteria(); // build Criteria from EventPerson object
         }
 
-        if ($criteria->containsKey(EventPersonTableMap::COL_ID) && $criteria->keyContainsValue(EventPersonTableMap::COL_ID)) {
+        if ($criteria->containsKey(EventPersonTableMap::COL_ID) && $criteria->keyContainsValue(EventPersonTableMap::COL_ID) ) {
             throw new PropelException('Cannot insert a value for auto-increment primary key ('.EventPersonTableMap::COL_ID.')');
         }
 
@@ -445,7 +518,5 @@ class EventPersonTableMap extends TableMap
             return $query->doInsert($con);
         });
     }
-} // EventPersonTableMap
-// This is the static code needed to register the TableMap for this table with the main Propel class.
-//
-EventPersonTableMap::buildTableMap();
+
+}

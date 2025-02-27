@@ -2,10 +2,10 @@
 
 require __DIR__.'/../config/database.php';
 $serviceContainer = \Propel\Runtime\Propel::getServiceContainer();
-$serviceContainer->checkVersion('2.0.0-dev');
+$serviceContainer->checkVersion(2);
 
 $serviceContainer->setAdapterClass('default', 'mysql');
-$manager = new \Propel\Runtime\Connection\ConnectionManagerSingle();
+$manager = new \Propel\Runtime\Connection\ConnectionManagerSingle('default');
 $manager->setConfiguration([
   'classname'  => 'Propel\\Runtime\\Connection\\ConnectionWrapper',
   'dsn'        => 'mysql:host='.$config['db']['host'].';dbname='.$config['db']['dbname'],
@@ -21,10 +21,10 @@ $manager->setConfiguration([
   ],
 ]);
 $manager->setName('default');
-$serviceContainer->setConnectionManager('default', $manager);
+$serviceContainer->setConnectionManager($manager);
 
 $serviceContainer->setAdapterClass('test', 'sqlite');
-$manager = new \Propel\Runtime\Connection\ConnectionManagerSingle();
+$manager = new \Propel\Runtime\Connection\ConnectionManagerSingle('test');
 $manager->setConfiguration([
   'classname'  => 'Propel\\Runtime\\Connection\\ConnectionWrapper',
   'dsn'        => 'sqlite:/var/tmp/test.db',
@@ -37,7 +37,7 @@ $manager->setConfiguration([
     1 => 'vendor',
   ],
 ]);
-$manager->setName('test');
-$serviceContainer->setConnectionManager('test', $manager);
+$serviceContainer->setConnectionManager($manager);
 
 $serviceContainer->setDefaultDatasource('default');
+require_once __DIR__ . '/./loadDatabase.php';

@@ -8,6 +8,7 @@ use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveQuery\ModelJoin;
+use Propel\Runtime\Collection\Collection;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -16,9 +17,7 @@ use TechWilk\Rota\PermissionGroupQuery as ChildPermissionGroupQuery;
 use TechWilk\Rota\Map\PermissionGroupTableMap;
 
 /**
- * Base class that represents a query for the 'permissionGroups' table.
- *
- *
+ * Base class that represents a query for the `permissionGroups` table.
  *
  * @method     ChildPermissionGroupQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildPermissionGroupQuery orderByName($order = Criteria::ASC) Order by the name column
@@ -52,17 +51,17 @@ use TechWilk\Rota\Map\PermissionGroupTableMap;
  *
  * @method     \TechWilk\Rota\PermissionGroupPermissionQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
- * @method     ChildPermissionGroup findOne(ConnectionInterface $con = null) Return the first ChildPermissionGroup matching the query
- * @method     ChildPermissionGroup findOneOrCreate(ConnectionInterface $con = null) Return the first ChildPermissionGroup matching the query, or a new ChildPermissionGroup object populated from the query conditions when no match is found
+ * @method     ChildPermissionGroup|null findOne(?ConnectionInterface $con = null) Return the first ChildPermissionGroup matching the query
+ * @method     ChildPermissionGroup findOneOrCreate(?ConnectionInterface $con = null) Return the first ChildPermissionGroup matching the query, or a new ChildPermissionGroup object populated from the query conditions when no match is found
  *
- * @method     ChildPermissionGroup findOneById(int $id) Return the first ChildPermissionGroup filtered by the id column
- * @method     ChildPermissionGroup findOneByName(string $name) Return the first ChildPermissionGroup filtered by the name column
- * @method     ChildPermissionGroup findOneByDescription(string $description) Return the first ChildPermissionGroup filtered by the description column
- * @method     ChildPermissionGroup findOneByCreated(string $created) Return the first ChildPermissionGroup filtered by the created column
- * @method     ChildPermissionGroup findOneByUpdated(string $updated) Return the first ChildPermissionGroup filtered by the updated column *
-
- * @method     ChildPermissionGroup requirePk($key, ConnectionInterface $con = null) Return the ChildPermissionGroup by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPermissionGroup requireOne(ConnectionInterface $con = null) Return the first ChildPermissionGroup matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPermissionGroup|null findOneById(int $id) Return the first ChildPermissionGroup filtered by the id column
+ * @method     ChildPermissionGroup|null findOneByName(string $name) Return the first ChildPermissionGroup filtered by the name column
+ * @method     ChildPermissionGroup|null findOneByDescription(string $description) Return the first ChildPermissionGroup filtered by the description column
+ * @method     ChildPermissionGroup|null findOneByCreated(string $created) Return the first ChildPermissionGroup filtered by the created column
+ * @method     ChildPermissionGroup|null findOneByUpdated(string $updated) Return the first ChildPermissionGroup filtered by the updated column
+ *
+ * @method     ChildPermissionGroup requirePk($key, ?ConnectionInterface $con = null) Return the ChildPermissionGroup by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPermissionGroup requireOne(?ConnectionInterface $con = null) Return the first ChildPermissionGroup matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildPermissionGroup requireOneById(int $id) Return the first ChildPermissionGroup filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPermissionGroup requireOneByName(string $name) Return the first ChildPermissionGroup filtered by the name column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -70,14 +69,22 @@ use TechWilk\Rota\Map\PermissionGroupTableMap;
  * @method     ChildPermissionGroup requireOneByCreated(string $created) Return the first ChildPermissionGroup filtered by the created column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPermissionGroup requireOneByUpdated(string $updated) Return the first ChildPermissionGroup filtered by the updated column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildPermissionGroup[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildPermissionGroup objects based on current ModelCriteria
- * @method     ChildPermissionGroup[]|ObjectCollection findById(int $id) Return ChildPermissionGroup objects filtered by the id column
- * @method     ChildPermissionGroup[]|ObjectCollection findByName(string $name) Return ChildPermissionGroup objects filtered by the name column
- * @method     ChildPermissionGroup[]|ObjectCollection findByDescription(string $description) Return ChildPermissionGroup objects filtered by the description column
- * @method     ChildPermissionGroup[]|ObjectCollection findByCreated(string $created) Return ChildPermissionGroup objects filtered by the created column
- * @method     ChildPermissionGroup[]|ObjectCollection findByUpdated(string $updated) Return ChildPermissionGroup objects filtered by the updated column
- * @method     ChildPermissionGroup[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @method     ChildPermissionGroup[]|Collection find(?ConnectionInterface $con = null) Return ChildPermissionGroup objects based on current ModelCriteria
+ * @psalm-method Collection&\Traversable<ChildPermissionGroup> find(?ConnectionInterface $con = null) Return ChildPermissionGroup objects based on current ModelCriteria
  *
+ * @method     ChildPermissionGroup[]|Collection findById(int|array<int> $id) Return ChildPermissionGroup objects filtered by the id column
+ * @psalm-method Collection&\Traversable<ChildPermissionGroup> findById(int|array<int> $id) Return ChildPermissionGroup objects filtered by the id column
+ * @method     ChildPermissionGroup[]|Collection findByName(string|array<string> $name) Return ChildPermissionGroup objects filtered by the name column
+ * @psalm-method Collection&\Traversable<ChildPermissionGroup> findByName(string|array<string> $name) Return ChildPermissionGroup objects filtered by the name column
+ * @method     ChildPermissionGroup[]|Collection findByDescription(string|array<string> $description) Return ChildPermissionGroup objects filtered by the description column
+ * @psalm-method Collection&\Traversable<ChildPermissionGroup> findByDescription(string|array<string> $description) Return ChildPermissionGroup objects filtered by the description column
+ * @method     ChildPermissionGroup[]|Collection findByCreated(string|array<string> $created) Return ChildPermissionGroup objects filtered by the created column
+ * @psalm-method Collection&\Traversable<ChildPermissionGroup> findByCreated(string|array<string> $created) Return ChildPermissionGroup objects filtered by the created column
+ * @method     ChildPermissionGroup[]|Collection findByUpdated(string|array<string> $updated) Return ChildPermissionGroup objects filtered by the updated column
+ * @psalm-method Collection&\Traversable<ChildPermissionGroup> findByUpdated(string|array<string> $updated) Return ChildPermissionGroup objects filtered by the updated column
+ *
+ * @method     ChildPermissionGroup[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @psalm-method \Propel\Runtime\Util\PropelModelPager&\Traversable<ChildPermissionGroup> paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  */
 abstract class PermissionGroupQuery extends ModelCriteria
 {
@@ -86,9 +93,9 @@ abstract class PermissionGroupQuery extends ModelCriteria
     /**
      * Initializes internal state of \TechWilk\Rota\Base\PermissionGroupQuery object.
      *
-     * @param     string $dbName The database name
-     * @param     string $modelName The phpName of a model, e.g. 'Book'
-     * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
+     * @param string $dbName The database name
+     * @param string $modelName The phpName of a model, e.g. 'Book'
+     * @param string $modelAlias The alias for the model in this query, e.g. 'b'
      */
     public function __construct($dbName = 'default', $modelName = '\\TechWilk\\Rota\\PermissionGroup', $modelAlias = null)
     {
@@ -98,12 +105,12 @@ abstract class PermissionGroupQuery extends ModelCriteria
     /**
      * Returns a new ChildPermissionGroupQuery object.
      *
-     * @param     string $modelAlias The alias of a model in the query
-     * @param     Criteria $criteria Optional Criteria to build the query from
+     * @param string $modelAlias The alias of a model in the query
+     * @param Criteria $criteria Optional Criteria to build the query from
      *
      * @return ChildPermissionGroupQuery
      */
-    public static function create($modelAlias = null, Criteria $criteria = null)
+    public static function create(?string $modelAlias = null, ?Criteria $criteria = null): Criteria
     {
         if ($criteria instanceof ChildPermissionGroupQuery) {
             return $criteria;
@@ -133,7 +140,7 @@ abstract class PermissionGroupQuery extends ModelCriteria
      *
      * @return ChildPermissionGroup|array|mixed the result, formatted by the current formatter
      */
-    public function findPk($key, ConnectionInterface $con = null)
+    public function findPk($key, ?ConnectionInterface $con = null)
     {
         if ($key === null) {
             return null;
@@ -165,8 +172,8 @@ abstract class PermissionGroupQuery extends ModelCriteria
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
@@ -198,8 +205,8 @@ abstract class PermissionGroupQuery extends ModelCriteria
     /**
      * Find object by primary key.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @return ChildPermissionGroup|array|mixed the result, formatted by the current formatter
      */
@@ -219,12 +226,12 @@ abstract class PermissionGroupQuery extends ModelCriteria
      * <code>
      * $objs = $c->findPks(array(12, 56, 832), $con);
      * </code>
-     * @param     array $keys Primary keys to use for the query
-     * @param     ConnectionInterface $con an optional connection object
+     * @param array $keys Primary keys to use for the query
+     * @param ConnectionInterface $con an optional connection object
      *
-     * @return ObjectCollection|array|mixed the list of results, formatted by the current formatter
+     * @return Collection|array|mixed the list of results, formatted by the current formatter
      */
-    public function findPks($keys, ConnectionInterface $con = null)
+    public function findPks($keys, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getReadConnection($this->getDbName());
@@ -241,25 +248,31 @@ abstract class PermissionGroupQuery extends ModelCriteria
     /**
      * Filter the query by primary key
      *
-     * @param     mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query
      *
-     * @return $this|ChildPermissionGroupQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
-        return $this->addUsingAlias(PermissionGroupTableMap::COL_ID, $key, Criteria::EQUAL);
+
+        $this->addUsingAlias(PermissionGroupTableMap::COL_ID, $key, Criteria::EQUAL);
+
+        return $this;
     }
 
     /**
      * Filter the query by a list of primary keys
      *
-     * @param     array $keys The list of primary key to use for the query
+     * @param array|int $keys The list of primary key to use for the query
      *
-     * @return $this|ChildPermissionGroupQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
-        return $this->addUsingAlias(PermissionGroupTableMap::COL_ID, $keys, Criteria::IN);
+
+        $this->addUsingAlias(PermissionGroupTableMap::COL_ID, $keys, Criteria::IN);
+
+        return $this;
     }
 
     /**
@@ -272,15 +285,15 @@ abstract class PermissionGroupQuery extends ModelCriteria
      * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
      *
-     * @param     mixed $id The value to use as filter.
+     * @param mixed $id The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPermissionGroupQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterById($id = null, $comparison = null)
+    public function filterById($id = null, ?string $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
@@ -300,7 +313,9 @@ abstract class PermissionGroupQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PermissionGroupTableMap::COL_ID, $id, $comparison);
+        $this->addUsingAlias(PermissionGroupTableMap::COL_ID, $id, $comparison);
+
+        return $this;
     }
 
     /**
@@ -310,14 +325,15 @@ abstract class PermissionGroupQuery extends ModelCriteria
      * <code>
      * $query->filterByName('fooValue');   // WHERE name = 'fooValue'
      * $query->filterByName('%fooValue%', Criteria::LIKE); // WHERE name LIKE '%fooValue%'
+     * $query->filterByName(['foo', 'bar']); // WHERE name IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $name The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $name The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPermissionGroupQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByName($name = null, $comparison = null)
+    public function filterByName($name = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($name)) {
@@ -325,7 +341,9 @@ abstract class PermissionGroupQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PermissionGroupTableMap::COL_NAME, $name, $comparison);
+        $this->addUsingAlias(PermissionGroupTableMap::COL_NAME, $name, $comparison);
+
+        return $this;
     }
 
     /**
@@ -335,14 +353,15 @@ abstract class PermissionGroupQuery extends ModelCriteria
      * <code>
      * $query->filterByDescription('fooValue');   // WHERE description = 'fooValue'
      * $query->filterByDescription('%fooValue%', Criteria::LIKE); // WHERE description LIKE '%fooValue%'
+     * $query->filterByDescription(['foo', 'bar']); // WHERE description IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $description The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $description The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPermissionGroupQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByDescription($description = null, $comparison = null)
+    public function filterByDescription($description = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($description)) {
@@ -350,7 +369,9 @@ abstract class PermissionGroupQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PermissionGroupTableMap::COL_DESCRIPTION, $description, $comparison);
+        $this->addUsingAlias(PermissionGroupTableMap::COL_DESCRIPTION, $description, $comparison);
+
+        return $this;
     }
 
     /**
@@ -363,17 +384,17 @@ abstract class PermissionGroupQuery extends ModelCriteria
      * $query->filterByCreated(array('max' => 'yesterday')); // WHERE created > '2011-03-13'
      * </code>
      *
-     * @param     mixed $created The value to use as filter.
+     * @param mixed $created The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPermissionGroupQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByCreated($created = null, $comparison = null)
+    public function filterByCreated($created = null, ?string $comparison = null)
     {
         if (is_array($created)) {
             $useMinMax = false;
@@ -393,7 +414,9 @@ abstract class PermissionGroupQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PermissionGroupTableMap::COL_CREATED, $created, $comparison);
+        $this->addUsingAlias(PermissionGroupTableMap::COL_CREATED, $created, $comparison);
+
+        return $this;
     }
 
     /**
@@ -406,17 +429,17 @@ abstract class PermissionGroupQuery extends ModelCriteria
      * $query->filterByUpdated(array('max' => 'yesterday')); // WHERE updated > '2011-03-13'
      * </code>
      *
-     * @param     mixed $updated The value to use as filter.
+     * @param mixed $updated The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPermissionGroupQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUpdated($updated = null, $comparison = null)
+    public function filterByUpdated($updated = null, ?string $comparison = null)
     {
         if (is_array($updated)) {
             $useMinMax = false;
@@ -436,27 +459,33 @@ abstract class PermissionGroupQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PermissionGroupTableMap::COL_UPDATED, $updated, $comparison);
+        $this->addUsingAlias(PermissionGroupTableMap::COL_UPDATED, $updated, $comparison);
+
+        return $this;
     }
 
     /**
      * Filter the query by a related \TechWilk\Rota\PermissionGroupPermission object
      *
      * @param \TechWilk\Rota\PermissionGroupPermission|ObjectCollection $permissionGroupPermission the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildPermissionGroupQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByPermissionGroupPermission($permissionGroupPermission, $comparison = null)
+    public function filterByPermissionGroupPermission($permissionGroupPermission, ?string $comparison = null)
     {
         if ($permissionGroupPermission instanceof \TechWilk\Rota\PermissionGroupPermission) {
-            return $this
+            $this
                 ->addUsingAlias(PermissionGroupTableMap::COL_ID, $permissionGroupPermission->getPermissionId(), $comparison);
+
+            return $this;
         } elseif ($permissionGroupPermission instanceof ObjectCollection) {
-            return $this
+            $this
                 ->usePermissionGroupPermissionQuery()
                 ->filterByPrimaryKeys($permissionGroupPermission->getPrimaryKeys())
                 ->endUse();
+
+            return $this;
         } else {
             throw new PropelException('filterByPermissionGroupPermission() only accepts arguments of type \TechWilk\Rota\PermissionGroupPermission or Collection');
         }
@@ -465,12 +494,12 @@ abstract class PermissionGroupQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the PermissionGroupPermission relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildPermissionGroupQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinPermissionGroupPermission($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPermissionGroupPermission(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('PermissionGroupPermission');
@@ -499,9 +528,9 @@ abstract class PermissionGroupQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \TechWilk\Rota\PermissionGroupPermissionQuery A secondary query class using the current class as primary query
      */
@@ -513,11 +542,107 @@ abstract class PermissionGroupQuery extends ModelCriteria
     }
 
     /**
+     * Use the PermissionGroupPermission relation PermissionGroupPermission object
+     *
+     * @param callable(\TechWilk\Rota\PermissionGroupPermissionQuery):\TechWilk\Rota\PermissionGroupPermissionQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withPermissionGroupPermissionQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->usePermissionGroupPermissionQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the relation to PermissionGroupPermission table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \TechWilk\Rota\PermissionGroupPermissionQuery The inner query object of the EXISTS statement
+     */
+    public function usePermissionGroupPermissionExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \TechWilk\Rota\PermissionGroupPermissionQuery */
+        $q = $this->useExistsQuery('PermissionGroupPermission', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the relation to PermissionGroupPermission table for a NOT EXISTS query.
+     *
+     * @see usePermissionGroupPermissionExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\PermissionGroupPermissionQuery The inner query object of the NOT EXISTS statement
+     */
+    public function usePermissionGroupPermissionNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\PermissionGroupPermissionQuery */
+        $q = $this->useExistsQuery('PermissionGroupPermission', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the relation to PermissionGroupPermission table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \TechWilk\Rota\PermissionGroupPermissionQuery The inner query object of the IN statement
+     */
+    public function useInPermissionGroupPermissionQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \TechWilk\Rota\PermissionGroupPermissionQuery */
+        $q = $this->useInQuery('PermissionGroupPermission', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the relation to PermissionGroupPermission table for a NOT IN query.
+     *
+     * @see usePermissionGroupPermissionInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\PermissionGroupPermissionQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInPermissionGroupPermissionQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\PermissionGroupPermissionQuery */
+        $q = $this->useInQuery('PermissionGroupPermission', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Exclude object from result
      *
-     * @param   ChildPermissionGroup $permissionGroup Object to remove from the list of results
+     * @param ChildPermissionGroup $permissionGroup Object to remove from the list of results
      *
-     * @return $this|ChildPermissionGroupQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function prune($permissionGroup = null)
     {
@@ -534,7 +659,7 @@ abstract class PermissionGroupQuery extends ModelCriteria
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public function doDeleteAll(ConnectionInterface $con = null)
+    public function doDeleteAll(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(PermissionGroupTableMap::DATABASE_NAME);
@@ -559,12 +684,12 @@ abstract class PermissionGroupQuery extends ModelCriteria
      * Performs a DELETE on the database based on the current ModelCriteria
      *
      * @param ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public function delete(ConnectionInterface $con = null)
+    public function delete(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(PermissionGroupTableMap::DATABASE_NAME);
@@ -594,64 +719,77 @@ abstract class PermissionGroupQuery extends ModelCriteria
     /**
      * Filter by the latest updated
      *
-     * @param      int $nbDays Maximum age of the latest update in days
+     * @param int $nbDays Maximum age of the latest update in days
      *
-     * @return     $this|ChildPermissionGroupQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function recentlyUpdated($nbDays = 7)
     {
-        return $this->addUsingAlias(PermissionGroupTableMap::COL_UPDATED, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        $this->addUsingAlias(PermissionGroupTableMap::COL_UPDATED, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+
+        return $this;
     }
 
     /**
      * Order by update date desc
      *
-     * @return     $this|ChildPermissionGroupQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function lastUpdatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PermissionGroupTableMap::COL_UPDATED);
+        $this->addDescendingOrderByColumn(PermissionGroupTableMap::COL_UPDATED);
+
+        return $this;
     }
 
     /**
      * Order by update date asc
      *
-     * @return     $this|ChildPermissionGroupQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function firstUpdatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PermissionGroupTableMap::COL_UPDATED);
+        $this->addAscendingOrderByColumn(PermissionGroupTableMap::COL_UPDATED);
+
+        return $this;
     }
 
     /**
      * Order by create date desc
      *
-     * @return     $this|ChildPermissionGroupQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function lastCreatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PermissionGroupTableMap::COL_CREATED);
+        $this->addDescendingOrderByColumn(PermissionGroupTableMap::COL_CREATED);
+
+        return $this;
     }
 
     /**
      * Filter by the latest created
      *
-     * @param      int $nbDays Maximum age of in days
+     * @param int $nbDays Maximum age of in days
      *
-     * @return     $this|ChildPermissionGroupQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function recentlyCreated($nbDays = 7)
     {
-        return $this->addUsingAlias(PermissionGroupTableMap::COL_CREATED, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        $this->addUsingAlias(PermissionGroupTableMap::COL_CREATED, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+
+        return $this;
     }
 
     /**
      * Order by create date asc
      *
-     * @return     $this|ChildPermissionGroupQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function firstCreatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PermissionGroupTableMap::COL_CREATED);
+        $this->addAscendingOrderByColumn(PermissionGroupTableMap::COL_CREATED);
+
+        return $this;
     }
-} // PermissionGroupQuery
+
+}

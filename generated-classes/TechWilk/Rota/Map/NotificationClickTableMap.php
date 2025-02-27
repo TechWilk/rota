@@ -14,6 +14,7 @@ use Propel\Runtime\Map\TableMapTrait;
 use TechWilk\Rota\NotificationClick;
 use TechWilk\Rota\NotificationClickQuery;
 
+
 /**
  * This class defines the structure of the 'notificationClicks' table.
  *
@@ -23,7 +24,6 @@ use TechWilk\Rota\NotificationClickQuery;
  * For example, the createSelectSql() method checks the type of a given column used in an
  * ORDER BY clause to know whether it needs to apply SQL to make the ORDER BY case-insensitive
  * (i.e. if it's a text column type).
- *
  */
 class NotificationClickTableMap extends TableMap
 {
@@ -33,104 +33,149 @@ class NotificationClickTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'TechWilk.Rota.Map.NotificationClickTableMap';
+    public const CLASS_NAME = 'TechWilk.Rota.Map.NotificationClickTableMap';
 
     /**
      * The default database name for this class
      */
-    const DATABASE_NAME = 'default';
+    public const DATABASE_NAME = 'default';
 
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'notificationClicks';
+    public const TABLE_NAME = 'notificationClicks';
+
+    /**
+     * The PHP name of this class (PascalCase)
+     */
+    public const TABLE_PHP_NAME = 'NotificationClick';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\TechWilk\\Rota\\NotificationClick';
+    public const OM_CLASS = '\\TechWilk\\Rota\\NotificationClick';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'TechWilk.Rota.NotificationClick';
+    public const CLASS_DEFAULT = 'TechWilk.Rota.NotificationClick';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 4;
+    public const NUM_COLUMNS = 4;
 
     /**
      * The number of lazy-loaded columns
      */
-    const NUM_LAZY_LOAD_COLUMNS = 0;
+    public const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 4;
+    public const NUM_HYDRATE_COLUMNS = 4;
 
     /**
      * the column name for the id field
      */
-    const COL_ID = 'notificationClicks.id';
+    public const COL_ID = 'notificationClicks.id';
 
     /**
      * the column name for the notificationId field
      */
-    const COL_NOTIFICATIONID = 'notificationClicks.notificationId';
+    public const COL_NOTIFICATIONID = 'notificationClicks.notificationId';
 
     /**
      * the column name for the referer field
      */
-    const COL_REFERER = 'notificationClicks.referer';
+    public const COL_REFERER = 'notificationClicks.referer';
 
     /**
      * the column name for the timestamp field
      */
-    const COL_TIMESTAMP = 'notificationClicks.timestamp';
+    public const COL_TIMESTAMP = 'notificationClicks.timestamp';
 
     /**
      * The default string format for model objects of the related table
      */
-    const DEFAULT_STRING_FORMAT = 'YAML';
+    public const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
+     *
+     * @var array<string, mixed>
      */
-    protected static $fieldNames = array(
-        self::TYPE_PHPNAME       => array('Id', 'NotificationId', 'Referer', 'Timestamp', ),
-        self::TYPE_CAMELNAME     => array('id', 'notificationId', 'referer', 'timestamp', ),
-        self::TYPE_COLNAME       => array(NotificationClickTableMap::COL_ID, NotificationClickTableMap::COL_NOTIFICATIONID, NotificationClickTableMap::COL_REFERER, NotificationClickTableMap::COL_TIMESTAMP, ),
-        self::TYPE_FIELDNAME     => array('id', 'notificationId', 'referer', 'timestamp', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
-    );
+    protected static $fieldNames = [
+        self::TYPE_PHPNAME       => ['Id', 'NotificationId', 'Referer', 'Timestamp', ],
+        self::TYPE_CAMELNAME     => ['id', 'notificationId', 'referer', 'timestamp', ],
+        self::TYPE_COLNAME       => [NotificationClickTableMap::COL_ID, NotificationClickTableMap::COL_NOTIFICATIONID, NotificationClickTableMap::COL_REFERER, NotificationClickTableMap::COL_TIMESTAMP, ],
+        self::TYPE_FIELDNAME     => ['id', 'notificationId', 'referer', 'timestamp', ],
+        self::TYPE_NUM           => [0, 1, 2, 3, ]
+    ];
 
     /**
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
+     *
+     * @var array<string, mixed>
      */
-    protected static $fieldKeys = array(
-        self::TYPE_PHPNAME       => array('Id' => 0, 'NotificationId' => 1, 'Referer' => 2, 'Timestamp' => 3, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'notificationId' => 1, 'referer' => 2, 'timestamp' => 3, ),
-        self::TYPE_COLNAME       => array(NotificationClickTableMap::COL_ID => 0, NotificationClickTableMap::COL_NOTIFICATIONID => 1, NotificationClickTableMap::COL_REFERER => 2, NotificationClickTableMap::COL_TIMESTAMP => 3, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'notificationId' => 1, 'referer' => 2, 'timestamp' => 3, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
-    );
+    protected static $fieldKeys = [
+        self::TYPE_PHPNAME       => ['Id' => 0, 'NotificationId' => 1, 'Referer' => 2, 'Timestamp' => 3, ],
+        self::TYPE_CAMELNAME     => ['id' => 0, 'notificationId' => 1, 'referer' => 2, 'timestamp' => 3, ],
+        self::TYPE_COLNAME       => [NotificationClickTableMap::COL_ID => 0, NotificationClickTableMap::COL_NOTIFICATIONID => 1, NotificationClickTableMap::COL_REFERER => 2, NotificationClickTableMap::COL_TIMESTAMP => 3, ],
+        self::TYPE_FIELDNAME     => ['id' => 0, 'notificationId' => 1, 'referer' => 2, 'timestamp' => 3, ],
+        self::TYPE_NUM           => [0, 1, 2, 3, ]
+    ];
+
+    /**
+     * Holds a list of column names and their normalized version.
+     *
+     * @var array<string>
+     */
+    protected $normalizedColumnNameMap = [
+        'Id' => 'ID',
+        'NotificationClick.Id' => 'ID',
+        'id' => 'ID',
+        'notificationClick.id' => 'ID',
+        'NotificationClickTableMap::COL_ID' => 'ID',
+        'COL_ID' => 'ID',
+        'notificationClicks.id' => 'ID',
+        'NotificationId' => 'NOTIFICATIONID',
+        'NotificationClick.NotificationId' => 'NOTIFICATIONID',
+        'notificationId' => 'NOTIFICATIONID',
+        'notificationClick.notificationId' => 'NOTIFICATIONID',
+        'NotificationClickTableMap::COL_NOTIFICATIONID' => 'NOTIFICATIONID',
+        'COL_NOTIFICATIONID' => 'NOTIFICATIONID',
+        'notificationClicks.notificationId' => 'NOTIFICATIONID',
+        'Referer' => 'REFERER',
+        'NotificationClick.Referer' => 'REFERER',
+        'referer' => 'REFERER',
+        'notificationClick.referer' => 'REFERER',
+        'NotificationClickTableMap::COL_REFERER' => 'REFERER',
+        'COL_REFERER' => 'REFERER',
+        'notificationClicks.referer' => 'REFERER',
+        'Timestamp' => 'TIMESTAMP',
+        'NotificationClick.Timestamp' => 'TIMESTAMP',
+        'timestamp' => 'TIMESTAMP',
+        'notificationClick.timestamp' => 'TIMESTAMP',
+        'NotificationClickTableMap::COL_TIMESTAMP' => 'TIMESTAMP',
+        'COL_TIMESTAMP' => 'TIMESTAMP',
+        'notificationClicks.timestamp' => 'TIMESTAMP',
+    ];
 
     /**
      * Initialize the table attributes and columns
      * Relations are not initialized by this method since they are lazy loaded
      *
      * @return void
-     * @throws PropelException
+     * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function initialize()
+    public function initialize(): void
     {
         // attributes
         $this->setName('notificationClicks');
@@ -144,34 +189,36 @@ class NotificationClickTableMap extends TableMap
         $this->addForeignKey('notificationId', 'NotificationId', 'INTEGER', 'notifications', 'id', true, 30, null);
         $this->addColumn('referer', 'Referer', 'VARCHAR', true, 50, null);
         $this->addColumn('timestamp', 'Timestamp', 'TIMESTAMP', false, null, null);
-    } // initialize()
+    }
 
     /**
      * Build the RelationMap objects for this table relationships
+     *
+     * @return void
      */
-    public function buildRelations()
+    public function buildRelations(): void
     {
-        $this->addRelation('Notification', '\\TechWilk\\Rota\\Notification', RelationMap::MANY_TO_ONE, array(
+        $this->addRelation('Notification', '\\TechWilk\\Rota\\Notification', RelationMap::MANY_TO_ONE, array (
   0 =>
-  array(
+  array (
     0 => ':notificationId',
     1 => ':id',
   ),
 ), null, null, null, false);
-    } // buildRelations()
+    }
 
     /**
      *
      * Gets the list of behaviors registered for this table
      *
-     * @return array Associative array (name => parameters) of behaviors
+     * @return array<string, array> Associative array (name => parameters) of behaviors
      */
-    public function getBehaviors()
+    public function getBehaviors(): array
     {
-        return array(
-            'timestampable' => array('create_column' => 'timestamp', 'update_column' => 'updated_at', 'disable_created_at' => 'false', 'disable_updated_at' => 'true', ),
-        );
-    } // getBehaviors()
+        return [
+            'timestampable' => ['create_column' => 'timestamp', 'update_column' => 'updated_at', 'disable_created_at' => 'false', 'disable_updated_at' => 'true'],
+        ];
+    }
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
@@ -179,14 +226,14 @@ class NotificationClickTableMap extends TableMap
      * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
-     * @param array  $row       resultset row.
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Resultset row.
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      *
-     * @return string The primary key hash of the row
+     * @return string|null The primary key hash of the row
      */
-    public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function getPrimaryKeyHashFromRow(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM): ?string
     {
         // If the PK cannot be derived from the row, return NULL.
         if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
@@ -201,14 +248,14 @@ class NotificationClickTableMap extends TableMap
      * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
      * a multi-column primary key, an array of the primary key columns will be returned.
      *
-     * @param array  $row       resultset row.
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Resultset row.
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      *
      * @return mixed The primary key of the row
      */
-    public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function getPrimaryKeyFromRow(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM)
     {
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
@@ -225,10 +272,10 @@ class NotificationClickTableMap extends TableMap
      * relative to a location on the PHP include_path.
      * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
      *
-     * @param boolean $withPrefix Whether or not to return the path with the class name
+     * @param bool $withPrefix Whether to return the path with the class name
      * @return string path.to.ClassName
      */
-    public static function getOMClass($withPrefix = true)
+    public static function getOMClass(bool $withPrefix = true): string
     {
         return $withPrefix ? NotificationClickTableMap::CLASS_DEFAULT : NotificationClickTableMap::OM_CLASS;
     }
@@ -236,17 +283,17 @@ class NotificationClickTableMap extends TableMap
     /**
      * Populates an object of the default type or an object that inherit from the default.
      *
-     * @param array  $row       row returned by DataFetcher->fetch().
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Row returned by DataFetcher->fetch().
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType The index type of $row. Mostly DataFetcher->getIndexType().
                                  One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (NotificationClick object, last column rank)
+     * @return array (NotificationClick object, last column rank)
      */
-    public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function populateObject(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM): array
     {
         $key = NotificationClickTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
         if (null !== ($obj = NotificationClickTableMap::getInstanceFromPool($key))) {
@@ -262,7 +309,7 @@ class NotificationClickTableMap extends TableMap
             NotificationClickTableMap::addInstanceToPool($obj, $key);
         }
 
-        return array($obj, $col);
+        return [$obj, $col];
     }
 
     /**
@@ -270,13 +317,13 @@ class NotificationClickTableMap extends TableMap
      * objects that inherit from the default.
      *
      * @param DataFetcherInterface $dataFetcher
-     * @return array
-     * @throws PropelException Any exceptions caught during processing will be
+     * @return array<object>
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function populateObjects(DataFetcherInterface $dataFetcher)
+    public static function populateObjects(DataFetcherInterface $dataFetcher): array
     {
-        $results = array();
+        $results = [];
 
         // set the class once to avoid overhead in the loop
         $cls = static::getOMClass(false);
@@ -306,12 +353,13 @@ class NotificationClickTableMap extends TableMap
      * XML schema will not be added to the select list and only loaded
      * on demand.
      *
-     * @param Criteria $criteria object containing the columns to add.
-     * @param string   $alias    optional table alias
-     * @throws PropelException Any exceptions caught during processing will be
+     * @param Criteria $criteria Object containing the columns to add.
+     * @param string|null $alias Optional table alias
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
+     * @return void
      */
-    public static function addSelectColumns(Criteria $criteria, $alias = null)
+    public static function addSelectColumns(Criteria $criteria, ?string $alias = null): void
     {
         if (null === $alias) {
             $criteria->addSelectColumn(NotificationClickTableMap::COL_ID);
@@ -327,68 +375,84 @@ class NotificationClickTableMap extends TableMap
     }
 
     /**
+     * Remove all the columns needed to create a new object.
+     *
+     * Note: any columns that were marked with lazyLoad="true" in the
+     * XML schema will not be removed as they are only loaded on demand.
+     *
+     * @param Criteria $criteria Object containing the columns to remove.
+     * @param string|null $alias Optional table alias
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
+     *                         rethrown wrapped into a PropelException.
+     * @return void
+     */
+    public static function removeSelectColumns(Criteria $criteria, ?string $alias = null): void
+    {
+        if (null === $alias) {
+            $criteria->removeSelectColumn(NotificationClickTableMap::COL_ID);
+            $criteria->removeSelectColumn(NotificationClickTableMap::COL_NOTIFICATIONID);
+            $criteria->removeSelectColumn(NotificationClickTableMap::COL_REFERER);
+            $criteria->removeSelectColumn(NotificationClickTableMap::COL_TIMESTAMP);
+        } else {
+            $criteria->removeSelectColumn($alias . '.id');
+            $criteria->removeSelectColumn($alias . '.notificationId');
+            $criteria->removeSelectColumn($alias . '.referer');
+            $criteria->removeSelectColumn($alias . '.timestamp');
+        }
+    }
+
+    /**
      * Returns the TableMap related to this object.
      * This method is not needed for general use but a specific application could have a need.
      * @return TableMap
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function getTableMap()
+    public static function getTableMap(): TableMap
     {
         return Propel::getServiceContainer()->getDatabaseMap(NotificationClickTableMap::DATABASE_NAME)->getTable(NotificationClickTableMap::TABLE_NAME);
     }
 
     /**
-     * Add a TableMap instance to the database for this tableMap class.
-     */
-    public static function buildTableMap()
-    {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(NotificationClickTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(NotificationClickTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new NotificationClickTableMap());
-        }
-    }
-
-    /**
      * Performs a DELETE on the database, given a NotificationClick or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or NotificationClick object or primary key or array of primary keys
+     * @param mixed $values Criteria or NotificationClick object or primary key or array of primary keys
      *              which is used to create the DELETE statement
-     * @param  ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @param ConnectionInterface $con the connection to use
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-     public static function doDelete($values, ConnectionInterface $con = null)
+     public static function doDelete($values, ?ConnectionInterface $con = null): int
      {
-         if (null === $con) {
-             $con = Propel::getServiceContainer()->getWriteConnection(NotificationClickTableMap::DATABASE_NAME);
-         }
+        if (null === $con) {
+            $con = Propel::getServiceContainer()->getWriteConnection(NotificationClickTableMap::DATABASE_NAME);
+        }
 
-         if ($values instanceof Criteria) {
-             // rename for clarity
+        if ($values instanceof Criteria) {
+            // rename for clarity
             $criteria = $values;
-         } elseif ($values instanceof \TechWilk\Rota\NotificationClick) { // it's a model object
+        } elseif ($values instanceof \TechWilk\Rota\NotificationClick) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
-         } else { // it's a primary key, or an array of pks
+        } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(NotificationClickTableMap::DATABASE_NAME);
-             $criteria->add(NotificationClickTableMap::COL_ID, (array) $values, Criteria::IN);
-         }
+            $criteria->add(NotificationClickTableMap::COL_ID, (array) $values, Criteria::IN);
+        }
 
-         $query = NotificationClickQuery::create()->mergeWith($criteria);
+        $query = NotificationClickQuery::create()->mergeWith($criteria);
 
-         if ($values instanceof Criteria) {
-             NotificationClickTableMap::clearInstancePool();
-         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
+        if ($values instanceof Criteria) {
+            NotificationClickTableMap::clearInstancePool();
+        } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
                 NotificationClickTableMap::removeInstanceFromPool($singleval);
             }
-         }
+        }
 
-         return $query->delete($con);
-     }
+        return $query->delete($con);
+    }
 
     /**
      * Deletes all rows from the notificationClicks table.
@@ -396,7 +460,7 @@ class NotificationClickTableMap extends TableMap
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public static function doDeleteAll(ConnectionInterface $con = null)
+    public static function doDeleteAll(?ConnectionInterface $con = null): int
     {
         return NotificationClickQuery::create()->doDeleteAll($con);
     }
@@ -404,13 +468,13 @@ class NotificationClickTableMap extends TableMap
     /**
      * Performs an INSERT on the database, given a NotificationClick or Criteria object.
      *
-     * @param mixed               $criteria Criteria or NotificationClick object containing data that is used to create the INSERT statement.
+     * @param mixed $criteria Criteria or NotificationClick object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
-     * @return mixed           The new primary key.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @return mixed The new primary key.
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function doInsert($criteria, ConnectionInterface $con = null)
+    public static function doInsert($criteria, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(NotificationClickTableMap::DATABASE_NAME);
@@ -422,7 +486,7 @@ class NotificationClickTableMap extends TableMap
             $criteria = $criteria->buildCriteria(); // build Criteria from NotificationClick object
         }
 
-        if ($criteria->containsKey(NotificationClickTableMap::COL_ID) && $criteria->keyContainsValue(NotificationClickTableMap::COL_ID)) {
+        if ($criteria->containsKey(NotificationClickTableMap::COL_ID) && $criteria->keyContainsValue(NotificationClickTableMap::COL_ID) ) {
             throw new PropelException('Cannot insert a value for auto-increment primary key ('.NotificationClickTableMap::COL_ID.')');
         }
 
@@ -436,7 +500,5 @@ class NotificationClickTableMap extends TableMap
             return $query->doInsert($con);
         });
     }
-} // NotificationClickTableMap
-// This is the static code needed to register the TableMap for this table with the main Propel class.
-//
-NotificationClickTableMap::buildTableMap();
+
+}

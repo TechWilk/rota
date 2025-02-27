@@ -121,9 +121,9 @@ class BaseTestCase extends TestCase
          * Propel ORM config.
          */
         $serviceContainer = Propel::getServiceContainer();
-        $serviceContainer->checkVersion('2.0.0-dev');
+        $serviceContainer->checkVersion(2);
         $serviceContainer->setAdapterClass('default', 'sqlite');
-        $manager = new ConnectionManagerSingle();
+        $manager = new ConnectionManagerSingle('default');
         $manager->setConfiguration([
         'classname'  => 'Propel\\Runtime\\Connection\\ConnectionWrapper',
         'dsn'        => 'sqlite:/var/tmp/test.db',
@@ -137,7 +137,7 @@ class BaseTestCase extends TestCase
         ],
         ]);
         $manager->setName('default');
-        $serviceContainer->setConnectionManager('default', $manager);
+        $serviceContainer->setConnectionManager($manager);
         $serviceContainer->setDefaultDatasource('default');
 
         // delete test db (if exists) and create a new one

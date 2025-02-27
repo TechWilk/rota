@@ -14,6 +14,7 @@ use Propel\Runtime\Map\TableMapTrait;
 use TechWilk\Rota\Email;
 use TechWilk\Rota\EmailQuery;
 
+
 /**
  * This class defines the structure of the 'emails' table.
  *
@@ -23,7 +24,6 @@ use TechWilk\Rota\EmailQuery;
  * For example, the createSelectSql() method checks the type of a given column used in an
  * ORDER BY clause to know whether it needs to apply SQL to make the ORDER BY case-insensitive
  * (i.e. if it's a text column type).
- *
  */
 class EmailTableMap extends TableMap
 {
@@ -33,119 +33,185 @@ class EmailTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'TechWilk.Rota.Map.EmailTableMap';
+    public const CLASS_NAME = 'TechWilk.Rota.Map.EmailTableMap';
 
     /**
      * The default database name for this class
      */
-    const DATABASE_NAME = 'default';
+    public const DATABASE_NAME = 'default';
 
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'emails';
+    public const TABLE_NAME = 'emails';
+
+    /**
+     * The PHP name of this class (PascalCase)
+     */
+    public const TABLE_PHP_NAME = 'Email';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\TechWilk\\Rota\\Email';
+    public const OM_CLASS = '\\TechWilk\\Rota\\Email';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'TechWilk.Rota.Email';
+    public const CLASS_DEFAULT = 'TechWilk.Rota.Email';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 7;
+    public const NUM_COLUMNS = 7;
 
     /**
      * The number of lazy-loaded columns
      */
-    const NUM_LAZY_LOAD_COLUMNS = 0;
+    public const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 7;
+    public const NUM_HYDRATE_COLUMNS = 7;
 
     /**
      * the column name for the id field
      */
-    const COL_ID = 'emails.id';
+    public const COL_ID = 'emails.id';
 
     /**
      * the column name for the emailTo field
      */
-    const COL_EMAILTO = 'emails.emailTo';
+    public const COL_EMAILTO = 'emails.emailTo';
 
     /**
      * the column name for the emailBcc field
      */
-    const COL_EMAILBCC = 'emails.emailBcc';
+    public const COL_EMAILBCC = 'emails.emailBcc';
 
     /**
      * the column name for the emailFrom field
      */
-    const COL_EMAILFROM = 'emails.emailFrom';
+    public const COL_EMAILFROM = 'emails.emailFrom';
 
     /**
      * the column name for the subject field
      */
-    const COL_SUBJECT = 'emails.subject';
+    public const COL_SUBJECT = 'emails.subject';
 
     /**
      * the column name for the message field
      */
-    const COL_MESSAGE = 'emails.message';
+    public const COL_MESSAGE = 'emails.message';
 
     /**
      * the column name for the error field
      */
-    const COL_ERROR = 'emails.error';
+    public const COL_ERROR = 'emails.error';
 
     /**
      * The default string format for model objects of the related table
      */
-    const DEFAULT_STRING_FORMAT = 'YAML';
+    public const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
+     *
+     * @var array<string, mixed>
      */
-    protected static $fieldNames = array(
-        self::TYPE_PHPNAME       => array('Id', 'EmailTo', 'EmailBcc', 'EmailFrom', 'Subject', 'Message', 'Error', ),
-        self::TYPE_CAMELNAME     => array('id', 'emailTo', 'emailBcc', 'emailFrom', 'subject', 'message', 'error', ),
-        self::TYPE_COLNAME       => array(EmailTableMap::COL_ID, EmailTableMap::COL_EMAILTO, EmailTableMap::COL_EMAILBCC, EmailTableMap::COL_EMAILFROM, EmailTableMap::COL_SUBJECT, EmailTableMap::COL_MESSAGE, EmailTableMap::COL_ERROR, ),
-        self::TYPE_FIELDNAME     => array('id', 'emailTo', 'emailBcc', 'emailFrom', 'subject', 'message', 'error', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
-    );
+    protected static $fieldNames = [
+        self::TYPE_PHPNAME       => ['Id', 'EmailTo', 'EmailBcc', 'EmailFrom', 'Subject', 'Message', 'Error', ],
+        self::TYPE_CAMELNAME     => ['id', 'emailTo', 'emailBcc', 'emailFrom', 'subject', 'message', 'error', ],
+        self::TYPE_COLNAME       => [EmailTableMap::COL_ID, EmailTableMap::COL_EMAILTO, EmailTableMap::COL_EMAILBCC, EmailTableMap::COL_EMAILFROM, EmailTableMap::COL_SUBJECT, EmailTableMap::COL_MESSAGE, EmailTableMap::COL_ERROR, ],
+        self::TYPE_FIELDNAME     => ['id', 'emailTo', 'emailBcc', 'emailFrom', 'subject', 'message', 'error', ],
+        self::TYPE_NUM           => [0, 1, 2, 3, 4, 5, 6, ]
+    ];
 
     /**
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
+     *
+     * @var array<string, mixed>
      */
-    protected static $fieldKeys = array(
-        self::TYPE_PHPNAME       => array('Id' => 0, 'EmailTo' => 1, 'EmailBcc' => 2, 'EmailFrom' => 3, 'Subject' => 4, 'Message' => 5, 'Error' => 6, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'emailTo' => 1, 'emailBcc' => 2, 'emailFrom' => 3, 'subject' => 4, 'message' => 5, 'error' => 6, ),
-        self::TYPE_COLNAME       => array(EmailTableMap::COL_ID => 0, EmailTableMap::COL_EMAILTO => 1, EmailTableMap::COL_EMAILBCC => 2, EmailTableMap::COL_EMAILFROM => 3, EmailTableMap::COL_SUBJECT => 4, EmailTableMap::COL_MESSAGE => 5, EmailTableMap::COL_ERROR => 6, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'emailTo' => 1, 'emailBcc' => 2, 'emailFrom' => 3, 'subject' => 4, 'message' => 5, 'error' => 6, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
-    );
+    protected static $fieldKeys = [
+        self::TYPE_PHPNAME       => ['Id' => 0, 'EmailTo' => 1, 'EmailBcc' => 2, 'EmailFrom' => 3, 'Subject' => 4, 'Message' => 5, 'Error' => 6, ],
+        self::TYPE_CAMELNAME     => ['id' => 0, 'emailTo' => 1, 'emailBcc' => 2, 'emailFrom' => 3, 'subject' => 4, 'message' => 5, 'error' => 6, ],
+        self::TYPE_COLNAME       => [EmailTableMap::COL_ID => 0, EmailTableMap::COL_EMAILTO => 1, EmailTableMap::COL_EMAILBCC => 2, EmailTableMap::COL_EMAILFROM => 3, EmailTableMap::COL_SUBJECT => 4, EmailTableMap::COL_MESSAGE => 5, EmailTableMap::COL_ERROR => 6, ],
+        self::TYPE_FIELDNAME     => ['id' => 0, 'emailTo' => 1, 'emailBcc' => 2, 'emailFrom' => 3, 'subject' => 4, 'message' => 5, 'error' => 6, ],
+        self::TYPE_NUM           => [0, 1, 2, 3, 4, 5, 6, ]
+    ];
+
+    /**
+     * Holds a list of column names and their normalized version.
+     *
+     * @var array<string>
+     */
+    protected $normalizedColumnNameMap = [
+        'Id' => 'ID',
+        'Email.Id' => 'ID',
+        'id' => 'ID',
+        'email.id' => 'ID',
+        'EmailTableMap::COL_ID' => 'ID',
+        'COL_ID' => 'ID',
+        'emails.id' => 'ID',
+        'EmailTo' => 'EMAILTO',
+        'Email.EmailTo' => 'EMAILTO',
+        'emailTo' => 'EMAILTO',
+        'email.emailTo' => 'EMAILTO',
+        'EmailTableMap::COL_EMAILTO' => 'EMAILTO',
+        'COL_EMAILTO' => 'EMAILTO',
+        'emails.emailTo' => 'EMAILTO',
+        'EmailBcc' => 'EMAILBCC',
+        'Email.EmailBcc' => 'EMAILBCC',
+        'emailBcc' => 'EMAILBCC',
+        'email.emailBcc' => 'EMAILBCC',
+        'EmailTableMap::COL_EMAILBCC' => 'EMAILBCC',
+        'COL_EMAILBCC' => 'EMAILBCC',
+        'emails.emailBcc' => 'EMAILBCC',
+        'EmailFrom' => 'EMAILFROM',
+        'Email.EmailFrom' => 'EMAILFROM',
+        'emailFrom' => 'EMAILFROM',
+        'email.emailFrom' => 'EMAILFROM',
+        'EmailTableMap::COL_EMAILFROM' => 'EMAILFROM',
+        'COL_EMAILFROM' => 'EMAILFROM',
+        'emails.emailFrom' => 'EMAILFROM',
+        'Subject' => 'SUBJECT',
+        'Email.Subject' => 'SUBJECT',
+        'subject' => 'SUBJECT',
+        'email.subject' => 'SUBJECT',
+        'EmailTableMap::COL_SUBJECT' => 'SUBJECT',
+        'COL_SUBJECT' => 'SUBJECT',
+        'emails.subject' => 'SUBJECT',
+        'Message' => 'MESSAGE',
+        'Email.Message' => 'MESSAGE',
+        'message' => 'MESSAGE',
+        'email.message' => 'MESSAGE',
+        'EmailTableMap::COL_MESSAGE' => 'MESSAGE',
+        'COL_MESSAGE' => 'MESSAGE',
+        'emails.message' => 'MESSAGE',
+        'Error' => 'ERROR',
+        'Email.Error' => 'ERROR',
+        'error' => 'ERROR',
+        'email.error' => 'ERROR',
+        'EmailTableMap::COL_ERROR' => 'ERROR',
+        'COL_ERROR' => 'ERROR',
+        'emails.error' => 'ERROR',
+    ];
 
     /**
      * Initialize the table attributes and columns
      * Relations are not initialized by this method since they are lazy loaded
      *
      * @return void
-     * @throws PropelException
+     * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function initialize()
+    public function initialize(): void
     {
         // attributes
         $this->setName('emails');
@@ -162,14 +228,16 @@ class EmailTableMap extends TableMap
         $this->addColumn('subject', 'Subject', 'VARCHAR', true, 150, null);
         $this->addColumn('message', 'Message', 'LONGVARCHAR', true, null, null);
         $this->addColumn('error', 'Error', 'LONGVARCHAR', false, null, null);
-    } // initialize()
+    }
 
     /**
      * Build the RelationMap objects for this table relationships
+     *
+     * @return void
      */
-    public function buildRelations()
+    public function buildRelations(): void
     {
-    } // buildRelations()
+    }
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
@@ -177,14 +245,14 @@ class EmailTableMap extends TableMap
      * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
-     * @param array  $row       resultset row.
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Resultset row.
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      *
-     * @return string The primary key hash of the row
+     * @return string|null The primary key hash of the row
      */
-    public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function getPrimaryKeyHashFromRow(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM): ?string
     {
         // If the PK cannot be derived from the row, return NULL.
         if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
@@ -199,14 +267,14 @@ class EmailTableMap extends TableMap
      * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
      * a multi-column primary key, an array of the primary key columns will be returned.
      *
-     * @param array  $row       resultset row.
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Resultset row.
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      *
      * @return mixed The primary key of the row
      */
-    public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function getPrimaryKeyFromRow(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM)
     {
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
@@ -223,10 +291,10 @@ class EmailTableMap extends TableMap
      * relative to a location on the PHP include_path.
      * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
      *
-     * @param boolean $withPrefix Whether or not to return the path with the class name
+     * @param bool $withPrefix Whether to return the path with the class name
      * @return string path.to.ClassName
      */
-    public static function getOMClass($withPrefix = true)
+    public static function getOMClass(bool $withPrefix = true): string
     {
         return $withPrefix ? EmailTableMap::CLASS_DEFAULT : EmailTableMap::OM_CLASS;
     }
@@ -234,17 +302,17 @@ class EmailTableMap extends TableMap
     /**
      * Populates an object of the default type or an object that inherit from the default.
      *
-     * @param array  $row       row returned by DataFetcher->fetch().
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Row returned by DataFetcher->fetch().
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType The index type of $row. Mostly DataFetcher->getIndexType().
                                  One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Email object, last column rank)
+     * @return array (Email object, last column rank)
      */
-    public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function populateObject(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM): array
     {
         $key = EmailTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
         if (null !== ($obj = EmailTableMap::getInstanceFromPool($key))) {
@@ -260,7 +328,7 @@ class EmailTableMap extends TableMap
             EmailTableMap::addInstanceToPool($obj, $key);
         }
 
-        return array($obj, $col);
+        return [$obj, $col];
     }
 
     /**
@@ -268,13 +336,13 @@ class EmailTableMap extends TableMap
      * objects that inherit from the default.
      *
      * @param DataFetcherInterface $dataFetcher
-     * @return array
-     * @throws PropelException Any exceptions caught during processing will be
+     * @return array<object>
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function populateObjects(DataFetcherInterface $dataFetcher)
+    public static function populateObjects(DataFetcherInterface $dataFetcher): array
     {
-        $results = array();
+        $results = [];
 
         // set the class once to avoid overhead in the loop
         $cls = static::getOMClass(false);
@@ -304,12 +372,13 @@ class EmailTableMap extends TableMap
      * XML schema will not be added to the select list and only loaded
      * on demand.
      *
-     * @param Criteria $criteria object containing the columns to add.
-     * @param string   $alias    optional table alias
-     * @throws PropelException Any exceptions caught during processing will be
+     * @param Criteria $criteria Object containing the columns to add.
+     * @param string|null $alias Optional table alias
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
+     * @return void
      */
-    public static function addSelectColumns(Criteria $criteria, $alias = null)
+    public static function addSelectColumns(Criteria $criteria, ?string $alias = null): void
     {
         if (null === $alias) {
             $criteria->addSelectColumn(EmailTableMap::COL_ID);
@@ -331,68 +400,90 @@ class EmailTableMap extends TableMap
     }
 
     /**
+     * Remove all the columns needed to create a new object.
+     *
+     * Note: any columns that were marked with lazyLoad="true" in the
+     * XML schema will not be removed as they are only loaded on demand.
+     *
+     * @param Criteria $criteria Object containing the columns to remove.
+     * @param string|null $alias Optional table alias
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
+     *                         rethrown wrapped into a PropelException.
+     * @return void
+     */
+    public static function removeSelectColumns(Criteria $criteria, ?string $alias = null): void
+    {
+        if (null === $alias) {
+            $criteria->removeSelectColumn(EmailTableMap::COL_ID);
+            $criteria->removeSelectColumn(EmailTableMap::COL_EMAILTO);
+            $criteria->removeSelectColumn(EmailTableMap::COL_EMAILBCC);
+            $criteria->removeSelectColumn(EmailTableMap::COL_EMAILFROM);
+            $criteria->removeSelectColumn(EmailTableMap::COL_SUBJECT);
+            $criteria->removeSelectColumn(EmailTableMap::COL_MESSAGE);
+            $criteria->removeSelectColumn(EmailTableMap::COL_ERROR);
+        } else {
+            $criteria->removeSelectColumn($alias . '.id');
+            $criteria->removeSelectColumn($alias . '.emailTo');
+            $criteria->removeSelectColumn($alias . '.emailBcc');
+            $criteria->removeSelectColumn($alias . '.emailFrom');
+            $criteria->removeSelectColumn($alias . '.subject');
+            $criteria->removeSelectColumn($alias . '.message');
+            $criteria->removeSelectColumn($alias . '.error');
+        }
+    }
+
+    /**
      * Returns the TableMap related to this object.
      * This method is not needed for general use but a specific application could have a need.
      * @return TableMap
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function getTableMap()
+    public static function getTableMap(): TableMap
     {
         return Propel::getServiceContainer()->getDatabaseMap(EmailTableMap::DATABASE_NAME)->getTable(EmailTableMap::TABLE_NAME);
     }
 
     /**
-     * Add a TableMap instance to the database for this tableMap class.
-     */
-    public static function buildTableMap()
-    {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(EmailTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(EmailTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new EmailTableMap());
-        }
-    }
-
-    /**
      * Performs a DELETE on the database, given a Email or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Email object or primary key or array of primary keys
+     * @param mixed $values Criteria or Email object or primary key or array of primary keys
      *              which is used to create the DELETE statement
-     * @param  ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @param ConnectionInterface $con the connection to use
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-     public static function doDelete($values, ConnectionInterface $con = null)
+     public static function doDelete($values, ?ConnectionInterface $con = null): int
      {
-         if (null === $con) {
-             $con = Propel::getServiceContainer()->getWriteConnection(EmailTableMap::DATABASE_NAME);
-         }
+        if (null === $con) {
+            $con = Propel::getServiceContainer()->getWriteConnection(EmailTableMap::DATABASE_NAME);
+        }
 
-         if ($values instanceof Criteria) {
-             // rename for clarity
+        if ($values instanceof Criteria) {
+            // rename for clarity
             $criteria = $values;
-         } elseif ($values instanceof \TechWilk\Rota\Email) { // it's a model object
+        } elseif ($values instanceof \TechWilk\Rota\Email) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
-         } else { // it's a primary key, or an array of pks
+        } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(EmailTableMap::DATABASE_NAME);
-             $criteria->add(EmailTableMap::COL_ID, (array) $values, Criteria::IN);
-         }
+            $criteria->add(EmailTableMap::COL_ID, (array) $values, Criteria::IN);
+        }
 
-         $query = EmailQuery::create()->mergeWith($criteria);
+        $query = EmailQuery::create()->mergeWith($criteria);
 
-         if ($values instanceof Criteria) {
-             EmailTableMap::clearInstancePool();
-         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
+        if ($values instanceof Criteria) {
+            EmailTableMap::clearInstancePool();
+        } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
                 EmailTableMap::removeInstanceFromPool($singleval);
             }
-         }
+        }
 
-         return $query->delete($con);
-     }
+        return $query->delete($con);
+    }
 
     /**
      * Deletes all rows from the emails table.
@@ -400,7 +491,7 @@ class EmailTableMap extends TableMap
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public static function doDeleteAll(ConnectionInterface $con = null)
+    public static function doDeleteAll(?ConnectionInterface $con = null): int
     {
         return EmailQuery::create()->doDeleteAll($con);
     }
@@ -408,13 +499,13 @@ class EmailTableMap extends TableMap
     /**
      * Performs an INSERT on the database, given a Email or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Email object containing data that is used to create the INSERT statement.
+     * @param mixed $criteria Criteria or Email object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
-     * @return mixed           The new primary key.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @return mixed The new primary key.
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function doInsert($criteria, ConnectionInterface $con = null)
+    public static function doInsert($criteria, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(EmailTableMap::DATABASE_NAME);
@@ -426,7 +517,7 @@ class EmailTableMap extends TableMap
             $criteria = $criteria->buildCriteria(); // build Criteria from Email object
         }
 
-        if ($criteria->containsKey(EmailTableMap::COL_ID) && $criteria->keyContainsValue(EmailTableMap::COL_ID)) {
+        if ($criteria->containsKey(EmailTableMap::COL_ID) && $criteria->keyContainsValue(EmailTableMap::COL_ID) ) {
             throw new PropelException('Cannot insert a value for auto-increment primary key ('.EmailTableMap::COL_ID.')');
         }
 
@@ -440,7 +531,5 @@ class EmailTableMap extends TableMap
             return $query->doInsert($con);
         });
     }
-} // EmailTableMap
-// This is the static code needed to register the TableMap for this table with the main Propel class.
-//
-EmailTableMap::buildTableMap();
+
+}

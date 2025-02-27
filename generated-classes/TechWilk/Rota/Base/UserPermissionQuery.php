@@ -8,6 +8,7 @@ use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveQuery\ModelJoin;
+use Propel\Runtime\Collection\Collection;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -16,9 +17,7 @@ use TechWilk\Rota\UserPermissionQuery as ChildUserPermissionQuery;
 use TechWilk\Rota\Map\UserPermissionTableMap;
 
 /**
- * Base class that represents a query for the 'userPermissions' table.
- *
- *
+ * Base class that represents a query for the `userPermissions` table.
  *
  * @method     ChildUserPermissionQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildUserPermissionQuery orderByUserId($order = Criteria::ASC) Order by the userId column
@@ -62,17 +61,17 @@ use TechWilk\Rota\Map\UserPermissionTableMap;
  *
  * @method     \TechWilk\Rota\UserQuery|\TechWilk\Rota\PermissionQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
- * @method     ChildUserPermission findOne(ConnectionInterface $con = null) Return the first ChildUserPermission matching the query
- * @method     ChildUserPermission findOneOrCreate(ConnectionInterface $con = null) Return the first ChildUserPermission matching the query, or a new ChildUserPermission object populated from the query conditions when no match is found
+ * @method     ChildUserPermission|null findOne(?ConnectionInterface $con = null) Return the first ChildUserPermission matching the query
+ * @method     ChildUserPermission findOneOrCreate(?ConnectionInterface $con = null) Return the first ChildUserPermission matching the query, or a new ChildUserPermission object populated from the query conditions when no match is found
  *
- * @method     ChildUserPermission findOneById(int $id) Return the first ChildUserPermission filtered by the id column
- * @method     ChildUserPermission findOneByUserId(int $userId) Return the first ChildUserPermission filtered by the userId column
- * @method     ChildUserPermission findOneByPermissionId(int $permissionId) Return the first ChildUserPermission filtered by the permissionId column
- * @method     ChildUserPermission findOneByCreated(string $created) Return the first ChildUserPermission filtered by the created column
- * @method     ChildUserPermission findOneByUpdated(string $updated) Return the first ChildUserPermission filtered by the updated column *
-
- * @method     ChildUserPermission requirePk($key, ConnectionInterface $con = null) Return the ChildUserPermission by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUserPermission requireOne(ConnectionInterface $con = null) Return the first ChildUserPermission matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUserPermission|null findOneById(int $id) Return the first ChildUserPermission filtered by the id column
+ * @method     ChildUserPermission|null findOneByUserId(int $userId) Return the first ChildUserPermission filtered by the userId column
+ * @method     ChildUserPermission|null findOneByPermissionId(int $permissionId) Return the first ChildUserPermission filtered by the permissionId column
+ * @method     ChildUserPermission|null findOneByCreated(string $created) Return the first ChildUserPermission filtered by the created column
+ * @method     ChildUserPermission|null findOneByUpdated(string $updated) Return the first ChildUserPermission filtered by the updated column
+ *
+ * @method     ChildUserPermission requirePk($key, ?ConnectionInterface $con = null) Return the ChildUserPermission by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUserPermission requireOne(?ConnectionInterface $con = null) Return the first ChildUserPermission matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildUserPermission requireOneById(int $id) Return the first ChildUserPermission filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUserPermission requireOneByUserId(int $userId) Return the first ChildUserPermission filtered by the userId column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -80,14 +79,22 @@ use TechWilk\Rota\Map\UserPermissionTableMap;
  * @method     ChildUserPermission requireOneByCreated(string $created) Return the first ChildUserPermission filtered by the created column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUserPermission requireOneByUpdated(string $updated) Return the first ChildUserPermission filtered by the updated column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildUserPermission[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildUserPermission objects based on current ModelCriteria
- * @method     ChildUserPermission[]|ObjectCollection findById(int $id) Return ChildUserPermission objects filtered by the id column
- * @method     ChildUserPermission[]|ObjectCollection findByUserId(int $userId) Return ChildUserPermission objects filtered by the userId column
- * @method     ChildUserPermission[]|ObjectCollection findByPermissionId(int $permissionId) Return ChildUserPermission objects filtered by the permissionId column
- * @method     ChildUserPermission[]|ObjectCollection findByCreated(string $created) Return ChildUserPermission objects filtered by the created column
- * @method     ChildUserPermission[]|ObjectCollection findByUpdated(string $updated) Return ChildUserPermission objects filtered by the updated column
- * @method     ChildUserPermission[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @method     ChildUserPermission[]|Collection find(?ConnectionInterface $con = null) Return ChildUserPermission objects based on current ModelCriteria
+ * @psalm-method Collection&\Traversable<ChildUserPermission> find(?ConnectionInterface $con = null) Return ChildUserPermission objects based on current ModelCriteria
  *
+ * @method     ChildUserPermission[]|Collection findById(int|array<int> $id) Return ChildUserPermission objects filtered by the id column
+ * @psalm-method Collection&\Traversable<ChildUserPermission> findById(int|array<int> $id) Return ChildUserPermission objects filtered by the id column
+ * @method     ChildUserPermission[]|Collection findByUserId(int|array<int> $userId) Return ChildUserPermission objects filtered by the userId column
+ * @psalm-method Collection&\Traversable<ChildUserPermission> findByUserId(int|array<int> $userId) Return ChildUserPermission objects filtered by the userId column
+ * @method     ChildUserPermission[]|Collection findByPermissionId(int|array<int> $permissionId) Return ChildUserPermission objects filtered by the permissionId column
+ * @psalm-method Collection&\Traversable<ChildUserPermission> findByPermissionId(int|array<int> $permissionId) Return ChildUserPermission objects filtered by the permissionId column
+ * @method     ChildUserPermission[]|Collection findByCreated(string|array<string> $created) Return ChildUserPermission objects filtered by the created column
+ * @psalm-method Collection&\Traversable<ChildUserPermission> findByCreated(string|array<string> $created) Return ChildUserPermission objects filtered by the created column
+ * @method     ChildUserPermission[]|Collection findByUpdated(string|array<string> $updated) Return ChildUserPermission objects filtered by the updated column
+ * @psalm-method Collection&\Traversable<ChildUserPermission> findByUpdated(string|array<string> $updated) Return ChildUserPermission objects filtered by the updated column
+ *
+ * @method     ChildUserPermission[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @psalm-method \Propel\Runtime\Util\PropelModelPager&\Traversable<ChildUserPermission> paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  */
 abstract class UserPermissionQuery extends ModelCriteria
 {
@@ -96,9 +103,9 @@ abstract class UserPermissionQuery extends ModelCriteria
     /**
      * Initializes internal state of \TechWilk\Rota\Base\UserPermissionQuery object.
      *
-     * @param     string $dbName The database name
-     * @param     string $modelName The phpName of a model, e.g. 'Book'
-     * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
+     * @param string $dbName The database name
+     * @param string $modelName The phpName of a model, e.g. 'Book'
+     * @param string $modelAlias The alias for the model in this query, e.g. 'b'
      */
     public function __construct($dbName = 'default', $modelName = '\\TechWilk\\Rota\\UserPermission', $modelAlias = null)
     {
@@ -108,12 +115,12 @@ abstract class UserPermissionQuery extends ModelCriteria
     /**
      * Returns a new ChildUserPermissionQuery object.
      *
-     * @param     string $modelAlias The alias of a model in the query
-     * @param     Criteria $criteria Optional Criteria to build the query from
+     * @param string $modelAlias The alias of a model in the query
+     * @param Criteria $criteria Optional Criteria to build the query from
      *
      * @return ChildUserPermissionQuery
      */
-    public static function create($modelAlias = null, Criteria $criteria = null)
+    public static function create(?string $modelAlias = null, ?Criteria $criteria = null): Criteria
     {
         if ($criteria instanceof ChildUserPermissionQuery) {
             return $criteria;
@@ -143,7 +150,7 @@ abstract class UserPermissionQuery extends ModelCriteria
      *
      * @return ChildUserPermission|array|mixed the result, formatted by the current formatter
      */
-    public function findPk($key, ConnectionInterface $con = null)
+    public function findPk($key, ?ConnectionInterface $con = null)
     {
         if ($key === null) {
             return null;
@@ -175,8 +182,8 @@ abstract class UserPermissionQuery extends ModelCriteria
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
@@ -208,8 +215,8 @@ abstract class UserPermissionQuery extends ModelCriteria
     /**
      * Find object by primary key.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @return ChildUserPermission|array|mixed the result, formatted by the current formatter
      */
@@ -229,12 +236,12 @@ abstract class UserPermissionQuery extends ModelCriteria
      * <code>
      * $objs = $c->findPks(array(12, 56, 832), $con);
      * </code>
-     * @param     array $keys Primary keys to use for the query
-     * @param     ConnectionInterface $con an optional connection object
+     * @param array $keys Primary keys to use for the query
+     * @param ConnectionInterface $con an optional connection object
      *
-     * @return ObjectCollection|array|mixed the list of results, formatted by the current formatter
+     * @return Collection|array|mixed the list of results, formatted by the current formatter
      */
-    public function findPks($keys, ConnectionInterface $con = null)
+    public function findPks($keys, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getReadConnection($this->getDbName());
@@ -251,25 +258,31 @@ abstract class UserPermissionQuery extends ModelCriteria
     /**
      * Filter the query by primary key
      *
-     * @param     mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query
      *
-     * @return $this|ChildUserPermissionQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
-        return $this->addUsingAlias(UserPermissionTableMap::COL_ID, $key, Criteria::EQUAL);
+
+        $this->addUsingAlias(UserPermissionTableMap::COL_ID, $key, Criteria::EQUAL);
+
+        return $this;
     }
 
     /**
      * Filter the query by a list of primary keys
      *
-     * @param     array $keys The list of primary key to use for the query
+     * @param array|int $keys The list of primary key to use for the query
      *
-     * @return $this|ChildUserPermissionQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
-        return $this->addUsingAlias(UserPermissionTableMap::COL_ID, $keys, Criteria::IN);
+
+        $this->addUsingAlias(UserPermissionTableMap::COL_ID, $keys, Criteria::IN);
+
+        return $this;
     }
 
     /**
@@ -282,15 +295,15 @@ abstract class UserPermissionQuery extends ModelCriteria
      * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
      *
-     * @param     mixed $id The value to use as filter.
+     * @param mixed $id The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUserPermissionQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterById($id = null, $comparison = null)
+    public function filterById($id = null, ?string $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
@@ -310,7 +323,9 @@ abstract class UserPermissionQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserPermissionTableMap::COL_ID, $id, $comparison);
+        $this->addUsingAlias(UserPermissionTableMap::COL_ID, $id, $comparison);
+
+        return $this;
     }
 
     /**
@@ -325,15 +340,15 @@ abstract class UserPermissionQuery extends ModelCriteria
      *
      * @see       filterByUser()
      *
-     * @param     mixed $userId The value to use as filter.
+     * @param mixed $userId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUserPermissionQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUserId($userId = null, $comparison = null)
+    public function filterByUserId($userId = null, ?string $comparison = null)
     {
         if (is_array($userId)) {
             $useMinMax = false;
@@ -353,7 +368,9 @@ abstract class UserPermissionQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserPermissionTableMap::COL_USERID, $userId, $comparison);
+        $this->addUsingAlias(UserPermissionTableMap::COL_USERID, $userId, $comparison);
+
+        return $this;
     }
 
     /**
@@ -368,15 +385,15 @@ abstract class UserPermissionQuery extends ModelCriteria
      *
      * @see       filterByPermission()
      *
-     * @param     mixed $permissionId The value to use as filter.
+     * @param mixed $permissionId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUserPermissionQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByPermissionId($permissionId = null, $comparison = null)
+    public function filterByPermissionId($permissionId = null, ?string $comparison = null)
     {
         if (is_array($permissionId)) {
             $useMinMax = false;
@@ -396,7 +413,9 @@ abstract class UserPermissionQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserPermissionTableMap::COL_PERMISSIONID, $permissionId, $comparison);
+        $this->addUsingAlias(UserPermissionTableMap::COL_PERMISSIONID, $permissionId, $comparison);
+
+        return $this;
     }
 
     /**
@@ -409,17 +428,17 @@ abstract class UserPermissionQuery extends ModelCriteria
      * $query->filterByCreated(array('max' => 'yesterday')); // WHERE created > '2011-03-13'
      * </code>
      *
-     * @param     mixed $created The value to use as filter.
+     * @param mixed $created The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUserPermissionQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByCreated($created = null, $comparison = null)
+    public function filterByCreated($created = null, ?string $comparison = null)
     {
         if (is_array($created)) {
             $useMinMax = false;
@@ -439,7 +458,9 @@ abstract class UserPermissionQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserPermissionTableMap::COL_CREATED, $created, $comparison);
+        $this->addUsingAlias(UserPermissionTableMap::COL_CREATED, $created, $comparison);
+
+        return $this;
     }
 
     /**
@@ -452,17 +473,17 @@ abstract class UserPermissionQuery extends ModelCriteria
      * $query->filterByUpdated(array('max' => 'yesterday')); // WHERE updated > '2011-03-13'
      * </code>
      *
-     * @param     mixed $updated The value to use as filter.
+     * @param mixed $updated The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildUserPermissionQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUpdated($updated = null, $comparison = null)
+    public function filterByUpdated($updated = null, ?string $comparison = null)
     {
         if (is_array($updated)) {
             $useMinMax = false;
@@ -482,20 +503,22 @@ abstract class UserPermissionQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserPermissionTableMap::COL_UPDATED, $updated, $comparison);
+        $this->addUsingAlias(UserPermissionTableMap::COL_UPDATED, $updated, $comparison);
+
+        return $this;
     }
 
     /**
      * Filter the query by a related \TechWilk\Rota\User object
      *
      * @param \TechWilk\Rota\User|ObjectCollection $user The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
-     * @return ChildUserPermissionQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUser($user, $comparison = null)
+    public function filterByUser($user, ?string $comparison = null)
     {
         if ($user instanceof \TechWilk\Rota\User) {
             return $this
@@ -505,8 +528,10 @@ abstract class UserPermissionQuery extends ModelCriteria
                 $comparison = Criteria::IN;
             }
 
-            return $this
+            $this
                 ->addUsingAlias(UserPermissionTableMap::COL_USERID, $user->toKeyValue('PrimaryKey', 'Id'), $comparison);
+
+            return $this;
         } else {
             throw new PropelException('filterByUser() only accepts arguments of type \TechWilk\Rota\User or Collection');
         }
@@ -515,12 +540,12 @@ abstract class UserPermissionQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the User relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildUserPermissionQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinUser(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('User');
@@ -549,9 +574,9 @@ abstract class UserPermissionQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \TechWilk\Rota\UserQuery A secondary query class using the current class as primary query
      */
@@ -563,16 +588,112 @@ abstract class UserPermissionQuery extends ModelCriteria
     }
 
     /**
+     * Use the User relation User object
+     *
+     * @param callable(\TechWilk\Rota\UserQuery):\TechWilk\Rota\UserQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withUserQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->useUserQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the relation to User table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \TechWilk\Rota\UserQuery The inner query object of the EXISTS statement
+     */
+    public function useUserExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \TechWilk\Rota\UserQuery */
+        $q = $this->useExistsQuery('User', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the relation to User table for a NOT EXISTS query.
+     *
+     * @see useUserExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\UserQuery The inner query object of the NOT EXISTS statement
+     */
+    public function useUserNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\UserQuery */
+        $q = $this->useExistsQuery('User', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the relation to User table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \TechWilk\Rota\UserQuery The inner query object of the IN statement
+     */
+    public function useInUserQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \TechWilk\Rota\UserQuery */
+        $q = $this->useInQuery('User', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the relation to User table for a NOT IN query.
+     *
+     * @see useUserInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\UserQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInUserQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\UserQuery */
+        $q = $this->useInQuery('User', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Filter the query by a related \TechWilk\Rota\Permission object
      *
      * @param \TechWilk\Rota\Permission|ObjectCollection $permission The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
-     * @return ChildUserPermissionQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByPermission($permission, $comparison = null)
+    public function filterByPermission($permission, ?string $comparison = null)
     {
         if ($permission instanceof \TechWilk\Rota\Permission) {
             return $this
@@ -582,8 +703,10 @@ abstract class UserPermissionQuery extends ModelCriteria
                 $comparison = Criteria::IN;
             }
 
-            return $this
+            $this
                 ->addUsingAlias(UserPermissionTableMap::COL_PERMISSIONID, $permission->toKeyValue('PrimaryKey', 'Id'), $comparison);
+
+            return $this;
         } else {
             throw new PropelException('filterByPermission() only accepts arguments of type \TechWilk\Rota\Permission or Collection');
         }
@@ -592,12 +715,12 @@ abstract class UserPermissionQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the Permission relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildUserPermissionQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinPermission($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPermission(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Permission');
@@ -626,9 +749,9 @@ abstract class UserPermissionQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \TechWilk\Rota\PermissionQuery A secondary query class using the current class as primary query
      */
@@ -640,11 +763,107 @@ abstract class UserPermissionQuery extends ModelCriteria
     }
 
     /**
+     * Use the Permission relation Permission object
+     *
+     * @param callable(\TechWilk\Rota\PermissionQuery):\TechWilk\Rota\PermissionQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withPermissionQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->usePermissionQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the relation to Permission table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \TechWilk\Rota\PermissionQuery The inner query object of the EXISTS statement
+     */
+    public function usePermissionExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \TechWilk\Rota\PermissionQuery */
+        $q = $this->useExistsQuery('Permission', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Permission table for a NOT EXISTS query.
+     *
+     * @see usePermissionExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\PermissionQuery The inner query object of the NOT EXISTS statement
+     */
+    public function usePermissionNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\PermissionQuery */
+        $q = $this->useExistsQuery('Permission', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the relation to Permission table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \TechWilk\Rota\PermissionQuery The inner query object of the IN statement
+     */
+    public function useInPermissionQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \TechWilk\Rota\PermissionQuery */
+        $q = $this->useInQuery('Permission', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Permission table for a NOT IN query.
+     *
+     * @see usePermissionInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\PermissionQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInPermissionQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\PermissionQuery */
+        $q = $this->useInQuery('Permission', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Exclude object from result
      *
-     * @param   ChildUserPermission $userPermission Object to remove from the list of results
+     * @param ChildUserPermission $userPermission Object to remove from the list of results
      *
-     * @return $this|ChildUserPermissionQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function prune($userPermission = null)
     {
@@ -661,7 +880,7 @@ abstract class UserPermissionQuery extends ModelCriteria
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public function doDeleteAll(ConnectionInterface $con = null)
+    public function doDeleteAll(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(UserPermissionTableMap::DATABASE_NAME);
@@ -686,12 +905,12 @@ abstract class UserPermissionQuery extends ModelCriteria
      * Performs a DELETE on the database based on the current ModelCriteria
      *
      * @param ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public function delete(ConnectionInterface $con = null)
+    public function delete(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(UserPermissionTableMap::DATABASE_NAME);
@@ -721,64 +940,77 @@ abstract class UserPermissionQuery extends ModelCriteria
     /**
      * Filter by the latest updated
      *
-     * @param      int $nbDays Maximum age of the latest update in days
+     * @param int $nbDays Maximum age of the latest update in days
      *
-     * @return     $this|ChildUserPermissionQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function recentlyUpdated($nbDays = 7)
     {
-        return $this->addUsingAlias(UserPermissionTableMap::COL_UPDATED, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        $this->addUsingAlias(UserPermissionTableMap::COL_UPDATED, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+
+        return $this;
     }
 
     /**
      * Order by update date desc
      *
-     * @return     $this|ChildUserPermissionQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function lastUpdatedFirst()
     {
-        return $this->addDescendingOrderByColumn(UserPermissionTableMap::COL_UPDATED);
+        $this->addDescendingOrderByColumn(UserPermissionTableMap::COL_UPDATED);
+
+        return $this;
     }
 
     /**
      * Order by update date asc
      *
-     * @return     $this|ChildUserPermissionQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function firstUpdatedFirst()
     {
-        return $this->addAscendingOrderByColumn(UserPermissionTableMap::COL_UPDATED);
+        $this->addAscendingOrderByColumn(UserPermissionTableMap::COL_UPDATED);
+
+        return $this;
     }
 
     /**
      * Order by create date desc
      *
-     * @return     $this|ChildUserPermissionQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function lastCreatedFirst()
     {
-        return $this->addDescendingOrderByColumn(UserPermissionTableMap::COL_CREATED);
+        $this->addDescendingOrderByColumn(UserPermissionTableMap::COL_CREATED);
+
+        return $this;
     }
 
     /**
      * Filter by the latest created
      *
-     * @param      int $nbDays Maximum age of in days
+     * @param int $nbDays Maximum age of in days
      *
-     * @return     $this|ChildUserPermissionQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function recentlyCreated($nbDays = 7)
     {
-        return $this->addUsingAlias(UserPermissionTableMap::COL_CREATED, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        $this->addUsingAlias(UserPermissionTableMap::COL_CREATED, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+
+        return $this;
     }
 
     /**
      * Order by create date asc
      *
-     * @return     $this|ChildUserPermissionQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function firstCreatedFirst()
     {
-        return $this->addAscendingOrderByColumn(UserPermissionTableMap::COL_CREATED);
+        $this->addAscendingOrderByColumn(UserPermissionTableMap::COL_CREATED);
+
+        return $this;
     }
-} // UserPermissionQuery
+
+}

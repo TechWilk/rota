@@ -14,6 +14,7 @@ use Propel\Runtime\Map\TableMapTrait;
 use TechWilk\Rota\Role;
 use TechWilk\Rota\RoleQuery;
 
+
 /**
  * This class defines the structure of the 'roles' table.
  *
@@ -23,7 +24,6 @@ use TechWilk\Rota\RoleQuery;
  * For example, the createSelectSql() method checks the type of a given column used in an
  * ORDER BY clause to know whether it needs to apply SQL to make the ORDER BY case-insensitive
  * (i.e. if it's a text column type).
- *
  */
 class RoleTableMap extends TableMap
 {
@@ -33,114 +33,173 @@ class RoleTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'TechWilk.Rota.Map.RoleTableMap';
+    public const CLASS_NAME = 'TechWilk.Rota.Map.RoleTableMap';
 
     /**
      * The default database name for this class
      */
-    const DATABASE_NAME = 'default';
+    public const DATABASE_NAME = 'default';
 
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'roles';
+    public const TABLE_NAME = 'roles';
+
+    /**
+     * The PHP name of this class (PascalCase)
+     */
+    public const TABLE_PHP_NAME = 'Role';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\TechWilk\\Rota\\Role';
+    public const OM_CLASS = '\\TechWilk\\Rota\\Role';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'TechWilk.Rota.Role';
+    public const CLASS_DEFAULT = 'TechWilk.Rota.Role';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 6;
+    public const NUM_COLUMNS = 6;
 
     /**
      * The number of lazy-loaded columns
      */
-    const NUM_LAZY_LOAD_COLUMNS = 0;
+    public const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 6;
+    public const NUM_HYDRATE_COLUMNS = 6;
 
     /**
      * the column name for the id field
      */
-    const COL_ID = 'roles.id';
+    public const COL_ID = 'roles.id';
 
     /**
      * the column name for the groupId field
      */
-    const COL_GROUPID = 'roles.groupId';
+    public const COL_GROUPID = 'roles.groupId';
 
     /**
      * the column name for the name field
      */
-    const COL_NAME = 'roles.name';
+    public const COL_NAME = 'roles.name';
 
     /**
      * the column name for the description field
      */
-    const COL_DESCRIPTION = 'roles.description';
+    public const COL_DESCRIPTION = 'roles.description';
 
     /**
      * the column name for the rehersalId field
      */
-    const COL_REHERSALID = 'roles.rehersalId';
+    public const COL_REHERSALID = 'roles.rehersalId';
 
     /**
      * the column name for the allowRoleSwaps field
      */
-    const COL_ALLOWROLESWAPS = 'roles.allowRoleSwaps';
+    public const COL_ALLOWROLESWAPS = 'roles.allowRoleSwaps';
 
     /**
      * The default string format for model objects of the related table
      */
-    const DEFAULT_STRING_FORMAT = 'YAML';
+    public const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
+     *
+     * @var array<string, mixed>
      */
-    protected static $fieldNames = array(
-        self::TYPE_PHPNAME       => array('Id', 'GroupId', 'Name', 'Description', 'RehersalId', 'AllowRoleSwaps', ),
-        self::TYPE_CAMELNAME     => array('id', 'groupId', 'name', 'description', 'rehersalId', 'allowRoleSwaps', ),
-        self::TYPE_COLNAME       => array(RoleTableMap::COL_ID, RoleTableMap::COL_GROUPID, RoleTableMap::COL_NAME, RoleTableMap::COL_DESCRIPTION, RoleTableMap::COL_REHERSALID, RoleTableMap::COL_ALLOWROLESWAPS, ),
-        self::TYPE_FIELDNAME     => array('id', 'groupId', 'name', 'description', 'rehersalId', 'allowRoleSwaps', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
-    );
+    protected static $fieldNames = [
+        self::TYPE_PHPNAME       => ['Id', 'GroupId', 'Name', 'Description', 'RehersalId', 'AllowRoleSwaps', ],
+        self::TYPE_CAMELNAME     => ['id', 'groupId', 'name', 'description', 'rehersalId', 'allowRoleSwaps', ],
+        self::TYPE_COLNAME       => [RoleTableMap::COL_ID, RoleTableMap::COL_GROUPID, RoleTableMap::COL_NAME, RoleTableMap::COL_DESCRIPTION, RoleTableMap::COL_REHERSALID, RoleTableMap::COL_ALLOWROLESWAPS, ],
+        self::TYPE_FIELDNAME     => ['id', 'groupId', 'name', 'description', 'rehersalId', 'allowRoleSwaps', ],
+        self::TYPE_NUM           => [0, 1, 2, 3, 4, 5, ]
+    ];
 
     /**
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
+     *
+     * @var array<string, mixed>
      */
-    protected static $fieldKeys = array(
-        self::TYPE_PHPNAME       => array('Id' => 0, 'GroupId' => 1, 'Name' => 2, 'Description' => 3, 'RehersalId' => 4, 'AllowRoleSwaps' => 5, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'groupId' => 1, 'name' => 2, 'description' => 3, 'rehersalId' => 4, 'allowRoleSwaps' => 5, ),
-        self::TYPE_COLNAME       => array(RoleTableMap::COL_ID => 0, RoleTableMap::COL_GROUPID => 1, RoleTableMap::COL_NAME => 2, RoleTableMap::COL_DESCRIPTION => 3, RoleTableMap::COL_REHERSALID => 4, RoleTableMap::COL_ALLOWROLESWAPS => 5, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'groupId' => 1, 'name' => 2, 'description' => 3, 'rehersalId' => 4, 'allowRoleSwaps' => 5, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
-    );
+    protected static $fieldKeys = [
+        self::TYPE_PHPNAME       => ['Id' => 0, 'GroupId' => 1, 'Name' => 2, 'Description' => 3, 'RehersalId' => 4, 'AllowRoleSwaps' => 5, ],
+        self::TYPE_CAMELNAME     => ['id' => 0, 'groupId' => 1, 'name' => 2, 'description' => 3, 'rehersalId' => 4, 'allowRoleSwaps' => 5, ],
+        self::TYPE_COLNAME       => [RoleTableMap::COL_ID => 0, RoleTableMap::COL_GROUPID => 1, RoleTableMap::COL_NAME => 2, RoleTableMap::COL_DESCRIPTION => 3, RoleTableMap::COL_REHERSALID => 4, RoleTableMap::COL_ALLOWROLESWAPS => 5, ],
+        self::TYPE_FIELDNAME     => ['id' => 0, 'groupId' => 1, 'name' => 2, 'description' => 3, 'rehersalId' => 4, 'allowRoleSwaps' => 5, ],
+        self::TYPE_NUM           => [0, 1, 2, 3, 4, 5, ]
+    ];
+
+    /**
+     * Holds a list of column names and their normalized version.
+     *
+     * @var array<string>
+     */
+    protected $normalizedColumnNameMap = [
+        'Id' => 'ID',
+        'Role.Id' => 'ID',
+        'id' => 'ID',
+        'role.id' => 'ID',
+        'RoleTableMap::COL_ID' => 'ID',
+        'COL_ID' => 'ID',
+        'roles.id' => 'ID',
+        'GroupId' => 'GROUPID',
+        'Role.GroupId' => 'GROUPID',
+        'groupId' => 'GROUPID',
+        'role.groupId' => 'GROUPID',
+        'RoleTableMap::COL_GROUPID' => 'GROUPID',
+        'COL_GROUPID' => 'GROUPID',
+        'roles.groupId' => 'GROUPID',
+        'Name' => 'NAME',
+        'Role.Name' => 'NAME',
+        'name' => 'NAME',
+        'role.name' => 'NAME',
+        'RoleTableMap::COL_NAME' => 'NAME',
+        'COL_NAME' => 'NAME',
+        'roles.name' => 'NAME',
+        'Description' => 'DESCRIPTION',
+        'Role.Description' => 'DESCRIPTION',
+        'description' => 'DESCRIPTION',
+        'role.description' => 'DESCRIPTION',
+        'RoleTableMap::COL_DESCRIPTION' => 'DESCRIPTION',
+        'COL_DESCRIPTION' => 'DESCRIPTION',
+        'roles.description' => 'DESCRIPTION',
+        'RehersalId' => 'REHERSALID',
+        'Role.RehersalId' => 'REHERSALID',
+        'rehersalId' => 'REHERSALID',
+        'role.rehersalId' => 'REHERSALID',
+        'RoleTableMap::COL_REHERSALID' => 'REHERSALID',
+        'COL_REHERSALID' => 'REHERSALID',
+        'roles.rehersalId' => 'REHERSALID',
+        'AllowRoleSwaps' => 'ALLOWROLESWAPS',
+        'Role.AllowRoleSwaps' => 'ALLOWROLESWAPS',
+        'allowRoleSwaps' => 'ALLOWROLESWAPS',
+        'role.allowRoleSwaps' => 'ALLOWROLESWAPS',
+        'RoleTableMap::COL_ALLOWROLESWAPS' => 'ALLOWROLESWAPS',
+        'COL_ALLOWROLESWAPS' => 'ALLOWROLESWAPS',
+        'roles.allowRoleSwaps' => 'ALLOWROLESWAPS',
+    ];
 
     /**
      * Initialize the table attributes and columns
      * Relations are not initialized by this method since they are lazy loaded
      *
      * @return void
-     * @throws PropelException
+     * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function initialize()
+    public function initialize(): void
     {
         // attributes
         $this->setName('roles');
@@ -156,28 +215,30 @@ class RoleTableMap extends TableMap
         $this->addColumn('description', 'Description', 'LONGVARCHAR', true, null, null);
         $this->addColumn('rehersalId', 'RehersalId', 'INTEGER', true, 6, 0);
         $this->addColumn('allowRoleSwaps', 'AllowRoleSwaps', 'BOOLEAN', false, 1, null);
-    } // initialize()
+    }
 
     /**
      * Build the RelationMap objects for this table relationships
+     *
+     * @return void
      */
-    public function buildRelations()
+    public function buildRelations(): void
     {
-        $this->addRelation('Group', '\\TechWilk\\Rota\\Group', RelationMap::MANY_TO_ONE, array(
+        $this->addRelation('Group', '\\TechWilk\\Rota\\Group', RelationMap::MANY_TO_ONE, array (
   0 =>
-  array(
+  array (
     0 => ':groupId',
     1 => ':id',
   ),
 ), null, null, null, false);
-        $this->addRelation('UserRole', '\\TechWilk\\Rota\\UserRole', RelationMap::ONE_TO_MANY, array(
+        $this->addRelation('UserRole', '\\TechWilk\\Rota\\UserRole', RelationMap::ONE_TO_MANY, array (
   0 =>
-  array(
+  array (
     0 => ':roleId',
     1 => ':id',
   ),
 ), null, null, 'UserRoles', false);
-    } // buildRelations()
+    }
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
@@ -185,14 +246,14 @@ class RoleTableMap extends TableMap
      * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
-     * @param array  $row       resultset row.
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Resultset row.
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      *
-     * @return string The primary key hash of the row
+     * @return string|null The primary key hash of the row
      */
-    public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function getPrimaryKeyHashFromRow(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM): ?string
     {
         // If the PK cannot be derived from the row, return NULL.
         if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
@@ -207,14 +268,14 @@ class RoleTableMap extends TableMap
      * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
      * a multi-column primary key, an array of the primary key columns will be returned.
      *
-     * @param array  $row       resultset row.
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Resultset row.
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      *
      * @return mixed The primary key of the row
      */
-    public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function getPrimaryKeyFromRow(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM)
     {
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
@@ -231,10 +292,10 @@ class RoleTableMap extends TableMap
      * relative to a location on the PHP include_path.
      * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
      *
-     * @param boolean $withPrefix Whether or not to return the path with the class name
+     * @param bool $withPrefix Whether to return the path with the class name
      * @return string path.to.ClassName
      */
-    public static function getOMClass($withPrefix = true)
+    public static function getOMClass(bool $withPrefix = true): string
     {
         return $withPrefix ? RoleTableMap::CLASS_DEFAULT : RoleTableMap::OM_CLASS;
     }
@@ -242,17 +303,17 @@ class RoleTableMap extends TableMap
     /**
      * Populates an object of the default type or an object that inherit from the default.
      *
-     * @param array  $row       row returned by DataFetcher->fetch().
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Row returned by DataFetcher->fetch().
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType The index type of $row. Mostly DataFetcher->getIndexType().
                                  One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Role object, last column rank)
+     * @return array (Role object, last column rank)
      */
-    public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function populateObject(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM): array
     {
         $key = RoleTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
         if (null !== ($obj = RoleTableMap::getInstanceFromPool($key))) {
@@ -268,7 +329,7 @@ class RoleTableMap extends TableMap
             RoleTableMap::addInstanceToPool($obj, $key);
         }
 
-        return array($obj, $col);
+        return [$obj, $col];
     }
 
     /**
@@ -276,13 +337,13 @@ class RoleTableMap extends TableMap
      * objects that inherit from the default.
      *
      * @param DataFetcherInterface $dataFetcher
-     * @return array
-     * @throws PropelException Any exceptions caught during processing will be
+     * @return array<object>
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function populateObjects(DataFetcherInterface $dataFetcher)
+    public static function populateObjects(DataFetcherInterface $dataFetcher): array
     {
-        $results = array();
+        $results = [];
 
         // set the class once to avoid overhead in the loop
         $cls = static::getOMClass(false);
@@ -312,12 +373,13 @@ class RoleTableMap extends TableMap
      * XML schema will not be added to the select list and only loaded
      * on demand.
      *
-     * @param Criteria $criteria object containing the columns to add.
-     * @param string   $alias    optional table alias
-     * @throws PropelException Any exceptions caught during processing will be
+     * @param Criteria $criteria Object containing the columns to add.
+     * @param string|null $alias Optional table alias
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
+     * @return void
      */
-    public static function addSelectColumns(Criteria $criteria, $alias = null)
+    public static function addSelectColumns(Criteria $criteria, ?string $alias = null): void
     {
         if (null === $alias) {
             $criteria->addSelectColumn(RoleTableMap::COL_ID);
@@ -337,68 +399,88 @@ class RoleTableMap extends TableMap
     }
 
     /**
+     * Remove all the columns needed to create a new object.
+     *
+     * Note: any columns that were marked with lazyLoad="true" in the
+     * XML schema will not be removed as they are only loaded on demand.
+     *
+     * @param Criteria $criteria Object containing the columns to remove.
+     * @param string|null $alias Optional table alias
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
+     *                         rethrown wrapped into a PropelException.
+     * @return void
+     */
+    public static function removeSelectColumns(Criteria $criteria, ?string $alias = null): void
+    {
+        if (null === $alias) {
+            $criteria->removeSelectColumn(RoleTableMap::COL_ID);
+            $criteria->removeSelectColumn(RoleTableMap::COL_GROUPID);
+            $criteria->removeSelectColumn(RoleTableMap::COL_NAME);
+            $criteria->removeSelectColumn(RoleTableMap::COL_DESCRIPTION);
+            $criteria->removeSelectColumn(RoleTableMap::COL_REHERSALID);
+            $criteria->removeSelectColumn(RoleTableMap::COL_ALLOWROLESWAPS);
+        } else {
+            $criteria->removeSelectColumn($alias . '.id');
+            $criteria->removeSelectColumn($alias . '.groupId');
+            $criteria->removeSelectColumn($alias . '.name');
+            $criteria->removeSelectColumn($alias . '.description');
+            $criteria->removeSelectColumn($alias . '.rehersalId');
+            $criteria->removeSelectColumn($alias . '.allowRoleSwaps');
+        }
+    }
+
+    /**
      * Returns the TableMap related to this object.
      * This method is not needed for general use but a specific application could have a need.
      * @return TableMap
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function getTableMap()
+    public static function getTableMap(): TableMap
     {
         return Propel::getServiceContainer()->getDatabaseMap(RoleTableMap::DATABASE_NAME)->getTable(RoleTableMap::TABLE_NAME);
     }
 
     /**
-     * Add a TableMap instance to the database for this tableMap class.
-     */
-    public static function buildTableMap()
-    {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(RoleTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(RoleTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new RoleTableMap());
-        }
-    }
-
-    /**
      * Performs a DELETE on the database, given a Role or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Role object or primary key or array of primary keys
+     * @param mixed $values Criteria or Role object or primary key or array of primary keys
      *              which is used to create the DELETE statement
-     * @param  ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @param ConnectionInterface $con the connection to use
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-     public static function doDelete($values, ConnectionInterface $con = null)
+     public static function doDelete($values, ?ConnectionInterface $con = null): int
      {
-         if (null === $con) {
-             $con = Propel::getServiceContainer()->getWriteConnection(RoleTableMap::DATABASE_NAME);
-         }
+        if (null === $con) {
+            $con = Propel::getServiceContainer()->getWriteConnection(RoleTableMap::DATABASE_NAME);
+        }
 
-         if ($values instanceof Criteria) {
-             // rename for clarity
+        if ($values instanceof Criteria) {
+            // rename for clarity
             $criteria = $values;
-         } elseif ($values instanceof \TechWilk\Rota\Role) { // it's a model object
+        } elseif ($values instanceof \TechWilk\Rota\Role) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
-         } else { // it's a primary key, or an array of pks
+        } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(RoleTableMap::DATABASE_NAME);
-             $criteria->add(RoleTableMap::COL_ID, (array) $values, Criteria::IN);
-         }
+            $criteria->add(RoleTableMap::COL_ID, (array) $values, Criteria::IN);
+        }
 
-         $query = RoleQuery::create()->mergeWith($criteria);
+        $query = RoleQuery::create()->mergeWith($criteria);
 
-         if ($values instanceof Criteria) {
-             RoleTableMap::clearInstancePool();
-         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
+        if ($values instanceof Criteria) {
+            RoleTableMap::clearInstancePool();
+        } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
                 RoleTableMap::removeInstanceFromPool($singleval);
             }
-         }
+        }
 
-         return $query->delete($con);
-     }
+        return $query->delete($con);
+    }
 
     /**
      * Deletes all rows from the roles table.
@@ -406,7 +488,7 @@ class RoleTableMap extends TableMap
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public static function doDeleteAll(ConnectionInterface $con = null)
+    public static function doDeleteAll(?ConnectionInterface $con = null): int
     {
         return RoleQuery::create()->doDeleteAll($con);
     }
@@ -414,13 +496,13 @@ class RoleTableMap extends TableMap
     /**
      * Performs an INSERT on the database, given a Role or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Role object containing data that is used to create the INSERT statement.
+     * @param mixed $criteria Criteria or Role object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
-     * @return mixed           The new primary key.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @return mixed The new primary key.
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function doInsert($criteria, ConnectionInterface $con = null)
+    public static function doInsert($criteria, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(RoleTableMap::DATABASE_NAME);
@@ -432,7 +514,7 @@ class RoleTableMap extends TableMap
             $criteria = $criteria->buildCriteria(); // build Criteria from Role object
         }
 
-        if ($criteria->containsKey(RoleTableMap::COL_ID) && $criteria->keyContainsValue(RoleTableMap::COL_ID)) {
+        if ($criteria->containsKey(RoleTableMap::COL_ID) && $criteria->keyContainsValue(RoleTableMap::COL_ID) ) {
             throw new PropelException('Cannot insert a value for auto-increment primary key ('.RoleTableMap::COL_ID.')');
         }
 
@@ -446,7 +528,5 @@ class RoleTableMap extends TableMap
             return $query->doInsert($con);
         });
     }
-} // RoleTableMap
-// This is the static code needed to register the TableMap for this table with the main Propel class.
-//
-RoleTableMap::buildTableMap();
+
+}

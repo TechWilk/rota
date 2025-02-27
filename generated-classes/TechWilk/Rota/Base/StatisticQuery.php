@@ -8,6 +8,7 @@ use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveQuery\ModelJoin;
+use Propel\Runtime\Collection\Collection;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -16,9 +17,7 @@ use TechWilk\Rota\StatisticQuery as ChildStatisticQuery;
 use TechWilk\Rota\Map\StatisticTableMap;
 
 /**
- * Base class that represents a query for the 'statistics' table.
- *
- *
+ * Base class that represents a query for the `statistics` table.
  *
  * @method     ChildStatisticQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildStatisticQuery orderByUserId($order = Criteria::ASC) Order by the userid column
@@ -58,20 +57,20 @@ use TechWilk\Rota\Map\StatisticTableMap;
  *
  * @method     \TechWilk\Rota\UserQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
- * @method     ChildStatistic findOne(ConnectionInterface $con = null) Return the first ChildStatistic matching the query
- * @method     ChildStatistic findOneOrCreate(ConnectionInterface $con = null) Return the first ChildStatistic matching the query, or a new ChildStatistic object populated from the query conditions when no match is found
+ * @method     ChildStatistic|null findOne(?ConnectionInterface $con = null) Return the first ChildStatistic matching the query
+ * @method     ChildStatistic findOneOrCreate(?ConnectionInterface $con = null) Return the first ChildStatistic matching the query, or a new ChildStatistic object populated from the query conditions when no match is found
  *
- * @method     ChildStatistic findOneById(int $id) Return the first ChildStatistic filtered by the id column
- * @method     ChildStatistic findOneByUserId(int $userid) Return the first ChildStatistic filtered by the userid column
- * @method     ChildStatistic findOneByDate(string $date) Return the first ChildStatistic filtered by the date column
- * @method     ChildStatistic findOneByType(string $type) Return the first ChildStatistic filtered by the type column
- * @method     ChildStatistic findOneByDetail1(string $detail1) Return the first ChildStatistic filtered by the detail1 column
- * @method     ChildStatistic findOneByDetail2(string $detail2) Return the first ChildStatistic filtered by the detail2 column
- * @method     ChildStatistic findOneByDetail3(string $detail3) Return the first ChildStatistic filtered by the detail3 column
- * @method     ChildStatistic findOneByScript(string $script) Return the first ChildStatistic filtered by the script column *
-
- * @method     ChildStatistic requirePk($key, ConnectionInterface $con = null) Return the ChildStatistic by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildStatistic requireOne(ConnectionInterface $con = null) Return the first ChildStatistic matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildStatistic|null findOneById(int $id) Return the first ChildStatistic filtered by the id column
+ * @method     ChildStatistic|null findOneByUserId(int $userid) Return the first ChildStatistic filtered by the userid column
+ * @method     ChildStatistic|null findOneByDate(string $date) Return the first ChildStatistic filtered by the date column
+ * @method     ChildStatistic|null findOneByType(string $type) Return the first ChildStatistic filtered by the type column
+ * @method     ChildStatistic|null findOneByDetail1(string $detail1) Return the first ChildStatistic filtered by the detail1 column
+ * @method     ChildStatistic|null findOneByDetail2(string $detail2) Return the first ChildStatistic filtered by the detail2 column
+ * @method     ChildStatistic|null findOneByDetail3(string $detail3) Return the first ChildStatistic filtered by the detail3 column
+ * @method     ChildStatistic|null findOneByScript(string $script) Return the first ChildStatistic filtered by the script column
+ *
+ * @method     ChildStatistic requirePk($key, ?ConnectionInterface $con = null) Return the ChildStatistic by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildStatistic requireOne(?ConnectionInterface $con = null) Return the first ChildStatistic matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildStatistic requireOneById(int $id) Return the first ChildStatistic filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildStatistic requireOneByUserId(int $userid) Return the first ChildStatistic filtered by the userid column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -82,17 +81,28 @@ use TechWilk\Rota\Map\StatisticTableMap;
  * @method     ChildStatistic requireOneByDetail3(string $detail3) Return the first ChildStatistic filtered by the detail3 column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildStatistic requireOneByScript(string $script) Return the first ChildStatistic filtered by the script column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildStatistic[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildStatistic objects based on current ModelCriteria
- * @method     ChildStatistic[]|ObjectCollection findById(int $id) Return ChildStatistic objects filtered by the id column
- * @method     ChildStatistic[]|ObjectCollection findByUserId(int $userid) Return ChildStatistic objects filtered by the userid column
- * @method     ChildStatistic[]|ObjectCollection findByDate(string $date) Return ChildStatistic objects filtered by the date column
- * @method     ChildStatistic[]|ObjectCollection findByType(string $type) Return ChildStatistic objects filtered by the type column
- * @method     ChildStatistic[]|ObjectCollection findByDetail1(string $detail1) Return ChildStatistic objects filtered by the detail1 column
- * @method     ChildStatistic[]|ObjectCollection findByDetail2(string $detail2) Return ChildStatistic objects filtered by the detail2 column
- * @method     ChildStatistic[]|ObjectCollection findByDetail3(string $detail3) Return ChildStatistic objects filtered by the detail3 column
- * @method     ChildStatistic[]|ObjectCollection findByScript(string $script) Return ChildStatistic objects filtered by the script column
- * @method     ChildStatistic[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @method     ChildStatistic[]|Collection find(?ConnectionInterface $con = null) Return ChildStatistic objects based on current ModelCriteria
+ * @psalm-method Collection&\Traversable<ChildStatistic> find(?ConnectionInterface $con = null) Return ChildStatistic objects based on current ModelCriteria
  *
+ * @method     ChildStatistic[]|Collection findById(int|array<int> $id) Return ChildStatistic objects filtered by the id column
+ * @psalm-method Collection&\Traversable<ChildStatistic> findById(int|array<int> $id) Return ChildStatistic objects filtered by the id column
+ * @method     ChildStatistic[]|Collection findByUserId(int|array<int> $userid) Return ChildStatistic objects filtered by the userid column
+ * @psalm-method Collection&\Traversable<ChildStatistic> findByUserId(int|array<int> $userid) Return ChildStatistic objects filtered by the userid column
+ * @method     ChildStatistic[]|Collection findByDate(string|array<string> $date) Return ChildStatistic objects filtered by the date column
+ * @psalm-method Collection&\Traversable<ChildStatistic> findByDate(string|array<string> $date) Return ChildStatistic objects filtered by the date column
+ * @method     ChildStatistic[]|Collection findByType(string|array<string> $type) Return ChildStatistic objects filtered by the type column
+ * @psalm-method Collection&\Traversable<ChildStatistic> findByType(string|array<string> $type) Return ChildStatistic objects filtered by the type column
+ * @method     ChildStatistic[]|Collection findByDetail1(string|array<string> $detail1) Return ChildStatistic objects filtered by the detail1 column
+ * @psalm-method Collection&\Traversable<ChildStatistic> findByDetail1(string|array<string> $detail1) Return ChildStatistic objects filtered by the detail1 column
+ * @method     ChildStatistic[]|Collection findByDetail2(string|array<string> $detail2) Return ChildStatistic objects filtered by the detail2 column
+ * @psalm-method Collection&\Traversable<ChildStatistic> findByDetail2(string|array<string> $detail2) Return ChildStatistic objects filtered by the detail2 column
+ * @method     ChildStatistic[]|Collection findByDetail3(string|array<string> $detail3) Return ChildStatistic objects filtered by the detail3 column
+ * @psalm-method Collection&\Traversable<ChildStatistic> findByDetail3(string|array<string> $detail3) Return ChildStatistic objects filtered by the detail3 column
+ * @method     ChildStatistic[]|Collection findByScript(string|array<string> $script) Return ChildStatistic objects filtered by the script column
+ * @psalm-method Collection&\Traversable<ChildStatistic> findByScript(string|array<string> $script) Return ChildStatistic objects filtered by the script column
+ *
+ * @method     ChildStatistic[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @psalm-method \Propel\Runtime\Util\PropelModelPager&\Traversable<ChildStatistic> paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  */
 abstract class StatisticQuery extends ModelCriteria
 {
@@ -101,9 +111,9 @@ abstract class StatisticQuery extends ModelCriteria
     /**
      * Initializes internal state of \TechWilk\Rota\Base\StatisticQuery object.
      *
-     * @param     string $dbName The database name
-     * @param     string $modelName The phpName of a model, e.g. 'Book'
-     * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
+     * @param string $dbName The database name
+     * @param string $modelName The phpName of a model, e.g. 'Book'
+     * @param string $modelAlias The alias for the model in this query, e.g. 'b'
      */
     public function __construct($dbName = 'default', $modelName = '\\TechWilk\\Rota\\Statistic', $modelAlias = null)
     {
@@ -113,12 +123,12 @@ abstract class StatisticQuery extends ModelCriteria
     /**
      * Returns a new ChildStatisticQuery object.
      *
-     * @param     string $modelAlias The alias of a model in the query
-     * @param     Criteria $criteria Optional Criteria to build the query from
+     * @param string $modelAlias The alias of a model in the query
+     * @param Criteria $criteria Optional Criteria to build the query from
      *
      * @return ChildStatisticQuery
      */
-    public static function create($modelAlias = null, Criteria $criteria = null)
+    public static function create(?string $modelAlias = null, ?Criteria $criteria = null): Criteria
     {
         if ($criteria instanceof ChildStatisticQuery) {
             return $criteria;
@@ -148,7 +158,7 @@ abstract class StatisticQuery extends ModelCriteria
      *
      * @return ChildStatistic|array|mixed the result, formatted by the current formatter
      */
-    public function findPk($key, ConnectionInterface $con = null)
+    public function findPk($key, ?ConnectionInterface $con = null)
     {
         if ($key === null) {
             return null;
@@ -180,8 +190,8 @@ abstract class StatisticQuery extends ModelCriteria
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
@@ -213,8 +223,8 @@ abstract class StatisticQuery extends ModelCriteria
     /**
      * Find object by primary key.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @return ChildStatistic|array|mixed the result, formatted by the current formatter
      */
@@ -234,12 +244,12 @@ abstract class StatisticQuery extends ModelCriteria
      * <code>
      * $objs = $c->findPks(array(12, 56, 832), $con);
      * </code>
-     * @param     array $keys Primary keys to use for the query
-     * @param     ConnectionInterface $con an optional connection object
+     * @param array $keys Primary keys to use for the query
+     * @param ConnectionInterface $con an optional connection object
      *
-     * @return ObjectCollection|array|mixed the list of results, formatted by the current formatter
+     * @return Collection|array|mixed the list of results, formatted by the current formatter
      */
-    public function findPks($keys, ConnectionInterface $con = null)
+    public function findPks($keys, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getReadConnection($this->getDbName());
@@ -256,25 +266,31 @@ abstract class StatisticQuery extends ModelCriteria
     /**
      * Filter the query by primary key
      *
-     * @param     mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query
      *
-     * @return $this|ChildStatisticQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
-        return $this->addUsingAlias(StatisticTableMap::COL_ID, $key, Criteria::EQUAL);
+
+        $this->addUsingAlias(StatisticTableMap::COL_ID, $key, Criteria::EQUAL);
+
+        return $this;
     }
 
     /**
      * Filter the query by a list of primary keys
      *
-     * @param     array $keys The list of primary key to use for the query
+     * @param array|int $keys The list of primary key to use for the query
      *
-     * @return $this|ChildStatisticQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
-        return $this->addUsingAlias(StatisticTableMap::COL_ID, $keys, Criteria::IN);
+
+        $this->addUsingAlias(StatisticTableMap::COL_ID, $keys, Criteria::IN);
+
+        return $this;
     }
 
     /**
@@ -287,15 +303,15 @@ abstract class StatisticQuery extends ModelCriteria
      * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
      *
-     * @param     mixed $id The value to use as filter.
+     * @param mixed $id The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildStatisticQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterById($id = null, $comparison = null)
+    public function filterById($id = null, ?string $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
@@ -315,7 +331,9 @@ abstract class StatisticQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(StatisticTableMap::COL_ID, $id, $comparison);
+        $this->addUsingAlias(StatisticTableMap::COL_ID, $id, $comparison);
+
+        return $this;
     }
 
     /**
@@ -330,15 +348,15 @@ abstract class StatisticQuery extends ModelCriteria
      *
      * @see       filterByUser()
      *
-     * @param     mixed $userId The value to use as filter.
+     * @param mixed $userId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildStatisticQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUserId($userId = null, $comparison = null)
+    public function filterByUserId($userId = null, ?string $comparison = null)
     {
         if (is_array($userId)) {
             $useMinMax = false;
@@ -358,7 +376,9 @@ abstract class StatisticQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(StatisticTableMap::COL_USERID, $userId, $comparison);
+        $this->addUsingAlias(StatisticTableMap::COL_USERID, $userId, $comparison);
+
+        return $this;
     }
 
     /**
@@ -371,17 +391,17 @@ abstract class StatisticQuery extends ModelCriteria
      * $query->filterByDate(array('max' => 'yesterday')); // WHERE date > '2011-03-13'
      * </code>
      *
-     * @param     mixed $date The value to use as filter.
+     * @param mixed $date The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildStatisticQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByDate($date = null, $comparison = null)
+    public function filterByDate($date = null, ?string $comparison = null)
     {
         if (is_array($date)) {
             $useMinMax = false;
@@ -401,7 +421,9 @@ abstract class StatisticQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(StatisticTableMap::COL_DATE, $date, $comparison);
+        $this->addUsingAlias(StatisticTableMap::COL_DATE, $date, $comparison);
+
+        return $this;
     }
 
     /**
@@ -411,14 +433,15 @@ abstract class StatisticQuery extends ModelCriteria
      * <code>
      * $query->filterByType('fooValue');   // WHERE type = 'fooValue'
      * $query->filterByType('%fooValue%', Criteria::LIKE); // WHERE type LIKE '%fooValue%'
+     * $query->filterByType(['foo', 'bar']); // WHERE type IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $type The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $type The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildStatisticQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByType($type = null, $comparison = null)
+    public function filterByType($type = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($type)) {
@@ -426,7 +449,9 @@ abstract class StatisticQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(StatisticTableMap::COL_TYPE, $type, $comparison);
+        $this->addUsingAlias(StatisticTableMap::COL_TYPE, $type, $comparison);
+
+        return $this;
     }
 
     /**
@@ -436,14 +461,15 @@ abstract class StatisticQuery extends ModelCriteria
      * <code>
      * $query->filterByDetail1('fooValue');   // WHERE detail1 = 'fooValue'
      * $query->filterByDetail1('%fooValue%', Criteria::LIKE); // WHERE detail1 LIKE '%fooValue%'
+     * $query->filterByDetail1(['foo', 'bar']); // WHERE detail1 IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $detail1 The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $detail1 The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildStatisticQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByDetail1($detail1 = null, $comparison = null)
+    public function filterByDetail1($detail1 = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($detail1)) {
@@ -451,7 +477,9 @@ abstract class StatisticQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(StatisticTableMap::COL_DETAIL1, $detail1, $comparison);
+        $this->addUsingAlias(StatisticTableMap::COL_DETAIL1, $detail1, $comparison);
+
+        return $this;
     }
 
     /**
@@ -461,14 +489,15 @@ abstract class StatisticQuery extends ModelCriteria
      * <code>
      * $query->filterByDetail2('fooValue');   // WHERE detail2 = 'fooValue'
      * $query->filterByDetail2('%fooValue%', Criteria::LIKE); // WHERE detail2 LIKE '%fooValue%'
+     * $query->filterByDetail2(['foo', 'bar']); // WHERE detail2 IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $detail2 The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $detail2 The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildStatisticQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByDetail2($detail2 = null, $comparison = null)
+    public function filterByDetail2($detail2 = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($detail2)) {
@@ -476,7 +505,9 @@ abstract class StatisticQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(StatisticTableMap::COL_DETAIL2, $detail2, $comparison);
+        $this->addUsingAlias(StatisticTableMap::COL_DETAIL2, $detail2, $comparison);
+
+        return $this;
     }
 
     /**
@@ -486,14 +517,15 @@ abstract class StatisticQuery extends ModelCriteria
      * <code>
      * $query->filterByDetail3('fooValue');   // WHERE detail3 = 'fooValue'
      * $query->filterByDetail3('%fooValue%', Criteria::LIKE); // WHERE detail3 LIKE '%fooValue%'
+     * $query->filterByDetail3(['foo', 'bar']); // WHERE detail3 IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $detail3 The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $detail3 The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildStatisticQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByDetail3($detail3 = null, $comparison = null)
+    public function filterByDetail3($detail3 = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($detail3)) {
@@ -501,7 +533,9 @@ abstract class StatisticQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(StatisticTableMap::COL_DETAIL3, $detail3, $comparison);
+        $this->addUsingAlias(StatisticTableMap::COL_DETAIL3, $detail3, $comparison);
+
+        return $this;
     }
 
     /**
@@ -511,14 +545,15 @@ abstract class StatisticQuery extends ModelCriteria
      * <code>
      * $query->filterByScript('fooValue');   // WHERE script = 'fooValue'
      * $query->filterByScript('%fooValue%', Criteria::LIKE); // WHERE script LIKE '%fooValue%'
+     * $query->filterByScript(['foo', 'bar']); // WHERE script IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $script The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $script The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildStatisticQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByScript($script = null, $comparison = null)
+    public function filterByScript($script = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($script)) {
@@ -526,20 +561,22 @@ abstract class StatisticQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(StatisticTableMap::COL_SCRIPT, $script, $comparison);
+        $this->addUsingAlias(StatisticTableMap::COL_SCRIPT, $script, $comparison);
+
+        return $this;
     }
 
     /**
      * Filter the query by a related \TechWilk\Rota\User object
      *
      * @param \TechWilk\Rota\User|ObjectCollection $user The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
-     * @return ChildStatisticQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUser($user, $comparison = null)
+    public function filterByUser($user, ?string $comparison = null)
     {
         if ($user instanceof \TechWilk\Rota\User) {
             return $this
@@ -549,8 +586,10 @@ abstract class StatisticQuery extends ModelCriteria
                 $comparison = Criteria::IN;
             }
 
-            return $this
+            $this
                 ->addUsingAlias(StatisticTableMap::COL_USERID, $user->toKeyValue('PrimaryKey', 'Id'), $comparison);
+
+            return $this;
         } else {
             throw new PropelException('filterByUser() only accepts arguments of type \TechWilk\Rota\User or Collection');
         }
@@ -559,12 +598,12 @@ abstract class StatisticQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the User relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildStatisticQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinUser($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinUser(?string $relationAlias = null, ?string $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('User');
@@ -593,9 +632,9 @@ abstract class StatisticQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \TechWilk\Rota\UserQuery A secondary query class using the current class as primary query
      */
@@ -607,11 +646,107 @@ abstract class StatisticQuery extends ModelCriteria
     }
 
     /**
+     * Use the User relation User object
+     *
+     * @param callable(\TechWilk\Rota\UserQuery):\TechWilk\Rota\UserQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withUserQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::LEFT_JOIN
+    ) {
+        $relatedQuery = $this->useUserQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the relation to User table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \TechWilk\Rota\UserQuery The inner query object of the EXISTS statement
+     */
+    public function useUserExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \TechWilk\Rota\UserQuery */
+        $q = $this->useExistsQuery('User', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the relation to User table for a NOT EXISTS query.
+     *
+     * @see useUserExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\UserQuery The inner query object of the NOT EXISTS statement
+     */
+    public function useUserNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\UserQuery */
+        $q = $this->useExistsQuery('User', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the relation to User table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \TechWilk\Rota\UserQuery The inner query object of the IN statement
+     */
+    public function useInUserQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \TechWilk\Rota\UserQuery */
+        $q = $this->useInQuery('User', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the relation to User table for a NOT IN query.
+     *
+     * @see useUserInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\UserQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInUserQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\UserQuery */
+        $q = $this->useInQuery('User', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Exclude object from result
      *
-     * @param   ChildStatistic $statistic Object to remove from the list of results
+     * @param ChildStatistic $statistic Object to remove from the list of results
      *
-     * @return $this|ChildStatisticQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function prune($statistic = null)
     {
@@ -628,7 +763,7 @@ abstract class StatisticQuery extends ModelCriteria
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public function doDeleteAll(ConnectionInterface $con = null)
+    public function doDeleteAll(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(StatisticTableMap::DATABASE_NAME);
@@ -653,12 +788,12 @@ abstract class StatisticQuery extends ModelCriteria
      * Performs a DELETE on the database based on the current ModelCriteria
      *
      * @param ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public function delete(ConnectionInterface $con = null)
+    public function delete(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(StatisticTableMap::DATABASE_NAME);
@@ -682,4 +817,5 @@ abstract class StatisticQuery extends ModelCriteria
             return $affectedRows;
         });
     }
-} // StatisticQuery
+
+}

@@ -7,7 +7,7 @@ use \PDO;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
-use Propel\Runtime\Collection\ObjectCollection;
+use Propel\Runtime\Collection\Collection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
 use TechWilk\Rota\Email as ChildEmail;
@@ -15,9 +15,7 @@ use TechWilk\Rota\EmailQuery as ChildEmailQuery;
 use TechWilk\Rota\Map\EmailTableMap;
 
 /**
- * Base class that represents a query for the 'emails' table.
- *
- *
+ * Base class that represents a query for the `emails` table.
  *
  * @method     ChildEmailQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildEmailQuery orderByEmailTo($order = Criteria::ASC) Order by the emailTo column
@@ -43,19 +41,19 @@ use TechWilk\Rota\Map\EmailTableMap;
  * @method     ChildEmailQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildEmailQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildEmail findOne(ConnectionInterface $con = null) Return the first ChildEmail matching the query
- * @method     ChildEmail findOneOrCreate(ConnectionInterface $con = null) Return the first ChildEmail matching the query, or a new ChildEmail object populated from the query conditions when no match is found
+ * @method     ChildEmail|null findOne(?ConnectionInterface $con = null) Return the first ChildEmail matching the query
+ * @method     ChildEmail findOneOrCreate(?ConnectionInterface $con = null) Return the first ChildEmail matching the query, or a new ChildEmail object populated from the query conditions when no match is found
  *
- * @method     ChildEmail findOneById(int $id) Return the first ChildEmail filtered by the id column
- * @method     ChildEmail findOneByEmailTo(string $emailTo) Return the first ChildEmail filtered by the emailTo column
- * @method     ChildEmail findOneByEmailBcc(string $emailBcc) Return the first ChildEmail filtered by the emailBcc column
- * @method     ChildEmail findOneByEmailFrom(string $emailFrom) Return the first ChildEmail filtered by the emailFrom column
- * @method     ChildEmail findOneBySubject(string $subject) Return the first ChildEmail filtered by the subject column
- * @method     ChildEmail findOneByMessage(string $message) Return the first ChildEmail filtered by the message column
- * @method     ChildEmail findOneByError(string $error) Return the first ChildEmail filtered by the error column *
-
- * @method     ChildEmail requirePk($key, ConnectionInterface $con = null) Return the ChildEmail by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildEmail requireOne(ConnectionInterface $con = null) Return the first ChildEmail matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildEmail|null findOneById(int $id) Return the first ChildEmail filtered by the id column
+ * @method     ChildEmail|null findOneByEmailTo(string $emailTo) Return the first ChildEmail filtered by the emailTo column
+ * @method     ChildEmail|null findOneByEmailBcc(string $emailBcc) Return the first ChildEmail filtered by the emailBcc column
+ * @method     ChildEmail|null findOneByEmailFrom(string $emailFrom) Return the first ChildEmail filtered by the emailFrom column
+ * @method     ChildEmail|null findOneBySubject(string $subject) Return the first ChildEmail filtered by the subject column
+ * @method     ChildEmail|null findOneByMessage(string $message) Return the first ChildEmail filtered by the message column
+ * @method     ChildEmail|null findOneByError(string $error) Return the first ChildEmail filtered by the error column
+ *
+ * @method     ChildEmail requirePk($key, ?ConnectionInterface $con = null) Return the ChildEmail by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildEmail requireOne(?ConnectionInterface $con = null) Return the first ChildEmail matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildEmail requireOneById(int $id) Return the first ChildEmail filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEmail requireOneByEmailTo(string $emailTo) Return the first ChildEmail filtered by the emailTo column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -65,16 +63,26 @@ use TechWilk\Rota\Map\EmailTableMap;
  * @method     ChildEmail requireOneByMessage(string $message) Return the first ChildEmail filtered by the message column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEmail requireOneByError(string $error) Return the first ChildEmail filtered by the error column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildEmail[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildEmail objects based on current ModelCriteria
- * @method     ChildEmail[]|ObjectCollection findById(int $id) Return ChildEmail objects filtered by the id column
- * @method     ChildEmail[]|ObjectCollection findByEmailTo(string $emailTo) Return ChildEmail objects filtered by the emailTo column
- * @method     ChildEmail[]|ObjectCollection findByEmailBcc(string $emailBcc) Return ChildEmail objects filtered by the emailBcc column
- * @method     ChildEmail[]|ObjectCollection findByEmailFrom(string $emailFrom) Return ChildEmail objects filtered by the emailFrom column
- * @method     ChildEmail[]|ObjectCollection findBySubject(string $subject) Return ChildEmail objects filtered by the subject column
- * @method     ChildEmail[]|ObjectCollection findByMessage(string $message) Return ChildEmail objects filtered by the message column
- * @method     ChildEmail[]|ObjectCollection findByError(string $error) Return ChildEmail objects filtered by the error column
- * @method     ChildEmail[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @method     ChildEmail[]|Collection find(?ConnectionInterface $con = null) Return ChildEmail objects based on current ModelCriteria
+ * @psalm-method Collection&\Traversable<ChildEmail> find(?ConnectionInterface $con = null) Return ChildEmail objects based on current ModelCriteria
  *
+ * @method     ChildEmail[]|Collection findById(int|array<int> $id) Return ChildEmail objects filtered by the id column
+ * @psalm-method Collection&\Traversable<ChildEmail> findById(int|array<int> $id) Return ChildEmail objects filtered by the id column
+ * @method     ChildEmail[]|Collection findByEmailTo(string|array<string> $emailTo) Return ChildEmail objects filtered by the emailTo column
+ * @psalm-method Collection&\Traversable<ChildEmail> findByEmailTo(string|array<string> $emailTo) Return ChildEmail objects filtered by the emailTo column
+ * @method     ChildEmail[]|Collection findByEmailBcc(string|array<string> $emailBcc) Return ChildEmail objects filtered by the emailBcc column
+ * @psalm-method Collection&\Traversable<ChildEmail> findByEmailBcc(string|array<string> $emailBcc) Return ChildEmail objects filtered by the emailBcc column
+ * @method     ChildEmail[]|Collection findByEmailFrom(string|array<string> $emailFrom) Return ChildEmail objects filtered by the emailFrom column
+ * @psalm-method Collection&\Traversable<ChildEmail> findByEmailFrom(string|array<string> $emailFrom) Return ChildEmail objects filtered by the emailFrom column
+ * @method     ChildEmail[]|Collection findBySubject(string|array<string> $subject) Return ChildEmail objects filtered by the subject column
+ * @psalm-method Collection&\Traversable<ChildEmail> findBySubject(string|array<string> $subject) Return ChildEmail objects filtered by the subject column
+ * @method     ChildEmail[]|Collection findByMessage(string|array<string> $message) Return ChildEmail objects filtered by the message column
+ * @psalm-method Collection&\Traversable<ChildEmail> findByMessage(string|array<string> $message) Return ChildEmail objects filtered by the message column
+ * @method     ChildEmail[]|Collection findByError(string|array<string> $error) Return ChildEmail objects filtered by the error column
+ * @psalm-method Collection&\Traversable<ChildEmail> findByError(string|array<string> $error) Return ChildEmail objects filtered by the error column
+ *
+ * @method     ChildEmail[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @psalm-method \Propel\Runtime\Util\PropelModelPager&\Traversable<ChildEmail> paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  */
 abstract class EmailQuery extends ModelCriteria
 {
@@ -83,9 +91,9 @@ abstract class EmailQuery extends ModelCriteria
     /**
      * Initializes internal state of \TechWilk\Rota\Base\EmailQuery object.
      *
-     * @param     string $dbName The database name
-     * @param     string $modelName The phpName of a model, e.g. 'Book'
-     * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
+     * @param string $dbName The database name
+     * @param string $modelName The phpName of a model, e.g. 'Book'
+     * @param string $modelAlias The alias for the model in this query, e.g. 'b'
      */
     public function __construct($dbName = 'default', $modelName = '\\TechWilk\\Rota\\Email', $modelAlias = null)
     {
@@ -95,12 +103,12 @@ abstract class EmailQuery extends ModelCriteria
     /**
      * Returns a new ChildEmailQuery object.
      *
-     * @param     string $modelAlias The alias of a model in the query
-     * @param     Criteria $criteria Optional Criteria to build the query from
+     * @param string $modelAlias The alias of a model in the query
+     * @param Criteria $criteria Optional Criteria to build the query from
      *
      * @return ChildEmailQuery
      */
-    public static function create($modelAlias = null, Criteria $criteria = null)
+    public static function create(?string $modelAlias = null, ?Criteria $criteria = null): Criteria
     {
         if ($criteria instanceof ChildEmailQuery) {
             return $criteria;
@@ -130,7 +138,7 @@ abstract class EmailQuery extends ModelCriteria
      *
      * @return ChildEmail|array|mixed the result, formatted by the current formatter
      */
-    public function findPk($key, ConnectionInterface $con = null)
+    public function findPk($key, ?ConnectionInterface $con = null)
     {
         if ($key === null) {
             return null;
@@ -162,8 +170,8 @@ abstract class EmailQuery extends ModelCriteria
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
@@ -195,8 +203,8 @@ abstract class EmailQuery extends ModelCriteria
     /**
      * Find object by primary key.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @return ChildEmail|array|mixed the result, formatted by the current formatter
      */
@@ -216,12 +224,12 @@ abstract class EmailQuery extends ModelCriteria
      * <code>
      * $objs = $c->findPks(array(12, 56, 832), $con);
      * </code>
-     * @param     array $keys Primary keys to use for the query
-     * @param     ConnectionInterface $con an optional connection object
+     * @param array $keys Primary keys to use for the query
+     * @param ConnectionInterface $con an optional connection object
      *
-     * @return ObjectCollection|array|mixed the list of results, formatted by the current formatter
+     * @return Collection|array|mixed the list of results, formatted by the current formatter
      */
-    public function findPks($keys, ConnectionInterface $con = null)
+    public function findPks($keys, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getReadConnection($this->getDbName());
@@ -238,25 +246,31 @@ abstract class EmailQuery extends ModelCriteria
     /**
      * Filter the query by primary key
      *
-     * @param     mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query
      *
-     * @return $this|ChildEmailQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
-        return $this->addUsingAlias(EmailTableMap::COL_ID, $key, Criteria::EQUAL);
+
+        $this->addUsingAlias(EmailTableMap::COL_ID, $key, Criteria::EQUAL);
+
+        return $this;
     }
 
     /**
      * Filter the query by a list of primary keys
      *
-     * @param     array $keys The list of primary key to use for the query
+     * @param array|int $keys The list of primary key to use for the query
      *
-     * @return $this|ChildEmailQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
-        return $this->addUsingAlias(EmailTableMap::COL_ID, $keys, Criteria::IN);
+
+        $this->addUsingAlias(EmailTableMap::COL_ID, $keys, Criteria::IN);
+
+        return $this;
     }
 
     /**
@@ -269,15 +283,15 @@ abstract class EmailQuery extends ModelCriteria
      * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
      *
-     * @param     mixed $id The value to use as filter.
+     * @param mixed $id The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildEmailQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterById($id = null, $comparison = null)
+    public function filterById($id = null, ?string $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
@@ -297,7 +311,9 @@ abstract class EmailQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(EmailTableMap::COL_ID, $id, $comparison);
+        $this->addUsingAlias(EmailTableMap::COL_ID, $id, $comparison);
+
+        return $this;
     }
 
     /**
@@ -307,14 +323,15 @@ abstract class EmailQuery extends ModelCriteria
      * <code>
      * $query->filterByEmailTo('fooValue');   // WHERE emailTo = 'fooValue'
      * $query->filterByEmailTo('%fooValue%', Criteria::LIKE); // WHERE emailTo LIKE '%fooValue%'
+     * $query->filterByEmailTo(['foo', 'bar']); // WHERE emailTo IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $emailTo The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $emailTo The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildEmailQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByEmailTo($emailTo = null, $comparison = null)
+    public function filterByEmailTo($emailTo = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($emailTo)) {
@@ -322,7 +339,9 @@ abstract class EmailQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(EmailTableMap::COL_EMAILTO, $emailTo, $comparison);
+        $this->addUsingAlias(EmailTableMap::COL_EMAILTO, $emailTo, $comparison);
+
+        return $this;
     }
 
     /**
@@ -332,14 +351,15 @@ abstract class EmailQuery extends ModelCriteria
      * <code>
      * $query->filterByEmailBcc('fooValue');   // WHERE emailBcc = 'fooValue'
      * $query->filterByEmailBcc('%fooValue%', Criteria::LIKE); // WHERE emailBcc LIKE '%fooValue%'
+     * $query->filterByEmailBcc(['foo', 'bar']); // WHERE emailBcc IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $emailBcc The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $emailBcc The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildEmailQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByEmailBcc($emailBcc = null, $comparison = null)
+    public function filterByEmailBcc($emailBcc = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($emailBcc)) {
@@ -347,7 +367,9 @@ abstract class EmailQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(EmailTableMap::COL_EMAILBCC, $emailBcc, $comparison);
+        $this->addUsingAlias(EmailTableMap::COL_EMAILBCC, $emailBcc, $comparison);
+
+        return $this;
     }
 
     /**
@@ -357,14 +379,15 @@ abstract class EmailQuery extends ModelCriteria
      * <code>
      * $query->filterByEmailFrom('fooValue');   // WHERE emailFrom = 'fooValue'
      * $query->filterByEmailFrom('%fooValue%', Criteria::LIKE); // WHERE emailFrom LIKE '%fooValue%'
+     * $query->filterByEmailFrom(['foo', 'bar']); // WHERE emailFrom IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $emailFrom The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $emailFrom The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildEmailQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByEmailFrom($emailFrom = null, $comparison = null)
+    public function filterByEmailFrom($emailFrom = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($emailFrom)) {
@@ -372,7 +395,9 @@ abstract class EmailQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(EmailTableMap::COL_EMAILFROM, $emailFrom, $comparison);
+        $this->addUsingAlias(EmailTableMap::COL_EMAILFROM, $emailFrom, $comparison);
+
+        return $this;
     }
 
     /**
@@ -382,14 +407,15 @@ abstract class EmailQuery extends ModelCriteria
      * <code>
      * $query->filterBySubject('fooValue');   // WHERE subject = 'fooValue'
      * $query->filterBySubject('%fooValue%', Criteria::LIKE); // WHERE subject LIKE '%fooValue%'
+     * $query->filterBySubject(['foo', 'bar']); // WHERE subject IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $subject The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $subject The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildEmailQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterBySubject($subject = null, $comparison = null)
+    public function filterBySubject($subject = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($subject)) {
@@ -397,7 +423,9 @@ abstract class EmailQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(EmailTableMap::COL_SUBJECT, $subject, $comparison);
+        $this->addUsingAlias(EmailTableMap::COL_SUBJECT, $subject, $comparison);
+
+        return $this;
     }
 
     /**
@@ -407,14 +435,15 @@ abstract class EmailQuery extends ModelCriteria
      * <code>
      * $query->filterByMessage('fooValue');   // WHERE message = 'fooValue'
      * $query->filterByMessage('%fooValue%', Criteria::LIKE); // WHERE message LIKE '%fooValue%'
+     * $query->filterByMessage(['foo', 'bar']); // WHERE message IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $message The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $message The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildEmailQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByMessage($message = null, $comparison = null)
+    public function filterByMessage($message = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($message)) {
@@ -422,7 +451,9 @@ abstract class EmailQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(EmailTableMap::COL_MESSAGE, $message, $comparison);
+        $this->addUsingAlias(EmailTableMap::COL_MESSAGE, $message, $comparison);
+
+        return $this;
     }
 
     /**
@@ -432,14 +463,15 @@ abstract class EmailQuery extends ModelCriteria
      * <code>
      * $query->filterByError('fooValue');   // WHERE error = 'fooValue'
      * $query->filterByError('%fooValue%', Criteria::LIKE); // WHERE error LIKE '%fooValue%'
+     * $query->filterByError(['foo', 'bar']); // WHERE error IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $error The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $error The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildEmailQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByError($error = null, $comparison = null)
+    public function filterByError($error = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($error)) {
@@ -447,15 +479,17 @@ abstract class EmailQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(EmailTableMap::COL_ERROR, $error, $comparison);
+        $this->addUsingAlias(EmailTableMap::COL_ERROR, $error, $comparison);
+
+        return $this;
     }
 
     /**
      * Exclude object from result
      *
-     * @param   ChildEmail $email Object to remove from the list of results
+     * @param ChildEmail $email Object to remove from the list of results
      *
-     * @return $this|ChildEmailQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function prune($email = null)
     {
@@ -472,7 +506,7 @@ abstract class EmailQuery extends ModelCriteria
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public function doDeleteAll(ConnectionInterface $con = null)
+    public function doDeleteAll(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(EmailTableMap::DATABASE_NAME);
@@ -497,12 +531,12 @@ abstract class EmailQuery extends ModelCriteria
      * Performs a DELETE on the database based on the current ModelCriteria
      *
      * @param ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public function delete(ConnectionInterface $con = null)
+    public function delete(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(EmailTableMap::DATABASE_NAME);
@@ -526,4 +560,5 @@ abstract class EmailQuery extends ModelCriteria
             return $affectedRows;
         });
     }
-} // EmailQuery
+
+}

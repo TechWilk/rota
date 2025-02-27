@@ -8,6 +8,7 @@ use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveQuery\ModelJoin;
+use Propel\Runtime\Collection\Collection;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -16,9 +17,7 @@ use TechWilk\Rota\CalendarTokenQuery as ChildCalendarTokenQuery;
 use TechWilk\Rota\Map\CalendarTokenTableMap;
 
 /**
- * Base class that represents a query for the 'calendarTokens' table.
- *
- *
+ * Base class that represents a query for the `calendarTokens` table.
  *
  * @method     ChildCalendarTokenQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildCalendarTokenQuery orderByToken($order = Criteria::ASC) Order by the token column
@@ -62,22 +61,22 @@ use TechWilk\Rota\Map\CalendarTokenTableMap;
  *
  * @method     \TechWilk\Rota\UserQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
- * @method     ChildCalendarToken findOne(ConnectionInterface $con = null) Return the first ChildCalendarToken matching the query
- * @method     ChildCalendarToken findOneOrCreate(ConnectionInterface $con = null) Return the first ChildCalendarToken matching the query, or a new ChildCalendarToken object populated from the query conditions when no match is found
+ * @method     ChildCalendarToken|null findOne(?ConnectionInterface $con = null) Return the first ChildCalendarToken matching the query
+ * @method     ChildCalendarToken findOneOrCreate(?ConnectionInterface $con = null) Return the first ChildCalendarToken matching the query, or a new ChildCalendarToken object populated from the query conditions when no match is found
  *
- * @method     ChildCalendarToken findOneById(int $id) Return the first ChildCalendarToken filtered by the id column
- * @method     ChildCalendarToken findOneByToken(string $token) Return the first ChildCalendarToken filtered by the token column
- * @method     ChildCalendarToken findOneByUserid(int $userId) Return the first ChildCalendarToken filtered by the userId column
- * @method     ChildCalendarToken findOneByFormat(string $format) Return the first ChildCalendarToken filtered by the format column
- * @method     ChildCalendarToken findOneByDescription(string $description) Return the first ChildCalendarToken filtered by the description column
- * @method     ChildCalendarToken findOneByRevoked(boolean $revoked) Return the first ChildCalendarToken filtered by the revoked column
- * @method     ChildCalendarToken findOneByRevokedDate(string $revokedDate) Return the first ChildCalendarToken filtered by the revokedDate column
- * @method     ChildCalendarToken findOneByLastFetched(string $lastFetched) Return the first ChildCalendarToken filtered by the lastFetched column
- * @method     ChildCalendarToken findOneByCreated(string $created) Return the first ChildCalendarToken filtered by the created column
- * @method     ChildCalendarToken findOneByUpdated(string $updated) Return the first ChildCalendarToken filtered by the updated column *
-
- * @method     ChildCalendarToken requirePk($key, ConnectionInterface $con = null) Return the ChildCalendarToken by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildCalendarToken requireOne(ConnectionInterface $con = null) Return the first ChildCalendarToken matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildCalendarToken|null findOneById(int $id) Return the first ChildCalendarToken filtered by the id column
+ * @method     ChildCalendarToken|null findOneByToken(string $token) Return the first ChildCalendarToken filtered by the token column
+ * @method     ChildCalendarToken|null findOneByUserid(int $userId) Return the first ChildCalendarToken filtered by the userId column
+ * @method     ChildCalendarToken|null findOneByFormat(string $format) Return the first ChildCalendarToken filtered by the format column
+ * @method     ChildCalendarToken|null findOneByDescription(string $description) Return the first ChildCalendarToken filtered by the description column
+ * @method     ChildCalendarToken|null findOneByRevoked(boolean $revoked) Return the first ChildCalendarToken filtered by the revoked column
+ * @method     ChildCalendarToken|null findOneByRevokedDate(string $revokedDate) Return the first ChildCalendarToken filtered by the revokedDate column
+ * @method     ChildCalendarToken|null findOneByLastFetched(string $lastFetched) Return the first ChildCalendarToken filtered by the lastFetched column
+ * @method     ChildCalendarToken|null findOneByCreated(string $created) Return the first ChildCalendarToken filtered by the created column
+ * @method     ChildCalendarToken|null findOneByUpdated(string $updated) Return the first ChildCalendarToken filtered by the updated column
+ *
+ * @method     ChildCalendarToken requirePk($key, ?ConnectionInterface $con = null) Return the ChildCalendarToken by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildCalendarToken requireOne(?ConnectionInterface $con = null) Return the first ChildCalendarToken matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildCalendarToken requireOneById(int $id) Return the first ChildCalendarToken filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCalendarToken requireOneByToken(string $token) Return the first ChildCalendarToken filtered by the token column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -90,19 +89,32 @@ use TechWilk\Rota\Map\CalendarTokenTableMap;
  * @method     ChildCalendarToken requireOneByCreated(string $created) Return the first ChildCalendarToken filtered by the created column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCalendarToken requireOneByUpdated(string $updated) Return the first ChildCalendarToken filtered by the updated column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildCalendarToken[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildCalendarToken objects based on current ModelCriteria
- * @method     ChildCalendarToken[]|ObjectCollection findById(int $id) Return ChildCalendarToken objects filtered by the id column
- * @method     ChildCalendarToken[]|ObjectCollection findByToken(string $token) Return ChildCalendarToken objects filtered by the token column
- * @method     ChildCalendarToken[]|ObjectCollection findByUserid(int $userId) Return ChildCalendarToken objects filtered by the userId column
- * @method     ChildCalendarToken[]|ObjectCollection findByFormat(string $format) Return ChildCalendarToken objects filtered by the format column
- * @method     ChildCalendarToken[]|ObjectCollection findByDescription(string $description) Return ChildCalendarToken objects filtered by the description column
- * @method     ChildCalendarToken[]|ObjectCollection findByRevoked(boolean $revoked) Return ChildCalendarToken objects filtered by the revoked column
- * @method     ChildCalendarToken[]|ObjectCollection findByRevokedDate(string $revokedDate) Return ChildCalendarToken objects filtered by the revokedDate column
- * @method     ChildCalendarToken[]|ObjectCollection findByLastFetched(string $lastFetched) Return ChildCalendarToken objects filtered by the lastFetched column
- * @method     ChildCalendarToken[]|ObjectCollection findByCreated(string $created) Return ChildCalendarToken objects filtered by the created column
- * @method     ChildCalendarToken[]|ObjectCollection findByUpdated(string $updated) Return ChildCalendarToken objects filtered by the updated column
- * @method     ChildCalendarToken[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @method     ChildCalendarToken[]|Collection find(?ConnectionInterface $con = null) Return ChildCalendarToken objects based on current ModelCriteria
+ * @psalm-method Collection&\Traversable<ChildCalendarToken> find(?ConnectionInterface $con = null) Return ChildCalendarToken objects based on current ModelCriteria
  *
+ * @method     ChildCalendarToken[]|Collection findById(int|array<int> $id) Return ChildCalendarToken objects filtered by the id column
+ * @psalm-method Collection&\Traversable<ChildCalendarToken> findById(int|array<int> $id) Return ChildCalendarToken objects filtered by the id column
+ * @method     ChildCalendarToken[]|Collection findByToken(string|array<string> $token) Return ChildCalendarToken objects filtered by the token column
+ * @psalm-method Collection&\Traversable<ChildCalendarToken> findByToken(string|array<string> $token) Return ChildCalendarToken objects filtered by the token column
+ * @method     ChildCalendarToken[]|Collection findByUserid(int|array<int> $userId) Return ChildCalendarToken objects filtered by the userId column
+ * @psalm-method Collection&\Traversable<ChildCalendarToken> findByUserid(int|array<int> $userId) Return ChildCalendarToken objects filtered by the userId column
+ * @method     ChildCalendarToken[]|Collection findByFormat(string|array<string> $format) Return ChildCalendarToken objects filtered by the format column
+ * @psalm-method Collection&\Traversable<ChildCalendarToken> findByFormat(string|array<string> $format) Return ChildCalendarToken objects filtered by the format column
+ * @method     ChildCalendarToken[]|Collection findByDescription(string|array<string> $description) Return ChildCalendarToken objects filtered by the description column
+ * @psalm-method Collection&\Traversable<ChildCalendarToken> findByDescription(string|array<string> $description) Return ChildCalendarToken objects filtered by the description column
+ * @method     ChildCalendarToken[]|Collection findByRevoked(boolean|array<boolean> $revoked) Return ChildCalendarToken objects filtered by the revoked column
+ * @psalm-method Collection&\Traversable<ChildCalendarToken> findByRevoked(boolean|array<boolean> $revoked) Return ChildCalendarToken objects filtered by the revoked column
+ * @method     ChildCalendarToken[]|Collection findByRevokedDate(string|array<string> $revokedDate) Return ChildCalendarToken objects filtered by the revokedDate column
+ * @psalm-method Collection&\Traversable<ChildCalendarToken> findByRevokedDate(string|array<string> $revokedDate) Return ChildCalendarToken objects filtered by the revokedDate column
+ * @method     ChildCalendarToken[]|Collection findByLastFetched(string|array<string> $lastFetched) Return ChildCalendarToken objects filtered by the lastFetched column
+ * @psalm-method Collection&\Traversable<ChildCalendarToken> findByLastFetched(string|array<string> $lastFetched) Return ChildCalendarToken objects filtered by the lastFetched column
+ * @method     ChildCalendarToken[]|Collection findByCreated(string|array<string> $created) Return ChildCalendarToken objects filtered by the created column
+ * @psalm-method Collection&\Traversable<ChildCalendarToken> findByCreated(string|array<string> $created) Return ChildCalendarToken objects filtered by the created column
+ * @method     ChildCalendarToken[]|Collection findByUpdated(string|array<string> $updated) Return ChildCalendarToken objects filtered by the updated column
+ * @psalm-method Collection&\Traversable<ChildCalendarToken> findByUpdated(string|array<string> $updated) Return ChildCalendarToken objects filtered by the updated column
+ *
+ * @method     ChildCalendarToken[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @psalm-method \Propel\Runtime\Util\PropelModelPager&\Traversable<ChildCalendarToken> paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  */
 abstract class CalendarTokenQuery extends ModelCriteria
 {
@@ -111,9 +123,9 @@ abstract class CalendarTokenQuery extends ModelCriteria
     /**
      * Initializes internal state of \TechWilk\Rota\Base\CalendarTokenQuery object.
      *
-     * @param     string $dbName The database name
-     * @param     string $modelName The phpName of a model, e.g. 'Book'
-     * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
+     * @param string $dbName The database name
+     * @param string $modelName The phpName of a model, e.g. 'Book'
+     * @param string $modelAlias The alias for the model in this query, e.g. 'b'
      */
     public function __construct($dbName = 'default', $modelName = '\\TechWilk\\Rota\\CalendarToken', $modelAlias = null)
     {
@@ -123,12 +135,12 @@ abstract class CalendarTokenQuery extends ModelCriteria
     /**
      * Returns a new ChildCalendarTokenQuery object.
      *
-     * @param     string $modelAlias The alias of a model in the query
-     * @param     Criteria $criteria Optional Criteria to build the query from
+     * @param string $modelAlias The alias of a model in the query
+     * @param Criteria $criteria Optional Criteria to build the query from
      *
      * @return ChildCalendarTokenQuery
      */
-    public static function create($modelAlias = null, Criteria $criteria = null)
+    public static function create(?string $modelAlias = null, ?Criteria $criteria = null): Criteria
     {
         if ($criteria instanceof ChildCalendarTokenQuery) {
             return $criteria;
@@ -158,7 +170,7 @@ abstract class CalendarTokenQuery extends ModelCriteria
      *
      * @return ChildCalendarToken|array|mixed the result, formatted by the current formatter
      */
-    public function findPk($key, ConnectionInterface $con = null)
+    public function findPk($key, ?ConnectionInterface $con = null)
     {
         if ($key === null) {
             return null;
@@ -190,8 +202,8 @@ abstract class CalendarTokenQuery extends ModelCriteria
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
@@ -223,8 +235,8 @@ abstract class CalendarTokenQuery extends ModelCriteria
     /**
      * Find object by primary key.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @return ChildCalendarToken|array|mixed the result, formatted by the current formatter
      */
@@ -244,12 +256,12 @@ abstract class CalendarTokenQuery extends ModelCriteria
      * <code>
      * $objs = $c->findPks(array(12, 56, 832), $con);
      * </code>
-     * @param     array $keys Primary keys to use for the query
-     * @param     ConnectionInterface $con an optional connection object
+     * @param array $keys Primary keys to use for the query
+     * @param ConnectionInterface $con an optional connection object
      *
-     * @return ObjectCollection|array|mixed the list of results, formatted by the current formatter
+     * @return Collection|array|mixed the list of results, formatted by the current formatter
      */
-    public function findPks($keys, ConnectionInterface $con = null)
+    public function findPks($keys, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getReadConnection($this->getDbName());
@@ -266,25 +278,31 @@ abstract class CalendarTokenQuery extends ModelCriteria
     /**
      * Filter the query by primary key
      *
-     * @param     mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query
      *
-     * @return $this|ChildCalendarTokenQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
-        return $this->addUsingAlias(CalendarTokenTableMap::COL_ID, $key, Criteria::EQUAL);
+
+        $this->addUsingAlias(CalendarTokenTableMap::COL_ID, $key, Criteria::EQUAL);
+
+        return $this;
     }
 
     /**
      * Filter the query by a list of primary keys
      *
-     * @param     array $keys The list of primary key to use for the query
+     * @param array|int $keys The list of primary key to use for the query
      *
-     * @return $this|ChildCalendarTokenQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
-        return $this->addUsingAlias(CalendarTokenTableMap::COL_ID, $keys, Criteria::IN);
+
+        $this->addUsingAlias(CalendarTokenTableMap::COL_ID, $keys, Criteria::IN);
+
+        return $this;
     }
 
     /**
@@ -297,15 +315,15 @@ abstract class CalendarTokenQuery extends ModelCriteria
      * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
      *
-     * @param     mixed $id The value to use as filter.
+     * @param mixed $id The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildCalendarTokenQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterById($id = null, $comparison = null)
+    public function filterById($id = null, ?string $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
@@ -325,7 +343,9 @@ abstract class CalendarTokenQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(CalendarTokenTableMap::COL_ID, $id, $comparison);
+        $this->addUsingAlias(CalendarTokenTableMap::COL_ID, $id, $comparison);
+
+        return $this;
     }
 
     /**
@@ -335,14 +355,15 @@ abstract class CalendarTokenQuery extends ModelCriteria
      * <code>
      * $query->filterByToken('fooValue');   // WHERE token = 'fooValue'
      * $query->filterByToken('%fooValue%', Criteria::LIKE); // WHERE token LIKE '%fooValue%'
+     * $query->filterByToken(['foo', 'bar']); // WHERE token IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $token The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $token The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildCalendarTokenQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByToken($token = null, $comparison = null)
+    public function filterByToken($token = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($token)) {
@@ -350,7 +371,9 @@ abstract class CalendarTokenQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(CalendarTokenTableMap::COL_TOKEN, $token, $comparison);
+        $this->addUsingAlias(CalendarTokenTableMap::COL_TOKEN, $token, $comparison);
+
+        return $this;
     }
 
     /**
@@ -365,15 +388,15 @@ abstract class CalendarTokenQuery extends ModelCriteria
      *
      * @see       filterByUser()
      *
-     * @param     mixed $userid The value to use as filter.
+     * @param mixed $userid The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildCalendarTokenQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUserid($userid = null, $comparison = null)
+    public function filterByUserid($userid = null, ?string $comparison = null)
     {
         if (is_array($userid)) {
             $useMinMax = false;
@@ -393,7 +416,9 @@ abstract class CalendarTokenQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(CalendarTokenTableMap::COL_USERID, $userid, $comparison);
+        $this->addUsingAlias(CalendarTokenTableMap::COL_USERID, $userid, $comparison);
+
+        return $this;
     }
 
     /**
@@ -403,14 +428,15 @@ abstract class CalendarTokenQuery extends ModelCriteria
      * <code>
      * $query->filterByFormat('fooValue');   // WHERE format = 'fooValue'
      * $query->filterByFormat('%fooValue%', Criteria::LIKE); // WHERE format LIKE '%fooValue%'
+     * $query->filterByFormat(['foo', 'bar']); // WHERE format IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $format The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $format The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildCalendarTokenQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByFormat($format = null, $comparison = null)
+    public function filterByFormat($format = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($format)) {
@@ -418,7 +444,9 @@ abstract class CalendarTokenQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(CalendarTokenTableMap::COL_FORMAT, $format, $comparison);
+        $this->addUsingAlias(CalendarTokenTableMap::COL_FORMAT, $format, $comparison);
+
+        return $this;
     }
 
     /**
@@ -428,14 +456,15 @@ abstract class CalendarTokenQuery extends ModelCriteria
      * <code>
      * $query->filterByDescription('fooValue');   // WHERE description = 'fooValue'
      * $query->filterByDescription('%fooValue%', Criteria::LIKE); // WHERE description LIKE '%fooValue%'
+     * $query->filterByDescription(['foo', 'bar']); // WHERE description IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $description The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $description The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildCalendarTokenQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByDescription($description = null, $comparison = null)
+    public function filterByDescription($description = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($description)) {
@@ -443,7 +472,9 @@ abstract class CalendarTokenQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(CalendarTokenTableMap::COL_DESCRIPTION, $description, $comparison);
+        $this->addUsingAlias(CalendarTokenTableMap::COL_DESCRIPTION, $description, $comparison);
+
+        return $this;
     }
 
     /**
@@ -455,22 +486,24 @@ abstract class CalendarTokenQuery extends ModelCriteria
      * $query->filterByRevoked('yes'); // WHERE revoked = true
      * </code>
      *
-     * @param     boolean|string $revoked The value to use as filter.
+     * @param bool|string $revoked The value to use as filter.
      *              Non-boolean arguments are converted using the following rules:
      *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildCalendarTokenQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByRevoked($revoked = null, $comparison = null)
+    public function filterByRevoked($revoked = null, ?string $comparison = null)
     {
         if (is_string($revoked)) {
-            $revoked = in_array(strtolower($revoked), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            $revoked = in_array(strtolower($revoked), array('false', 'off', '-', 'no', 'n', '0', ''), true) ? false : true;
         }
 
-        return $this->addUsingAlias(CalendarTokenTableMap::COL_REVOKED, $revoked, $comparison);
+        $this->addUsingAlias(CalendarTokenTableMap::COL_REVOKED, $revoked, $comparison);
+
+        return $this;
     }
 
     /**
@@ -483,17 +516,17 @@ abstract class CalendarTokenQuery extends ModelCriteria
      * $query->filterByRevokedDate(array('max' => 'yesterday')); // WHERE revokedDate > '2011-03-13'
      * </code>
      *
-     * @param     mixed $revokedDate The value to use as filter.
+     * @param mixed $revokedDate The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildCalendarTokenQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByRevokedDate($revokedDate = null, $comparison = null)
+    public function filterByRevokedDate($revokedDate = null, ?string $comparison = null)
     {
         if (is_array($revokedDate)) {
             $useMinMax = false;
@@ -513,7 +546,9 @@ abstract class CalendarTokenQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(CalendarTokenTableMap::COL_REVOKEDDATE, $revokedDate, $comparison);
+        $this->addUsingAlias(CalendarTokenTableMap::COL_REVOKEDDATE, $revokedDate, $comparison);
+
+        return $this;
     }
 
     /**
@@ -526,17 +561,17 @@ abstract class CalendarTokenQuery extends ModelCriteria
      * $query->filterByLastFetched(array('max' => 'yesterday')); // WHERE lastFetched > '2011-03-13'
      * </code>
      *
-     * @param     mixed $lastFetched The value to use as filter.
+     * @param mixed $lastFetched The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildCalendarTokenQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByLastFetched($lastFetched = null, $comparison = null)
+    public function filterByLastFetched($lastFetched = null, ?string $comparison = null)
     {
         if (is_array($lastFetched)) {
             $useMinMax = false;
@@ -556,7 +591,9 @@ abstract class CalendarTokenQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(CalendarTokenTableMap::COL_LASTFETCHED, $lastFetched, $comparison);
+        $this->addUsingAlias(CalendarTokenTableMap::COL_LASTFETCHED, $lastFetched, $comparison);
+
+        return $this;
     }
 
     /**
@@ -569,17 +606,17 @@ abstract class CalendarTokenQuery extends ModelCriteria
      * $query->filterByCreated(array('max' => 'yesterday')); // WHERE created > '2011-03-13'
      * </code>
      *
-     * @param     mixed $created The value to use as filter.
+     * @param mixed $created The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildCalendarTokenQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByCreated($created = null, $comparison = null)
+    public function filterByCreated($created = null, ?string $comparison = null)
     {
         if (is_array($created)) {
             $useMinMax = false;
@@ -599,7 +636,9 @@ abstract class CalendarTokenQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(CalendarTokenTableMap::COL_CREATED, $created, $comparison);
+        $this->addUsingAlias(CalendarTokenTableMap::COL_CREATED, $created, $comparison);
+
+        return $this;
     }
 
     /**
@@ -612,17 +651,17 @@ abstract class CalendarTokenQuery extends ModelCriteria
      * $query->filterByUpdated(array('max' => 'yesterday')); // WHERE updated > '2011-03-13'
      * </code>
      *
-     * @param     mixed $updated The value to use as filter.
+     * @param mixed $updated The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildCalendarTokenQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUpdated($updated = null, $comparison = null)
+    public function filterByUpdated($updated = null, ?string $comparison = null)
     {
         if (is_array($updated)) {
             $useMinMax = false;
@@ -642,20 +681,22 @@ abstract class CalendarTokenQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(CalendarTokenTableMap::COL_UPDATED, $updated, $comparison);
+        $this->addUsingAlias(CalendarTokenTableMap::COL_UPDATED, $updated, $comparison);
+
+        return $this;
     }
 
     /**
      * Filter the query by a related \TechWilk\Rota\User object
      *
      * @param \TechWilk\Rota\User|ObjectCollection $user The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
-     * @return ChildCalendarTokenQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUser($user, $comparison = null)
+    public function filterByUser($user, ?string $comparison = null)
     {
         if ($user instanceof \TechWilk\Rota\User) {
             return $this
@@ -665,8 +706,10 @@ abstract class CalendarTokenQuery extends ModelCriteria
                 $comparison = Criteria::IN;
             }
 
-            return $this
+            $this
                 ->addUsingAlias(CalendarTokenTableMap::COL_USERID, $user->toKeyValue('PrimaryKey', 'Id'), $comparison);
+
+            return $this;
         } else {
             throw new PropelException('filterByUser() only accepts arguments of type \TechWilk\Rota\User or Collection');
         }
@@ -675,12 +718,12 @@ abstract class CalendarTokenQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the User relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildCalendarTokenQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinUser(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('User');
@@ -709,9 +752,9 @@ abstract class CalendarTokenQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \TechWilk\Rota\UserQuery A secondary query class using the current class as primary query
      */
@@ -723,11 +766,107 @@ abstract class CalendarTokenQuery extends ModelCriteria
     }
 
     /**
+     * Use the User relation User object
+     *
+     * @param callable(\TechWilk\Rota\UserQuery):\TechWilk\Rota\UserQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withUserQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->useUserQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the relation to User table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \TechWilk\Rota\UserQuery The inner query object of the EXISTS statement
+     */
+    public function useUserExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \TechWilk\Rota\UserQuery */
+        $q = $this->useExistsQuery('User', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the relation to User table for a NOT EXISTS query.
+     *
+     * @see useUserExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\UserQuery The inner query object of the NOT EXISTS statement
+     */
+    public function useUserNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\UserQuery */
+        $q = $this->useExistsQuery('User', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the relation to User table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \TechWilk\Rota\UserQuery The inner query object of the IN statement
+     */
+    public function useInUserQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \TechWilk\Rota\UserQuery */
+        $q = $this->useInQuery('User', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the relation to User table for a NOT IN query.
+     *
+     * @see useUserInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \TechWilk\Rota\UserQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInUserQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \TechWilk\Rota\UserQuery */
+        $q = $this->useInQuery('User', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Exclude object from result
      *
-     * @param   ChildCalendarToken $calendarToken Object to remove from the list of results
+     * @param ChildCalendarToken $calendarToken Object to remove from the list of results
      *
-     * @return $this|ChildCalendarTokenQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function prune($calendarToken = null)
     {
@@ -744,7 +883,7 @@ abstract class CalendarTokenQuery extends ModelCriteria
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public function doDeleteAll(ConnectionInterface $con = null)
+    public function doDeleteAll(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(CalendarTokenTableMap::DATABASE_NAME);
@@ -769,12 +908,12 @@ abstract class CalendarTokenQuery extends ModelCriteria
      * Performs a DELETE on the database based on the current ModelCriteria
      *
      * @param ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public function delete(ConnectionInterface $con = null)
+    public function delete(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(CalendarTokenTableMap::DATABASE_NAME);
@@ -804,64 +943,77 @@ abstract class CalendarTokenQuery extends ModelCriteria
     /**
      * Filter by the latest updated
      *
-     * @param      int $nbDays Maximum age of the latest update in days
+     * @param int $nbDays Maximum age of the latest update in days
      *
-     * @return     $this|ChildCalendarTokenQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function recentlyUpdated($nbDays = 7)
     {
-        return $this->addUsingAlias(CalendarTokenTableMap::COL_UPDATED, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        $this->addUsingAlias(CalendarTokenTableMap::COL_UPDATED, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+
+        return $this;
     }
 
     /**
      * Order by update date desc
      *
-     * @return     $this|ChildCalendarTokenQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function lastUpdatedFirst()
     {
-        return $this->addDescendingOrderByColumn(CalendarTokenTableMap::COL_UPDATED);
+        $this->addDescendingOrderByColumn(CalendarTokenTableMap::COL_UPDATED);
+
+        return $this;
     }
 
     /**
      * Order by update date asc
      *
-     * @return     $this|ChildCalendarTokenQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function firstUpdatedFirst()
     {
-        return $this->addAscendingOrderByColumn(CalendarTokenTableMap::COL_UPDATED);
+        $this->addAscendingOrderByColumn(CalendarTokenTableMap::COL_UPDATED);
+
+        return $this;
     }
 
     /**
      * Order by create date desc
      *
-     * @return     $this|ChildCalendarTokenQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function lastCreatedFirst()
     {
-        return $this->addDescendingOrderByColumn(CalendarTokenTableMap::COL_CREATED);
+        $this->addDescendingOrderByColumn(CalendarTokenTableMap::COL_CREATED);
+
+        return $this;
     }
 
     /**
      * Filter by the latest created
      *
-     * @param      int $nbDays Maximum age of in days
+     * @param int $nbDays Maximum age of in days
      *
-     * @return     $this|ChildCalendarTokenQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function recentlyCreated($nbDays = 7)
     {
-        return $this->addUsingAlias(CalendarTokenTableMap::COL_CREATED, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        $this->addUsingAlias(CalendarTokenTableMap::COL_CREATED, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+
+        return $this;
     }
 
     /**
      * Order by create date asc
      *
-     * @return     $this|ChildCalendarTokenQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function firstCreatedFirst()
     {
-        return $this->addAscendingOrderByColumn(CalendarTokenTableMap::COL_CREATED);
+        $this->addAscendingOrderByColumn(CalendarTokenTableMap::COL_CREATED);
+
+        return $this;
     }
-} // CalendarTokenQuery
+
+}
